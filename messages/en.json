@@ -1,0 +1,242 @@
+{
+  "common": {
+    "whatsapp": "WhatsApp",
+    "contact": "Contact",
+    "services": "Services",
+    "problems": "Problems",
+    "about": "About Us",
+    "home": "Home",
+    "callNow": "Call Us",
+    "scheduleService": "Contact us on WhatsApp",
+    "viewServices": "Get a quote",
+    "requestService": "Request service",
+    "requestDiagnosis": "Request diagnosis",
+    "contactNow": "Contact now",
+    "checkAvailability": "Check availability",
+    "viewDetails": "View details",
+    "geoLine": "Service in Panama City, Republic of Panama"
+  },
+  "hero": {
+    "trustBadge": "More than 800 homes trust us",
+    "title": "Professional air conditioner cleaning in",
+    "titleHighlight": "Panama City",
+    "subtitle": "From 29.99 USD per unit",
+    "tagline": "Fast service • Clear pricing • Direct WhatsApp",
+    "benefit1": "Fast service",
+    "benefit2": "Clear pricing",
+    "benefit3": "Direct WhatsApp",
+    "stat1Value": "+800",
+    "stat1Label": "Satisfied customers",
+    "stat2Value": "24/7",
+    "stat2Label": "Availability",
+    "stat3Value": "5+",
+    "stat3Label": "Years of experience"
+  },
+  "packages": {
+    "title": "Choose your cleaning package",
+    "subtitle": "Clear prices. No surprises.",
+    "basic": {
+      "name": "Basic Package",
+      "price": "29.99",
+      "description": "Deep cleaning of indoor unit",
+      "feature1": "Removes dust, dirt and bad odors",
+      "label": "Base price • Most requested",
+      "cta": "Request this package"
+    },
+    "recommended": {
+      "name": "Recommended Package",
+      "price": "39.99",
+      "description": "Deep cleaning + antibacterial treatment",
+      "feature1": "Better performance and cleaner air",
+      "label": "Best option",
+      "cta": "Recommended for most"
+    },
+    "premium": {
+      "name": "Premium Package",
+      "price": "59.99",
+      "description": "Complete cleaning + technical diagnosis",
+      "feature1": "Failure prevention and longer durability",
+      "label": "Maximum result",
+      "cta": "Full service"
+    },
+    "perUnit": "per unit",
+    "whatsappOrder": "Order via WhatsApp"
+  },
+  "calculator": {
+    "title": "Calculate your price",
+    "subtitle": "Save more with multiple units",
+    "quantity": "How many air conditioners?",
+    "orEnter": "or enter",
+    "package": "Choose package",
+    "basic": "Basic",
+    "recommended": "Recommended",
+    "premium": "Premium",
+    "breakdown": "Price breakdown",
+    "unit": "Unit",
+    "total": "Total",
+    "savings": "You save",
+    "cta": "Order via WhatsApp",
+    "whatsappMessage": "Hello, I want to order cleaning service:\n\n📦 Package: {package}\n🔢 Quantity: {quantity} unit(s)\n💵 Prices per unit:\n{breakdown}\n\n💰 TOTAL: ${total} USD\n\nWhen can you come?"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Complete air conditioning services in Panama.",
+    "urgentTitle": "Need urgent service?",
+    "urgentSubtitle": "Our technicians are available to assist you immediately.",
+    "cleaning": {
+      "title": "Deep Cleaning",
+      "description": "Eliminates mold, bacteria and bad odors. Improves air quality.",
+      "benefit1": "Eliminates bacteria and mold",
+      "benefit2": "Improves air quality",
+      "benefit3": "Reduces electricity consumption",
+      "benefit4": "Extends equipment life"
+    },
+    "maintenance": {
+      "title": "Preventive Maintenance",
+      "description": "Prevents costly breakdowns and keeps your equipment running.",
+      "benefit1": "Prevents major failures",
+      "benefit2": "Saves on repairs",
+      "benefit3": "Greater efficiency",
+      "benefit4": "Operation guarantee"
+    },
+    "repair": {
+      "title": "Repair",
+      "description": "Quick diagnosis and effective solution for any failure.",
+      "benefit1": "Accurate diagnosis",
+      "benefit2": "Original spare parts",
+      "benefit3": "Certified technicians",
+      "benefit4": "Repair warranty"
+    },
+    "installation": {
+      "title": "Installation",
+      "description": "Professional air conditioner installation.",
+      "benefit1": "Guaranteed installation",
+      "benefit2": "All brands",
+      "benefit3": "Personalized advice",
+      "benefit4": "Optimal configuration"
+    },
+    "gasRecharge": {
+      "title": "Gas Recharge",
+      "description": "If your air doesn't cool, it may need a gas recharge.",
+      "benefit1": "Certified gases",
+      "benefit2": "Leak detection",
+      "benefit3": "Refrigerant recovery",
+      "benefit4": "Better performance"
+    },
+    "emergency": {
+      "title": "Emergency 24/7",
+      "description": "Emergency assistance when you need it most.",
+      "benefit1": "Available 24/7",
+      "benefit2": "Immediate response",
+      "benefit3": "Wide coverage",
+      "benefit4": "On-call technicians"
+    }
+  },
+  "problems": {
+    "badge": "Common problems",
+    "title": "Is Your Air Conditioning Having Problems?",
+    "subtitle": "We solve the most frequent air conditioning problems.",
+    "notInList": "Your problem not on the list? Contact us.",
+    "describeByWhatsApp": "Describe my problem via WhatsApp",
+    "possibleCauses": "Possible causes:",
+    "ourSolution": "Our solution:",
+    "notCooling": {
+      "title": "Not cooling",
+      "description": "Could be lack of gas, dirty filters or compressor problems.",
+      "cause1": "Low gas level",
+      "cause2": "Clogged filters",
+      "cause3": "Damaged compressor",
+      "cause4": "System leak",
+      "solution": "Complete diagnosis to identify the cause and effective solution."
+    },
+    "leaking": {
+      "title": "Leaking water",
+      "description": "Leaks can damage walls and furniture if not addressed.",
+      "cause1": "Clogged drain",
+      "cause2": "Dirty tray",
+      "cause3": "Incorrect installation",
+      "cause4": "Very dirty filters",
+      "solution": "We clean the drain and perform preventive maintenance."
+    },
+    "noisy": {
+      "title": "Making noise",
+      "description": "Strange noises indicate something is not working properly.",
+      "cause1": "Damaged blades",
+      "cause2": "Defective compressor",
+      "cause3": "Loose parts",
+      "cause4": "Lack of lubrication",
+      "solution": "We identify the source and repair the necessary parts."
+    },
+    "notTurningOn": {
+      "title": "Not turning on",
+      "description": "Could be electrical problem or internal equipment failure.",
+      "cause1": "Electrical problems",
+      "cause2": "Damaged remote control",
+      "cause3": "Burned board",
+      "cause4": "Blown fuses",
+      "solution": "We check the complete electrical system to restore operation."
+    }
+  },
+  "whyUs": {
+    "title": "Why Choose",
+    "titleHighlight": "24clima",
+    "subtitle": "Your best option for air conditioning services in Panama.",
+    "reason1Title": "Fast",
+    "reason1Desc": "Response in less than 1 hour. Same day visits.",
+    "reason2Title": "Professional Technicians",
+    "reason2Desc": "Certified and trained team.",
+    "reason3Title": "Coverage in Panama",
+    "reason3Desc": "We serve Panama City and metropolitan areas.",
+    "reason4Title": "Guaranteed Service",
+    "reason4Desc": "All our work includes warranty.",
+    "reason5Title": "5+ Years of Experience",
+    "reason5Desc": "Backed by more than 5 years in the market.",
+    "reason6Title": "Personalized Attention",
+    "reason6Desc": "Advice based on your needs and budget.",
+    "stat1": "Satisfied customers",
+    "stat2": "Years of experience",
+    "stat3": "Availability",
+    "stat4": "Service guarantee"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "whatsapp": "WhatsApp",
+    "subtitle": "Ready to improve your home comfort? Contact us via WhatsApp.",
+    "whatsappTitle": "Write to us on WhatsApp",
+    "whatsappDesc": "Immediate response, no-obligation quote.",
+    "available247": "Available 24/7 for emergencies",
+    "clickToOpen": "Click to open WhatsApp",
+    "phone": "Phone",
+    "callUs": "Call us directly",
+    "email": "Email",
+    "writeUs": "Write to us",
+    "location": "Location",
+    "metropolitanCoverage": "Metropolitan coverage",
+    "immediateResponse": "Immediate response",
+    "schedule": "Monday to Saturday 7:00 AM - 8:00 PM | Emergencies 24/7"
+  },
+  "footer": {
+    "description": "Experts in air conditioning service in Panama. More than 5 years of experience.",
+    "servicesTitle": "Services",
+    "problemsTitle": "Problems",
+    "contactTitle": "Contact",
+    "deepCleaning": "Deep Cleaning",
+    "preventiveMaintenance": "Maintenance",
+    "repair": "Repair",
+    "installation": "Installation",
+    "gasRecharge": "Gas Recharge",
+    "notCooling": "Not cooling",
+    "leaking": "Leaking water",
+    "noisy": "Making noise",
+    "notTurningOn": "Not turning on",
+    "copyright": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "whatsappMessages": {
+    "general": "Hello, I need information about your air conditioning services.",
+    "appointment": "Hello, I want to schedule an air conditioning service.",
+    "emergency": "Hello, I need urgent air conditioning service.",
+    "quote": "Hello, I want a quote for air conditioning cleaning."
+  }
+}

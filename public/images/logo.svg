@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" fill="none">
+  <defs>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7BC043"/>
+      <stop offset="100%" style="stop-color:#0F9D58"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Snowflake icon -->
+  <g transform="translate(52, 5)" fill="#00B4D8">
+    <path d="M10 0v6M10 14v6M0 10h6M14 10h6M2.93 2.93l4.24 4.24M12.83 12.83l4.24 4.24M17.07 2.93l-4.24 4.24M7.17 12.83l-4.24 4.24" stroke="#00B4D8" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="10" cy="10" r="2" fill="#00B4D8"/>
+  </g>
+
+  <!-- Thermometer icon -->
+  <g transform="translate(130, 2)" fill="#1e3a5f">
+    <rect x="6" y="0" width="8" height="18" rx="4" stroke="#1e3a5f" stroke-width="1.5" fill="none"/>
+    <circle cx="10" cy="22" r="5" stroke="#1e3a5f" stroke-width="1.5" fill="none"/>
+    <rect x="8" y="8" width="4" height="12" rx="2" fill="#e74c3c"/>
+    <circle cx="10" cy="22" r="3" fill="#e74c3c"/>
+  </g>
+
+  <!-- 24 text -->
+  <text x="5" y="65" font-family="Arial Black, Arial, sans-serif" font-size="52" font-weight="900" fill="url(#greenGradient)">24</text>
+
+  <!-- clima text -->
+  <text x="95" y="65" font-family="Arial, sans-serif" font-size="48" font-weight="400" fill="#1e3a5f">clima</text>
+</svg>

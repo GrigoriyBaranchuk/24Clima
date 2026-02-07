@@ -1,0 +1,242 @@
+{
+  "common": {
+    "whatsapp": "WhatsApp",
+    "contact": "Contacto",
+    "services": "Servicios",
+    "problems": "Problemas",
+    "about": "Nosotros",
+    "home": "Inicio",
+    "callNow": "Llámanos",
+    "scheduleService": "Escríbenos por WhatsApp",
+    "viewServices": "Cotizar ahora",
+    "requestService": "Solicitar servicio",
+    "requestDiagnosis": "Solicitar diagnóstico",
+    "contactNow": "Contactar ahora",
+    "checkAvailability": "Consultar disponibilidad",
+    "viewDetails": "Ver detalles",
+    "geoLine": "Servicio en Ciudad de Panamá, República de Panamá"
+  },
+  "hero": {
+    "trustBadge": "Más de 800 hogares confían en nosotros",
+    "title": "Limpieza profesional de aire acondicionado en",
+    "titleHighlight": "Ciudad de Panamá",
+    "subtitle": "Desde 29.99 USD por equipo",
+    "tagline": "Servicio rápido • Precio claro • WhatsApp directo",
+    "benefit1": "Servicio rápido",
+    "benefit2": "Precio claro",
+    "benefit3": "WhatsApp directo",
+    "stat1Value": "+800",
+    "stat1Label": "Clientes satisfechos",
+    "stat2Value": "24/7",
+    "stat2Label": "Disponibilidad",
+    "stat3Value": "5+",
+    "stat3Label": "Años de experiencia"
+  },
+  "packages": {
+    "title": "Elige tu paquete de limpieza",
+    "subtitle": "Precios claros. Sin sorpresas.",
+    "basic": {
+      "name": "Paquete Básico",
+      "price": "29.99",
+      "description": "Limpieza profunda del equipo interior",
+      "feature1": "Elimina polvo, suciedad y malos olores",
+      "label": "Precio base • Más solicitado",
+      "cta": "Solicitar este paquete"
+    },
+    "recommended": {
+      "name": "Paquete Recomendado",
+      "price": "39.99",
+      "description": "Limpieza profunda + tratamiento antibacteriano",
+      "feature1": "Mejor rendimiento y aire más limpio",
+      "label": "Mejor opción",
+      "cta": "Recomendado para la mayoría"
+    },
+    "premium": {
+      "name": "Paquete Premium",
+      "price": "59.99",
+      "description": "Limpieza completa + diagnóstico técnico",
+      "feature1": "Prevención de fallas y mayor durabilidad",
+      "label": "Máximo resultado",
+      "cta": "Servicio completo"
+    },
+    "perUnit": "por equipo",
+    "whatsappOrder": "Pedir por WhatsApp"
+  },
+  "calculator": {
+    "title": "Calcula tu precio",
+    "subtitle": "Ahorra más con múltiples equipos",
+    "quantity": "¿Cuántos aires acondicionados?",
+    "orEnter": "o ingresa",
+    "package": "Elige el paquete",
+    "basic": "Básico",
+    "recommended": "Recomendado",
+    "premium": "Premium",
+    "breakdown": "Desglose de precios",
+    "unit": "Equipo",
+    "total": "Total",
+    "savings": "¡Ahorras",
+    "cta": "Pedir por WhatsApp",
+    "whatsappMessage": "Hola, quiero contratar el servicio de limpieza:\n\n📦 Paquete: {package}\n🔢 Cantidad: {quantity} equipo(s)\n💵 Precios por unidad:\n{breakdown}\n\n💰 TOTAL: ${total} USD\n\n¿Cuándo pueden venir?"
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Servicios completos de aire acondicionado en Panamá.",
+    "urgentTitle": "¿Necesitas un servicio urgente?",
+    "urgentSubtitle": "Nuestros técnicos están disponibles para atenderte de inmediato.",
+    "cleaning": {
+      "title": "Limpieza Profunda",
+      "description": "Elimina hongos, bacterias y malos olores. Mejora la calidad del aire.",
+      "benefit1": "Elimina bacterias y hongos",
+      "benefit2": "Mejora la calidad del aire",
+      "benefit3": "Reduce consumo eléctrico",
+      "benefit4": "Extiende vida útil"
+    },
+    "maintenance": {
+      "title": "Mantenimiento Preventivo",
+      "description": "Evita averías costosas y mantiene tu equipo funcionando.",
+      "benefit1": "Previene fallas mayores",
+      "benefit2": "Ahorro en reparaciones",
+      "benefit3": "Mayor eficiencia",
+      "benefit4": "Garantía de funcionamiento"
+    },
+    "repair": {
+      "title": "Reparación",
+      "description": "Diagnóstico rápido y solución efectiva para cualquier falla.",
+      "benefit1": "Diagnóstico preciso",
+      "benefit2": "Repuestos originales",
+      "benefit3": "Técnicos certificados",
+      "benefit4": "Garantía en reparaciones"
+    },
+    "installation": {
+      "title": "Instalación",
+      "description": "Instalación profesional de aires acondicionados.",
+      "benefit1": "Instalación garantizada",
+      "benefit2": "Todas las marcas",
+      "benefit3": "Asesoría personalizada",
+      "benefit4": "Configuración óptima"
+    },
+    "gasRecharge": {
+      "title": "Carga de Gas",
+      "description": "Si tu aire no enfría, puede necesitar carga de gas.",
+      "benefit1": "Gases certificados",
+      "benefit2": "Detección de fugas",
+      "benefit3": "Recuperación de refrigerante",
+      "benefit4": "Mejor rendimiento"
+    },
+    "emergency": {
+      "title": "Emergencia 24/7",
+      "description": "Atención de emergencias cuando más lo necesitas.",
+      "benefit1": "Disponible 24/7",
+      "benefit2": "Respuesta inmediata",
+      "benefit3": "Cobertura amplia",
+      "benefit4": "Técnicos de guardia"
+    }
+  },
+  "problems": {
+    "badge": "Problemas comunes",
+    "title": "¿Tu Aire Acondicionado Tiene Problemas?",
+    "subtitle": "Solucionamos los problemas más frecuentes de los aires acondicionados.",
+    "notInList": "¿Tu problema no está en la lista? Contáctanos.",
+    "describeByWhatsApp": "Describir mi problema por WhatsApp",
+    "possibleCauses": "Posibles causas:",
+    "ourSolution": "Nuestra solución:",
+    "notCooling": {
+      "title": "No enfría",
+      "description": "Puede ser falta de gas, filtros sucios o problemas en el compresor.",
+      "cause1": "Bajo nivel de gas",
+      "cause2": "Filtros obstruidos",
+      "cause3": "Compresor dañado",
+      "cause4": "Fuga en el sistema",
+      "solution": "Diagnóstico completo para identificar la causa y solución efectiva."
+    },
+    "leaking": {
+      "title": "Gotea agua",
+      "description": "El goteo puede dañar paredes y muebles si no se atiende.",
+      "cause1": "Drenaje obstruido",
+      "cause2": "Bandeja sucia",
+      "cause3": "Instalación incorrecta",
+      "cause4": "Filtros muy sucios",
+      "solution": "Limpiamos el drenaje y realizamos mantenimiento preventivo."
+    },
+    "noisy": {
+      "title": "Hace ruido",
+      "description": "Ruidos extraños indican que algo no funciona correctamente.",
+      "cause1": "Aspas dañadas",
+      "cause2": "Compresor defectuoso",
+      "cause3": "Piezas sueltas",
+      "cause4": "Falta de lubricación",
+      "solution": "Identificamos el origen del ruido y reparamos las piezas necesarias."
+    },
+    "notTurningOn": {
+      "title": "No enciende",
+      "description": "Puede ser problema eléctrico o falla interna del equipo.",
+      "cause1": "Problemas eléctricos",
+      "cause2": "Control remoto dañado",
+      "cause3": "Tarjeta quemada",
+      "cause4": "Fusibles fundidos",
+      "solution": "Revisamos el sistema eléctrico completo para restaurar el funcionamiento."
+    }
+  },
+  "whyUs": {
+    "title": "¿Por Qué Elegir",
+    "titleHighlight": "24clima",
+    "subtitle": "Tu mejor opción para servicios de aire acondicionado en Panamá.",
+    "reason1Title": "Rapidez",
+    "reason1Desc": "Respuesta en menos de 1 hora. Visitas el mismo día.",
+    "reason2Title": "Técnicos Profesionales",
+    "reason2Desc": "Equipo certificado y capacitado.",
+    "reason3Title": "Cobertura en Panamá",
+    "reason3Desc": "Atendemos Ciudad de Panamá y áreas metropolitanas.",
+    "reason4Title": "Servicio Garantizado",
+    "reason4Desc": "Todos nuestros trabajos incluyen garantía.",
+    "reason5Title": "5+ Años de Experiencia",
+    "reason5Desc": "Respaldo de más de 5 años en el mercado.",
+    "reason6Title": "Atención Personalizada",
+    "reason6Desc": "Asesoría según tus necesidades y presupuesto.",
+    "stat1": "Clientes satisfechos",
+    "stat2": "Años de experiencia",
+    "stat3": "Disponibilidad",
+    "stat4": "Garantía de servicio"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "whatsapp": "WhatsApp",
+    "subtitle": "¿Listo para mejorar el confort de tu hogar? Contáctanos por WhatsApp.",
+    "whatsappTitle": "Escríbenos por WhatsApp",
+    "whatsappDesc": "Respuesta inmediata, cotización sin compromiso.",
+    "available247": "Disponibles 24/7 para emergencias",
+    "clickToOpen": "Haz clic para abrir WhatsApp",
+    "phone": "Teléfono",
+    "callUs": "Llámanos directamente",
+    "email": "Correo",
+    "writeUs": "Escríbenos",
+    "location": "Ubicación",
+    "metropolitanCoverage": "Cobertura metropolitana",
+    "immediateResponse": "Respuesta inmediata",
+    "schedule": "Lunes a Sábado 7:00 AM - 8:00 PM | Emergencias 24/7"
+  },
+  "footer": {
+    "description": "Expertos en servicio de aire acondicionado en Panamá. Más de 5 años de experiencia.",
+    "servicesTitle": "Servicios",
+    "problemsTitle": "Problemas",
+    "contactTitle": "Contacto",
+    "deepCleaning": "Limpieza Profunda",
+    "preventiveMaintenance": "Mantenimiento",
+    "repair": "Reparación",
+    "installation": "Instalación",
+    "gasRecharge": "Carga de Gas",
+    "notCooling": "No enfría",
+    "leaking": "Gotea agua",
+    "noisy": "Hace ruido",
+    "notTurningOn": "No enciende",
+    "copyright": "Todos los derechos reservados.",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio"
+  },
+  "whatsappMessages": {
+    "general": "Hola, necesito información sobre sus servicios de aire acondicionado.",
+    "appointment": "Hola, quiero agendar un servicio de aire acondicionado.",
+    "emergency": "Hola, necesito un servicio urgente de aire acondicionado.",
+    "quote": "Hola, quiero una cotización para limpieza de aire acondicionado."
+  }
+}
