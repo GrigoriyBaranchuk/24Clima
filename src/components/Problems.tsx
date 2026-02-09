@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Thermometer, Droplet, Volume2, Power } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/constants";
+import { metaPixelEvent } from "@/components/MetaPixel";
 
 export default function Problems() {
   const t = useTranslations("problems");
@@ -113,6 +114,7 @@ export default function Problems() {
                     href={getWhatsAppLink(problem.title)}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => metaPixelEvent("Lead")}
                   >
                     {tCommon("requestDiagnosis")}
                   </a>
@@ -136,6 +138,7 @@ export default function Problems() {
               href={getWhatsAppLink("")}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => metaPixelEvent("Lead")}
             >
               {t("describeByWhatsApp")}
             </a>
