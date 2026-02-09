@@ -5,6 +5,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import MetaPixel from "@/components/MetaPixel";
 import "../globals.css";
 
 const inter = Inter({
@@ -110,6 +111,7 @@ export default async function LocaleLayout({
       </head>
       <body className="antialiased" suppressHydrationWarning>
         <GoogleAnalytics />
+        <MetaPixel />
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
