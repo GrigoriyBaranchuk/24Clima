@@ -174,6 +174,13 @@ export default async function ServicePage({ params }: Props) {
                   {description}
                 </p>
 
+                {serviceKey === "installation" && (
+                  <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
+                    {t(`${translationKey}.priceFrom`)}
+                    <span className="text-white/80 text-base font-normal ml-1">USD</span>
+                  </p>
+                )}
+
                 {/* Geo Line */}
                 <p className="text-sm text-white/70 mb-6">
                   {tCommon("geoLine")}
