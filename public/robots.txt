@@ -1,0 +1,6 @@
+# 24Clima.com — разрешена индексация для поисковых систем и AI-краулеров
+User-agent: *
+Allow: /
+
+# Sitemap для быстрого обнаружения страниц (Google, Bing, AI-агенты)
+Sitemap: https://24clima.com/sitemap.xml

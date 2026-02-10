@@ -1,4 +1,14 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 24Clima — сайт и калькулятор стоимости
+
+Сайт [24clima.com](https://24clima.com): услуги по кондиционерам в Панаме, калькулятор чистки, ES/EN/RU.
+
+**Документация для разработчиков (в т.ч. junior и стажёров):**
+- [Документация на русском](docs/README.ru.md)
+- [Documentation in English](docs/README.en.md)
+
+---
+
+This is a [Next.js](https://nextjs.org) project (static export, next-intl).
 
 ## Getting Started
 

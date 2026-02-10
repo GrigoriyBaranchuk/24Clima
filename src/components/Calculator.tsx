@@ -110,14 +110,14 @@ export default function Calculator() {
 
           <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardContent className="p-5 sm:p-6 lg:p-8">
-              {/* Quantity Selection */}
-              <div className="mb-6">
+              {/* Quantity Selection — centered for best UX on mobile and desktop */}
+              <div className="mb-6 text-center">
                 <label className="block text-white font-medium mb-3">
                   {t("quantity")}
                 </label>
 
                 {/* Quick Select Buttons */}
-                <div className="flex gap-2 flex-wrap mb-4">
+                <div className="flex gap-2 flex-wrap justify-center mb-4">
                   {quantityOptions.map((num) => (
                     <button
                       key={num}
@@ -134,7 +134,7 @@ export default function Calculator() {
                 </div>
 
                 {/* Custom Quantity Input */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3 flex-wrap">
                   <span className="text-white/70 text-sm">{t("orEnter")}:</span>
                   <div className="flex items-center bg-white/10 rounded-xl overflow-hidden">
                     <button
