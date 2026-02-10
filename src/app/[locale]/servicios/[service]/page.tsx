@@ -185,7 +185,7 @@ export default async function ServicePage({ params }: Props) {
                 )}
 
                 {/* Geo Line */}
-                <p className="text-sm text-white/70 mb-6">
+                <p className="text-base text-white/80 mb-6">
                   {tCommon("geoLine")}
                 </p>
 
@@ -246,7 +246,7 @@ export default async function ServicePage({ params }: Props) {
                 {title}
               </h2>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              <div className="w-full grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
                 {benefits.map((benefit, index) => (
                   <Card key={index} className="border-0 shadow-lg bg-white">
                     <CardContent className="p-6 text-center">
@@ -268,7 +268,7 @@ export default async function ServicePage({ params }: Props) {
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
               {t("urgentTitle")}
             </h2>
-            <p className="text-white/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-white/80 mb-8 w-full max-w-2xl mx-auto">
               {t("urgentSubtitle")}
             </p>
             <Button
@@ -293,7 +293,7 @@ export default async function ServicePage({ params }: Props) {
               {t("title")}
             </h2>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {otherServices.map(({ key, translationKey: tk, Icon: ServiceIcon }) => (
                 <Link key={key} href={`/servicios/${key}`}>
                   <Card className="card-hover border-0 shadow-lg bg-white h-full">
@@ -304,7 +304,7 @@ export default async function ServicePage({ params }: Props) {
                       <h3 className="font-semibold text-[#1e3a5f] mb-2">
                         {t(`${tk}.title`)}
                       </h3>
-                      <p className="text-sm text-gray-600 line-clamp-2">
+                      <p className="text-base text-gray-600 line-clamp-2">
                         {t(`${tk}.description`)}
                       </p>
                     </CardContent>

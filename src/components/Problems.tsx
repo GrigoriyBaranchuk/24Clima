@@ -50,7 +50,7 @@ export default function Problems() {
     <section id="problemas" className="py-20 lg:py-28 section-gradient-alt">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="w-full max-w-3xl mx-auto text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-3 sm:px-4 py-2 rounded-full mb-4 sm:mb-6">
             <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="font-medium text-sm sm:text-base">{t("badge")}</span>
@@ -79,7 +79,7 @@ export default function Problems() {
                     <CardTitle className="text-xl text-[#1e3a5f] mb-2">
                       {problem.title}
                     </CardTitle>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-gray-600 text-base leading-relaxed">
                       {problem.description}
                     </p>
                   </div>
@@ -90,7 +90,7 @@ export default function Problems() {
                   <h4 className="font-semibold text-[#1e3a5f] mb-3">{t("possibleCauses")}</h4>
                   <ul className="grid grid-cols-2 gap-2">
                     {problem.causes.map((cause, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+                      <li key={idx} className="flex items-center gap-2 text-base text-gray-600">
                         <div className="w-1.5 h-1.5 bg-red-400 rounded-full" />
                         {cause}
                       </li>
@@ -104,7 +104,7 @@ export default function Problems() {
                     </svg>
                     {t("ourSolution")}
                   </h4>
-                  <p className="text-sm text-gray-700">{problem.solution}</p>
+                  <p className="text-base text-gray-700">{problem.solution}</p>
                 </div>
                 <Button
                   asChild
@@ -124,8 +124,8 @@ export default function Problems() {
           ))}
         </div>
 
-        {/* Additional Info */}
-        <div className="mt-16 text-center">
+        {/* Additional Info — flex col for Safari centering */}
+        <div className="mt-16 flex flex-col items-center text-center">
           <p className="text-gray-600 mb-4">
             {t("notInList")}
           </p>

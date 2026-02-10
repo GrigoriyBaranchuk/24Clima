@@ -4,6 +4,13 @@
 
 @layer base {
   :root {
+    /* Typography — accessibility-first (min 14px for reading, 16px body) */
+    --text-body: 1rem;
+    --text-body-lg: 1.125rem;
+    --text-caption: 0.875rem;
+    --leading-body: 1.625;
+    --leading-heading: 1.25;
+
     --background: 0 0% 100%;
     --foreground: 215 40% 15%;
     --card: 0 0% 100%;
@@ -61,10 +68,19 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   html {
     scroll-behavior: smooth;
+  }
+}
+
+/* Safari: ensure centering works (margin:auto needs explicit width) */
+@layer components {
+  .container {
+    width: 100%;
   }
 }
 

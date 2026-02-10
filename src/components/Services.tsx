@@ -62,7 +62,7 @@ export default function Services() {
     <section id="servicios" className="py-20 lg:py-28 section-gradient">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="w-full max-w-3xl mx-auto text-center mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e3a5f] mb-4 sm:mb-6">
             {t("title")}
           </h2>
@@ -92,7 +92,7 @@ export default function Services() {
               <CardContent>
                 <ul className="space-y-2 mb-6">
                   {service.benefits.map((benefit, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-sm text-gray-700">
+                    <li key={idx} className="flex items-center gap-2 text-base text-gray-700">
                       <div className="w-1.5 h-1.5 bg-[#7BC043] rounded-full" />
                       {benefit}
                     </li>
@@ -136,7 +136,7 @@ export default function Services() {
           <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
             {t("urgentTitle")}
           </h3>
-          <p className="text-white/80 mb-6 max-w-2xl mx-auto">
+          <p className="text-white/80 mb-6 w-full max-w-2xl mx-auto">
             {t("urgentSubtitle")}
           </p>
           <Button

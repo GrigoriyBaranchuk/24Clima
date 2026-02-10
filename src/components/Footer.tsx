@@ -43,11 +43,11 @@ export default function Footer() {
                 className="h-12 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-gray-400 mb-4 leading-relaxed max-w-sm">
+            <p className="text-base text-gray-400 mb-4 leading-relaxed max-w-sm">
               {t("description")}
             </p>
             {/* Geo Line */}
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-base text-gray-500 mb-6">
               {tCommon("geoLine")}
             </p>
             <div className="flex items-center gap-4">
@@ -96,7 +96,7 @@ export default function Footer() {
                 <li key={index}>
                   <a
                     href={service.href}
-                    className="text-gray-400 hover:text-[#7BC043] transition-colors"
+                    className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors"
                   >
                     {service.name}
                   </a>
@@ -113,7 +113,7 @@ export default function Footer() {
                 <li key={index}>
                   <a
                     href={problem.href}
-                    className="text-gray-400 hover:text-[#7BC043] transition-colors"
+                    className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors"
                   >
                     {problem.name}
                   </a>
@@ -126,7 +126,7 @@ export default function Footer() {
                 href={getWhatsAppLink(tWhatsapp("general"))}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#25D366] font-medium hover:underline"
+                className="text-base text-[#25D366] font-medium hover:underline"
                 onClick={() => metaPixelEvent("Contact")}
               >
                 {WHATSAPP_DISPLAY}
@@ -140,10 +140,10 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-400 text-base">
               © {currentYear} 24clima. {t("copyright")}
             </p>
-            <div className="flex items-center gap-6 text-sm text-gray-400">
+            <div className="flex items-center gap-6 text-base text-gray-400">
               <a href="#" className="hover:text-white transition-colors">
                 {t("privacyPolicy")}
               </a>

@@ -58,7 +58,7 @@ export default function CleaningPackages() {
     <section id="paquetes" className="py-16 lg:py-20 section-gradient">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="w-full max-w-2xl mx-auto text-center mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1e3a5f] mb-3">
             {t("title")}
           </h2>
@@ -66,7 +66,7 @@ export default function CleaningPackages() {
         </div>
 
         {/* Packages Grid */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="w-full grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {packages.map((pkg) => (
             <Card
               key={pkg.key}
@@ -76,7 +76,7 @@ export default function CleaningPackages() {
             >
               {/* Highlight Badge */}
               {pkg.highlight && (
-                <div className="absolute top-0 right-0 bg-[#7BC043] text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                <div className="absolute top-0 right-0 bg-[#7BC043] text-white text-sm font-bold px-3 py-1.5 rounded-bl-lg">
                   <Star className="w-3 h-3 inline mr-1" />
                   {pkg.label}
                 </div>
@@ -96,11 +96,11 @@ export default function CleaningPackages() {
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-[#1e3a5f]">${pkg.price}</span>
                   <span className="text-gray-500 text-sm ml-1">USD</span>
-                  <p className="text-gray-500 text-xs mt-1">{t("perUnit")}</p>
+                  <p className="text-gray-500 text-sm mt-1">{t("perUnit")}</p>
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-600 text-sm mb-3">{pkg.description}</p>
+                <p className="text-gray-600 text-base mb-3">{pkg.description}</p>
 
                 {/* Feature */}
                 <div className="flex items-center justify-center gap-2 text-sm text-[#0F9D58] mb-4">
@@ -110,7 +110,7 @@ export default function CleaningPackages() {
 
                 {/* Label for non-highlighted */}
                 {!pkg.highlight && (
-                  <Badge variant="outline" className="mb-4 text-xs">
+                  <Badge variant="outline" className="mb-4 text-sm">
                     {pkg.label}
                   </Badge>
                 )}
@@ -142,7 +142,7 @@ export default function CleaningPackages() {
         </div>
 
         {/* Scroll to Calculator */}
-        <div className="text-center mt-8">
+        <div className="flex justify-center mt-8">
           <a
             href="#calculadora"
             className="inline-flex items-center gap-2 text-[#0F9D58] hover:text-[#7BC043] font-medium transition-colors"

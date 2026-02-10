@@ -59,7 +59,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
+                className="text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
               >
                 {item.name}
               </Link>
@@ -71,7 +71,7 @@ export default function Header() {
             <LanguageSwitcher isScrolled={isScrolled} />
             <a
               href={`tel:+50768282120`}
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
+              className="flex items-center gap-2 text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
             >
               <Phone className="w-4 h-4" />
               <span>{WHATSAPP_DISPLAY}</span>

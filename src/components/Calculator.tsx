@@ -98,7 +98,7 @@ export default function Calculator() {
   return (
     <section id="calculadora" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-[#1e3a5f] to-[#0d2240]">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-2xl mx-auto">
+        <div className="w-full max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8">
             <div className="inline-flex items-center gap-2 bg-[#7BC043]/20 text-[#7BC043] px-4 py-2 rounded-full mb-4">
@@ -135,7 +135,7 @@ export default function Calculator() {
 
                 {/* Custom Quantity Input */}
                 <div className="flex items-center justify-center gap-3 flex-wrap">
-                  <span className="text-white/70 text-sm">{t("orEnter")}:</span>
+                  <span className="text-white/80 text-base">{t("orEnter")}:</span>
                   <div className="flex items-center bg-white/10 rounded-xl overflow-hidden">
                     <button
                       onClick={decrementQuantity}
@@ -163,17 +163,17 @@ export default function Calculator() {
                 </div>
               </div>
 
-              {/* Package Selection */}
+              {/* Package Selection — vertical on mobile to avoid long names overflowing */}
               <div className="mb-6">
                 <label className="block text-white font-medium mb-3">
                   {t("package")}
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {(["basic", "recommended", "premium"] as PackageType[]).map((pkg) => (
                     <button
                       key={pkg}
                       onClick={() => setPackageType(pkg)}
-                      className={`py-3 px-2 rounded-xl font-medium text-sm transition-all ${
+                      className={`min-w-0 py-3 px-3 sm:px-2 rounded-xl font-medium text-sm text-center transition-all flex flex-col items-center justify-center gap-0.5 ${
                         packageType === pkg
                           ? pkg === "recommended"
                             ? "bg-[#7BC043] text-white ring-2 ring-[#7BC043] ring-offset-2 ring-offset-[#1e3a5f]"
@@ -181,9 +181,9 @@ export default function Calculator() {
                           : "bg-white/10 text-white hover:bg-white/20"
                       }`}
                     >
-                      {t(pkg)}
+                      <span className="break-words line-clamp-2">{t(pkg)}</span>
                       {pkg === "recommended" && (
-                        <span className="block text-xs opacity-75 mt-1">★</span>
+                        <span className="text-sm opacity-80 shrink-0">★</span>
                       )}
                     </button>
                   ))}
@@ -221,7 +221,7 @@ export default function Calculator() {
                 </div>
                 {savings > 0.01 && (
                   <div className="text-right mt-1">
-                    <span className="text-[#7BC043] text-sm font-medium">
+                    <span className="text-[#7BC043] text-base font-medium">
                       {t("savings")} ${savings.toFixed(2)}!
                     </span>
                   </div>

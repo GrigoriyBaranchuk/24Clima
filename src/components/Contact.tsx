@@ -64,8 +64,8 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Main CTA Card */}
-        <div className="max-w-4xl mx-auto mb-12">
+        {/* Main CTA Card — w-full for Safari centering */}
+        <div className="w-full max-w-4xl mx-auto mb-12">
           <Card className="bg-gradient-to-r from-[#25D366] to-[#128C7E] border-0 shadow-2xl overflow-hidden">
             <CardContent className="p-8 lg:p-12">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -99,7 +99,7 @@ export default function Contact() {
                       {WHATSAPP_DISPLAY}
                     </a>
                   </Button>
-                  <p className="text-white/80 text-sm mt-4">
+                  <p className="text-white/80 text-base mt-4">
                     {t("clickToOpen")}
                   </p>
                 </div>
@@ -108,8 +108,8 @@ export default function Contact() {
           </Card>
         </div>
 
-        {/* Contact Methods Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        {/* Contact Methods Grid — same width as CTA above (max-w-4xl) for alignment */}
+        <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {contactMethods.map((method, index) => (
             <a
               key={index}
@@ -128,15 +128,15 @@ export default function Contact() {
                   <p className={`font-medium mb-1 ${method.primary ? "text-[#25D366]" : "text-gray-700"}`}>
                     {method.value}
                   </p>
-                  <p className="text-sm text-gray-500">{method.description}</p>
+                  <p className="text-base text-gray-500">{method.description}</p>
                 </CardContent>
               </Card>
             </a>
           ))}
         </div>
 
-        {/* Schedule Info */}
-        <div className="mt-16 text-center">
+        {/* Schedule Info — flex for Safari centering (text-center can misbehave) */}
+        <div className="mt-16 flex justify-center">
           <div className="inline-flex items-center gap-2 bg-[#1e3a5f] text-white px-6 py-3 rounded-full">
             <Clock className="w-5 h-5" />
             <span>{t("schedule")}</span>

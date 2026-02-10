@@ -26,7 +26,7 @@ export default function Hero() {
           {/* Left Content */}
           <div>
             {/* Trust Badge */}
-            <Badge className="bg-white/20 text-white border-white/30 mb-6 py-2 px-4 text-xs sm:text-sm backdrop-blur-sm">
+            <Badge className="bg-white/20 text-white border-white/30 mb-6 py-2 px-4 text-sm backdrop-blur-sm">
               <Check className="w-4 h-4 mr-2" />
               {t("trustBadge")}
             </Badge>
@@ -50,7 +50,7 @@ export default function Hero() {
             </p>
 
             {/* Geo Line */}
-            <p className="text-sm text-white/70 mb-6">
+            <p className="text-base text-white/80 mb-6">
               {tCommon("geoLine")}
             </p>
 
@@ -87,7 +87,7 @@ export default function Hero() {
 
             {/* Social Media Buttons */}
             <div className="flex items-center gap-4 mt-8">
-              <span className="text-white/70 text-sm">Follow us:</span>
+              <span className="text-white/80 text-base">Follow us:</span>
               <a
                 href={SOCIAL_LINKS.instagram}
                 target="_blank"
@@ -132,15 +132,15 @@ export default function Hero() {
         <div className="grid grid-cols-3 gap-4 sm:gap-8 mt-12 sm:mt-16 pt-8 border-t border-white/20">
           <div className="text-center sm:text-left">
             <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]">{t("stat1Value")}</p>
-            <p className="text-white/80 text-xs sm:text-sm">{t("stat1Label")}</p>
+            <p className="text-white/80 text-sm">{t("stat1Label")}</p>
           </div>
           <div className="text-center sm:text-left">
             <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]">{t("stat2Value")}</p>
-            <p className="text-white/80 text-xs sm:text-sm">{t("stat2Label")}</p>
+            <p className="text-white/80 text-sm">{t("stat2Label")}</p>
           </div>
           <div className="text-center sm:text-left">
             <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]">{t("stat3Value")}</p>
-            <p className="text-white/80 text-xs sm:text-sm">{t("stat3Label")}</p>
+            <p className="text-white/80 text-sm">{t("stat3Label")}</p>
           </div>
         </div>
       </div>
