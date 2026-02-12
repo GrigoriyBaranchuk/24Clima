@@ -78,6 +78,7 @@ Documentation for developers (including juniors and interns). 24clima company we
 │   │   └── routing.ts
 │   └── lib/
 │       ├── constants.ts   # WhatsApp, social links, company name
+│       ├── seo-keywords.ts # Semantic core (keywords by locale and service)
 │       └── utils.ts
 ├── messages/              # Translations
 │   ├── es.json
@@ -182,6 +183,20 @@ To add a language: add the locale in `config.ts`, create `messages/xx.json` foll
 - **Metadata:** In `src/app/[locale]/layout.tsx`: `title`, `description`, `keywords`, `openGraph`, `canonical`, `robots: { index: true, follow: true }`.
 - **JSON-LD:** HVACBusiness and WebSite structured data for search engines and AI agents.
 - **Google Search Console:** After deploy, add the 24clima.com property and submit the sitemap URL: `https://24clima.com/sitemap.xml`.
+
+### Semantic core (SEO keywords)
+
+Target search queries for Panama (AC cleaning, repair, maintenance) are defined in **`src/lib/seo-keywords.ts`**:
+
+- **HOME_KEYWORDS** — keywords for the home page per locale (es, en, ru): e.g. “aire acondicionado Panamá”, “limpieza”, “mantenimiento”, “reparación”, “instalación”, “carga gas”, “24 horas”, and geo (Ciudad de Panamá, Costa del Este, etc.).
+- **SERVICE_KEYWORDS** — keywords per service (`cleaning`, `maintenance`, `repair`, `installation`, `gas-recharge`, `emergency`) and locale.
+
+Usage:
+
+- Home: `getHomeKeywords(locale)` is used for the `keywords` meta in `src/app/[locale]/layout.tsx`.
+- Service pages: `getServiceKeywords(serviceSlug, locale)` is used for `keywords` in `src/app/[locale]/servicios/[service]/page.tsx`.
+
+To add or change target queries or locales, edit only `seo-keywords.ts`; metadata will pick up the changes automatically.
 
 ---
 

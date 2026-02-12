@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 
-const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "G-TQK90D11ME";
 
 export default function GoogleAnalytics() {
   // Don't render in development unless GA ID is set

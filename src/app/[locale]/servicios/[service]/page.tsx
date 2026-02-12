@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Clock, Shield, Star, ArrowLeft } from "lucide-react";
 import { Wrench, Wind, Thermometer, Droplets, Settings, Zap } from "lucide-react";
 import { locales, type Locale } from "@/i18n/config";
+import { getServiceKeywords } from "@/lib/seo-keywords";
 import { Link } from "@/i18n/routing";
 
 const serviceKeys = [
@@ -82,13 +83,25 @@ export async function generateMetadata({
 
   const title = t(`${translationKey}.title`);
   const description = t(`${translationKey}.description`);
+  const base = "https://24clima.com";
+  const keywords = getServiceKeywords(service, locale as Locale);
 
   return {
     title: `${title} | 24clima`,
     description,
+    keywords,
     openGraph: {
       title: `${title} | 24clima`,
       description,
+      url: `${base}/${locale}/servicios/${service}/`,
+    },
+    alternates: {
+      canonical: `${base}/${locale}/servicios/${service}/`,
+      languages: {
+        es: `${base}/es/servicios/${service}/`,
+        en: `${base}/en/servicios/${service}/`,
+        ru: `${base}/ru/servicios/${service}/`,
+      },
     },
   };
 }

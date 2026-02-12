@@ -6,7 +6,7 @@
     "dev": "next dev -H 0.0.0.0 --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "bunx tsc --noEmit && next lint",
+    "lint": "bunx tsc -p tsconfig.lint.json --noEmit && next lint",
     "format": "bunx biome format --write"
   },
   "dependencies": {

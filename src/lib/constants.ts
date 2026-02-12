@@ -16,7 +16,7 @@ export const WHATSAPP_MESSAGES = {
 
 // Social Media Links
 export const SOCIAL_LINKS = {
-  instagram: "https://www.instagram.com/24clima.pa?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+  instagram: "https://www.instagram.com/24clima?igsh=M2k5d21reHNlZzlu&utm_source=qr",
   facebook: "https://www.facebook.com/profile.php?id=61579864881211",
 };
 

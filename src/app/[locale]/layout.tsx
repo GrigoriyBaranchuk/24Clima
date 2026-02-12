@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
+import { getHomeKeywords } from "@/lib/seo-keywords";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 import "../globals.css";
@@ -42,26 +43,21 @@ export async function generateMetadata({
     title: titles[locale] || titles.es,
     description: descriptions[locale] || descriptions.es,
     robots: { index: true, follow: true },
-    keywords: [
-      "air conditioning Panama",
-      "AC service Panama",
-      "aire acondicionado Panamá",
-      "кондиционер Панама",
-    ],
+    keywords: getHomeKeywords(locale as Locale),
     openGraph: {
       type: "website",
       locale: locale === "es" ? "es_PA" : locale === "ru" ? "ru_RU" : "en_US",
-      url: "https://24clima.com",
+      url: `https://24clima.com/${locale}/`,
       siteName: "24clima",
       title: titles[locale] || titles.es,
       description: descriptions[locale] || descriptions.es,
     },
     alternates: {
-      canonical: "https://24clima.com",
+      canonical: `https://24clima.com/${locale}/`,
       languages: {
-        es: "https://24clima.com",
-        en: "https://24clima.com/en",
-        ru: "https://24clima.com/ru",
+        es: "https://24clima.com/es/",
+        en: "https://24clima.com/en/",
+        ru: "https://24clima.com/ru/",
       },
     },
   };

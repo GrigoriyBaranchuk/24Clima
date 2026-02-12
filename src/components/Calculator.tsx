@@ -28,7 +28,7 @@ export default function Calculator() {
   const t = useTranslations("calculator");
   const tPackages = useTranslations("packages");
   const [quantity, setQuantity] = useState(1);
-  const [packageType, setPackageType] = useState<PackageType>("recommended");
+  const [packageType, setPackageType] = useState<PackageType>("basic");
   const [showBreakdown, setShowBreakdown] = useState(false);
 
   // Calculate prices for each unit
@@ -175,10 +175,10 @@ export default function Calculator() {
                       onClick={() => setPackageType(pkg)}
                       className={`min-w-0 py-3 px-3 sm:px-2 rounded-xl font-medium text-sm text-center transition-all flex flex-col items-center justify-center gap-0.5 ${
                         packageType === pkg
-                          ? pkg === "recommended"
-                            ? "bg-[#7BC043] text-white ring-2 ring-[#7BC043] ring-offset-2 ring-offset-[#1e3a5f]"
-                            : "bg-white text-[#1e3a5f]"
-                          : "bg-white/10 text-white hover:bg-white/20"
+                          ? "bg-white text-[#1e3a5f]"
+                          : pkg === "recommended"
+                            ? "bg-[#7BC043]/25 text-white border-2 border-[#7BC043] hover:bg-[#7BC043]/35"
+                            : "bg-white/10 text-white hover:bg-white/20"
                       }`}
                     >
                       <span className="break-words line-clamp-2">{t(pkg)}</span>

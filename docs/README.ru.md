@@ -78,6 +78,7 @@
 │   │   └── routing.ts
 │   └── lib/
 │       ├── constants.ts   # WhatsApp, соцсети, название компании
+│       ├── seo-keywords.ts # Семантическое ядро (ключевые слова по локалям и услугам)
 │       └── utils.ts
 ├── messages/              # Переводы
 │   ├── es.json
@@ -182,6 +183,20 @@ bun run lint
 - **Метаданные:** в `src/app/[locale]/layout.tsx` заданы `title`, `description`, `keywords`, `openGraph`, `canonical`, `robots: { index: true, follow: true }`.
 - **JSON-LD:** разметка типа HVACBusiness и WebSite для поисковиков и AI-агентов.
 - **Google Search Console:** после деплоя добавьте свойство 24clima.com и отправьте ссылку на sitemap: `https://24clima.com/sitemap.xml`.
+
+### Семантическое ядро
+
+Ключевые запросы для продвижения в Панаме (чистка, ремонт, обслуживание кондиционеров) собраны в **`src/lib/seo-keywords.ts`**:
+
+- **HOME_KEYWORDS** — ключевые слова для главной страницы по локалям (es, en, ru): запросы типа «aire acondicionado Panamá», «limpieza», «mantenimiento», «reparación», «instalación», «carga gas», «24 horas», гео (Ciudad de Panamá, Costa del Este и т.д.).
+- **SERVICE_KEYWORDS** — ключевые слова по каждой услуге (`cleaning`, `maintenance`, `repair`, `installation`, `gas-recharge`, `emergency`) и локали.
+
+Использование:
+
+- Главная: `getHomeKeywords(locale)` подставляется в `keywords` в `src/app/[locale]/layout.tsx`.
+- Страницы услуг: `getServiceKeywords(serviceSlug, locale)` подставляется в `keywords` в `src/app/[locale]/servicios/[service]/page.tsx`.
+
+При добавлении новых запросов или локалей правьте только `seo-keywords.ts`; метаданные подхватят изменения автоматически.
 
 ---
 
