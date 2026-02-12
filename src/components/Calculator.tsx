@@ -55,24 +55,22 @@ export default function Calculator() {
     return fullPrice - total;
   }, [quantity, packageType, total]);
 
-  // Generate WhatsApp message
+  // Generate WhatsApp message in the user's selected language
   const generateWhatsAppMessage = () => {
     const packageNames: Record<PackageType, string> = {
       basic: tPackages("basic.name"),
       recommended: tPackages("recommended.name"),
       premium: tPackages("premium.name"),
     };
-
-    const message = `Hola, quiero contratar el servicio de limpieza:
-
-📦 Paquete: ${packageNames[packageType]}
-🔢 Cantidad: ${quantity} equipo(s)
-
-💰 TOTAL: ${total.toFixed(2)} USD
-
-¿Cuándo pueden venir?`;
-
-    return message;
+    const breakdownStr = priceBreakdown
+      .map((p, i) => `${t("unit")} ${i + 1}: $${p.toFixed(2)}`)
+      .join("\n");
+    return t("whatsappMessage", {
+      package: packageNames[packageType],
+      quantity,
+      breakdown: breakdownStr,
+      total: total.toFixed(2),
+    });
   };
 
   const quantityOptions = [1, 2, 3, 4, 5];

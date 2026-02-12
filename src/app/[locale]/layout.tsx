@@ -7,6 +7,7 @@ import { locales, type Locale } from "@/i18n/config";
 import { getHomeKeywords } from "@/lib/seo-keywords";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
+import YandexMetrika from "@/components/YandexMetrika";
 import "../globals.css";
 
 const inter = Inter({
@@ -134,6 +135,7 @@ export default async function LocaleLayout({
           24clima — professional air conditioning service in Panama City: installation, maintenance, deep cleaning, repair, refrigerant recharge. 24/7. Online cost calculator for AC cleaning. Languages: Spanish, English, Russian. Contact: WhatsApp +507 6828 2120.
         </p>
         <GoogleAnalytics />
+        <YandexMetrika />
         <MetaPixel />
         <NextIntlClientProvider messages={messages}>
           {children}

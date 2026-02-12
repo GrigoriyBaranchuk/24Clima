@@ -125,7 +125,7 @@ export default function CleaningPackages() {
                   }`}
                 >
                   <a
-                    href={getWhatsAppLink(`Hola, quiero el ${pkg.name} para limpieza de aire acondicionado`)}
+                    href={getWhatsAppLink(t("whatsappOrderMessage", { name: pkg.name }))}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => metaPixelEvent("Lead")}

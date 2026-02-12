@@ -60,7 +60,8 @@
       "cta": "Servicio completo"
     },
     "perUnit": "por equipo",
-    "whatsappOrder": "Pedir por WhatsApp"
+    "whatsappOrder": "Pedir por WhatsApp",
+    "whatsappOrderMessage": "Hola, quiero el {name} para limpieza de aire acondicionado."
   },
   "calculator": {
     "title": "Calcula tu precio",
@@ -238,6 +239,7 @@
     "general": "Hola, necesito información sobre sus servicios de aire acondicionado.",
     "appointment": "Hola, quiero agendar un servicio de aire acondicionado.",
     "emergency": "Hola, necesito un servicio urgente de aire acondicionado.",
-    "quote": "Hola, quiero una cotización para limpieza de aire acondicionado."
+    "quote": "Hola, quiero una cotización para limpieza de aire acondicionado.",
+    "problemIntro": "Hola, tengo una consulta sobre mi aire acondicionado."
   }
 }

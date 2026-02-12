@@ -10,6 +10,7 @@ import { metaPixelEvent } from "@/components/MetaPixel";
 export default function Problems() {
   const t = useTranslations("problems");
   const tCommon = useTranslations("common");
+  const tWhatsapp = useTranslations("whatsappMessages");
 
   const problems = [
     {
@@ -135,7 +136,7 @@ export default function Problems() {
             className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold"
           >
             <a
-              href={getWhatsAppLink("")}
+              href={getWhatsAppLink(tWhatsapp("problemIntro"))}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => metaPixelEvent("Lead")}

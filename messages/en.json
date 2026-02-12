@@ -60,7 +60,8 @@
       "cta": "Full service"
     },
     "perUnit": "per unit",
-    "whatsappOrder": "Order via WhatsApp"
+    "whatsappOrder": "Order via WhatsApp",
+    "whatsappOrderMessage": "Hello, I want the {name} for air conditioning cleaning."
   },
   "calculator": {
     "title": "Calculate your price",
@@ -238,6 +239,7 @@
     "general": "Hello, I need information about your air conditioning services.",
     "appointment": "Hello, I want to schedule an air conditioning service.",
     "emergency": "Hello, I need urgent air conditioning service.",
-    "quote": "Hello, I want a quote for air conditioning cleaning."
+    "quote": "Hello, I want a quote for air conditioning cleaning.",
+    "problemIntro": "Hello, I have a question about my air conditioner."
   }
 }
