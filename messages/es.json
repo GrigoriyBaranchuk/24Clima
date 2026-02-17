@@ -3,6 +3,7 @@
     "whatsapp": "WhatsApp",
     "contact": "Contacto",
     "services": "Servicios",
+    "tips": "Consejos y Guías",
     "problems": "Problemas",
     "about": "Nosotros",
     "home": "Inicio",
@@ -234,6 +235,29 @@
     "copyright": "Todos los derechos reservados.",
     "privacyPolicy": "Política de Privacidad",
     "termsOfService": "Términos de Servicio"
+  },
+  "tips": {
+    "title": "Consejos y Guías HVAC",
+    "subtitle": "Artículos útiles sobre aire acondicionado.",
+    "readMore": "Leer más",
+    "noArticles": "Aún no hay artículos.",
+    "backToList": "Volver al listado",
+    "adminLink": "Administrar artículos"
+  },
+  "tipsAdmin": {
+    "title": "Administrar artículos",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "email": "Correo",
+    "password": "Contraseña",
+    "articleTitle": "Título (ruso)",
+    "articleContent": "Contenido (ruso)",
+    "save": "Guardar",
+    "translate": "Traducir automáticamente",
+    "addImage": "Añadir imagen",
+    "slug": "URL (slug)",
+    "saved": "Artículo guardado.",
+    "error": "Error"
   },
   "whatsappMessages": {
     "general": "Hola, necesito información sobre sus servicios de aire acondicionado.",

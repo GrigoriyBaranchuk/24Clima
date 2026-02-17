@@ -200,7 +200,17 @@ To add or change target queries or locales, edit only `seo-keywords.ts`; metadat
 
 ---
 
-## 8. Deploying to Vercel
+## 8. Tips and Guides section and admin
+
+- **Public page:** `/[locale]/tips/` — HVAC articles list.
+- **Article:** `/[locale]/tips/[slug]/` — single article.
+- **Admin:** `/[locale]/tips/admin/` — login (email/password in Supabase), article editor, image upload, auto-translate RU→ES/EN.
+
+Requires Supabase (auth, DB, storage). Setup: [docs/SETUP_TIPS_ADMIN.md](SETUP_TIPS_ADMIN.md).
+
+---
+
+## 9. Deploying to Vercel
 
 - Connect the repo to Vercel; build command is `next build`; output is static export.
 - Configure the 24clima.com domain in the Vercel project (Domains).
@@ -208,7 +218,7 @@ To add or change target queries or locales, edit only `seo-keywords.ts`; metadat
 
 ---
 
-## 9. Security and Privacy
+## 10. Security and Privacy
 
 - No user passwords or secrets are stored in the app. Company contact data is in `src/lib/constants.ts`.
 - `vercel.json` sets headers: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`.

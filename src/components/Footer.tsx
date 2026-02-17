@@ -108,6 +108,12 @@ export default function Footer() {
           {/* Problems & Contact Column */}
           <div>
             <h4 className="font-semibold text-white mb-4">{t("problemsTitle")}</h4>
+            <Link
+              href="/tips"
+              className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
+            >
+              {tCommon("tips")}
+            </Link>
             <ul className="space-y-3">
               {problems.map((problem, index) => (
                 <li key={index}>

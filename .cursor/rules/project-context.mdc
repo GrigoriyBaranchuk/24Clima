@@ -1,0 +1,51 @@
+---
+description: Контекст проекта 24clima — этапы работы, структура, важные решения
+alwaysApply: true
+---
+
+# Контекст проекта 24clima
+
+## Полный контекст
+См. **`.cursor/chat-context.md`** — SEO, метрики, Tips, админка, структура.
+
+## Этапы работы с проектом
+
+### 1. Локальная разработка
+- `npm run dev` — без `--turbopack` (EMFILE: too many open files)
+- `.env.local`: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- Supabase: **Publishable key** (`sb_publishable_...`), не Secret key
+
+### 2. Supabase (Tips, админка)
+- Миграция: `supabase/migrations/001_articles.sql`
+- Bucket: `article-images` (public), policy: `auth.role() = 'authenticated'` для INSERT/UPDATE
+- Auth: создать пользователя в Authentication → Users
+- Инструкция: `docs/SETUP_TIPS_ADMIN.md`
+
+### 3. Layout (Next.js)
+- **Корневой** `src/app/layout.tsx`: ОБЯЗАТЕЛЬНЫ `<html>` и `<body>` (Next.js requirement)
+- **Locale** `src/app/[locale]/layout.tsx`: возвращает только `<div>` — без вложенных html/body
+- Head (favicon, meta, JSON-LD) — в корневом layout
+- `globals.css` — импорт в корневом layout
+
+### 4. Tips: slug и статьи
+- Slug в админке — **ввод вручную** (не из title)
+- `src/lib/slug.ts` — `normalizeSlug()`: trim слешей, lowercase, пробелы→дефисы
+- Ссылки на статьи: `href={/tips/${slug}/}` — с trailing slash (`trailingSlash: true`)
+- Fallback: статья ищется по slug с ведущим слешем (`/slug`) — если в БД сохранён со слешем
+- Контент: `whitespace-pre-line` для сохранения переносов; или HTML в content
+
+### 5. Деплой (Vercel)
+- Env vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `output: 'export'` отключён — API routes и динамические страницы
+
+### 6. Частые проблемы и решения
+- **Internal Server Error**: корневой layout без html/body → добавить
+- **404 на статью**: trailing slash в Link; slug в БД без ведущего слеша
+- **EMFILE / Turbopack**: убрать `--turbopack` из dev; `rm -rf .next`
+- **Cannot find module [turbopack]_runtime**: `rm -rf .next`, перезапуск dev
+
+## Важные файлы
+- `src/lib/supabase.ts` — клиент (null если env не заданы)
+- `src/lib/slug.ts` — нормализация slug
+- `src/lib/seo-keywords.ts` — семантическое ядро
+- `src/app/[locale]/tips/` — Tips, TipsList, [slug], admin

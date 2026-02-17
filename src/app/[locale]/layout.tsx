@@ -8,7 +8,6 @@ import { getHomeKeywords } from "@/lib/seo-keywords";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 import YandexMetrika from "@/components/YandexMetrika";
-import "../globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -82,65 +81,17 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={inter.variable}>
-      <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <meta name="theme-color" content="#1e3a5f" />
-        <meta name="geo.region" content="PA" />
-        <meta name="geo.placename" content="Ciudad de Panamá" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "HVACBusiness",
-              "@id": "https://24clima.com/#organization",
-              name: "24clima",
-              description: "Servicio de aire acondicionado en Panamá",
-              url: "https://24clima.com",
-              telephone: "+507-6828-2120",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Ciudad de Panamá",
-                addressCountry: "PA",
-              },
-              areaServed: ["Ciudad de Panamá", "Costa del Este", "Punta Pacífica"],
-            }),
-          }}
-        />
-        {/* AI/LLM discovery: rich summary for crawlers and AI agents */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "24clima",
-              url: "https://24clima.com",
-              description: "24clima — professional air conditioning service in Panama City: installation, maintenance, deep cleaning, repair, refrigerant recharge. 24/7. Calculator for cleaning cost. Languages: Spanish, English, Russian.",
-              inLanguage: ["es", "en", "ru"],
-              potentialAction: {
-                "@type": "ContactAction",
-                target: { "@type": "EntryPoint", urlTemplate: "https://wa.me/50768282120" },
-                contactOption: "https://schema.org/TollFree",
-              },
-            }),
-          }}
-        />
-        <meta name="author" content="24clima" />
-      </head>
-      <body className="antialiased" suppressHydrationWarning>
-        {/* Краткое описание для AI/LLM и поисковых систем — не отображается визуально */}
-        <p className="sr-only" aria-hidden="true" data-ai-summary="true">
-          24clima — professional air conditioning service in Panama City: installation, maintenance, deep cleaning, repair, refrigerant recharge. 24/7. Online cost calculator for AC cleaning. Languages: Spanish, English, Russian. Contact: WhatsApp +507 6828 2120.
-        </p>
-        <GoogleAnalytics />
-        <YandexMetrika />
-        <MetaPixel />
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <div lang={locale} className={`${inter.variable} antialiased`}>
+      {/* Краткое описание для AI/LLM и поисковых систем — не отображается визуально */}
+      <p className="sr-only" aria-hidden="true" data-ai-summary="true">
+        24clima — professional air conditioning service in Panama City: installation, maintenance, deep cleaning, repair, refrigerant recharge. 24/7. Online cost calculator for AC cleaning. Languages: Spanish, English, Russian. Contact: WhatsApp +507 6828 2120.
+      </p>
+      <GoogleAnalytics />
+      <YandexMetrika />
+      <MetaPixel />
+      <NextIntlClientProvider messages={messages}>
+        {children}
+      </NextIntlClientProvider>
+    </div>
   );
 }

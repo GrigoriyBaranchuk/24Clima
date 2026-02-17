@@ -19,6 +19,7 @@ export default function Header() {
 
   const navigation = [
     { name: t("home"), href: "/", isAnchor: false },
+    { name: t("tips"), href: "/tips", isAnchor: false },
     { name: t("services"), href: "/#servicios", isAnchor: true },
     { name: t("problems"), href: "/#problemas", isAnchor: true },
     { name: t("about"), href: "/#nosotros", isAnchor: true },

@@ -9,7 +9,7 @@ export default function YandexMetrika() {
     <>
       <Script
         id="yandex-metrika"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
       >
         {`
 (function(m,e,t,r,i,k,a){

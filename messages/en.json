@@ -3,6 +3,7 @@
     "whatsapp": "WhatsApp",
     "contact": "Contact",
     "services": "Services",
+    "tips": "Tips and Guides",
     "problems": "Problems",
     "about": "About Us",
     "home": "Home",
@@ -234,6 +235,29 @@
     "copyright": "All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service"
+  },
+  "tips": {
+    "title": "HVAC Tips and Guides",
+    "subtitle": "Useful articles about air conditioning.",
+    "readMore": "Read more",
+    "noArticles": "No articles yet.",
+    "backToList": "Back to list",
+    "adminLink": "Manage articles"
+  },
+  "tipsAdmin": {
+    "title": "Manage articles",
+    "login": "Sign in",
+    "logout": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "articleTitle": "Title (Russian)",
+    "articleContent": "Content (Russian)",
+    "save": "Save",
+    "translate": "Auto-translate",
+    "addImage": "Add image",
+    "slug": "URL (slug)",
+    "saved": "Article saved.",
+    "error": "Error"
   },
   "whatsappMessages": {
     "general": "Hello, I need information about your air conditioning services.",
