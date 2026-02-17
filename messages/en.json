@@ -257,7 +257,12 @@
     "addImage": "Add image",
     "slug": "URL (slug)",
     "saved": "Article saved.",
-    "error": "Error"
+    "error": "Error",
+    "existingArticles": "Existing articles",
+    "delete": "Delete",
+    "deleted": "Article deleted.",
+    "deleteConfirm": "Delete this article?",
+    "loading": "Loading…"
   },
   "whatsappMessages": {
     "general": "Hello, I need information about your air conditioning services.",

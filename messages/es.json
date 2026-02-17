@@ -257,7 +257,12 @@
     "addImage": "Añadir imagen",
     "slug": "URL (slug)",
     "saved": "Artículo guardado.",
-    "error": "Error"
+    "error": "Error",
+    "existingArticles": "Artículos existentes",
+    "delete": "Eliminar",
+    "deleted": "Artículo eliminado.",
+    "deleteConfirm": "¿Eliminar este artículo?",
+    "loading": "Cargando…"
   },
   "whatsappMessages": {
     "general": "Hola, necesito información sobre sus servicios de aire acondicionado.",

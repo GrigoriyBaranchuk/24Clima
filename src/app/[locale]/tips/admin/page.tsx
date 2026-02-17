@@ -9,9 +9,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { LogOut, Save } from "lucide-react";
+import { LogOut, Save, Trash2 } from "lucide-react";
 
 const BUCKET = "article-images";
+
+type ArticleRow = { slug: string; title_es: string | null; title_ru: string | null };
 
 export default function TipsAdminPage() {
   const t = useTranslations("tipsAdmin");
@@ -29,6 +31,9 @@ export default function TipsAdminPage() {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [saveLoading, setSaveLoading] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
+  const [articles, setArticles] = useState<ArticleRow[]>([]);
+  const [articlesLoading, setArticlesLoading] = useState(false);
+  const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
 
   useEffect(() => {
     if (!supabase) {
@@ -42,6 +47,23 @@ export default function TipsAdminPage() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => setSession(s ?? null));
     return () => subscription.unsubscribe();
   }, []);
+
+  const fetchArticles = () => {
+    if (!supabase || !session) return;
+    setArticlesLoading(true);
+    supabase
+      .from("articles")
+      .select("slug, title_es, title_ru")
+      .order("updated_at", { ascending: false })
+      .then(({ data }) => {
+        setArticles((data ?? []) as ArticleRow[]);
+      })
+      .finally(() => setArticlesLoading(false));
+  };
+
+  useEffect(() => {
+    fetchArticles();
+  }, [session]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,6 +136,7 @@ export default function TipsAdminPage() {
       );
       if (error) throw error;
       setSaveMessage(t("saved"));
+      fetchArticles();
     } catch {
       setSaveMessage(t("error"));
     }
@@ -128,6 +151,32 @@ export default function TipsAdminPage() {
     if (error) return;
     const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(data.path);
     setImageUrls((prev) => [...prev, pub.publicUrl]);
+  };
+
+  const handleDelete = async (articleSlug: string) => {
+    if (!supabase || !confirm(t("deleteConfirm"))) return;
+    setDeletingSlug(articleSlug);
+    try {
+      const { error } = await supabase.from("articles").delete().eq("slug", articleSlug);
+      if (error) throw error;
+      setArticles((prev) => prev.filter((a) => a.slug !== articleSlug));
+      setSaveMessage(t("deleted"));
+    } catch {
+      setSaveMessage(t("error"));
+    } finally {
+      setDeletingSlug(null);
+    }
+  };
+
+  const loadArticle = async (articleSlug: string) => {
+    if (!supabase) return;
+    const { data } = await supabase.from("articles").select("slug, title_ru, content_ru, image_urls").eq("slug", articleSlug).single();
+    if (data) {
+      setSlug(data.slug ?? "");
+      setTitleRu(data.title_ru ?? "");
+      setContentRu(data.content_ru ?? "");
+      setImageUrls((data.image_urls as string[]) ?? []);
+    }
   };
 
   if (loading) {
@@ -212,6 +261,44 @@ export default function TipsAdminPage() {
               {t("logout")}
             </Button>
           </div>
+          {articles.length > 0 && (
+            <Card className="mb-6">
+              <CardHeader>
+                <h2 className="text-lg font-semibold text-[#1e3a5f]">{t("existingArticles")}</h2>
+              </CardHeader>
+              <CardContent>
+                {articlesLoading ? (
+                  <p className="text-sm text-gray-500">{t("loading")}</p>
+                ) : (
+                  <ul className="space-y-2">
+                    {articles.map((a) => (
+                      <li
+                        key={a.slug}
+                        className="flex items-center justify-between gap-4 rounded-md border border-input bg-muted/50 px-3 py-2"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => loadArticle(a.slug)}
+                          className="min-w-0 flex-1 text-left text-sm hover:underline"
+                        >
+                          <span className="font-medium">{a.title_ru || a.title_es || a.slug}</span>
+                          <span className="ml-2 text-gray-500">/{a.slug}</span>
+                        </button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(a.slug)}
+                          disabled={deletingSlug === a.slug}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </CardContent>
+            </Card>
+          )}
           <Card>
             <CardContent className="pt-6 space-y-4">
               <div>

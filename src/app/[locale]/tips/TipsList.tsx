@@ -46,7 +46,7 @@ export default function TipsList({
                 {article.title}
               </h2>
               <p className="text-gray-600 text-base line-clamp-3">
-                {article.content.replace(/<[^>]*>/g, "").slice(0, 150)}...
+                {article.content}
               </p>
               <span className="text-[#7BC043] text-sm font-medium mt-2 inline-block">
                 {t("readMore")} →

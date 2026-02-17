@@ -8,6 +8,8 @@ export const dynamic = "force-dynamic";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { supabase } from "@/lib/supabase";
+import { resolveImageUrls, stripMarkdownForPreview } from "@/lib/articles";
+import { normalizeSlug } from "@/lib/slug";
 import TipsList from "./TipsList";
 import { Link } from "@/i18n/routing";
 
@@ -47,19 +49,22 @@ export default async function TipsPage({
       : { data: null };
 
     if (data) {
-      articles = data.map((a) => ({
-        id: a.id,
-        slug: a.slug,
-        title:
-          (locale === "es" && a.title_es) ||
-          (locale === "en" && a.title_en) ||
-          a.title_ru,
-        content:
+      articles = data.map((a) => {
+        const content =
           (locale === "es" && a.content_es) ||
           (locale === "en" && a.content_en) ||
-          a.content_ru,
-        image_urls: a.image_urls ?? [],
-      }));
+          a.content_ru;
+        return {
+          id: a.id,
+          slug: normalizeSlug(a.slug ?? ""),
+          title:
+            (locale === "es" && a.title_es) ||
+            (locale === "en" && a.title_en) ||
+            a.title_ru,
+          content: stripMarkdownForPreview(content ?? ""),
+          image_urls: resolveImageUrls(a.image_urls),
+        };
+      });
     }
   } catch {
     // Supabase not configured or error
