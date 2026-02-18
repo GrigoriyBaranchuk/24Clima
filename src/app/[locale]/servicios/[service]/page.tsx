@@ -236,7 +236,7 @@ export default async function ServicePage({ params }: Props) {
                     alt={title}
                     fill
                     className="object-cover"
-                    priority
+                    sizes="(max-width: 1024px) 0px, 50vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1e3a5f]/50 to-transparent" />
                 </div>

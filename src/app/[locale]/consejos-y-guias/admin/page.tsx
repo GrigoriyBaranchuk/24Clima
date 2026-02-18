@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
@@ -53,7 +53,7 @@ export default function TipsAdminPage() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchArticles = async () => {
+  const fetchArticles = useCallback(async () => {
     if (!supabase || !session) return;
     setArticlesLoading(true);
     try {
@@ -65,11 +65,11 @@ export default function TipsAdminPage() {
     } finally {
       setArticlesLoading(false);
     }
-  };
+  }, [session]);
 
   useEffect(() => {
     fetchArticles();
-  }, [session]);
+  }, [fetchArticles]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

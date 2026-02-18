@@ -9,7 +9,7 @@ export default function YandexMetrika() {
     <>
       <Script
         id="yandex-metrika"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       >
         {`
 (function(m,e,t,r,i,k,a){
