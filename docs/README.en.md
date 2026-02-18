@@ -202,9 +202,9 @@ To add or change target queries or locales, edit only `seo-keywords.ts`; metadat
 
 ## 8. Tips and Guides section and admin
 
-- **Public page:** `/[locale]/tips/` — HVAC articles list.
-- **Article:** `/[locale]/tips/[slug]/` — single article.
-- **Admin:** `/[locale]/tips/admin/` — login (email/password in Supabase), article editor, image upload, auto-translate RU→ES/EN.
+- **Public page:** `/[locale]/consejos-y-guias/` — HVAC articles list.
+- **Article:** `/[locale]/consejos-y-guias/[slug]/` — single article.
+- **Admin:** `/[locale]/consejos-y-guias/admin/` — login (email/password in Supabase), article editor, image upload.
 
 Requires Supabase (auth, DB, storage). Setup: [docs/SETUP_TIPS_ADMIN.md](SETUP_TIPS_ADMIN.md).
 

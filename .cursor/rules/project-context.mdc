@@ -30,7 +30,7 @@ alwaysApply: true
 ### 4. Tips: slug и статьи
 - Slug в админке — **ввод вручную** (не из title)
 - `src/lib/slug.ts` — `normalizeSlug()`: trim слешей, lowercase, пробелы→дефисы
-- Ссылки на статьи: `href={/tips/${slug}/}` — с trailing slash (`trailingSlash: true`)
+- Ссылки на статьи: `href={/consejos-y-guias/${slug}/}` — с trailing slash (`trailingSlash: true`)
 - Fallback: статья ищется по slug с ведущим слешем (`/slug`) — если в БД сохранён со слешем
 - Контент: `whitespace-pre-line` для сохранения переносов; или HTML в content
 
@@ -48,4 +48,4 @@ alwaysApply: true
 - `src/lib/supabase.ts` — клиент (null если env не заданы)
 - `src/lib/slug.ts` — нормализация slug
 - `src/lib/seo-keywords.ts` — семантическое ядро
-- `src/app/[locale]/tips/` — Tips, TipsList, [slug], admin
+- `src/app/[locale]/consejos-y-guias/` — Tips, TipsList, [slug], admin

@@ -49,7 +49,20 @@ export default async function TipsPage({
       : { data: null };
 
     if (data) {
-      articles = data.map((a) => {
+      const filtered =
+        locale === "ru"
+          ? data
+          : data.filter((a) => {
+              if (locale === "es") return (a.title_es || a.content_es) ?? false;
+              if (locale === "en") return (a.title_en || a.content_en) ?? false;
+              return true;
+            });
+
+      articles = filtered.map((a) => {
+        const title =
+          (locale === "es" && a.title_es) ||
+          (locale === "en" && a.title_en) ||
+          a.title_ru;
         const content =
           (locale === "es" && a.content_es) ||
           (locale === "en" && a.content_en) ||
@@ -57,11 +70,8 @@ export default async function TipsPage({
         return {
           id: a.id,
           slug: normalizeSlug(a.slug ?? ""),
-          title:
-            (locale === "es" && a.title_es) ||
-            (locale === "en" && a.title_en) ||
-            a.title_ru,
-          content: stripMarkdownForPreview(content ?? ""),
+          title: title ?? a.title_ru ?? "",
+          content: stripMarkdownForPreview(content ?? a.content_ru ?? ""),
           image_urls: resolveImageUrls(a.image_urls),
         };
       });
@@ -88,7 +98,7 @@ export default async function TipsPage({
                 </p>
               </div>
               <Link
-                href="/tips/admin"
+                href="/consejos-y-guias/admin"
                 className="shrink-0 text-center px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white text-base font-medium transition-colors border border-white/30"
               >
                 {t("adminLink")}

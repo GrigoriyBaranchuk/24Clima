@@ -30,7 +30,7 @@ export default function TipsList({
   return (
     <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
       {articles.map((article) => (
-        <Link key={article.id} href={`/tips/${article.slug}/`}>
+        <Link key={article.id} href={`/consejos-y-guias/${article.slug}/`}>
           <Card className="card-hover border-0 shadow-lg overflow-hidden h-full">
             {article.image_urls[0] && (
               <div className="aspect-video bg-gray-100 relative">

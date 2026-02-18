@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { supabase } from "@/lib/supabase";
@@ -9,7 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { LogOut, Save, Trash2 } from "lucide-react";
+import { LogOut, Save, Trash2, Pencil } from "lucide-react";
 
 const BUCKET = "article-images";
 
@@ -27,13 +27,18 @@ export default function TipsAdminPage() {
 
   const [slug, setSlug] = useState("");
   const [titleRu, setTitleRu] = useState("");
+  const [titleEs, setTitleEs] = useState("");
+  const [titleEn, setTitleEn] = useState("");
   const [contentRu, setContentRu] = useState("");
+  const [contentEs, setContentEs] = useState("");
+  const [contentEn, setContentEn] = useState("");
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [saveLoading, setSaveLoading] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [articles, setArticles] = useState<ArticleRow[]>([]);
   const [articlesLoading, setArticlesLoading] = useState(false);
   const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
+  const formCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!supabase) {
@@ -82,34 +87,6 @@ export default function TipsAdminPage() {
     setSession(null);
   };
 
-  const translateAndSave = async () => {
-    let titleEs = titleRu;
-    let titleEn = titleRu;
-    let contentEs = contentRu;
-    let contentEn = contentRu;
-    try {
-      if (titleRu) {
-        const [rEs, rEn] = await Promise.all([
-          fetch("/api/translate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: titleRu, target: "es" }) }).then((r) => r.json()),
-          fetch("/api/translate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: titleRu, target: "en" }) }).then((r) => r.json()),
-        ]);
-        titleEs = rEs.translated ?? titleRu;
-        titleEn = rEn.translated ?? titleRu;
-      }
-      if (contentRu) {
-        const [rEs, rEn] = await Promise.all([
-          fetch("/api/translate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: contentRu, target: "es" }) }).then((r) => r.json()),
-          fetch("/api/translate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: contentRu, target: "en" }) }).then((r) => r.json()),
-        ]);
-        contentEs = rEs.translated ?? contentRu;
-        contentEn = rEn.translated ?? contentRu;
-      }
-    } catch {
-      // use RU as fallback
-    }
-    return { titleEs, titleEn, contentEs, contentEn };
-  };
-
   const handleSave = async () => {
     if (!slug.trim() || !titleRu.trim() || !contentRu.trim()) {
       setSaveMessage(t("error"));
@@ -118,17 +95,16 @@ export default function TipsAdminPage() {
     setSaveLoading(true);
     setSaveMessage("");
     try {
-      const { titleEs, titleEn, contentEs, contentEn } = await translateAndSave();
       if (!supabase) throw new Error("Supabase not configured");
       const { error } = await supabase.from("articles").upsert(
         {
           slug: normalizeSlug(slug),
           title_ru: titleRu,
-          title_es: titleEs,
-          title_en: titleEn,
+          title_es: titleEs || null,
+          title_en: titleEn || null,
           content_ru: contentRu,
-          content_es: contentEs,
-          content_en: contentEn,
+          content_es: contentEs || null,
+          content_en: contentEn || null,
           image_urls: imageUrls,
           updated_at: new Date().toISOString(),
         },
@@ -170,12 +146,17 @@ export default function TipsAdminPage() {
 
   const loadArticle = async (articleSlug: string) => {
     if (!supabase) return;
-    const { data } = await supabase.from("articles").select("slug, title_ru, content_ru, image_urls").eq("slug", articleSlug).single();
+    const { data } = await supabase.from("articles").select("slug, title_ru, title_es, title_en, content_ru, content_es, content_en, image_urls").eq("slug", articleSlug).single();
     if (data) {
       setSlug(data.slug ?? "");
       setTitleRu(data.title_ru ?? "");
+      setTitleEs(data.title_es ?? "");
+      setTitleEn(data.title_en ?? "");
       setContentRu(data.content_ru ?? "");
+      setContentEs(data.content_es ?? "");
+      setContentEn(data.content_en ?? "");
       setImageUrls((data.image_urls as string[]) ?? []);
+      formCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -284,14 +265,24 @@ export default function TipsAdminPage() {
                           <span className="font-medium">{a.title_ru || a.title_es || a.slug}</span>
                           <span className="ml-2 text-gray-500">/{a.slug}</span>
                         </button>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleDelete(a.slug)}
-                          disabled={deletingSlug === a.slug}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        <div className="flex gap-1 shrink-0">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => loadArticle(a.slug)}
+                            title={t("edit")}
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleDelete(a.slug)}
+                            disabled={deletingSlug === a.slug}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -299,7 +290,7 @@ export default function TipsAdminPage() {
               </CardContent>
             </Card>
           )}
-          <Card>
+          <Card ref={formCardRef}>
             <CardContent className="pt-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">{t("slug")}</label>
@@ -320,12 +311,50 @@ export default function TipsAdminPage() {
                 />
               </div>
               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitleEs")}</label>
+                <input
+                  value={titleEs}
+                  onChange={(e) => setTitleEs(e.target.value)}
+                  placeholder="Cómo elegir un acondicionador de aire"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitleEn")}</label>
+                <input
+                  value={titleEn}
+                  onChange={(e) => setTitleEn(e.target.value)}
+                  placeholder="How to choose an air conditioner"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleContent")}</label>
                 <textarea
                   value={contentRu}
                   onChange={(e) => setContentRu(e.target.value)}
                   placeholder="Текст статьи на русском. Можно использовать HTML: <p>, <h2>, <ul>, <li>, <img src='url'> и т.д."
-                  rows={12}
+                  rows={8}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleContentEs")}</label>
+                <textarea
+                  value={contentEs}
+                  onChange={(e) => setContentEs(e.target.value)}
+                  placeholder="Contenido en español (opcional)"
+                  rows={8}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleContentEn")}</label>
+                <textarea
+                  value={contentEn}
+                  onChange={(e) => setContentEn(e.target.value)}
+                  placeholder="Content in English (optional)"
+                  rows={8}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 />
               </div>

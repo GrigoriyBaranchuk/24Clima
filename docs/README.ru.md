@@ -202,9 +202,9 @@ bun run lint
 
 ## 8. Раздел «Советы и Руководства» и админка
 
-- **Публичная страница:** `/[locale]/tips/` — список статей HVAC.
-- **Статья:** `/[locale]/tips/[slug]/` — отдельная статья.
-- **Админка:** `/[locale]/tips/admin/` — вход (email/пароль в Supabase), редактор статей, загрузка изображений, авто-перевод RU→ES/EN.
+- **Публичная страница:** `/[locale]/consejos-y-guias/` — список статей HVAC.
+- **Статья:** `/[locale]/consejos-y-guias/[slug]/` — отдельная статья.
+- **Админка:** `/[locale]/consejos-y-guias/admin/` — вход (email/пароль в Supabase), редактор статей, загрузка изображений.
 
 Для работы раздела нужен Supabase (auth, БД, storage). Подробная настройка: [docs/SETUP_TIPS_ADMIN.md](SETUP_TIPS_ADMIN.md).
 

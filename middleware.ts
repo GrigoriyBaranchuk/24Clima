@@ -45,8 +45,19 @@ function getPreferredLocale(acceptLanguage: string | null): Locale {
 
 const intlMiddleware = createMiddleware(routing);
 
+const PRODUCTION_HOST = "24clima.com";
+
 export default function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const url = request.nextUrl;
+  const { pathname } = url;
+
+  // www → non-www (301) — только в продакшене
+  if (url.hostname === `www.${PRODUCTION_HOST}`) {
+    const target = new URL(request.url);
+    target.hostname = PRODUCTION_HOST;
+    target.protocol = "https:";
+    return NextResponse.redirect(target, { status: 301 });
+  }
 
   const pathnameHasLocale = locales.some(
     (locale) =>
@@ -58,9 +69,9 @@ export default function middleware(request: NextRequest) {
   if (!pathnameHasLocale && (pathname === "/" || pathname === "")) {
     const acceptLanguage = request.headers.get("accept-language");
     const detectedLocale = getPreferredLocale(acceptLanguage);
-    const url = request.nextUrl.clone();
-    url.pathname = `/${detectedLocale}/`;
-    return NextResponse.redirect(url);
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = `/${detectedLocale}/`;
+    return NextResponse.redirect(redirectUrl, { status: 301 });
   }
 
   return intlMiddleware(request);

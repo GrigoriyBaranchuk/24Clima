@@ -11,12 +11,7 @@ import { supabase } from "@/lib/supabase";
 import {
   normalizeSlug,
 } from "@/lib/slug";
-import {
-  getLocalizedFields,
-  resolveImageUrls,
-  stripForMetaDescription,
-  type ArticleRow,
-} from "@/lib/articles";
+import { resolveImageUrls, stripForMetaDescription } from "@/lib/articles";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft } from "lucide-react";
 
@@ -24,21 +19,55 @@ export const dynamic = "force-dynamic";
 
 const BASE = "https://24clima.com";
 
-async function fetchArticle(slug: string): Promise<ArticleRow | null> {
+type ArticleForLocale = {
+  slug: string;
+  title: string;
+  content: string;
+  image_urls: string[] | null;
+  created_at: string;
+};
+
+async function fetchArticleForLocale(
+  slug: string,
+  locale: string
+): Promise<ArticleForLocale | null> {
   if (!supabase) return null;
   const safeSlug = normalizeSlug(decodeURIComponent(slug ?? ""));
-  let result = await supabase.from("articles").select("*").eq("slug", safeSlug).single();
-  if (result.error || !result.data) {
-    result = await supabase
+
+  const cols =
+    locale === "es"
+      ? "slug, title_es, content_es, title_ru, content_ru, image_urls, created_at"
+      : locale === "en"
+        ? "slug, title_en, content_en, title_ru, content_ru, image_urls, created_at"
+        : "slug, title_ru, content_ru, image_urls, created_at";
+
+  const trySlugs = [safeSlug, `/${safeSlug}`, slug];
+  for (const s of trySlugs) {
+    const { data, error } = await supabase
       .from("articles")
-      .select("*")
-      .eq("slug", `/${safeSlug}`)
+      .select(cols)
+      .eq("slug", s)
       .single();
+    if (!error && data) {
+      const title =
+        (locale === "es" && data.title_es) ||
+        (locale === "en" && data.title_en) ||
+        data.title_ru;
+      const content =
+        (locale === "es" && data.content_es) ||
+        (locale === "en" && data.content_en) ||
+        data.content_ru;
+      if (!title || !content) return null;
+      return {
+        slug: data.slug ?? "",
+        title: title ?? "",
+        content: content ?? "",
+        image_urls: data.image_urls ?? null,
+        created_at: data.created_at ?? "",
+      };
+    }
   }
-  if (!result.data) {
-    result = await supabase.from("articles").select("*").eq("slug", slug).single();
-  }
-  return result.data as ArticleRow | null;
+  return null;
 }
 
 export async function generateMetadata({
@@ -47,23 +76,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const article = await fetchArticle(slug);
+  const article = await fetchArticleForLocale(slug, locale);
   if (!article) return { title: "24clima" };
 
-  const { title, content } = getLocalizedFields(article, locale);
-  const description = stripForMetaDescription(content);
+  const description = stripForMetaDescription(article.content);
 
   return {
-    title: `${title} | 24clima`,
+    title: `${article.title} | 24clima`,
     description,
     openGraph: {
-      title: `${title} | 24clima`,
+      title: `${article.title} | 24clima`,
       description,
-      url: `${BASE}/${locale}/tips/${slug}/`,
+      url: `${BASE}/${locale}/consejos-y-guias/${slug}/`,
       type: "article",
     },
     alternates: {
-      canonical: `${BASE}/${locale}/tips/${slug}/`,
+      canonical: `${BASE}/${locale}/consejos-y-guias/${slug}/`,
     },
   };
 }
@@ -76,10 +104,9 @@ export default async function ArticlePage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const article = await fetchArticle(slug);
+  const article = await fetchArticleForLocale(slug, locale);
   if (!article) notFound();
 
-  const { title, content } = getLocalizedFields(article, locale);
   const imageUrls = resolveImageUrls(article.image_urls);
 
   const t = await getTranslations("tips");
@@ -99,14 +126,14 @@ export default async function ArticlePage({
           <ParallaxHero>
             <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-16 lg:py-24">
               <Link
-                href="/tips"
+                href="/consejos-y-guias"
                 className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 {t("backToList")}
               </Link>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                {title}
+                {article.title}
               </h1>
               {created && (
                 <time
@@ -120,7 +147,7 @@ export default async function ArticlePage({
           </ParallaxHero>
 
           <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-12 lg:py-16 -mt-8 relative z-10">
-            <ArticleRenderer content={content} imageUrls={imageUrls} className="text-gray-700" />
+            <ArticleRenderer content={article.content} imageUrls={imageUrls} className="text-gray-700" />
           </div>
         </article>
       </main>

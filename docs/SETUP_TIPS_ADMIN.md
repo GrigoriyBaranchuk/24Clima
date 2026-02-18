@@ -55,8 +55,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 
 ## 7. Страницы
 
-- **Советы и Руководства (публичная):** `/es/tips/`, `/en/tips/`, `/ru/tips/`
-- **Админка:** `/es/tips/admin/`, `/en/tips/admin/`, `/ru/tips/admin/`
+- **Советы и Руководства (публичная):** `/es/consejos-y-guias/`, `/en/consejos-y-guias/`, `/ru/consejos-y-guias/`
+- **Админка:** `/es/consejos-y-guias/admin/`, `/en/consejos-y-guias/admin/`, `/ru/consejos-y-guias/admin/`
 
 ## 8. Важно
 

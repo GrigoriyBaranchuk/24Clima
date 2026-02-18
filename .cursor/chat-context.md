@@ -29,11 +29,11 @@
 - Новые ключи: packages.whatsappOrderMessage, whatsappMessages.problemIntro
 
 ### Советы и Руководства (Tips) + Админка
-- Публичная страница: /[locale]/tips/ — список статей HVAC
-- Статья: /[locale]/tips/[slug]/ (динамический URL)
-- Админка: /[locale]/tips/admin/ — вход (Supabase Auth), редактор статей, загрузка изображений
+- Публичная страница: /[locale]/consejos-y-guias/ — список статей HVAC
+- Статья: /[locale]/consejos-y-guias/[slug]/ (динамический URL)
+- Админка: /[locale]/consejos-y-guias/admin/ — вход (Supabase Auth), редактор статей, загрузка изображений
 - Slug: ввод вручную (не из title); normalizeSlug() — trim слешей, lowercase; fallback для slug с ведущим слешем в БД
-- Ссылки: href={`/tips/${slug}/`} — с trailing slash
+- Ссылки: href={`/consejos-y-guias/${slug}/`} — с trailing slash
 - Контент: whitespace-pre-line для переносов; или HTML в content
 - Supabase: Publishable key (sb_publishable_...), не Secret key
 - Автоперевод RU→ES/EN при сохранении (API /api/translate, GOOGLE_TRANSLATE_API_KEY)
@@ -59,7 +59,7 @@
 ## Важные пути
 - src/lib/supabase.ts — клиент Supabase (null если env не заданы)
 - src/lib/seo-keywords.ts — семантическое ядро
-- src/app/[locale]/tips/ — Tips, TipsList, [slug], admin
+- src/app/[locale]/consejos-y-guias/ — Tips, TipsList, [slug], admin
 - supabase/migrations/001_articles.sql — схема articles
 
 ## Что нужно настроить
