@@ -5,8 +5,9 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import ParallaxHero from "@/components/ParallaxHero";
+import ArticleHero from "@/components/ArticleHero";
 import ArticleRenderer from "@/components/ArticleRenderer";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
 import { supabase } from "@/lib/supabase";
 import {
   normalizeSlug,
@@ -34,18 +35,11 @@ async function fetchArticleForLocale(
   if (!supabase) return null;
   const safeSlug = normalizeSlug(decodeURIComponent(slug ?? ""));
 
-  const cols =
-    locale === "es"
-      ? "slug, title_es, content_es, title_ru, content_ru, image_urls, created_at"
-      : locale === "en"
-        ? "slug, title_en, content_en, title_ru, content_ru, image_urls, created_at"
-        : "slug, title_ru, content_ru, image_urls, created_at";
-
   const trySlugs = [safeSlug, `/${safeSlug}`, slug];
   for (const s of trySlugs) {
     const { data, error } = await supabase
       .from("articles")
-      .select(cols)
+      .select("slug, title_ru, title_es, title_en, content_ru, content_es, content_en, image_urls, created_at")
       .eq("slug", s)
       .single();
     if (!error && data) {
@@ -120,34 +114,37 @@ export default async function ArticlePage({
 
   return (
     <>
+      <ReadingProgressBar />
       <Header />
-      <main className="min-h-screen pt-24">
+      <main className="article-reading-bg min-h-screen pt-24">
         <article>
-          <ParallaxHero>
-            <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-16 lg:py-24">
-              <Link
-                href="/consejos-y-guias"
-                className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                {t("backToList")}
-              </Link>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                {article.title}
-              </h1>
-              {created && (
-                <time
-                  dateTime={article.created_at}
-                  className="block mt-4 text-white/70 text-sm"
+          <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-12 lg:py-16 -mt-4">
+            <ArticleHero>
+              <div className="p-8 lg:p-12">
+                <Link
+                  href="/consejos-y-guias"
+                  className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
                 >
-                  {created}
-                </time>
-              )}
-            </div>
-          </ParallaxHero>
+                  <ArrowLeft className="w-4 h-4" />
+                  {t("backToList")}
+                </Link>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                  {article.title}
+                </h1>
+                {created && (
+                  <time
+                    dateTime={article.created_at}
+                    className="block mt-4 text-white/70 text-sm"
+                  >
+                    {created}
+                  </time>
+                )}
+              </div>
+            </ArticleHero>
+          </div>
 
-          <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-12 lg:py-16 -mt-8 relative z-10">
-            <ArticleRenderer content={article.content} imageUrls={imageUrls} className="text-gray-700" />
+          <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-8 lg:py-12 -mt-12 relative z-10">
+            <ArticleRenderer content={article.content} imageUrls={imageUrls} stacked />
           </div>
         </article>
       </main>

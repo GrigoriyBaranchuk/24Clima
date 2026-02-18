@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -11,6 +11,12 @@ import YandexMetrika from "@/components/YandexMetrika";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+});
+
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin", "cyrillic"],
   display: "swap",
 });
@@ -81,7 +87,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <div lang={locale} className={`${inter.variable} antialiased`}>
+    <div lang={locale} className={`${inter.variable} ${lora.variable} font-sans antialiased`}>
       {/* Краткое описание для AI/LLM и поисковых систем — не отображается визуально */}
       <p className="sr-only" aria-hidden="true" data-ai-summary="true">
         24clima — professional air conditioning service in Panama City: installation, maintenance, deep cleaning, repair, refrigerant recharge. 24/7. Online cost calculator for AC cleaning. Languages: Spanish, English, Russian. Contact: WhatsApp +507 6828 2120.

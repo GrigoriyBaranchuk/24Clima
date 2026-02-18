@@ -8,7 +8,7 @@ type ParallaxHeroProps = {
 export default function ParallaxHero({ children, className = "" }: ParallaxHeroProps) {
   return (
     <div
-      className={`relative min-h-[40vh] flex items-center justify-center overflow-hidden ${className}`}
+      className={`relative min-h-[45vh] lg:min-h-[50vh] flex items-center justify-center overflow-hidden ${className}`}
     >
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"

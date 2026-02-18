@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import { Card, CardContent } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 
 type Article = {
@@ -23,36 +22,39 @@ export default function TipsList({
 
   if (articles.length === 0) {
     return (
-      <p className="text-center text-gray-500 py-12">{t("noArticles")}</p>
+      <p className="text-center text-gray-500 py-12 font-serif">{t("noArticles")}</p>
     );
   }
 
   return (
-    <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    <div className="tips-newspaper w-full max-w-6xl mx-auto px-0">
       {articles.map((article) => (
-        <Link key={article.id} href={`/consejos-y-guias/${article.slug}/`}>
-          <Card className="card-hover border-0 shadow-lg overflow-hidden h-full">
-            {article.image_urls[0] && (
-              <div className="aspect-video bg-gray-100 relative">
-                <img
-                  src={article.image_urls[0]}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-            <CardContent className="p-4">
-              <h2 className="font-semibold text-[#1e3a5f] mb-2 line-clamp-2">
-                {article.title}
-              </h2>
-              <p className="text-gray-600 text-base line-clamp-3">
-                {article.content}
-              </p>
-              <span className="text-[#7BC043] text-sm font-medium mt-2 inline-block">
-                {t("readMore")} →
-              </span>
-            </CardContent>
-          </Card>
+        <Link
+          key={article.id}
+          href={`/consejos-y-guias/${article.slug}/`}
+          className="block tips-preview-bg rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-[#7BC043]/30"
+        >
+          {article.image_urls[0] && (
+            <div className="aspect-video relative overflow-hidden">
+              <img
+                src={article.image_urls[0]}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            </div>
+          )}
+          <div className="p-6 lg:p-8 font-serif">
+            <h2 className="font-semibold text-lg lg:text-xl text-[#e8f0f8] mb-3 line-clamp-2 leading-snug">
+              {article.title}
+            </h2>
+            <p className="text-[#c8d6e3] text-base leading-relaxed line-clamp-3 mb-4">
+              {article.content}
+            </p>
+            <span className="text-[#7BC043] font-medium text-base">
+              {t("readMore")} →
+            </span>
+          </div>
         </Link>
       ))}
     </div>

@@ -28,7 +28,7 @@ export default function ParallaxImage({
       <img
         src={src}
         alt={alt}
-        className="w-full object-cover"
+        className="w-full h-full min-h-[200px] object-cover"
         style={{
           transform: `translateY(${offset * ratio}px) scale(1.05)`,
           willChange: "transform",

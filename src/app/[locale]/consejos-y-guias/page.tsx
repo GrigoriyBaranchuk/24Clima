@@ -107,8 +107,8 @@ export default async function TipsPage({
           </div>
         </ParallaxHero>
 
-        <section className="py-16 lg:py-24 section-gradient -mt-8 relative z-10">
-          <div className="container mx-auto px-4 lg:px-8">
+        <section className="py-16 lg:py-24 section-gradient-parallax -mt-8 relative z-10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <TipsList articles={articles} locale={locale} />
           </div>
         </section>

@@ -53,17 +53,18 @@ export default function TipsAdminPage() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchArticles = () => {
+  const fetchArticles = async () => {
     if (!supabase || !session) return;
     setArticlesLoading(true);
-    supabase
-      .from("articles")
-      .select("slug, title_es, title_ru")
-      .order("updated_at", { ascending: false })
-      .then(({ data }) => {
-        setArticles((data ?? []) as ArticleRow[]);
-      })
-      .finally(() => setArticlesLoading(false));
+    try {
+      const { data } = await supabase
+        .from("articles")
+        .select("slug, title_es, title_ru")
+        .order("updated_at", { ascending: false });
+      setArticles((data ?? []) as ArticleRow[]);
+    } finally {
+      setArticlesLoading(false);
+    }
   };
 
   useEffect(() => {

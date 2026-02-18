@@ -142,6 +142,10 @@
 .section-gradient {
   background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%);
 }
+.section-gradient-parallax {
+  background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%);
+  background-attachment: fixed;
+}
 
 .section-gradient-alt {
   background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
@@ -176,10 +180,61 @@
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
 }
 
-/* Article content — reset Word/Docs styles, design system typography */
+/* Article reading page — light background, strongly pronounced gradient */
+.article-reading-bg {
+  background: linear-gradient(
+    180deg,
+    #4a6a8f 0%,
+    #3d5d82 12%,
+    #325077 25%,
+    #2a4568 40%,
+    #213a58 55%,
+    #1a3250 70%,
+    #142a45 85%,
+    #0f223a 100%
+  );
+  min-height: 100vh;
+}
+
+/* Tips preview card — same gradient as article reading page */
+.tips-preview-bg {
+  background: linear-gradient(
+    160deg,
+    #4a6a8f 0%,
+    #3d5d82 20%,
+    #325077 45%,
+    #2a4568 70%,
+    #213a58 100%
+  );
+}
+
+/* Tips list — newspaper columns on desktop */
+.tips-newspaper {
+  columns: 1;
+  column-gap: 1.5rem;
+}
+@media (min-width: 640px) {
+  .tips-newspaper {
+    columns: 2;
+    column-gap: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .tips-newspaper {
+    columns: 3;
+    column-gap: 2rem;
+  }
+}
+.tips-newspaper > * {
+  break-inside: avoid;
+  margin-bottom: 2rem;
+}
+
+/* Article content — Lora for reading, design system typography */
 .article-content {
+  font-family: var(--font-lora), Georgia, serif;
   font-size: 1.125rem;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 .article-content p {
   margin-bottom: 1.25rem;
@@ -189,14 +244,14 @@
   font-weight: 700;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  color: #1e3a5f;
+  color: #e8f0f8;
 }
 .article-content h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-  color: #1e3a5f;
+  color: #e8f0f8;
 }
 .article-content ul,
 .article-content ol {
@@ -216,6 +271,17 @@
   border-radius: 0.75rem;
   margin: 1.5rem 0;
 }
+/* Blockquote — brand accent, light text */
+.article-content blockquote {
+  border-left: 4px solid #7BC043;
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #b8d4e8;
+  background: linear-gradient(90deg, rgba(123, 192, 67, 0.15) 0%, transparent 100%);
+  padding: 1rem 1.25rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
 /* Reset inline styles from Word/Docs paste */
 .article-content * {
   font-family: inherit !important;
@@ -224,4 +290,5 @@
 .article-content div,
 .article-content span {
   font-size: inherit !important;
+  color: #c8d6e3;
 }
