@@ -14,7 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Clock, Shield, Star, ArrowLeft } from "lucide-react";
 import { Wrench, Wind, Thermometer, Droplets, Settings, Zap } from "lucide-react";
-import { locales, type Locale } from "@/i18n/config";
+import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import { getServiceKeywords } from "@/lib/seo-keywords";
 import { Link } from "@/i18n/routing";
 
@@ -84,6 +84,8 @@ export async function generateMetadata({
   const title = t(`${translationKey}.title`);
   const description = t(`${translationKey}.description`);
   const base = "https://24clima.com";
+  const prefix = getLocalePrefix(locale as Locale);
+  const canonicalUrl = `${base}${prefix}/servicios/${service}/`;
   const keywords = getServiceKeywords(service, locale as Locale);
 
   return {
@@ -93,12 +95,13 @@ export async function generateMetadata({
     openGraph: {
       title: `${title} | 24clima`,
       description,
-      url: `${base}/${locale}/servicios/${service}/`,
+      url: canonicalUrl,
     },
     alternates: {
-      canonical: `${base}/${locale}/servicios/${service}/`,
+      canonical: canonicalUrl,
       languages: {
-        es: `${base}/es/servicios/${service}/`,
+        "x-default": `${base}/servicios/${service}/`,
+        es: `${base}/servicios/${service}/`,
         en: `${base}/en/servicios/${service}/`,
         ru: `${base}/ru/servicios/${service}/`,
       },
@@ -167,6 +170,7 @@ export default async function ServicePage({ params }: Props) {
               <div>
                 <Link
                   href="/#servicios"
+                  scroll={false}
                   className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -308,7 +312,7 @@ export default async function ServicePage({ params }: Props) {
 
             <div className="w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {otherServices.map(({ key, translationKey: tk, Icon: ServiceIcon }) => (
-                <Link key={key} href={`/servicios/${key}`}>
+                <Link key={key} href={`/servicios/${key}`} scroll={false}>
                   <Card className="card-hover border-0 shadow-lg bg-white h-full">
                     <CardContent className="p-6">
                       <div className="w-12 h-12 bg-gradient-to-br from-[#7BC043] to-[#0F9D58] rounded-xl flex items-center justify-center mb-4">

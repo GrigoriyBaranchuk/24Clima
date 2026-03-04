@@ -43,7 +43,7 @@ export default function Header() {
       <nav className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" scroll={false} className="flex items-center">
             <Image
               src="/images/logo.svg"
               alt="24clima - Servicio de aire acondicionado en Panamá"
@@ -59,6 +59,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
+                scroll={false}
                 className="text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
               >
                 {item.name}
@@ -107,7 +108,7 @@ export default function Header() {
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                 <SheetTitle className="sr-only">Menu</SheetTitle>
                 <div className="flex flex-col gap-6 mt-8">
-                  <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
+                  <Link href="/" scroll={false} className="flex items-center" onClick={() => setIsOpen(false)}>
                     <Image
                       src="/images/logo.svg"
                       alt="24clima"
@@ -122,6 +123,7 @@ export default function Header() {
                       <Link
                         key={item.name}
                         href={item.href}
+                        scroll={false}
                         onClick={() => setIsOpen(false)}
                         className="text-lg font-medium text-gray-700 hover:text-[#0F9D58] transition-colors py-2 border-b border-gray-100"
                       >

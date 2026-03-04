@@ -20,6 +20,11 @@ export const dynamic = "force-dynamic";
 
 const BASE = "https://24clima.com";
 
+function getLocalePath(locale: string, path: string): string {
+  const prefix = locale === "es" ? "" : `/${locale}`;
+  return `${BASE}${prefix}${path}`;
+}
+
 type ArticleForLocale = {
   slug: string;
   title: string;
@@ -74,6 +79,7 @@ export async function generateMetadata({
   if (!article) return { title: "24clima" };
 
   const description = stripForMetaDescription(article.content);
+  const canonicalUrl = getLocalePath(locale, `/consejos-y-guias/${slug}/`);
 
   return {
     title: `${article.title} | 24clima`,
@@ -81,11 +87,11 @@ export async function generateMetadata({
     openGraph: {
       title: `${article.title} | 24clima`,
       description,
-      url: `${BASE}/${locale}/consejos-y-guias/${slug}/`,
+      url: canonicalUrl,
       type: "article",
     },
     alternates: {
-      canonical: `${BASE}/${locale}/consejos-y-guias/${slug}/`,
+      canonical: canonicalUrl,
     },
   };
 }
@@ -123,6 +129,7 @@ export default async function ArticlePage({
               <div className="p-8 lg:p-12">
                 <Link
                   href="/consejos-y-guias"
+                  scroll={false}
                   className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />

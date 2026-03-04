@@ -1,6 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
-import { locales } from "@/i18n/config";
+import { locales, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import ParallaxHero from "@/components/ParallaxHero";
 
@@ -24,9 +24,20 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "tips" });
+  const prefix = getLocalePrefix(locale as "es" | "en" | "ru");
+  const canonicalUrl = `https://24clima.com${prefix}/consejos-y-guias/`;
   return {
     title: `${t("title")} | 24clima`,
     description: t("subtitle"),
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        "x-default": "https://24clima.com/consejos-y-guias/",
+        es: "https://24clima.com/consejos-y-guias/",
+        en: "https://24clima.com/en/consejos-y-guias/",
+        ru: "https://24clima.com/ru/consejos-y-guias/",
+      },
+    },
   };
 }
 
@@ -99,6 +110,7 @@ export default async function TipsPage({
               </div>
               <Link
                 href="/consejos-y-guias/admin"
+                scroll={false}
                 className="shrink-0 text-center px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white text-base font-medium transition-colors border border-white/30"
               >
                 {t("adminLink")}

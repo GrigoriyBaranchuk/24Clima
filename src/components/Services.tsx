@@ -118,7 +118,7 @@ export default function Services() {
                     variant="ghost"
                     className="w-full text-[#1e3a5f] hover:text-[#0F9D58] hover:bg-[#0F9D58]/5"
                   >
-                    <Link href={`/servicios/${service.slug}`}>
+                    <Link href={`/servicios/${service.slug}`} scroll={false}>
                       <span className="flex items-center justify-center gap-2">
                         {tCommon("viewDetails")}
                         <ArrowRight className="w-4 h-4" />

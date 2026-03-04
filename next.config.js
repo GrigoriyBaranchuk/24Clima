@@ -13,6 +13,11 @@ const nextConfig = {
     ],
   },
   async headers() {
+    const isDev = process.env.NODE_ENV === "development";
+    const scriptSrc = isDev
+      ? "'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru https://ymdwvb5k3r.ru"
+      : "'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru https://ymdwvb5k3r.ru";
+
     return [
       {
         source: "/:path*",
@@ -24,11 +29,11 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru",
+              `script-src ${scriptSrc}`,
               "img-src 'self' data: https: blob:",
               "style-src 'self' 'unsafe-inline'",
               "frame-src 'self'",
-              "connect-src 'self' https://www.google-analytics.com https://*.supabase.co https://translation.googleapis.com",
+              "connect-src 'self' https://www.google-analytics.com https://*.supabase.co https://translation.googleapis.com https://mc.yandex.ru wss://mc.yandex.ru https://www.facebook.com",
               "font-src 'self' data: https://fonts.gstatic.com",
             ].join("; "),
           },

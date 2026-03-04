@@ -34,7 +34,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-block mb-6">
+            <Link href="/" scroll={false} className="inline-block mb-6">
               <Image
                 src="/images/logo.svg"
                 alt="24clima - Servicio de aire acondicionado en Panamá"
@@ -110,6 +110,7 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-4">{t("problemsTitle")}</h4>
             <Link
               href="/consejos-y-guias"
+              scroll={false}
               className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
             >
               {tCommon("tips")}

@@ -18,7 +18,7 @@ export default function LanguageSwitcher({ isScrolled = false }: { isScrolled?: 
   const pathname = usePathname();
 
   const handleLocaleChange = (newLocale: Locale) => {
-    router.replace(pathname, { locale: newLocale });
+    router.replace(pathname, { locale: newLocale, scroll: false });
   };
 
   return (

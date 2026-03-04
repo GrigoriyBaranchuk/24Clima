@@ -29,7 +29,7 @@ export default function TipsList({
   return (
     <div className="tips-newspaper w-full max-w-6xl mx-auto px-0">
       {articles.map((article) => (
-        <Link
+        <Link scroll={false}
           key={article.id}
           href={`/consejos-y-guias/${article.slug}/`}
           className="block tips-preview-bg rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-[#7BC043]/30"

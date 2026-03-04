@@ -1,9 +1,20 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
 import { normalizeSlug } from "@/lib/slug";
-import { locales } from "@/i18n/config";
+import { locales, defaultLocale, getLocalePrefix } from "@/i18n/config";
 
 const BASE = "https://24clima.com";
+
+function localeUrl(locale: string, path: string): string {
+  const prefix = getLocalePrefix(locale as "es" | "en" | "ru");
+  return `${BASE}${prefix}${path}`;
+}
+
+function langAlternates(path: string): Record<string, string> {
+  const entries = locales.map((l) => [l, localeUrl(l, path)]);
+  const xDefault = localeUrl(defaultLocale, path);
+  return { "x-default": xDefault, ...Object.fromEntries(entries) };
+}
 
 const serviceKeys = [
   "cleaning",
@@ -37,49 +48,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
 
-  // Homepage — все локали с hreflang
+  // Homepage — все локали с hreflang (es без префикса)
   for (const locale of locales) {
     entries.push({
-      url: `${BASE}/${locale}/`,
+      url: localeUrl(locale, "/"),
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 1,
-      alternates: {
-        languages: Object.fromEntries(
-          locales.map((l) => [`${l}`, `${BASE}/${l}/`])
-        ) as Record<string, string>,
-      },
+      alternates: { languages: langAlternates("/") },
     });
   }
 
   // Tips list — все локали
   for (const locale of locales) {
     entries.push({
-      url: `${BASE}/${locale}/consejos-y-guias/`,
+      url: localeUrl(locale, "/consejos-y-guias/"),
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.9,
-      alternates: {
-        languages: Object.fromEntries(
-          locales.map((l) => [`${l}`, `${BASE}/${l}/consejos-y-guias/`])
-        ) as Record<string, string>,
-      },
+      alternates: { languages: langAlternates("/consejos-y-guias/") },
     });
   }
 
   // Services — все локали и все услуги
   for (const locale of locales) {
     for (const service of serviceKeys) {
+      const path = `/servicios/${service}/`;
       entries.push({
-        url: `${BASE}/${locale}/servicios/${service}/`,
+        url: localeUrl(locale, path),
         lastModified: now,
         changeFrequency: "monthly" as const,
         priority: 0.9,
-        alternates: {
-          languages: Object.fromEntries(
-            locales.map((l) => [`${l}`, `${BASE}/${l}/servicios/${service}/`])
-          ) as Record<string, string>,
-        },
+        alternates: { languages: langAlternates(path) },
       });
     }
   }
@@ -90,16 +90,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const slug = normalizeSlug(a.slug ?? "");
     if (!slug) continue;
     const availableLocales = locales.filter((l) => articleHasLocale(a, l));
-    const langAlternates = Object.fromEntries(
-      availableLocales.map((l) => [`${l}`, `${BASE}/${l}/consejos-y-guias/${slug}/`])
-    ) as Record<string, string>;
+    const articleLangAlternates =
+      availableLocales.length > 1
+        ? { "x-default": localeUrl(defaultLocale, `/consejos-y-guias/${slug}/`), ...Object.fromEntries(availableLocales.map((l) => [l, localeUrl(l, `/consejos-y-guias/${slug}/`)])) }
+        : undefined;
     for (const locale of availableLocales) {
       entries.push({
-        url: `${BASE}/${locale}/consejos-y-guias/${slug}/`,
+        url: localeUrl(locale, `/consejos-y-guias/${slug}/`),
         lastModified: now,
         changeFrequency: "monthly" as const,
         priority: 0.8,
-        alternates: availableLocales.length > 1 ? { languages: langAlternates } : undefined,
+        alternates: articleLangAlternates ? { languages: articleLangAlternates } : undefined,
       });
     }
   }
