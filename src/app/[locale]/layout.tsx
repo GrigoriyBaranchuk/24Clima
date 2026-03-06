@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { locales, defaultLocale, type Locale, getLocalePrefix } from "@/i18n/config";
 import { getHomeKeywords } from "@/lib/seo-keywords";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -88,7 +88,7 @@ export default async function LocaleLayout({
     notFound();
   }
   if (locale === defaultLocale) {
-    notFound();
+    redirect("/");
   }
 
   setRequestLocale(locale);

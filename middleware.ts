@@ -18,12 +18,12 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(target, { status: 308 });
   }
 
-  // 2. /es/* → /* (301) — испанский только в корне, без сегмента /es/
+  // 2. /es/* → /* (308 Permanent Redirect)
   if (pathname === "/es" || pathname === "/es/" || pathname.startsWith("/es/")) {
     const newPath = pathname.replace(/^\/es\/?/, "/") || "/";
     const target = new URL(newPath, request.url);
     target.search = url.search;
-    return NextResponse.redirect(target, { status: 301 });
+    return NextResponse.redirect(target, { status: 308 });
   }
 
   // 3. Редирект старых английских slug'ов услуг на испанские (301)
@@ -52,7 +52,10 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
-    "/(es|en|ru)/:path*",
+    "/es",
+    "/es/",
+    "/es/:path*",
+    "/(en|ru)/:path*",
     "/((?!api|_next|_vercel|.*\\..*).*)",
   ],
 };
