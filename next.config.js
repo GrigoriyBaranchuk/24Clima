@@ -33,7 +33,7 @@ const nextConfig = {
               "img-src 'self' data: https: blob:",
               "style-src 'self' 'unsafe-inline'",
               "frame-src 'self'",
-              "connect-src 'self' https://www.google-analytics.com https://*.supabase.co https://translation.googleapis.com https://mc.yandex.ru wss://mc.yandex.ru https://www.facebook.com",
+              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com https://stats.g.doubleclick.net https://*.supabase.co https://translation.googleapis.com https://mc.yandex.ru wss://mc.yandex.ru https://ymdwvb5k3r.ru https://www.facebook.com https://connect.facebook.net",
               "font-src 'self' data: https://fonts.gstatic.com",
             ].join("; "),
           },
