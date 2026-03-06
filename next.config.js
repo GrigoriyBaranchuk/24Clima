@@ -15,8 +15,8 @@ const nextConfig = {
   async headers() {
     const isDev = process.env.NODE_ENV === "development";
     const scriptSrc = isDev
-      ? "'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru https://ymdwvb5k3r.ru"
-      : "'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru https://ymdwvb5k3r.ru";
+      ? "'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru https://ymdwvb5k3r.ru https://ym7agrabf4.ru"
+      : "'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru https://ymdwvb5k3r.ru https://ym7agrabf4.ru";
 
     return [
       {
@@ -33,7 +33,7 @@ const nextConfig = {
               "img-src 'self' data: https: blob:",
               "style-src 'self' 'unsafe-inline'",
               "frame-src 'self'",
-              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com https://stats.g.doubleclick.net https://*.supabase.co https://translation.googleapis.com https://mc.yandex.ru wss://mc.yandex.ru https://ymdwvb5k3r.ru https://www.facebook.com https://connect.facebook.net",
+              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com https://stats.g.doubleclick.net https://*.supabase.co https://translation.googleapis.com https://mc.yandex.ru wss://mc.yandex.ru https://ymdwvb5k3r.ru https://ym7agrabf4.ru https://www.facebook.com https://connect.facebook.net",
               "font-src 'self' data: https://fonts.gstatic.com",
             ].join("; "),
           },
