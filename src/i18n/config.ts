@@ -15,7 +15,8 @@ export const localeFlags: Record<Locale, string> = {
   ru: "🇷🇺",
 };
 
-/** URL path prefix for locale (es = "", en = "/en", ru = "/ru") */
+/** URL path prefix: es = "" (default), en = "/en", ru = "/ru" (localePrefix: "as-needed") */
 export function getLocalePrefix(locale: Locale): string {
-  return locale === defaultLocale ? "" : `/${locale}`;
+  if (locale === defaultLocale) return "";
+  return `/${locale}`;
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
@@ -11,9 +11,19 @@ import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
 import { metaPixelEvent } from "@/components/MetaPixel";
 import LanguageSwitcher from "./LanguageSwitcher";
 
+const HEADER_OFFSET_PX = 80; // h-20
+
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET_PX;
+  window.scrollTo({ top, behavior: "smooth" });
+}
+
 export default function Header() {
   const t = useTranslations("common");
   const tWhatsapp = useTranslations("whatsappMessages");
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,6 +35,24 @@ export default function Header() {
     { name: t("about"), href: "/#nosotros", isAnchor: true },
     { name: t("contact"), href: "/#contacto", isAnchor: true },
   ];
+
+  const isHomePage = pathname === "/" || pathname === "";
+
+  const handleNavClick = (item: (typeof navigation)[0], e: React.MouseEvent) => {
+    if (!item.isAnchor) {
+      if (item.href === "/") setIsOpen(false);
+      return;
+    }
+    const id = item.href.split("#")[1];
+    if (!id) return;
+    if (isHomePage) {
+      e.preventDefault();
+      scrollToSection(id);
+      setIsOpen(false);
+    } else {
+      setIsOpen(false);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +88,7 @@ export default function Header() {
                 key={item.name}
                 href={item.href}
                 scroll={false}
+                onClick={(e) => handleNavClick(item, e)}
                 className="text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
               >
                 {item.name}
@@ -124,7 +153,7 @@ export default function Header() {
                         key={item.name}
                         href={item.href}
                         scroll={false}
-                        onClick={() => setIsOpen(false)}
+                        onClick={(e) => handleNavClick(item, e)}
                         className="text-lg font-medium text-gray-700 hover:text-[#0F9D58] transition-colors py-2 border-b border-gray-100"
                       >
                         {item.name}

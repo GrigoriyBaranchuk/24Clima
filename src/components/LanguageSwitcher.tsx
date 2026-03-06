@@ -2,7 +2,8 @@
 
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/routing";
-import { locales, localeNames, localeFlags, type Locale } from "@/i18n/config";
+import { useRouter as useNextRouter } from "next/navigation";
+import { locales, localeNames, localeFlags, defaultLocale, type Locale } from "@/i18n/config";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,9 +16,16 @@ import { Globe } from "lucide-react";
 export default function LanguageSwitcher({ isScrolled = false }: { isScrolled?: boolean }) {
   const locale = useLocale() as Locale;
   const router = useRouter();
+  const nextRouter = useNextRouter();
   const pathname = usePathname();
 
   const handleLocaleChange = (newLocale: Locale) => {
+    if (newLocale === defaultLocale) {
+      const fullPath = typeof window !== "undefined" ? window.location.pathname : "";
+      const rootPath = fullPath.replace(/^\/(en|ru)(\/|$)/, "$2") || "/";
+      nextRouter.replace(rootPath || "/");
+      return;
+    }
     router.replace(pathname, { locale: newLocale, scroll: false });
   };
 

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
 import { normalizeSlug } from "@/lib/slug";
 import { locales, defaultLocale, getLocalePrefix } from "@/i18n/config";
+import { SERVICE_SLUGS } from "@/lib/services";
 
 const BASE = "https://24clima.com";
 
@@ -16,14 +17,6 @@ function langAlternates(path: string): Record<string, string> {
   return { "x-default": xDefault, ...Object.fromEntries(entries) };
 }
 
-const serviceKeys = [
-  "cleaning",
-  "maintenance",
-  "repair",
-  "installation",
-  "gas-recharge",
-  "emergency",
-] as const;
 
 type ArticleForSitemap = { slug: string; title_es: string | null; title_en: string | null; content_es: string | null; content_en: string | null };
 
@@ -72,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Services — все локали и все услуги
   for (const locale of locales) {
-    for (const service of serviceKeys) {
+    for (const service of SERVICE_SLUGS) {
       const path = `/servicios/${service}/`;
       entries.push({
         url: localeUrl(locale, path),

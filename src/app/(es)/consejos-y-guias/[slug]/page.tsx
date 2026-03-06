@@ -1,0 +1,137 @@
+import { setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import ArticleHero from "@/components/ArticleHero";
+import ArticleRenderer from "@/components/ArticleRenderer";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
+import { supabase } from "@/lib/supabase";
+import { normalizeSlug } from "@/lib/slug";
+import { resolveImageUrls, stripForMetaDescription } from "@/lib/articles";
+import { Link } from "@/i18n/routing";
+import { ArrowLeft } from "lucide-react";
+
+export const dynamic = "force-dynamic";
+
+const BASE = "https://24clima.com";
+
+type ArticleForLocale = {
+  slug: string;
+  title: string;
+  content: string;
+  image_urls: string[] | null;
+  created_at: string;
+};
+
+async function fetchArticle(slug: string): Promise<ArticleForLocale | null> {
+  if (!supabase) return null;
+  const safeSlug = normalizeSlug(decodeURIComponent(slug ?? ""));
+  const trySlugs = [safeSlug, `/${safeSlug}`, slug];
+  for (const s of trySlugs) {
+    const { data, error } = await supabase
+      .from("articles")
+      .select("slug, title_ru, title_es, title_en, content_ru, content_es, content_en, image_urls, created_at")
+      .eq("slug", s)
+      .single();
+    if (!error && data && (data.title_es || data.content_es)) {
+      return {
+        slug: data.slug ?? "",
+        title: data.title_es ?? data.title_ru ?? "",
+        content: data.content_es ?? data.content_ru ?? "",
+        image_urls: data.image_urls ?? null,
+        created_at: data.created_at ?? "",
+      };
+    }
+  }
+  return null;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await fetchArticle(slug);
+  if (!article) return { title: "24clima" };
+  const description = stripForMetaDescription(article.content);
+  const canonicalUrl = `${BASE}/consejos-y-guias/${slug}/`;
+  return {
+    title: `${article.title} | 24clima`,
+    description,
+    openGraph: {
+      title: `${article.title} | 24clima`,
+      description,
+      url: canonicalUrl,
+      type: "article",
+    },
+    alternates: { canonical: canonicalUrl },
+  };
+}
+
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  setRequestLocale("es");
+
+  const article = await fetchArticle(slug);
+  if (!article) notFound();
+
+  const imageUrls = resolveImageUrls(article.image_urls);
+  const t = await getTranslations("tips");
+  const created = article.created_at
+    ? new Date(article.created_at).toLocaleDateString("es", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
+
+  return (
+    <>
+      <ReadingProgressBar />
+      <Header />
+      <main className="article-reading-bg min-h-screen pt-24">
+        <article>
+          <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-12 lg:py-16 -mt-4">
+            <ArticleHero>
+              <div className="p-8 lg:p-12">
+                <Link
+                  href="/consejos-y-guias"
+                  scroll={false}
+                  className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  {t("backToList")}
+                </Link>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                  {article.title}
+                </h1>
+                {created && (
+                  <time
+                    dateTime={article.created_at}
+                    className="block mt-4 text-white/70 text-sm"
+                  >
+                    {created}
+                  </time>
+                )}
+              </div>
+            </ArticleHero>
+          </div>
+
+          <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-8 lg:py-12 -mt-12 relative z-10">
+            <ArticleRenderer content={article.content} imageUrls={imageUrls} stacked />
+          </div>
+        </article>
+      </main>
+      <Footer />
+      <WhatsAppButton />
+    </>
+  );
+}

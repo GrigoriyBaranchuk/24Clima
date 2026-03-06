@@ -48,7 +48,7 @@ export default function Problems() {
   ];
 
   return (
-    <section id="problemas" className="py-20 lg:py-28 section-gradient-alt">
+    <section id="problemas" className="py-20 lg:py-28 section-gradient-alt scroll-mt-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
         <div className="w-full max-w-3xl mx-auto text-center mb-12 sm:mb-16">

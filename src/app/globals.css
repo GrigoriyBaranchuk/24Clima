@@ -74,6 +74,8 @@
   }
   html {
     scroll-behavior: smooth;
+    /* Offset for fixed header (h-20) so anchor scroll shows section below header */
+    scroll-padding-top: 5rem;
   }
 }
 

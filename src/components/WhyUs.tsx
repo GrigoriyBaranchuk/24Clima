@@ -17,7 +17,7 @@ export default function WhyUs() {
   ];
 
   return (
-    <section id="nosotros" className="py-20 lg:py-28 bg-[#1e3a5f] relative overflow-hidden">
+    <section id="nosotros" className="py-20 lg:py-28 bg-[#1e3a5f] relative overflow-hidden scroll-mt-20">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#7BC043] rounded-full blur-3xl" />

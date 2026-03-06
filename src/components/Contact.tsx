@@ -40,7 +40,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contacto" className="py-20 lg:py-28 section-light-green">
+    <section id="contacto" className="py-20 lg:py-28 section-light-green scroll-mt-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header with Image */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">

@@ -3,11 +3,12 @@ import { Inter, Lora } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
+import { locales, defaultLocale, type Locale, getLocalePrefix } from "@/i18n/config";
 import { getHomeKeywords } from "@/lib/seo-keywords";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 import YandexMetrika from "@/components/YandexMetrika";
+import ScrollToHash from "@/components/ScrollToHash";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,7 +23,7 @@ const lora = Lora({
 });
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return locales.filter((l) => l !== defaultLocale).map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({
@@ -86,6 +87,9 @@ export default async function LocaleLayout({
   if (!locales.includes(locale as Locale)) {
     notFound();
   }
+  if (locale === defaultLocale) {
+    notFound();
+  }
 
   setRequestLocale(locale);
 
@@ -101,6 +105,7 @@ export default async function LocaleLayout({
       <YandexMetrika />
       <MetaPixel />
       <NextIntlClientProvider messages={messages}>
+        <ScrollToHash />
         {children}
       </NextIntlClientProvider>
     </div>

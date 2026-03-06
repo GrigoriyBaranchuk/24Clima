@@ -7,59 +7,32 @@ import { Button } from "@/components/ui/button";
 import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, ArrowRight } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/constants";
 import { metaPixelEvent } from "@/components/MetaPixel";
+import type { ServiceSlug } from "@/lib/services";
 
 export default function Services() {
   const t = useTranslations("services");
   const tCommon = useTranslations("common");
   const tWhatsapp = useTranslations("whatsappMessages");
 
-  const services = [
-    {
-      icon: Droplets,
-      slug: "cleaning",
-      title: t("cleaning.title"),
-      description: t("cleaning.description"),
-      benefits: [t("cleaning.benefit1"), t("cleaning.benefit2"), t("cleaning.benefit3"), t("cleaning.benefit4")],
-    },
-    {
-      icon: Settings,
-      slug: "maintenance",
-      title: t("maintenance.title"),
-      description: t("maintenance.description"),
-      benefits: [t("maintenance.benefit1"), t("maintenance.benefit2"), t("maintenance.benefit3"), t("maintenance.benefit4")],
-    },
-    {
-      icon: Wrench,
-      slug: "repair",
-      title: t("repair.title"),
-      description: t("repair.description"),
-      benefits: [t("repair.benefit1"), t("repair.benefit2"), t("repair.benefit3"), t("repair.benefit4")],
-    },
-    {
-      icon: Wind,
-      slug: "installation",
-      title: t("installation.title"),
-      description: t("installation.description"),
-      benefits: [t("installation.benefit1"), t("installation.benefit2"), t("installation.benefit3"), t("installation.benefit4")],
-    },
-    {
-      icon: Thermometer,
-      slug: "gas-recharge",
-      title: t("gasRecharge.title"),
-      description: t("gasRecharge.description"),
-      benefits: [t("gasRecharge.benefit1"), t("gasRecharge.benefit2"), t("gasRecharge.benefit3"), t("gasRecharge.benefit4")],
-    },
-    {
-      icon: Zap,
-      slug: "emergency",
-      title: t("emergency.title"),
-      description: t("emergency.description"),
-      benefits: [t("emergency.benefit1"), t("emergency.benefit2"), t("emergency.benefit3"), t("emergency.benefit4")],
-    },
+  const serviceList: { icon: typeof Droplets; slug: ServiceSlug; translationKey: string }[] = [
+    { icon: Droplets, slug: "limpieza", translationKey: "cleaning" },
+    { icon: Settings, slug: "mantenimiento", translationKey: "maintenance" },
+    { icon: Wrench, slug: "reparacion", translationKey: "repair" },
+    { icon: Wind, slug: "instalacion", translationKey: "installation" },
+    { icon: Thermometer, slug: "carga-de-gas", translationKey: "gasRecharge" },
+    { icon: Zap, slug: "emergencia", translationKey: "emergency" },
   ];
 
+  const services = serviceList.map(({ icon, slug, translationKey }) => ({
+    icon,
+    slug,
+    title: t(`${translationKey}.title`),
+    description: t(`${translationKey}.description`),
+    benefits: [t(`${translationKey}.benefit1`), t(`${translationKey}.benefit2`), t(`${translationKey}.benefit3`), t(`${translationKey}.benefit4`)],
+  }));
+
   return (
-    <section id="servicios" className="py-20 lg:py-28 section-gradient">
+    <section id="servicios" className="py-20 lg:py-28 section-gradient scroll-mt-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
         <div className="w-full max-w-3xl mx-auto text-center mb-12 sm:mb-16">
@@ -118,7 +91,7 @@ export default function Services() {
                     variant="ghost"
                     className="w-full text-[#1e3a5f] hover:text-[#0F9D58] hover:bg-[#0F9D58]/5"
                   >
-                    <Link href={`/servicios/${service.slug}`} scroll={false}>
+                    <Link href={`/servicios/${service.slug}`}>
                       <span className="flex items-center justify-center gap-2">
                         {tCommon("viewDetails")}
                         <ArrowRight className="w-4 h-4" />
