@@ -13,6 +13,10 @@ import { normalizeSlug } from "@/lib/slug";
 import { resolveImageUrls, stripForMetaDescription } from "@/lib/articles";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft } from "lucide-react";
+import AuthorBio from "@/components/AuthorBio";
+import { EXPERT } from "@/lib/author-data";
+import { BUSINESS_DATA } from "@/lib/business-data";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +53,8 @@ async function fetchArticle(slug: string): Promise<ArticleForLocale | null> {
   return null;
 }
 
+const DEFAULT_OG_IMAGE = "https://24clima.com/uploads/page1-opt.webp";
+
 export async function generateMetadata({
   params,
 }: {
@@ -59,6 +65,8 @@ export async function generateMetadata({
   if (!article) return { title: "24clima" };
   const description = stripForMetaDescription(article.content);
   const canonicalUrl = `${BASE}/consejos-y-guias/${slug}/`;
+  const imageUrls = resolveImageUrls(article.image_urls);
+  const ogImage = imageUrls[0] || DEFAULT_OG_IMAGE;
   return {
     title: `${article.title} | 24clima`,
     description,
@@ -67,6 +75,14 @@ export async function generateMetadata({
       description,
       url: canonicalUrl,
       type: "article",
+      publishedTime: article.created_at || undefined,
+      images: [{ url: ogImage, width: 712, height: 500, alt: article.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${article.title} | 24clima`,
+      description,
+      images: [ogImage],
     },
     alternates: { canonical: canonicalUrl },
   };
@@ -84,6 +100,52 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const imageUrls = resolveImageUrls(article.image_urls);
+  const canonicalUrl = `${BASE}/consejos-y-guias/${slug}/`;
+  const ogImage = imageUrls[0] || DEFAULT_OG_IMAGE;
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: stripForMetaDescription(article.content),
+    image: imageUrls.length ? imageUrls : [ogImage],
+    datePublished: article.created_at || undefined,
+    dateModified: article.created_at || undefined,
+    author: {
+      "@type": "Person",
+      "@id": EXPERT.id,
+      name: EXPERT.name,
+      jobTitle: EXPERT.jobTitle.es,
+      image: `${BASE}${EXPERT.image}`,
+      worksFor: {
+        "@id": BUSINESS_DATA.organizationId,
+        "@type": "HVACBusiness",
+        name: BUSINESS_DATA.name,
+        url: BUSINESS_DATA.url,
+      },
+      sameAs: EXPERT.sameAs,
+    },
+    reviewedBy: {
+      "@type": "Person",
+      "@id": EXPERT.id,
+      name: EXPERT.name,
+    },
+    publisher: {
+      "@id": BUSINESS_DATA.organizationId,
+      "@type": "HVACBusiness",
+      name: BUSINESS_DATA.name,
+      url: BUSINESS_DATA.url,
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+    url: canonicalUrl,
+  };
+
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Inicio", url: "https://24clima.com/" },
+    { name: "Consejos y Guías", url: "https://24clima.com/consejos-y-guias/" },
+    { name: article.title, url: canonicalUrl },
+  ]);
+
   const t = await getTranslations("tips");
   const created = article.created_at
     ? new Date(article.created_at).toLocaleDateString("es", {
@@ -95,6 +157,8 @@ export default async function ArticlePage({
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <ReadingProgressBar />
       <Header />
       <main className="article-reading-bg min-h-screen pt-24">
@@ -127,6 +191,10 @@ export default async function ArticlePage({
 
           <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-8 lg:py-12 -mt-12 relative z-10">
             <ArticleRenderer content={article.content} imageUrls={imageUrls} stacked />
+          </div>
+
+          <div className="container mx-auto px-4 lg:px-8 max-w-3xl pb-12 lg:pb-16">
+            <AuthorBio locale="es" includeJsonLd={false} />
           </div>
         </article>
       </main>

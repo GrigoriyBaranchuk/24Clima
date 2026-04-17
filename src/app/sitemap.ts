@@ -52,6 +52,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
+  // Areas de servicio — все локали
+  for (const locale of locales) {
+    entries.push({
+      url: localeUrl(locale, "/areas-de-servicio/"),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+      alternates: { languages: langAlternates("/areas-de-servicio/") },
+    });
+  }
+
+  // Diagnóstico — все локали
+  for (const locale of locales) {
+    entries.push({
+      url: localeUrl(locale, "/diagnostico/"),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+      alternates: { languages: langAlternates("/diagnostico/") },
+    });
+  }
+
   // Tips list — все локали
   for (const locale of locales) {
     entries.push({

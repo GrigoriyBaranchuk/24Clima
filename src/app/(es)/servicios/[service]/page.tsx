@@ -7,6 +7,11 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import CleaningPackages from "@/components/CleaningPackages";
 import ServicePageViewContent from "@/components/ServicePageViewContent";
+import ServiceFAQ from "@/components/ServiceFAQ";
+import ServiceCitations from "@/components/ServiceCitations";
+import ServiceStatsBar from "@/components/ServiceStatsBar";
+import ServiceExpandedContent from "@/components/ServiceExpandedContent";
+import AuthorBio from "@/components/AuthorBio";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import Calculator from "@/components/Calculator";
 import { Button } from "@/components/ui/button";
@@ -18,6 +23,9 @@ import { getServiceKeywords } from "@/lib/seo-keywords";
 import { Link } from "@/i18n/routing";
 import { SERVICE_SLUGS, getTranslationKey, isServiceSlug } from "@/lib/services";
 import type { ServiceSlug } from "@/lib/services";
+import { BUSINESS_DATA, SERVICE_PRICING, warrantyDurationISO } from "@/lib/business-data";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
+import { SERVICE_SEO_META } from "@/lib/service-seo-meta";
 
 const translationKeys = ["cleaning", "maintenance", "repair", "installation", "gasRecharge", "emergency"] as const;
 type TranslationKey = (typeof translationKeys)[number];
@@ -56,18 +64,33 @@ export async function generateMetadata({
   params: Promise<{ service: string }>;
 }): Promise<Metadata> {
   const { service } = await params;
-  const t = await getTranslations({ locale: "es", namespace: "services" });
   const translationKey = getTranslationKey(service);
   if (!translationKey) return { title: "Service Not Found" };
-  const title = t(`${translationKey}.title`);
-  const description = t(`${translationKey}.description`);
+  const seoMeta = SERVICE_SEO_META[translationKey];
+  const seoTitle = seoMeta?.title.es;
+  const seoDesc = seoMeta?.description.es;
   const canonicalUrl = `${base}/servicios/${service}/`;
   const keywords = getServiceKeywords(getSeoKey(translationKey), "es");
+  const imageUrl = serviceImages[translationKey as TranslationKey];
+  const imageFullUrl = `https://24clima.com${imageUrl}`;
   return {
-    title: `${title} | 24clima`,
-    description,
+    title: seoTitle,
+    description: seoDesc,
     keywords,
-    openGraph: { title: `${title} | 24clima`, description, url: canonicalUrl },
+    openGraph: {
+      title: seoTitle,
+      description: seoDesc,
+      url: canonicalUrl,
+      images: [
+        { url: imageFullUrl, width: 712, height: 500, alt: seoTitle },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seoTitle,
+      description: seoDesc,
+      images: [imageFullUrl],
+    },
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -114,29 +137,69 @@ export default async function ServicePage({
     }));
   const isCleaningPage = translationKey === "cleaning";
   const canonicalUrl = `${base}/servicios/${service}/`;
+  const pricing = SERVICE_PRICING[service as ServiceSlug];
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${canonicalUrl}#service`,
     name: title,
     description,
     url: canonicalUrl,
-    provider: { "@id": "https://24clima.com/#organization" },
-    areaServed: [
-      "Ciudad de Panamá",
-      "Costa del Este",
-      "Punta Pacífica",
-      "Albrook",
-      "Clayton",
-      "Panamá Pacífico",
-    ],
+    provider: { "@id": BUSINESS_DATA.organizationId },
+    areaServed: BUSINESS_DATA.areaServed.map((city) => ({ "@type": "City", name: city })),
     serviceType: title,
+    hoursAvailable: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: "00:00",
+      closes: "23:59",
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: pricing.currency,
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        minPrice: pricing.minPrice,
+        maxPrice: pricing.maxPrice,
+        priceCurrency: pricing.currency,
+      },
+      availability: "https://schema.org/InStock",
+      validFrom: "2026-01-01",
+      warranty: {
+        "@type": "WarrantyPromise",
+        durationOfWarranty: {
+          "@type": "QuantitativeValue",
+          value: pricing.warrantyDays,
+          unitCode: "DAY",
+        },
+      },
+      ...(pricing.note ? { description: pricing.note } : {}),
+    },
+    termsOfService: `Garantía: ${pricing.warrantyDays} días (${warrantyDurationISO(pricing.warrantyDays)}).`,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: BUSINESS_DATA.rating.value,
+      reviewCount: BUSINESS_DATA.rating.count,
+      bestRating: "5",
+      worstRating: "1",
+    },
   };
+
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Inicio", url: "https://24clima.com/" },
+    { name: "Servicios", url: "https://24clima.com/#servicios" },
+    { name: title, url: canonicalUrl },
+  ]);
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <ServicePageViewContent serviceName={title} />
       <Header />
@@ -189,6 +252,7 @@ export default async function ServicePage({
             </div>
           </div>
         </section>
+        <ServiceStatsBar service={service} locale="es" />
         {isCleaningPage && <CleaningPackages />}
         {isCleaningPage && <Calculator />}
         {!isCleaningPage && (
@@ -210,6 +274,7 @@ export default async function ServicePage({
             </div>
           </section>
         )}
+        <ServiceExpandedContent service={service} locale="es" />
         <section className="py-16 bg-gradient-to-r from-[#1e3a5f] to-[#0d2240]">
           <div className="container mx-auto px-4 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">{t("urgentTitle")}</h2>
@@ -224,6 +289,11 @@ export default async function ServicePage({
             </Button>
           </div>
         </section>
+        <ServiceCitations service={service} locale="es" />
+        <ServiceFAQ translationKey={translationKey} pageUrl={canonicalUrl} />
+        <div className="container mx-auto px-4 lg:px-8 max-w-4xl py-12">
+          <AuthorBio locale="es" variant="card" includeJsonLd={false} />
+        </div>
         <section className="py-16 lg:py-24 bg-gray-50">
           <div className="container mx-auto px-4 lg:px-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-[#1e3a5f] text-center mb-12">{t("title")}</h2>

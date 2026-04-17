@@ -12,6 +12,7 @@ import { resolveImageUrls, stripMarkdownForPreview } from "@/lib/articles";
 import { normalizeSlug } from "@/lib/slug";
 import TipsList from "./TipsList";
 import { Link } from "@/i18n/routing";
+import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -92,9 +93,27 @@ export default async function TipsPage({
   }
 
   const t = await getTranslations("tips");
+  const prefix = getLocalePrefix(locale as "es" | "en" | "ru");
+  const collectionUrl = `https://24clima.com${prefix}/consejos-y-guias/`;
+  const collectionPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${t("title")} | 24clima`,
+    url: collectionUrl,
+    description: t("subtitle"),
+    publisher: { "@type": "Organization", name: "24clima", url: "https://24clima.com" },
+  };
+
+  const labels = getLabels(locale);
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: labels.home, url: localePath(locale, "/") },
+    { name: labels.blog, url: localePath(locale, "/consejos-y-guias/") },
+  ]);
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Header />
       <main className="min-h-screen pt-24">
         <ParallaxHero>

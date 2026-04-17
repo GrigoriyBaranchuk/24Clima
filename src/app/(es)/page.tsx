@@ -5,8 +5,9 @@ import CleaningPackages from "@/components/CleaningPackages";
 import Calculator from "@/components/Calculator";
 import Services from "@/components/Services";
 import Problems from "@/components/Problems";
-import WhyUs from "@/components/WhyUs";
-import Contact from "@/components/Contact";
+import HomeCtaBlocks from "@/components/HomeCtaBlocks";
+import BlogPromo from "@/components/BlogPromo";
+import StatsSection from "@/components/StatsSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -21,9 +22,10 @@ export default async function Home() {
         <Calculator />
         <CleaningPackages />
         <Services />
+        <StatsSection locale="es" />
         <Problems />
-        <WhyUs />
-        <Contact />
+        <HomeCtaBlocks />
+        <BlogPromo locale="es" />
       </main>
       <Footer />
       <WhatsAppButton />

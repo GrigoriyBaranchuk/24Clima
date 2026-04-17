@@ -6,6 +6,8 @@
     "tips": "Consejos y Guías",
     "problems": "Problemas",
     "about": "Nosotros",
+    "serviceAreas": "Zonas de servicio",
+    "diagnosis": "Diagnóstico AC",
     "home": "Inicio",
     "callNow": "Llámanos",
     "scheduleService": "Escríbenos por WhatsApp",
@@ -16,6 +18,14 @@
     "checkAvailability": "Consultar disponibilidad",
     "viewDetails": "Ver detalles",
     "geoLine": "Servicio en Ciudad de Panamá, República de Panamá"
+  },
+  "homeCta": {
+    "nosotrosTitle": "¿Por qué elegirnos?",
+    "nosotrosText": "Conoce nuestro equipo, experiencia y compromiso con la calidad.",
+    "nosotrosLink": "Conocer más",
+    "contactoTitle": "¿Listo para contactarnos?",
+    "contactoText": "Escríbenos por WhatsApp o revisa nuestras formas de contacto.",
+    "contactoLink": "Ir a contacto"
   },
   "hero": {
     "trustBadge": "Más de 800 hogares confían en nosotros",
@@ -83,56 +93,117 @@
   "services": {
     "title": "Nuestros Servicios",
     "subtitle": "Servicios completos de aire acondicionado en Panamá.",
+    "faqSectionTitle": "Preguntas frecuentes",
     "urgentTitle": "¿Necesitas un servicio urgente?",
     "urgentSubtitle": "Nuestros técnicos están disponibles para atenderte de inmediato.",
     "cleaning": {
-      "title": "Limpieza Profunda",
-      "description": "Elimina hongos, bacterias y malos olores. Mejora la calidad del aire.",
+      "title": "Limpieza Profunda de Aire Acondicionado en Panamá",
+      "description": "Limpieza profesional de aire acondicionado en Ciudad de Panamá. Elimina hongos, bacterias y malos olores. Mejora el rendimiento del equipo. Servicio disponible 24/7.",
       "benefit1": "Elimina bacterias y hongos",
       "benefit2": "Mejora la calidad del aire",
       "benefit3": "Reduce consumo eléctrico",
-      "benefit4": "Extiende vida útil"
+      "benefit4": "Extiende vida útil",
+      "faq1Q": "¿Cada cuánto debo limpiar mi aire acondicionado?",
+      "faq1A": "Recomendamos una limpieza profunda al menos cada 6-12 meses, o más a menudo si usas el equipo diariamente o vives en zona con mucho polvo.",
+      "faq2Q": "¿Qué incluye la limpieza profunda?",
+      "faq2A": "Incluye limpieza del filtro, evaporador, bandeja de desagüe y rejillas. Opcionalmente tratamiento antibacteriano y revisión del nivel de gas.",
+      "faq3Q": "¿Pueden atender el mismo día?",
+      "faq3A": "Sí. En Ciudad de Panamá y alrededores a menudo podemos agendar para el mismo día o el siguiente según disponibilidad.",
+      "faq4Q": "¿El precio es por equipo o por visita?",
+      "faq4A": "El precio es por equipo. Si tienes varios equipos, aplican descuentos por cantidad; puedes usar la calculadora en la página para ver el total.",
+      "faq5Q": "¿Dan garantía en el servicio?",
+      "faq5A": "Sí. Respaldamos nuestro trabajo y puedes contactarnos si surge cualquier problema tras la limpieza."
     },
     "maintenance": {
-      "title": "Mantenimiento Preventivo",
-      "description": "Evita averías costosas y mantiene tu equipo funcionando.",
+      "title": "Mantenimiento Preventivo de Aire Acondicionado en Panamá",
+      "description": "Mantenimiento preventivo de aires acondicionados en Panamá. Evita averías costosas, prolonga la vida del equipo y garantiza un aire limpio. Técnicos certificados.",
       "benefit1": "Previene fallas mayores",
       "benefit2": "Ahorro en reparaciones",
       "benefit3": "Mayor eficiencia",
-      "benefit4": "Garantía de funcionamiento"
+      "benefit4": "Garantía de funcionamiento",
+      "faq1Q": "¿Cada cuánto debo hacer mantenimiento preventivo?",
+      "faq1A": "Lo ideal es cada 3-6 meses, sobre todo antes de temporadas de mucho uso. Ayuda a evitar fallas y alarga la vida del equipo.",
+      "faq2Q": "¿Qué revisan en el mantenimiento?",
+      "faq2A": "Revisamos filtros, niveles de refrigerante, conexiones eléctricas, drenaje y estado general del equipo. Incluye limpieza básica y reporte.",
+      "faq3Q": "¿Atienden todas las marcas?",
+      "faq3A": "Sí. Trabajamos con todas las marcas de aire acondicionado: split, ventana, central y minisplit.",
+      "faq4Q": "¿Puedo contratar un plan de mantenimiento?",
+      "faq4A": "Sí. Ofrecemos planes periódicos para hogares y negocios; escríbenos por WhatsApp para una cotización a tu medida.",
+      "faq5Q": "¿El mantenimiento evita la necesidad de reparaciones?",
+      "faq5A": "En la mayoría de los casos sí. Un mantenimiento regular detecta problemas a tiempo y reduce el riesgo de averías costosas."
     },
     "repair": {
-      "title": "Reparación",
-      "description": "Diagnóstico rápido y solución efectiva para cualquier falla.",
+      "title": "Reparación de Aire Acondicionado en Ciudad de Panamá",
+      "description": "Reparación de aires acondicionados en Ciudad de Panamá. Diagnóstico rápido, repuestos originales y garantía en el trabajo. Atendemos cualquier marca y modelo.",
       "benefit1": "Diagnóstico preciso",
       "benefit2": "Repuestos originales",
       "benefit3": "Técnicos certificados",
-      "benefit4": "Garantía en reparaciones"
+      "benefit4": "Garantía en reparaciones",
+      "faq1Q": "¿Hacen diagnóstico antes de reparar?",
+      "faq1A": "Sí. Primero hacemos un diagnóstico para identificar la causa; te damos un presupuesto claro antes de realizar la reparación.",
+      "faq2Q": "¿Usan repuestos originales?",
+      "faq2A": "Sí, siempre que sea posible usamos repuestos originales o de calidad equivalente para garantizar durabilidad.",
+      "faq3Q": "¿Dan garantía en las reparaciones?",
+      "faq3A": "Sí. Damos garantía en el trabajo realizado; el plazo depende del tipo de reparación.",
+      "faq4Q": "¿Atienden emergencias?",
+      "faq4A": "Sí. Tenemos servicio de emergencia 24/7 para fallas críticas en Ciudad de Panamá y alrededores.",
+      "faq5Q": "¿Qué marcas reparan?",
+      "faq5A": "Atendemos todas las marcas: LG, Samsung, Mabe, Daikin, Carrier, York, y demás equipos split y de ventana."
     },
     "installation": {
-      "title": "Instalación",
-      "description": "Instalación profesional de aires acondicionados.",
+      "title": "Instalación de Aire Acondicionado en Panamá",
+      "description": "Instalación profesional de aires acondicionados en Panamá. Incluye cableado, soportes, prueba de funcionamiento y limpieza del área. Técnicos certificados.",
       "priceFrom": "desde $120",
       "benefit1": "Instalación garantizada",
       "benefit2": "Todas las marcas",
       "benefit3": "Asesoría personalizada",
-      "benefit4": "Configuración óptima"
+      "benefit4": "Configuración óptima",
+      "faq1Q": "¿Cuánto tarda una instalación?",
+      "faq1A": "Depende del tipo de equipo; una instalación típica de split puede tomar entre 2 y 4 horas.",
+      "faq2Q": "¿Incluyen materiales?",
+      "faq2A": "Sí. La cotización puede incluir tubería, cableado, soportes y mano de obra; te detallamos todo antes de iniciar.",
+      "faq3Q": "¿Dan garantía en la instalación?",
+      "faq3A": "Sí. Garantizamos la instalación y el correcto funcionamiento del equipo.",
+      "faq4Q": "¿Puedo comprar el equipo yo y solo contratar la instalación?",
+      "faq4A": "Sí. Muchos clientes compran el equipo y nos contratan solo para la instalación; solo asegúrate de que el equipo sea adecuado para el espacio.",
+      "faq5Q": "¿En qué zonas instalan?",
+      "faq5A": "Ciudad de Panamá, Costa del Este, Punta Pacífica, Albrook, Clayton, Panamá Pacífico y zonas aledañas."
     },
     "gasRecharge": {
-      "title": "Carga de Gas",
-      "description": "Si tu aire no enfría, puede necesitar carga de gas.",
+      "title": "Carga de Gas Refrigerante para Aire Acondicionado en Panamá",
+      "description": "Carga de gas refrigerante para aires acondicionados en Panamá. Si tu equipo no enfría correctamente, recargamos con gas original. Servicio rápido y garantizado.",
       "benefit1": "Gases certificados",
       "benefit2": "Detección de fugas",
       "benefit3": "Recuperación de refrigerante",
-      "benefit4": "Mejor rendimiento"
+      "benefit4": "Mejor rendimiento",
+      "faq1Q": "¿Cómo sé si mi equipo necesita carga de gas?",
+      "faq1A": "Si el aire no enfría bien, el equipo se apaga o hay hielo en la tubería, es probable que falte refrigerante. Hacemos una revisión para confirmarlo.",
+      "faq2Q": "¿Qué tipo de gas usan?",
+      "faq2A": "Usamos refrigerante acorde al equipo (R-410A, R-32, R-22 según corresponda). Trabajamos con gases certificados.",
+      "faq3Q": "¿Detectan fugas antes de cargar?",
+      "faq3A": "Sí. Revisamos fugas antes de recargar; si hay fuga, te recomendamos repararla primero para que la carga sea efectiva.",
+      "faq4Q": "¿Cuánto dura una carga de gas?",
+      "faq4A": "Si no hay fuga, una carga puede durar años. Si el nivel baja pronto, suele indicar una fuga que debe repararse.",
+      "faq5Q": "¿Dan garantía en la carga?",
+      "faq5A": "Sí. Respaldamos el servicio de carga; si hay una fuga no detectada, la revisamos sin costo adicional en el período de garantía."
     },
     "emergency": {
-      "title": "Emergencia 24/7",
-      "description": "Atención de emergencias cuando más lo necesitas.",
+      "title": "Servicio de Emergencia de Aire Acondicionado 24/7 en Panamá",
+      "description": "Servicio de emergencia de aire acondicionado 24/7 en Ciudad de Panamá. Atendemos fallas críticas en cualquier momento, incluyendo fines de semana y feriados.",
       "benefit1": "Disponible 24/7",
       "benefit2": "Respuesta inmediata",
       "benefit3": "Cobertura amplia",
-      "benefit4": "Técnicos de guardia"
+      "benefit4": "Técnicos de guardia",
+      "faq1Q": "¿Están disponibles 24 horas?",
+      "faq1A": "Sí. El servicio de emergencia está disponible las 24 horas, todos los días, incluyendo fines de semana y feriados.",
+      "faq2Q": "¿En qué casos es una emergencia?",
+      "faq2A": "Fugas de agua importantes, olor a quemado, equipo que no enciende en pleno calor o ruidos anormales que indican falla grave.",
+      "faq3Q": "¿Cuánto tardan en llegar?",
+      "faq3A": "En Ciudad de Panamá y zonas cercanas intentamos llegar en 1-2 horas según disponibilidad y tráfico.",
+      "faq4Q": "¿El precio de emergencia es mayor?",
+      "faq4A": "El servicio de emergencia tiene un costo adicional por la disponibilidad inmediata; te damos la cotización al contactarnos.",
+      "faq5Q": "¿Qué zonas cubren en emergencias?",
+      "faq5A": "Ciudad de Panamá, Costa del Este, Punta Pacífica, Albrook, Clayton, Panamá Pacífico y alrededores."
     }
   },
   "problems": {
@@ -200,6 +271,9 @@
     "stat2": "Años de experiencia",
     "stat3": "Disponibilidad",
     "stat4": "Garantía de servicio"
+  },
+  "reviews": {
+    "title": "Opiniones de nuestros clientes"
   },
   "contact": {
     "title": "Contáctanos",
@@ -274,5 +348,18 @@
     "emergency": "Hola, necesito un servicio urgente de aire acondicionado.",
     "quote": "Hola, quiero una cotización para limpieza de aire acondicionado.",
     "problemIntro": "Hola, tengo una consulta sobre mi aire acondicionado."
+  },
+  "citations": {
+    "title": "Fuentes y referencias",
+    "intro": "Nuestras recomendaciones técnicas se basan en directrices de autoridades internacionales del sector HVAC y energía."
+  },
+  "stats": {
+    "sectionTitle": "Confianza en números",
+    "subtitle": "Resultados reales que respaldan cada servicio en Ciudad de Panamá",
+    "clients": "Clientes satisfechos",
+    "expertYears": "Años de experiencia del Maestro HVAC",
+    "rating": "Calificación en Google (11 reseñas)",
+    "availability": "Servicio de emergencia",
+    "zonesCovered": "Zonas de Ciudad de Panamá cubiertas"
   }
 }

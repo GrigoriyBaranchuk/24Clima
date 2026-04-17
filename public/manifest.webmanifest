@@ -1,0 +1,18 @@
+{
+  "name": "24clima - Aire Acondicionado en Panamá",
+  "short_name": "24clima",
+  "description": "Servicio profesional de aire acondicionado en Panamá. Instalación, mantenimiento y reparación 24/7.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e3a5f",
+  "theme_color": "#1e3a5f",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/images/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

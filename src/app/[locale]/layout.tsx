@@ -34,15 +34,15 @@ export async function generateMetadata({
   const { locale } = await params;
 
   const titles: Record<string, string> = {
-    es: "24clima | Servicio de Aire Acondicionado en Panamá - Instalación, Mantenimiento y Reparación",
-    en: "24clima | Air Conditioning Service in Panama - Installation, Maintenance and Repair",
-    ru: "24clima | Обслуживание кондиционеров в Панаме - Установка, Обслуживание и Ремонт",
+    es: "Aire Acondicionado Panamá ★5.0 | 24/7 — 24clima",
+    en: "Air Conditioning Panama ★5.0 | 24/7 — 24clima",
+    ru: "Кондиционеры в Панаме ★5.0 | 24/7 — 24clima",
   };
 
   const descriptions: Record<string, string> = {
-    es: "Técnicos profesionales de aire acondicionado en Panamá. Instalación, mantenimiento preventivo, limpieza profunda, reparación y carga de gas refrigerante. Atención 24/7 en Ciudad de Panamá.",
-    en: "Professional air conditioning technicians in Panama. Installation, preventive maintenance, deep cleaning, repair and refrigerant gas recharge. 24/7 service in Panama City.",
-    ru: "Профессиональные техники по кондиционерам в Панаме. Установка, профилактика, глубокая очистка, ремонт и заправка хладагентом. Круглосуточное обслуживание в Панама-Сити.",
+    es: "Servicio HVAC profesional en Ciudad de Panamá. Maestro certificado, 9+ años. Limpieza desde $29.99, reparación, instalación. ★5.0 (11 reseñas Google). 24/7.",
+    en: "Professional HVAC service in Panama City. Certified master, 9+ years. Cleaning from $29.99, repair, installation. ★5.0 (11 Google reviews). Available 24/7.",
+    ru: "Профессиональный HVAC-сервис в Панама-Сити. Сертифицированный мастер, 9+ лет. Чистка от $29.99, ремонт, установка. ★5.0 (11 отзывов Google). 24/7.",
   };
 
   const prefix = getLocalePrefix(locale as Locale);
@@ -62,6 +62,20 @@ export async function generateMetadata({
       siteName: "24clima",
       title: titles[locale] || titles.es,
       description: descriptions[locale] || descriptions.es,
+      images: [
+        {
+          url: "https://24clima.com/uploads/page1-opt.webp",
+          width: 712,
+          height: 500,
+          alt: "24clima - Servicio de Aire Acondicionado en Panamá",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: titles[locale] || titles.es,
+      description: descriptions[locale] || descriptions.es,
+      images: ["https://24clima.com/uploads/page1-opt.webp"],
     },
     alternates: {
       canonical: canonicalUrl,

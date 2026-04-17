@@ -11,6 +11,8 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/images/logo.svg" />
         <meta name="theme-color" content="#1e3a5f" />
         <meta name="geo.region" content="PA" />
         <meta name="geo.placename" content="Ciudad de Panamá" />
@@ -51,8 +53,26 @@ export default function RootLayout({
                 opens: "00:00",
                 closes: "23:59",
               },
-              priceRange: "$$",
-              sameAs: ["https://wa.me/50768282120"],
+              priceRange: "$29.99 - $600",
+              foundingDate: "2024",
+              numberOfEmployees: {
+                "@type": "QuantitativeValue",
+                value: 1,
+                unitText: "Maestro HVAC + equipo técnico",
+              },
+              slogan: "Maestros HVAC en Panamá — servicio 24/7",
+              knowsLanguage: ["es", "en", "ru"],
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "5.0",
+                reviewCount: "11",
+                bestRating: "5",
+                worstRating: "1",
+              },
+              sameAs: [
+                "https://wa.me/50768282120",
+                "https://www.instagram.com/24clima",
+              ],
             }),
           }}
         />

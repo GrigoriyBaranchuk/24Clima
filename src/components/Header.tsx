@@ -32,8 +32,8 @@ export default function Header() {
     { name: t("tips"), href: "/consejos-y-guias", isAnchor: false },
     { name: t("services"), href: "/#servicios", isAnchor: true },
     { name: t("problems"), href: "/#problemas", isAnchor: true },
-    { name: t("about"), href: "/#nosotros", isAnchor: true },
-    { name: t("contact"), href: "/#contacto", isAnchor: true },
+    { name: t("about"), href: "/nosotros", isAnchor: false },
+    { name: t("contact"), href: "/contacto", isAnchor: false },
   ];
 
   const isHomePage = pathname === "/" || pathname === "";

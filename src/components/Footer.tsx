@@ -115,6 +115,34 @@ export default function Footer() {
             >
               {tCommon("tips")}
             </Link>
+            <Link
+              href="/nosotros"
+              scroll={false}
+              className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
+            >
+              {tCommon("about")}
+            </Link>
+            <Link
+              href="/areas-de-servicio"
+              scroll={false}
+              className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
+            >
+              {tCommon("serviceAreas")}
+            </Link>
+            <Link
+              href="/diagnostico"
+              scroll={false}
+              className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
+            >
+              {tCommon("diagnosis")}
+            </Link>
+            <Link
+              href="/contacto"
+              scroll={false}
+              className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
+            >
+              {tCommon("contact")}
+            </Link>
             <ul className="space-y-3">
               {problems.map((problem, index) => (
                 <li key={index}>
@@ -150,14 +178,6 @@ export default function Footer() {
             <p className="text-gray-400 text-base">
               © {currentYear} 24clima. {t("copyright")}
             </p>
-            <div className="flex items-center gap-6 text-base text-gray-400">
-              <a href="#" className="hover:text-white transition-colors">
-                {t("privacyPolicy")}
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                {t("termsOfService")}
-              </a>
-            </div>
           </div>
         </div>
       </div>

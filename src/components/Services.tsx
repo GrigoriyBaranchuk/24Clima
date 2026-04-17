@@ -93,7 +93,7 @@ export default function Services() {
                   >
                     <Link href={`/servicios/${service.slug}`}>
                       <span className="flex items-center justify-center gap-2">
-                        {tCommon("viewDetails")}
+                        {service.title}
                         <ArrowRight className="w-4 h-4" />
                       </span>
                     </Link>

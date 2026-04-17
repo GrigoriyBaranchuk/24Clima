@@ -22,8 +22,8 @@ const lora = Lora({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://24clima.com"),
-  title: "24clima | Servicio de Aire Acondicionado en Panamá - Instalación, Mantenimiento y Reparación",
-  description: "Técnicos profesionales de aire acondicionado en Panamá. Instalación, mantenimiento preventivo, limpieza profunda, reparación y carga de gas refrigerante. Atención 24/7 en Ciudad de Panamá, Costa del Este, Punta Pacífica y alrededores. Precios transparentes.",
+  title: "Aire Acondicionado Panamá ★5.0 | 24/7 — 24clima",
+  description: "Servicio HVAC profesional en Ciudad de Panamá. Maestro certificado, 9+ años. Limpieza desde $29.99, reparación, instalación. ★5.0 (11 reseñas Google). 24/7.",
   robots: { index: true, follow: true },
   keywords: getHomeKeywords("es"),
   openGraph: {
@@ -31,8 +31,22 @@ export const metadata: Metadata = {
     locale: "es_PA",
     url: "https://24clima.com/",
     siteName: "24clima",
-    title: "24clima | Servicio de Aire Acondicionado en Panamá",
-    description: "Técnicos profesionales de aire acondicionado en Panamá. Atención 24/7.",
+    title: "Aire Acondicionado Panamá ★5.0 | 24/7 — 24clima",
+    description: "Servicio HVAC profesional en Ciudad de Panamá. Maestro certificado, 9+ años. Limpieza desde $29.99, reparación, instalación. ★5.0 (11 reseñas Google). 24/7.",
+    images: [
+      {
+        url: "https://24clima.com/uploads/page1-opt.webp",
+        width: 712,
+        height: 500,
+        alt: "24clima — Aire acondicionado profesional en Panamá",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aire Acondicionado Panamá ★5.0 | 24/7 — 24clima",
+    description: "Servicio HVAC profesional en Ciudad de Panamá. Maestro certificado, 9+ años. Limpieza desde $29.99, reparación, instalación. ★5.0 (11 reseñas Google). 24/7.",
+    images: ["https://24clima.com/uploads/page1-opt.webp"],
   },
   alternates: {
     canonical: "https://24clima.com/",

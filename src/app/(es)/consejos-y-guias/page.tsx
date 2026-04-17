@@ -9,6 +9,7 @@ import { resolveImageUrls, stripMarkdownForPreview } from "@/lib/articles";
 import { normalizeSlug } from "@/lib/slug";
 import { Link } from "@/i18n/routing";
 import TipsList from "../../[locale]/consejos-y-guias/TipsList";
+import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
 
 export const dynamic = "force-dynamic";
 
@@ -57,9 +58,24 @@ export default async function TipsPage() {
   }
 
   const t = await getTranslations("tips");
+  const collectionPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${t("title")} | 24clima`,
+    url: "https://24clima.com/consejos-y-guias/",
+    description: t("subtitle"),
+    publisher: { "@type": "Organization", name: "24clima", url: "https://24clima.com" },
+  };
+
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Inicio", url: "https://24clima.com/" },
+    { name: "Consejos y Guías", url: "https://24clima.com/consejos-y-guias/" },
+  ]);
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Header />
       <main className="min-h-screen pt-24">
         <ParallaxHero>

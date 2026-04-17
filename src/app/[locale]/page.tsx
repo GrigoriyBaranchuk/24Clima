@@ -6,8 +6,9 @@ import CleaningPackages from "@/components/CleaningPackages";
 import Calculator from "@/components/Calculator";
 import Services from "@/components/Services";
 import Problems from "@/components/Problems";
-import WhyUs from "@/components/WhyUs";
-import Contact from "@/components/Contact";
+import HomeCtaBlocks from "@/components/HomeCtaBlocks";
+import BlogPromo from "@/components/BlogPromo";
+import StatsSection from "@/components/StatsSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -31,9 +32,10 @@ export default async function Home({ params }: Props) {
         <Calculator />
         <CleaningPackages />
         <Services />
+        <StatsSection locale={locale === "en" || locale === "ru" ? locale : "es"} />
         <Problems />
-        <WhyUs />
-        <Contact />
+        <HomeCtaBlocks />
+        <BlogPromo locale={locale} />
       </main>
       <Footer />
       <WhatsAppButton />

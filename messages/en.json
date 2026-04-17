@@ -6,6 +6,8 @@
     "tips": "Tips and Guides",
     "problems": "Problems",
     "about": "About Us",
+    "serviceAreas": "Service Areas",
+    "diagnosis": "AC Diagnosis",
     "home": "Home",
     "callNow": "Call Us",
     "scheduleService": "Contact us on WhatsApp",
@@ -16,6 +18,14 @@
     "checkAvailability": "Check availability",
     "viewDetails": "View details",
     "geoLine": "Service in Panama City, Republic of Panama"
+  },
+  "homeCta": {
+    "nosotrosTitle": "Why choose us?",
+    "nosotrosText": "Learn about our team, experience and commitment to quality.",
+    "nosotrosLink": "Learn more",
+    "contactoTitle": "Ready to get in touch?",
+    "contactoText": "Message us on WhatsApp or see our contact options.",
+    "contactoLink": "Go to contact"
   },
   "hero": {
     "trustBadge": "More than 800 homes trust us",
@@ -83,56 +93,117 @@
   "services": {
     "title": "Our Services",
     "subtitle": "Complete air conditioning services in Panama.",
+    "faqSectionTitle": "Frequently asked questions",
     "urgentTitle": "Need urgent service?",
     "urgentSubtitle": "Our technicians are available to assist you immediately.",
     "cleaning": {
-      "title": "Deep Cleaning",
-      "description": "Eliminates mold, bacteria and bad odors. Improves air quality.",
+      "title": "Air Conditioner Deep Cleaning Service in Panama",
+      "description": "Professional air conditioner cleaning in Panama City. Removes mold, bacteria and bad odors. Improves equipment performance and air quality. Available 24/7.",
       "benefit1": "Eliminates bacteria and mold",
       "benefit2": "Improves air quality",
       "benefit3": "Reduces electricity consumption",
-      "benefit4": "Extends equipment life"
+      "benefit4": "Extends equipment life",
+      "faq1Q": "How often should I have my air conditioner cleaned?",
+      "faq1A": "We recommend a deep clean at least every 6–12 months, or more often if you use the unit daily or live in a dusty area.",
+      "faq2Q": "What does deep cleaning include?",
+      "faq2A": "It includes cleaning the filter, evaporator, drain pan and grilles. Optionally antibacterial treatment and refrigerant level check.",
+      "faq3Q": "Can you come the same day?",
+      "faq3A": "Yes. In Panama City and nearby areas we can often schedule same day or next day depending on availability.",
+      "faq4Q": "Is the price per unit or per visit?",
+      "faq4A": "The price is per unit. If you have multiple units, we offer quantity discounts; you can use the calculator on the page to see the total.",
+      "faq5Q": "Do you offer a warranty on the service?",
+      "faq5A": "Yes. We stand behind our work and you can contact us if any issue arises after the cleaning."
     },
     "maintenance": {
-      "title": "Preventive Maintenance",
-      "description": "Prevents costly breakdowns and keeps your equipment running.",
+      "title": "Preventive Air Conditioner Maintenance in Panama",
+      "description": "Preventive air conditioner maintenance in Panama. Avoids costly repairs, extends equipment life and ensures clean air. Certified technicians available daily.",
       "benefit1": "Prevents major failures",
       "benefit2": "Saves on repairs",
       "benefit3": "Greater efficiency",
-      "benefit4": "Operation guarantee"
+      "benefit4": "Operation guarantee",
+      "faq1Q": "How often should I have preventive maintenance?",
+      "faq1A": "Every 3–6 months is ideal, especially before peak use seasons. It helps prevent failures and extends equipment life.",
+      "faq2Q": "What do you check during maintenance?",
+      "faq2A": "We check filters, refrigerant levels, electrical connections, drainage and overall condition. Includes basic cleaning and a report.",
+      "faq3Q": "Do you service all brands?",
+      "faq3A": "Yes. We work with all air conditioner brands: split, window, central and mini-split.",
+      "faq4Q": "Can I sign up for a maintenance plan?",
+      "faq4A": "Yes. We offer periodic plans for homes and businesses; message us on WhatsApp for a custom quote.",
+      "faq5Q": "Does maintenance reduce the need for repairs?",
+      "faq5A": "In most cases yes. Regular maintenance catches issues early and reduces the risk of costly breakdowns."
     },
     "repair": {
-      "title": "Repair",
-      "description": "Quick diagnosis and effective solution for any failure.",
+      "title": "Air Conditioner Repair Service in Panama City",
+      "description": "Air conditioner repair in Panama City. Fast diagnosis, original parts and work guarantee. We service any brand and model across Panama City and surrounding areas.",
       "benefit1": "Accurate diagnosis",
       "benefit2": "Original spare parts",
       "benefit3": "Certified technicians",
-      "benefit4": "Repair warranty"
+      "benefit4": "Repair warranty",
+      "faq1Q": "Do you diagnose before repairing?",
+      "faq1A": "Yes. We first run a diagnosis to find the cause; we give you a clear quote before doing the repair.",
+      "faq2Q": "Do you use original parts?",
+      "faq2A": "Yes, we use original or equivalent quality parts whenever possible to ensure durability.",
+      "faq3Q": "Do you warranty repairs?",
+      "faq3A": "Yes. We warranty the work; the period depends on the type of repair.",
+      "faq4Q": "Do you handle emergencies?",
+      "faq4A": "Yes. We have 24/7 emergency service for critical failures in Panama City and surrounding areas.",
+      "faq5Q": "What brands do you repair?",
+      "faq5A": "We service all brands: LG, Samsung, Mabe, Daikin, Carrier, York, and other split and window units."
     },
     "installation": {
-      "title": "Installation",
-      "description": "Professional air conditioner installation.",
+      "title": "Professional Air Conditioner Installation in Panama",
+      "description": "Professional air conditioner installation in Panama. Includes wiring, brackets, functional test and area cleanup. Certified technicians with years of experience.",
       "priceFrom": "from $120",
       "benefit1": "Guaranteed installation",
       "benefit2": "All brands",
       "benefit3": "Personalized advice",
-      "benefit4": "Optimal configuration"
+      "benefit4": "Optimal configuration",
+      "faq1Q": "How long does an installation take?",
+      "faq1A": "It depends on the unit type; a typical split installation usually takes 2–4 hours.",
+      "faq2Q": "Are materials included?",
+      "faq2A": "Yes. The quote can include piping, wiring, brackets and labour; we detail everything before starting.",
+      "faq3Q": "Do you warranty the installation?",
+      "faq3A": "Yes. We warranty the installation and proper operation of the unit.",
+      "faq4Q": "Can I buy the unit myself and only hire installation?",
+      "faq4A": "Yes. Many customers buy the unit and hire us only for installation; just ensure the unit is suitable for the space.",
+      "faq5Q": "What areas do you serve?",
+      "faq5A": "Panama City, Costa del Este, Punta Pacífica, Albrook, Clayton, Panama Pacifico and surrounding areas."
     },
     "gasRecharge": {
-      "title": "Gas Recharge",
-      "description": "If your air doesn't cool, it may need a gas recharge.",
+      "title": "AC Refrigerant Gas Recharge Service in Panama",
+      "description": "AC refrigerant gas recharge in Panama. If your unit is not cooling properly, we recharge with original refrigerant gas. Fast, guaranteed service across Panama City.",
       "benefit1": "Certified gases",
       "benefit2": "Leak detection",
       "benefit3": "Refrigerant recovery",
-      "benefit4": "Better performance"
+      "benefit4": "Better performance",
+      "faq1Q": "How do I know if my unit needs a gas recharge?",
+      "faq1A": "If the air is not cooling well, the unit shuts off or there is ice on the lines, it may need refrigerant. We check to confirm.",
+      "faq2Q": "What type of gas do you use?",
+      "faq2A": "We use refrigerant that matches the unit (R-410A, R-32, R-22 as applicable). We use certified refrigerants.",
+      "faq3Q": "Do you check for leaks before recharging?",
+      "faq3A": "Yes. We check for leaks before recharging; if there is a leak we recommend repairing it first so the charge holds.",
+      "faq4Q": "How long does a recharge last?",
+      "faq4A": "If there is no leak, a charge can last years. If the level drops soon, it usually indicates a leak that should be fixed.",
+      "faq5Q": "Do you warranty the recharge?",
+      "faq5A": "Yes. We warranty the recharge service; if an undetected leak appears we will recheck within the warranty period at no extra cost."
     },
     "emergency": {
-      "title": "Emergency 24/7",
-      "description": "Emergency assistance when you need it most.",
+      "title": "24/7 Emergency Air Conditioner Service in Panama",
+      "description": "24/7 emergency air conditioner service in Panama City. We handle critical failures at any time, including weekends and holidays. Call us now for immediate assistance.",
       "benefit1": "Available 24/7",
       "benefit2": "Immediate response",
       "benefit3": "Wide coverage",
-      "benefit4": "On-call technicians"
+      "benefit4": "On-call technicians",
+      "faq1Q": "Are you available 24 hours?",
+      "faq1A": "Yes. Emergency service is available 24 hours, every day, including weekends and holidays.",
+      "faq2Q": "When is it considered an emergency?",
+      "faq2A": "Major water leaks, burning smell, unit not turning on in peak heat or unusual noises that suggest serious failure.",
+      "faq3Q": "How soon can you arrive?",
+      "faq3A": "In Panama City and nearby we aim to arrive within 1–2 hours depending on availability and traffic.",
+      "faq4Q": "Is emergency service more expensive?",
+      "faq4A": "Emergency service has an additional fee for immediate availability; we will quote when you contact us.",
+      "faq5Q": "What areas do you cover for emergencies?",
+      "faq5A": "Panama City, Costa del Este, Punta Pacífica, Albrook, Clayton, Panama Pacifico and surrounding areas."
     }
   },
   "problems": {
@@ -200,6 +271,9 @@
     "stat2": "Years of experience",
     "stat3": "Availability",
     "stat4": "Service guarantee"
+  },
+  "reviews": {
+    "title": "What our customers say"
   },
   "contact": {
     "title": "Contact Us",
@@ -274,5 +348,18 @@
     "emergency": "Hello, I need urgent air conditioning service.",
     "quote": "Hello, I want a quote for air conditioning cleaning.",
     "problemIntro": "Hello, I have a question about my air conditioner."
+  },
+  "citations": {
+    "title": "Sources and references",
+    "intro": "Our technical recommendations are based on guidelines from international HVAC and energy authorities."
+  },
+  "stats": {
+    "sectionTitle": "Trust in numbers",
+    "subtitle": "Real results that back every service in Panama City",
+    "clients": "Satisfied clients",
+    "expertYears": "Years of HVAC Master experience",
+    "rating": "Google rating (11 reviews)",
+    "availability": "Emergency service",
+    "zonesCovered": "Zones covered in Panama City"
   }
 }
