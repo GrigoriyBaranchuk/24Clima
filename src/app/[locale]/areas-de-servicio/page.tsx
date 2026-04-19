@@ -8,6 +8,7 @@ import { MapPin, Clock, ChevronRight } from "lucide-react";
 import { SERVICE_AREAS } from "@/lib/areas-data";
 import { BUSINESS_DATA } from "@/lib/business-data";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import { Button } from "@/components/ui/button";
 
@@ -168,9 +169,12 @@ export default async function AreasPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <Header />
-      <main className="pt-20">
+      <main id="main-content" className="pt-20">
         {/* Hero */}
         <section className="hero-gradient py-16 lg:py-24">
+          <div className="container mx-auto px-4 lg:px-8">
+            <Breadcrumbs segments={[{ label: labels.serviceAreas }]} variant="light" />
+          </div>
           <div className="container mx-auto px-4 lg:px-8 text-center">
             <div className="w-16 h-16 bg-[#7BC043]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <MapPin className="w-8 h-8 text-[#7BC043]" />

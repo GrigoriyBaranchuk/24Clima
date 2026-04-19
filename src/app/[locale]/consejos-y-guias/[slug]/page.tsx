@@ -19,6 +19,7 @@ import AuthorBio from "@/components/AuthorBio";
 import { EXPERT } from "@/lib/author-data";
 import { BUSINESS_DATA } from "@/lib/business-data";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 type SupportedLocale = "es" | "en" | "ru";
 function toSupportedLocale(locale: string): SupportedLocale {
@@ -192,8 +193,17 @@ export default async function ArticlePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <ReadingProgressBar />
       <Header />
-      <main className="article-reading-bg min-h-screen pt-24">
+      <main id="main-content" className="article-reading-bg min-h-screen pt-24">
         <article>
+          <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
+            <Breadcrumbs
+              segments={[
+                { label: labels.blog, href: "/consejos-y-guias" },
+                { label: article.title },
+              ]}
+              variant="light"
+            />
+          </div>
           <div className="container mx-auto px-4 lg:px-8 max-w-3xl py-12 lg:py-16 -mt-4">
             <ArticleHero>
               <div className="p-8 lg:p-12">

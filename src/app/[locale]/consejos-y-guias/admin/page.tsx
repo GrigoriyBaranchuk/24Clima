@@ -173,7 +173,7 @@ export default function TipsAdminPage() {
     return (
       <>
         <Header />
-        <main className="min-h-screen pt-24 flex items-center justify-center px-4">
+        <main id="main-content" className="min-h-screen pt-24 flex items-center justify-center px-4">
           <Card className="w-full max-w-md">
             <CardContent className="pt-6">
               <p className="text-gray-600 text-center">
@@ -191,7 +191,7 @@ export default function TipsAdminPage() {
     return (
       <>
         <Header />
-        <main className="min-h-screen pt-24 flex items-center justify-center px-4">
+        <main id="main-content" className="min-h-screen pt-24 flex items-center justify-center px-4">
           <Card className="w-full max-w-md">
             <CardHeader>
               <h1 className="text-2xl font-bold text-[#1e3a5f]">{t("title")}</h1>
@@ -234,7 +234,7 @@ export default function TipsAdminPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-24 pb-16">
+      <main id="main-content" className="min-h-screen pt-24 pb-16">
         <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold text-[#1e3a5f]">{t("title")}</h1>

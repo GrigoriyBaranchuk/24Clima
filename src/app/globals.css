@@ -32,34 +32,24 @@
     --ring: 150 60% 40%;
     --radius: 0.625rem;
 
-    /* Brand Colors */
+    /* Brand Colors (HSL for shadcn compatibility) */
     --brand-green: 150 60% 40%;
     --brand-green-light: 90 55% 50%;
     --brand-navy: 215 55% 25%;
     --brand-cyan: 195 85% 45%;
+
+    /* Brand Colors (hex — for direct use in gradients, arbitrary values, etc.) */
+    --color-brand-green: #7BC043;
+    --color-brand-green-dark: #0F9D58;
+    --color-brand-navy: #1e3a5f;
+    --color-brand-navy-dark: #0d2240;
+    --color-brand-navy-deepest: #0a1628;
+    --color-whatsapp: #25D366;
+    --color-whatsapp-hover: #20BD5A;
   }
 
-  .dark {
-    --background: 215 40% 8%;
-    --foreground: 0 0% 98%;
-    --card: 215 40% 10%;
-    --card-foreground: 0 0% 98%;
-    --popover: 215 40% 10%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 150 60% 45%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 205 80% 50%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 215 20% 18%;
-    --muted-foreground: 210 15% 65%;
-    --accent: 205 80% 50%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 215 20% 20%;
-    --input: 215 20% 20%;
-    --ring: 150 60% 45%;
-  }
+  /* Dark mode variables removed — not currently used.
+     Re-add when dark mode toggle is implemented. */
 }
 
 @layer base {
@@ -133,12 +123,12 @@
 }
 
 .whatsapp-pulse {
-  animation: whatsapp-pulse 2s infinite;
+  animation: whatsapp-pulse 2s 5;
 }
 
 /* Gradient backgrounds */
 .hero-gradient {
-  background: linear-gradient(135deg, #1e3a5f 0%, #0d2240 50%, #0a1628 100%);
+  background: linear-gradient(135deg, var(--color-brand-navy) 0%, var(--color-brand-navy-dark) 50%, var(--color-brand-navy-deepest) 100%);
 }
 
 .section-gradient {
@@ -162,11 +152,11 @@
 }
 
 .green-gradient {
-  background: linear-gradient(135deg, #7BC043 0%, #0F9D58 100%);
+  background: linear-gradient(135deg, var(--color-brand-green) 0%, var(--color-brand-green-dark) 100%);
 }
 
 .brand-gradient-text {
-  background: linear-gradient(135deg, #7BC043 0%, #0F9D58 100%);
+  background: linear-gradient(135deg, var(--color-brand-green) 0%, var(--color-brand-green-dark) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -275,7 +265,7 @@
 }
 /* Blockquote — brand accent, light text */
 .article-content blockquote {
-  border-left: 4px solid #7BC043;
+  border-left: 4px solid var(--color-brand-green);
   padding-left: 1.25rem;
   margin: 1.5rem 0;
   font-style: italic;
@@ -293,4 +283,34 @@
 .article-content span {
   font-size: inherit !important;
   color: #c8d6e3;
+}
+
+/* ============================================================
+   Accessibility: Reduced Motion (WCAG 2.1 Level AA §2.3.3)
+   Disables all animations and transitions for users who prefer
+   reduced motion (vestibular disorders, motion sensitivity).
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-pulse-slow,
+  .whatsapp-pulse {
+    animation: none !important;
+  }
+
+  .card-hover:hover {
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

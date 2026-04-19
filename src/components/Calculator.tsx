@@ -29,7 +29,9 @@ export default function Calculator() {
   const tPackages = useTranslations("packages");
   const [quantity, setQuantity] = useState(1);
   const [packageType, setPackageType] = useState<PackageType>("basic");
-  const [showBreakdown, setShowBreakdown] = useState(false);
+  const [breakdownOverride, setBreakdownOverride] = useState<boolean | null>(null);
+  // Auto-open breakdown when quantity > 1, but allow manual toggle
+  const showBreakdown = breakdownOverride !== null ? breakdownOverride : quantity > 1;
 
   // Calculate prices for each unit
   const priceBreakdown = useMemo(() => {
@@ -120,7 +122,7 @@ export default function Calculator() {
                     <button
                       key={num}
                       onClick={() => setQuantity(num)}
-                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl font-bold text-lg transition-all ${
+                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl font-bold text-lg transition-all active:scale-95 ${
                         quantity === num && quantity <= 5
                           ? "bg-[#7BC043] text-white scale-105"
                           : "bg-white/10 text-white hover:bg-white/20"
@@ -137,7 +139,7 @@ export default function Calculator() {
                   <div className="flex items-center bg-white/10 rounded-xl overflow-hidden">
                     <button
                       onClick={decrementQuantity}
-                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 transition-all active:scale-90"
                       aria-label="Decrease quantity"
                     >
                       <Minus className="w-4 h-4" />
@@ -152,7 +154,7 @@ export default function Calculator() {
                     />
                     <button
                       onClick={incrementQuantity}
-                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white hover:bg-white/20 transition-all active:scale-90"
                       aria-label="Increase quantity"
                     >
                       <Plus className="w-4 h-4" />
@@ -171,7 +173,7 @@ export default function Calculator() {
                     <button
                       key={pkg}
                       onClick={() => setPackageType(pkg)}
-                      className={`min-w-0 py-3 px-3 sm:px-2 rounded-xl font-medium text-sm text-center transition-all flex flex-col items-center justify-center gap-0.5 ${
+                      className={`min-w-0 py-3 px-3 sm:px-2 rounded-xl font-medium text-sm text-center transition-all active:scale-95 flex flex-col items-center justify-center gap-0.5 ${
                         packageType === pkg
                           ? "bg-white text-[#1e3a5f]"
                           : pkg === "recommended"
@@ -190,7 +192,7 @@ export default function Calculator() {
 
               {/* Price Breakdown Toggle */}
               <button
-                onClick={() => setShowBreakdown(!showBreakdown)}
+                onClick={() => setBreakdownOverride(!showBreakdown)}
                 className="flex items-center justify-between w-full text-white/80 hover:text-white py-2 mb-4 border-b border-white/20"
               >
                 <span>{t("breakdown")}</span>
@@ -213,7 +215,7 @@ export default function Calculator() {
               <div className="bg-white/10 rounded-xl p-4 mb-4">
                 <div className="flex justify-between items-center">
                   <span className="text-white text-lg font-medium">{t("total")}</span>
-                  <span className="text-3xl font-bold text-[#7BC043]">
+                  <span className="text-3xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>
                     ${total.toFixed(2)}
                   </span>
                 </div>

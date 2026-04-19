@@ -57,10 +57,10 @@ export function localePath(locale: string, path: string): string {
 }
 
 /** Удобные labels для корневых страниц (es / en / ru). */
-export const ROOT_LABELS: Record<string, { home: string; services: string; blog: string; about: string; contact: string; serviceAreas: string }> = {
-  es: { home: "Inicio", services: "Servicios", blog: "Consejos y Guías", about: "Nosotros", contact: "Contacto", serviceAreas: "Zonas de servicio" },
-  en: { home: "Home", services: "Services", blog: "Tips & Guides", about: "About Us", contact: "Contact", serviceAreas: "Service Areas" },
-  ru: { home: "Главная", services: "Услуги", blog: "Советы и руководства", about: "О нас", contact: "Контакт", serviceAreas: "Зоны обслуживания" },
+export const ROOT_LABELS: Record<string, { home: string; services: string; blog: string; about: string; contact: string; serviceAreas: string; diagnosis: string }> = {
+  es: { home: "Inicio", services: "Servicios", blog: "Consejos y Guías", about: "Nosotros", contact: "Contacto", serviceAreas: "Zonas de servicio", diagnosis: "Diagnóstico AC" },
+  en: { home: "Home", services: "Services", blog: "Tips & Guides", about: "About Us", contact: "Contact", serviceAreas: "Service Areas", diagnosis: "AC Diagnosis" },
+  ru: { home: "Главная", services: "Услуги", blog: "Советы и руководства", about: "О нас", contact: "Контакт", serviceAreas: "Зоны обслуживания", diagnosis: "Диагностика AC" },
 };
 
 export function getLabels(locale: string) {

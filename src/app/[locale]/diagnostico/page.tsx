@@ -7,10 +7,15 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import AuthorBio from "@/components/AuthorBio";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, AlertTriangle, ChevronRight, Lightbulb, Phone } from "lucide-react";
-import { DIAGNOSTIC_SYMPTOMS, DIAGNOSTICO_PAGE_CONTENT as CONTENT } from "@/lib/diagnostico-data";
+import { Stethoscope, AlertTriangle, ChevronRight, Lightbulb, Phone, Thermometer, Droplets, Volume2, Zap, Wind, DollarSign } from "lucide-react";
+import { DIAGNOSTIC_SYMPTOMS, DIAGNOSTICO_PAGE_CONTENT as CONTENT, type DiagnosticIconName } from "@/lib/diagnostico-data";
+
+const DIAGNOSTIC_ICONS: Record<DiagnosticIconName, React.ComponentType<{ className?: string }>> = {
+  Thermometer, Droplets, Volume2, Zap, Wind, DollarSign,
+};
 import { EXPERT } from "@/lib/author-data";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const BASE = "https://24clima.com";
 
@@ -162,9 +167,12 @@ export default async function DiagnosticoPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <Header />
-      <main className="pt-20">
+      <main id="main-content" className="pt-20">
         {/* Hero */}
         <section className="hero-gradient py-16 lg:py-24">
+          <div className="container mx-auto px-4 lg:px-8">
+            <Breadcrumbs segments={[{ label: labels.diagnosis }]} variant="light" />
+          </div>
           <div className="container mx-auto px-4 lg:px-8 text-center">
             <div className="w-16 h-16 bg-[#7BC043]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <Stethoscope className="w-8 h-8 text-[#7BC043]" />
@@ -181,15 +189,15 @@ export default async function DiagnosticoPage({ params }: Props) {
         {/* Quick Nav */}
         <section className="bg-white border-b">
           <div className="container mx-auto px-4 lg:px-8 max-w-5xl py-6">
-            <div className="flex flex-wrap gap-3 justify-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {DIAGNOSTIC_SYMPTOMS.map((symptom) => (
                 <a
                   key={symptom.id}
                   href={`#${symptom.id}`}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 hover:bg-[#1e3a5f]/10 text-sm font-medium text-[#1e3a5f] transition-colors"
+                  className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gray-100 hover:bg-[#1e3a5f]/10 text-sm font-medium text-[#1e3a5f] transition-colors text-center"
                 >
-                  <span>{symptom.icon}</span>
-                  {symptom.title[locale]}
+                  {(() => { const Icon = DIAGNOSTIC_ICONS[symptom.icon]; return <Icon className="w-4 h-4 flex-shrink-0" />; })()}
+                  <span className="line-clamp-2">{symptom.title[locale]}</span>
                 </a>
               ))}
             </div>
@@ -197,7 +205,9 @@ export default async function DiagnosticoPage({ params }: Props) {
         </section>
 
         {/* Symptoms */}
-        {DIAGNOSTIC_SYMPTOMS.map((symptom, index) => (
+        {DIAGNOSTIC_SYMPTOMS.map((symptom, index) => {
+          const SymptomIcon = DIAGNOSTIC_ICONS[symptom.icon];
+          return (
           <section
             key={symptom.id}
             id={symptom.id}
@@ -207,8 +217,8 @@ export default async function DiagnosticoPage({ params }: Props) {
           >
             <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
               <div className="flex items-start gap-4 mb-8">
-                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-[#1e3a5f]/10 flex items-center justify-center text-2xl">
-                  {symptom.icon}
+                <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-[#1e3a5f]/10 flex items-center justify-center">
+                  <SymptomIcon className="w-7 h-7 text-[#1e3a5f]" />
                 </div>
                 <div>
                   <h2
@@ -256,7 +266,7 @@ export default async function DiagnosticoPage({ params }: Props) {
                     {CONTENT.diyTitle[locale]}
                   </h3>
                   <ul className="space-y-3">
-                    {symptom.diyTips.map((tip, i) => (
+                    {symptom.diyTips.filter((tip) => tip[locale]).map((tip, i) => (
                       <li key={i} className="flex gap-3 items-start">
                         <ChevronRight className="w-5 h-5 text-[#7BC043] flex-shrink-0 mt-0.5" />
                         <p className="text-sm text-gray-700 leading-relaxed">{tip[locale]}</p>
@@ -293,7 +303,7 @@ export default async function DiagnosticoPage({ params }: Props) {
               </div>
             </div>
           </section>
-        ))}
+        );  })}
 
         {/* Author Bio */}
         <section className="py-12 bg-white">

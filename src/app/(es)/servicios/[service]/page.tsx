@@ -25,6 +25,7 @@ import { SERVICE_SLUGS, getTranslationKey, isServiceSlug } from "@/lib/services"
 import type { ServiceSlug } from "@/lib/services";
 import { BUSINESS_DATA, SERVICE_PRICING, warrantyDurationISO } from "@/lib/business-data";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { SERVICE_SEO_META } from "@/lib/service-seo-meta";
 
 const translationKeys = ["cleaning", "maintenance", "repair", "installation", "gasRecharge", "emergency"] as const;
@@ -203,8 +204,17 @@ export default async function ServicePage({
       />
       <ServicePageViewContent serviceName={title} />
       <Header />
-      <main className="pt-20">
+      <main id="main-content" className="pt-20">
         <section className="hero-gradient py-16 lg:py-24">
+          <div className="container mx-auto px-4 lg:px-8 mb-4">
+            <Breadcrumbs
+              segments={[
+                { label: "Servicios", href: "/#servicios" },
+                { label: title },
+              ]}
+              variant="light"
+            />
+          </div>
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>

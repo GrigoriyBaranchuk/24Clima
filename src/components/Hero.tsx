@@ -38,8 +38,8 @@ export default function Hero() {
             </h1>
 
             {/* Price Highlight */}
-            <div className="bg-[#7BC043] inline-block px-6 py-3 rounded-xl mb-4">
-              <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+            <div className="bg-[#7BC043] inline-block px-6 py-3 rounded-xl mb-4 shadow-lg shadow-[#7BC043]/30">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white" style={{ fontVariantNumeric: "tabular-nums" }}>
                 {t("subtitle")}
               </p>
             </div>
@@ -85,8 +85,8 @@ export default function Hero() {
               </Button>
             </div>
 
-            {/* Social Media Buttons */}
-            <div className="flex items-center gap-4 mt-8">
+            {/* Social Media Buttons — hidden on mobile to reduce visual clutter */}
+            <div className="hidden sm:flex items-center gap-4 mt-8">
               <span className="text-white/80 text-base">Follow us:</span>
               <a
                 href={SOCIAL_LINKS.instagram}
@@ -122,7 +122,7 @@ export default function Hero() {
                 fill
                 className="object-cover"
                 priority
-                sizes="(max-width: 1024px) 0px, 50vw"
+                sizes="(max-width: 1023px) 0px, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1e3a5f]/50 to-transparent" />
             </div>
@@ -130,17 +130,17 @@ export default function Hero() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-4 sm:gap-8 mt-12 sm:mt-16 pt-8 border-t border-white/20">
+        <div className="grid grid-cols-3 gap-3 sm:gap-8 mt-10 sm:mt-16 pt-8 border-t border-white/20">
           <div className="text-center sm:text-left">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]">{t("stat1Value")}</p>
+            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>{t("stat1Value")}</p>
             <p className="text-white/80 text-sm">{t("stat1Label")}</p>
           </div>
           <div className="text-center sm:text-left">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]">{t("stat2Value")}</p>
+            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>{t("stat2Value")}</p>
             <p className="text-white/80 text-sm">{t("stat2Label")}</p>
           </div>
           <div className="text-center sm:text-left">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]">{t("stat3Value")}</p>
+            <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>{t("stat3Value")}</p>
             <p className="text-white/80 text-sm">{t("stat3Label")}</p>
           </div>
         </div>

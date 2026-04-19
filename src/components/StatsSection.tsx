@@ -87,7 +87,7 @@ export default async function StatsSection({ locale: _locale }: Props = {}) {
         </div>
 
         <ul
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6"
           role="list"
         >
           {STATS.map((stat) => {
@@ -102,7 +102,7 @@ export default async function StatsSection({ locale: _locale }: Props = {}) {
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#7BC043]/20 flex items-center justify-center mb-3">
                   <Icon className="w-6 h-6 md:w-7 md:h-7 text-[#7BC043]" />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-white tabular-nums">
+                <div className="text-3xl md:text-4xl font-bold text-white" style={{ fontVariantNumeric: "tabular-nums" }}>
                   {stat.value}
                 </div>
                 <div className="mt-2 text-sm md:text-base text-white/80 leading-snug">

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Lora } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -7,6 +7,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 import YandexMetrika from "@/components/YandexMetrika";
 import ScrollToHash from "@/components/ScrollToHash";
+import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,6 +20,10 @@ const lora = Lora({
   subsets: ["latin", "cyrillic"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://24clima.com"),
@@ -74,6 +79,7 @@ export default async function EsRootLayout({ children }: { children: React.React
       <NextIntlClientProvider messages={messages}>
         <ScrollToHash />
         {children}
+        <GoogleReviewsBadge />
       </NextIntlClientProvider>
     </div>
   );

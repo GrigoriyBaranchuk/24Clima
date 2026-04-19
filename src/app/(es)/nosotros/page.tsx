@@ -5,7 +5,9 @@ import WhyUs from "@/components/WhyUs";
 import Reviews from "@/components/Reviews";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import NosotrosCTA from "@/components/NosotrosCTA";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://24clima.com"),
@@ -67,9 +69,13 @@ export default function NosotrosPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <Header />
-      <main>
+      <main id="main-content">
+        <div className="container mx-auto px-4 lg:px-8 pt-2">
+          <Breadcrumbs segments={[{ label: "Nosotros" }]} />
+        </div>
         <WhyUs />
         <Reviews />
+        <NosotrosCTA />
       </main>
       <Footer />
       <WhatsAppButton />

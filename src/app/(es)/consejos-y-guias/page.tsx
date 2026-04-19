@@ -10,6 +10,7 @@ import { normalizeSlug } from "@/lib/slug";
 import { Link } from "@/i18n/routing";
 import TipsList from "../../[locale]/consejos-y-guias/TipsList";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const dynamic = "force-dynamic";
 
@@ -77,8 +78,11 @@ export default async function TipsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Header />
-      <main className="min-h-screen pt-24">
+      <main id="main-content" className="min-h-screen pt-24">
         <ParallaxHero>
+          <div className="container mx-auto px-4 lg:px-8 pt-4">
+            <Breadcrumbs segments={[{ label: "Consejos y Guías" }]} variant="light" />
+          </div>
           <div className="container mx-auto px-4 lg:px-8 py-16 lg:py-24">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex-1">

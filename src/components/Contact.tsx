@@ -7,6 +7,7 @@ import { Phone, MapPin, Clock, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
 import { metaPixelEvent } from "@/components/MetaPixel";
+import ContactForm from "@/components/ContactForm";
 
 export default function Contact() {
   const t = useTranslations("contact");
@@ -133,6 +134,11 @@ export default function Contact() {
               </Card>
             </a>
           ))}
+        </div>
+
+        {/* Contact Form — alternative to WhatsApp */}
+        <div className="w-full max-w-2xl mx-auto mt-12">
+          <ContactForm />
         </div>
 
         {/* Schedule Info — flex for Safari centering (text-center can misbehave) */}

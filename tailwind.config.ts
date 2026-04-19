@@ -49,6 +49,16 @@ export default {
           '3': 'hsl(var(--chart-3))',
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))'
+        },
+        brand: {
+          green: 'var(--color-brand-green)',
+          'green-dark': 'var(--color-brand-green-dark)',
+          navy: 'var(--color-brand-navy)',
+          'navy-dark': 'var(--color-brand-navy-dark)',
+        },
+        whatsapp: {
+          DEFAULT: 'var(--color-whatsapp)',
+          hover: 'var(--color-whatsapp-hover)',
         }
       },
       fontFamily: {

@@ -40,7 +40,7 @@
     "stat1Label": "Satisfied customers",
     "stat2Value": "24/7",
     "stat2Label": "Availability",
-    "stat3Value": "5+",
+    "stat3Value": "9+",
     "stat3Label": "Years of experience"
   },
   "packages": {
@@ -291,6 +291,26 @@
     "metropolitanCoverage": "Metropolitan coverage",
     "immediateResponse": "Immediate response",
     "schedule": "Monday to Saturday 7:00 AM - 8:00 PM | Emergencies 24/7"
+  },
+  "contactForm": {
+    "title": "Send us a message",
+    "subtitle": "Prefer not to use WhatsApp? Write to us here and we'll get back to you soon.",
+    "nameLabel": "Your name",
+    "namePlaceholder": "E.g.: John Smith",
+    "contactLabel": "Phone or email",
+    "contactPlaceholder": "E.g.: +507 6000-0000 or you@email.com",
+    "messageLabel": "Describe your problem or inquiry",
+    "messagePlaceholder": "E.g.: My air conditioner is not cooling properly, I need an inspection...",
+    "submit": "Send message",
+    "sending": "Sending...",
+    "successTitle": "Message sent!",
+    "successMessage": "We'll get back to you soon. Thank you for contacting us.",
+    "errorMessage": "Error sending. Please try again or contact us via WhatsApp."
+  },
+  "nosotrosCta": {
+    "title": "Ready to improve your air?",
+    "subtitle": "Contact us today for a free quote. Professional service with quality guarantee.",
+    "whatsappButton": "Get a WhatsApp quote"
   },
   "footer": {
     "description": "Experts in air conditioning service in Panama. More than 5 years of experience.",

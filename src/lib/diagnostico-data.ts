@@ -13,9 +13,11 @@
 
 type Localized = { es: string; en: string; ru: string };
 
+export type DiagnosticIconName = "Thermometer" | "Droplets" | "Volume2" | "Zap" | "Wind" | "DollarSign";
+
 export interface DiagnosticSymptom {
   id: string;
-  icon: string;
+  icon: DiagnosticIconName;
   title: Localized;
   description: Localized;
   causes: { text: Localized; severity: "low" | "medium" | "high" }[];
@@ -27,7 +29,7 @@ export interface DiagnosticSymptom {
 export const DIAGNOSTIC_SYMPTOMS: DiagnosticSymptom[] = [
   {
     id: "no-enfria",
-    icon: "🌡️",
+    icon: "Thermometer",
     title: {
       es: "El aire acondicionado no enfría",
       en: "AC is not cooling",
@@ -98,7 +100,7 @@ export const DIAGNOSTIC_SYMPTOMS: DiagnosticSymptom[] = [
   },
   {
     id: "gotea-agua",
-    icon: "💧",
+    icon: "Droplets",
     title: {
       es: "El aire acondicionado gotea agua",
       en: "AC is leaking water",
@@ -156,7 +158,7 @@ export const DIAGNOSTIC_SYMPTOMS: DiagnosticSymptom[] = [
   },
   {
     id: "hace-ruido",
-    icon: "🔊",
+    icon: "Volume2",
     title: {
       es: "El aire acondicionado hace ruido extraño",
       en: "AC is making strange noise",
@@ -222,7 +224,7 @@ export const DIAGNOSTIC_SYMPTOMS: DiagnosticSymptom[] = [
   },
   {
     id: "no-enciende",
-    icon: "⚡",
+    icon: "Zap",
     title: {
       es: "El aire acondicionado no enciende",
       en: "AC won't turn on",
@@ -293,7 +295,7 @@ export const DIAGNOSTIC_SYMPTOMS: DiagnosticSymptom[] = [
   },
   {
     id: "mal-olor",
-    icon: "👃",
+    icon: "Wind",
     title: {
       es: "El aire acondicionado huele mal",
       en: "AC smells bad",
@@ -343,7 +345,7 @@ export const DIAGNOSTIC_SYMPTOMS: DiagnosticSymptom[] = [
   },
   {
     id: "consume-mucha-energia",
-    icon: "💰",
+    icon: "DollarSign",
     title: {
       es: "El aire acondicionado consume demasiada energía",
       en: "AC uses too much energy",

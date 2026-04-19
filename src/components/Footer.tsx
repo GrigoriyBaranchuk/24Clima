@@ -13,18 +13,18 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    { name: t("deepCleaning"), href: "#servicios" },
-    { name: t("preventiveMaintenance"), href: "#servicios" },
-    { name: t("repair"), href: "#servicios" },
-    { name: t("installation"), href: "#servicios" },
-    { name: t("gasRecharge"), href: "#servicios" },
+    { name: t("deepCleaning"), href: "/#servicios" },
+    { name: t("preventiveMaintenance"), href: "/#servicios" },
+    { name: t("repair"), href: "/#servicios" },
+    { name: t("installation"), href: "/#servicios" },
+    { name: t("gasRecharge"), href: "/#servicios" },
   ];
 
   const problems = [
-    { name: t("notCooling"), href: "#problemas" },
-    { name: t("leaking"), href: "#problemas" },
-    { name: t("noisy"), href: "#problemas" },
-    { name: t("notTurningOn"), href: "#problemas" },
+    { name: t("notCooling"), href: "/#problemas" },
+    { name: t("leaking"), href: "/#problemas" },
+    { name: t("noisy"), href: "/#problemas" },
+    { name: t("notTurningOn"), href: "/#problemas" },
   ];
 
   return (

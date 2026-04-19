@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Lora } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -9,6 +9,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 import YandexMetrika from "@/components/YandexMetrika";
 import ScrollToHash from "@/components/ScrollToHash";
+import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,6 +22,10 @@ const lora = Lora({
   subsets: ["latin", "cyrillic"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export function generateStaticParams() {
   return locales.filter((l) => l !== defaultLocale).map((locale) => ({ locale }));
@@ -121,6 +126,7 @@ export default async function LocaleLayout({
       <NextIntlClientProvider messages={messages}>
         <ScrollToHash />
         {children}
+        <GoogleReviewsBadge />
       </NextIntlClientProvider>
     </div>
   );

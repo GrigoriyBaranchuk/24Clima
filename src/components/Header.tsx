@@ -40,7 +40,7 @@ export default function Header() {
 
   const handleNavClick = (item: (typeof navigation)[0], e: React.MouseEvent) => {
     if (!item.isAnchor) {
-      if (item.href === "/") setIsOpen(false);
+      setIsOpen(false);
       return;
     }
     const id = item.href.split("#")[1];
@@ -54,6 +54,11 @@ export default function Header() {
     }
   };
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -63,6 +68,14 @@ export default function Header() {
   }, []);
 
   return (
+    <>
+    {/* Skip to main content — accessibility (keyboard navigation) */}
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1e3a5f] focus:text-white focus:rounded-md focus:text-sm focus:font-semibold focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#7BC043]"
+    >
+      Ir al contenido principal
+    </a>
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md ${
         isScrolled ? "shadow-lg" : "shadow-sm"
@@ -130,6 +143,7 @@ export default function Header() {
                   variant="ghost"
                   size="icon"
                   className="text-gray-900 hover:bg-gray-100"
+                  aria-label="Abrir menú de navegación"
                 >
                   <Menu className="h-6 w-6" />
                 </Button>
@@ -193,5 +207,6 @@ export default function Header() {
         </div>
       </nav>
     </header>
+    </>
   );
 }

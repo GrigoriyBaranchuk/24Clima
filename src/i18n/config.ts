@@ -9,10 +9,11 @@ export const localeNames: Record<Locale, string> = {
   ru: "Русский",
 };
 
-export const localeFlags: Record<Locale, string> = {
-  es: "🇪🇸",
-  en: "🇺🇸",
-  ru: "🇷🇺",
+/** ISO country codes for flag rendering (use FlagIcon component instead of emoji) */
+export const localeCountryCodes: Record<Locale, string> = {
+  es: "ES",
+  en: "US",
+  ru: "RU",
 };
 
 /** URL path prefix: es = "" (default), en = "/en", ru = "/ru" (localePrefix: "as-needed") */

@@ -40,7 +40,7 @@
     "stat1Label": "Clientes satisfechos",
     "stat2Value": "24/7",
     "stat2Label": "Disponibilidad",
-    "stat3Value": "5+",
+    "stat3Value": "9+",
     "stat3Label": "Años de experiencia"
   },
   "packages": {
@@ -291,6 +291,26 @@
     "metropolitanCoverage": "Cobertura metropolitana",
     "immediateResponse": "Respuesta inmediata",
     "schedule": "Lunes a Sábado 7:00 AM - 8:00 PM | Emergencias 24/7"
+  },
+  "contactForm": {
+    "title": "Envíanos un mensaje",
+    "subtitle": "¿Prefieres no usar WhatsApp? Escríbenos aquí y te contactaremos pronto.",
+    "nameLabel": "Tu nombre",
+    "namePlaceholder": "Ej: Juan Pérez",
+    "contactLabel": "Teléfono o correo",
+    "contactPlaceholder": "Ej: +507 6000-0000 o tu@email.com",
+    "messageLabel": "Describe tu problema o consulta",
+    "messagePlaceholder": "Ej: Mi aire acondicionado no enfría bien, necesito una revisión...",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando...",
+    "successTitle": "¡Mensaje enviado!",
+    "successMessage": "Te contactaremos pronto. Gracias por escribirnos.",
+    "errorMessage": "Error al enviar. Intenta de nuevo o escríbenos por WhatsApp."
+  },
+  "nosotrosCta": {
+    "title": "¿Listo para mejorar tu aire?",
+    "subtitle": "Contáctanos hoy para una cotización gratuita. Servicio profesional con garantía de calidad.",
+    "whatsappButton": "Cotizar por WhatsApp"
   },
   "footer": {
     "description": "Expertos en servicio de aire acondicionado en Panamá. Más de 5 años de experiencia.",

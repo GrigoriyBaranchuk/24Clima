@@ -29,7 +29,7 @@ export default function WhatsAppButton() {
         href={getWhatsAppLink(tWhatsapp("quote"))}
         target="_blank"
         rel="noopener noreferrer"
-        className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#25D366] text-white py-4 px-6 flex items-center justify-center gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] whatsapp-pulse"
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#25D366] text-white py-4 px-6 pb-[max(1rem,env(safe-area-inset-bottom))] flex items-center justify-center gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] whatsapp-pulse"
         aria-label="Contactar por WhatsApp"
         onClick={() => metaPixelEvent("Lead")}
       >

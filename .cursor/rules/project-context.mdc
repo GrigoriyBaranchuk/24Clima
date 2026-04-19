@@ -1,51 +1,93 @@
 ---
-description: Контекст проекта 24clima — этапы работы, структура, важные решения
+description: Полный контекст проекта 24clima — архитектура, стек, структура, ключевые решения
 alwaysApply: true
 ---
 
 # Контекст проекта 24clima
 
-## Полный контекст
-См. **`.cursor/chat-context.md`** — SEO, метрики, Tips, админка, структура.
+## О проекте
+- **Сайт:** 24clima.com — услуги по кондиционерам (HVAC) в Панаме
+- **Бизнес:** установка, чистка, ремонт, обслуживание кондиционеров в Панама-Сити
+- **Целевая аудитория:** жители Панамы (ES), экспаты (EN), русскоязычные (RU)
+- **Репозиторий:** github.com:GrigoriyBaranchuk/24Clima.git
 
-## Этапы работы с проектом
+## Стек технологий
+| Технология | Версия | Назначение |
+|---|---|---|
+| Next.js | 15.3.6 | App Router, SSR (НЕ static export — есть API routes) |
+| React | 18.3 | UI-компоненты |
+| TypeScript | 5.8 | Строгая типизация (strict: true) |
+| Tailwind CSS | 3.4 | Стилизация |
+| next-intl | 4.8 | Мультиязычность (es/en/ru) |
+| Supabase | 2.95 | БД (PostgreSQL), Auth, Storage |
+| Vercel | — | Хостинг, деплой, CDN |
+| Biome | 1.9.4 | Форматирование кода |
+| ESLint | 9 | Линтинг |
+| bun | — | Пакетный менеджер (основной) |
 
-### 1. Локальная разработка
-- `npm run dev` — без `--turbopack` (EMFILE: too many open files)
-- `.env.local`: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- Supabase: **Publishable key** (`sb_publishable_...`), не Secret key
+## Структура проекта
+```
+src/
+├── app/
+│   ├── layout.tsx          # Корневой layout (ОБЯЗАТЕЛЬНЫ <html> и <body>)
+│   ├── page.tsx            # Редирект / → /es/
+│   ├── globals.css         # Глобальные стили
+│   ├── sitemap.ts          # Динамическая sitemap
+│   ├── error.tsx           # Error boundary
+│   ├── not-found.tsx       # 404
+│   ├── api/translate/      # API route: автоперевод через Google Translate
+│   └── [locale]/           # Локализованные страницы
+│       ├── layout.tsx      # Metadata, JSON-LD, шрифты
+│       ├── page.tsx        # Главная (Hero, Calculator, Services...)
+│       ├── servicios/[service]/  # Страницы услуг
+│       └── consejos-y-guias/    # Блог/советы (Tips)
+│           ├── page.tsx         # Список статей
+│           ├── [slug]/page.tsx  # Отдельная статья
+│           ├── TipsList.tsx     # Клиентский компонент списка
+│           └── admin/page.tsx   # Админка статей
+├── components/             # React-компоненты
+│   ├── ui/                 # shadcn/ui примитивы
+│   ├── Calculator.tsx      # Калькулятор стоимости чистки
+│   ├── Header.tsx          # Навигация + LanguageSwitcher
+│   ├── Footer.tsx          # Подвал
+│   ├── Hero.tsx            # Главный баннер
+│   ├── Services.tsx        # Блок услуг
+│   ├── Contact.tsx         # Контакты
+│   ├── WhatsAppButton.tsx  # Кнопка WhatsApp
+│   └── ...                 # GoogleAnalytics, MetaPixel, YandexMetrika
+├── i18n/                   # Конфигурация интернационализации
+│   ├── config.ts           # locales: ["es","en","ru"], defaultLocale: "es"
+│   ├── routing.ts          # Настройки роутинга next-intl
+│   └── request.ts          # Server-side i18n
+└── lib/                    # Утилиты и конфигурация
+    ├── constants.ts        # WhatsApp, соцсети, компания
+    ├── supabase.ts         # Supabase клиент + типы Article
+    ├── seo-keywords.ts     # Семантическое ядро по локалям
+    ├── articles.ts         # Работа со статьями
+    ├── auth-server.ts      # Серверная авторизация (admin)
+    ├── slug.ts             # Нормализация slug
+    └── utils.ts            # cn() — classnames
+messages/                   # Файлы переводов (es.json, en.json, ru.json)
+```
 
-### 2. Supabase (Tips, админка)
-- Миграция: `supabase/migrations/001_articles.sql`
-- Bucket: `article-images` (public), policy: `auth.role() = 'authenticated'` для INSERT/UPDATE
-- Auth: создать пользователя в Authentication → Users
-- Инструкция: `docs/SETUP_TIPS_ADMIN.md`
+## Ключевые архитектурные решения
+1. **App Router** — используется Next.js App Router (НЕ Pages Router)
+2. **trailingSlash: true** — все URL заканчиваются на `/`
+3. **localePrefix: "always"** — URL всегда содержат локаль: `/es/`, `/en/`, `/ru/`
+4. **Supabase** — используется для блога (articles), auth, storage (изображения)
+5. **output НЕ "export"** — т.к. есть API routes и динамические страницы
+6. **Path alias** — `@/*` → `./src/*`
+7. **CSP headers** — настроены в next.config.js
+8. **Security headers** — в vercel.json (X-Frame-Options: DENY, etc.)
 
-### 3. Layout (Next.js)
-- **Корневой** `src/app/layout.tsx`: ОБЯЗАТЕЛЬНЫ `<html>` и `<body>` (Next.js requirement)
-- **Locale** `src/app/[locale]/layout.tsx`: возвращает только `<div>` — без вложенных html/body
-- Head (favicon, meta, JSON-LD) — в корневом layout
-- `globals.css` — импорт в корневом layout
+## Важные файлы для контекста
+- `.cursor/chat-context.md` — история решений проекта
+- `docs/README.ru.md` — полная документация на русском
+- `src/lib/constants.ts` — бизнес-данные (телефон, соцсети)
+- `src/lib/seo-keywords.ts` — SEO семантическое ядро
 
-### 4. Tips: slug и статьи
-- Slug в админке — **ввод вручную** (не из title)
-- `src/lib/slug.ts` — `normalizeSlug()`: trim слешей, lowercase, пробелы→дефисы
-- Ссылки на статьи: `href={/consejos-y-guias/${slug}/}` — с trailing slash (`trailingSlash: true`)
-- Fallback: статья ищется по slug с ведущим слешем (`/slug`) — если в БД сохранён со слешем
-- Контент: `whitespace-pre-line` для сохранения переносов; или HTML в content
-
-### 5. Деплой (Vercel)
-- Env vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `output: 'export'` отключён — API routes и динамические страницы
-
-### 6. Частые проблемы и решения
-- **Internal Server Error**: корневой layout без html/body → добавить
-- **404 на статью**: trailing slash в Link; slug в БД без ведущего слеша
-- **EMFILE / Turbopack**: убрать `--turbopack` из dev; `rm -rf .next`
-- **Cannot find module [turbopack]_runtime**: `rm -rf .next`, перезапуск dev
-
-## Важные файлы
-- `src/lib/supabase.ts` — клиент (null если env не заданы)
-- `src/lib/slug.ts` — нормализация slug
-- `src/lib/seo-keywords.ts` — семантическое ядро
-- `src/app/[locale]/consejos-y-guias/` — Tips, TipsList, [slug], admin
+## Частые проблемы и их решения
+- **EMFILE**: НЕ использовать --turbopack в dev; `rm -rf .next`
+- **Internal Server Error**: проверить <html> и <body> в корневом layout
+- **404 на статью**: trailing slash в Link; slug в БД без ведущего /
+- **Turbopack runtime error**: `rm -rf .next`, перезапуск dev

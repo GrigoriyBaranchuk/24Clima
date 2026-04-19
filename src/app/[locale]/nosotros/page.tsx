@@ -6,7 +6,9 @@ import WhyUs from "@/components/WhyUs";
 import Reviews from "@/components/Reviews";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import NosotrosCTA from "@/components/NosotrosCTA";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const titles: Record<string, string> = {
   en: "About Us | 24clima — Air Conditioning Service in Panama",
@@ -98,9 +100,13 @@ export default async function NosotrosPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <Header />
-      <main>
+      <main id="main-content">
+        <div className="container mx-auto px-4 lg:px-8 pt-2">
+          <Breadcrumbs segments={[{ label: labels.about }]} />
+        </div>
         <WhyUs />
         <Reviews pageUrl={`https://24clima.com${getLocalePrefix(locale as Locale)}/nosotros/`} />
+        <NosotrosCTA />
       </main>
       <Footer />
       <WhatsAppButton />
