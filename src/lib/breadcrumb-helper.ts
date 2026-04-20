@@ -37,16 +37,6 @@ export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
 }
 
 /**
- * Возвращает URL базы для указанной локали.
- *  - es (default) → "https://24clima.com/"
- *  - en / ru      → "https://24clima.com/en/" / "https://24clima.com/ru/"
- */
-export function localeBase(locale: string): string {
-  const prefix = locale === "es" ? "" : `/${locale}`;
-  return `${BASE}${prefix}/`;
-}
-
-/**
  * Возвращает полный URL для пути в указанной локали.
  *  - localePath("es", "/servicios/limpieza/")  → "https://24clima.com/servicios/limpieza/"
  *  - localePath("en", "/servicios/limpieza/")   → "https://24clima.com/en/servicios/limpieza/"

@@ -24,16 +24,6 @@ export const SLUG_TO_TRANSLATION_KEY: Record<ServiceSlug, string> = {
   emergencia: "emergency",
 };
 
-/** Ключ перевода → URL slug (для генерации ссылок) */
-export const TRANSLATION_KEY_TO_SLUG: Record<string, ServiceSlug> = {
-  cleaning: "limpieza",
-  maintenance: "mantenimiento",
-  repair: "reparacion",
-  installation: "instalacion",
-  gasRecharge: "carga-de-gas",
-  emergency: "emergencia",
-};
-
 export function getTranslationKey(slug: string): string | undefined {
   return SLUG_TO_TRANSLATION_KEY[slug as ServiceSlug];
 }

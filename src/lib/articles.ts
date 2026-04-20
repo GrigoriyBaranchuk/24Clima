@@ -16,15 +16,10 @@ export type ArticleRow = {
   updated_at: string;
 };
 
-export type LocalizedFields = {
-  title: string;
-  content: string;
-};
-
 /**
  * Resolves image URL: if full URL return as-is, else get Supabase Storage public URL.
  */
-export function resolveImageUrl(pathOrUrl: string): string {
+function resolveImageUrl(pathOrUrl: string): string {
   const trimmed = (pathOrUrl ?? "").trim();
   if (!trimmed) return "";
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
@@ -41,24 +36,6 @@ export function resolveImageUrl(pathOrUrl: string): string {
 export function resolveImageUrls(pathsOrUrls: string[] | null | undefined): string[] {
   const arr = pathsOrUrls ?? [];
   return arr.map(resolveImageUrl).filter(Boolean);
-}
-
-/**
- * Get localized title and content based on locale.
- */
-export function getLocalizedFields(
-  article: ArticleRow,
-  locale: string
-): LocalizedFields {
-  const title =
-    (locale === "es" && article.title_es) ||
-    (locale === "en" && article.title_en) ||
-    article.title_ru;
-  const content =
-    (locale === "es" && article.content_es) ||
-    (locale === "en" && article.content_en) ||
-    article.content_ru;
-  return { title: title ?? article.title_ru, content: content ?? article.content_ru };
 }
 
 /**

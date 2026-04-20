@@ -82,33 +82,6 @@
   }
 }
 
-/* Custom animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 2s ease-in-out infinite;
-}
-
 /* WhatsApp button animation */
 @keyframes whatsapp-pulse {
   0% {
@@ -188,23 +161,8 @@
   background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
 }
 
-.section-light-blue {
-  background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
-}
-
 .section-light-green {
   background: linear-gradient(180deg, #f1f8e9 0%, #dcedc8 100%);
-}
-
-.green-gradient {
-  background: linear-gradient(135deg, var(--color-brand-green) 0%, var(--color-brand-green-dark) 100%);
-}
-
-.brand-gradient-text {
-  background: linear-gradient(135deg, var(--color-brand-green) 0%, var(--color-brand-green-dark) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* Card hover effects */
@@ -345,8 +303,6 @@
     scroll-behavior: auto !important;
   }
 
-  .animate-float,
-  .animate-pulse-slow,
   .whatsapp-pulse,
   .cta-hero-animate,
   .bottom-bar-enter {
