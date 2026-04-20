@@ -126,6 +126,51 @@
   animation: whatsapp-pulse 2s 5;
 }
 
+/* Hero CTA entrance animation — slide up + fade in */
+@keyframes cta-entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glow pulse after entrance — runs 3 times then stops */
+@keyframes cta-glow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(123, 192, 67, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(123, 192, 67, 0.7), 0 0 60px rgba(123, 192, 67, 0.3);
+  }
+}
+
+.cta-hero-animate {
+  opacity: 0;
+  animation:
+    cta-entrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards,
+    cta-glow 1.5s ease-in-out 1.2s 3;
+}
+
+/* Smart bottom bar transition */
+@keyframes bottom-bar-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bottom-bar-enter {
+  animation: bottom-bar-slide-up 0.3s ease-out forwards;
+}
+
 /* Gradient backgrounds */
 .hero-gradient {
   background: linear-gradient(135deg, var(--color-brand-navy) 0%, var(--color-brand-navy-dark) 50%, var(--color-brand-navy-deepest) 100%);
@@ -302,8 +347,11 @@
 
   .animate-float,
   .animate-pulse-slow,
-  .whatsapp-pulse {
+  .whatsapp-pulse,
+  .cta-hero-animate,
+  .bottom-bar-enter {
     animation: none !important;
+    opacity: 1 !important;
   }
 
   .card-hover:hover {
