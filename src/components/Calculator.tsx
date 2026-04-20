@@ -12,14 +12,14 @@ type PackageType = "basic" | "recommended" | "premium";
 
 // Pricing logic: each unit has individual pricing based on position
 const PRICING: Record<PackageType, number[]> = {
-  basic: [29.99, 27.99, 25.99, 21.99, 21.99],
-  recommended: [39.99, 37.99, 34.99, 32.99, 32.99],
+  basic: [35.00, 29.99, 29.99, 29.99, 29.99],
+  recommended: [39.99, 37.99, 34.99, 34.99, 34.99],
   premium: [49.99, 47.99, 42.99, 39.99, 39.99],
 };
 
 // Base prices for savings calculation
 const BASE_PRICES: Record<PackageType, number> = {
-  basic: 29.99,
+  basic: 35.00,
   recommended: 39.99,
   premium: 49.99,
 };
@@ -34,13 +34,22 @@ export default function Calculator() {
   const showBreakdown = breakdownOverride !== null ? breakdownOverride : quantity > 1;
 
   // Calculate prices for each unit
+  // Special rule for "basic": 1 unit = $35, but 2+ units = $29.99 each (all of them)
   const priceBreakdown = useMemo(() => {
     const prices: number[] = [];
     const pricingArray = PRICING[packageType];
 
-    for (let i = 0; i < quantity; i++) {
-      const priceIndex = Math.min(i, pricingArray.length - 1);
-      prices.push(pricingArray[priceIndex]);
+    if (packageType === "basic" && quantity >= 2) {
+      // When 2+, every unit costs the bulk price (index 1+)
+      const bulkPrice = pricingArray[1];
+      for (let i = 0; i < quantity; i++) {
+        prices.push(bulkPrice);
+      }
+    } else {
+      for (let i = 0; i < quantity; i++) {
+        const priceIndex = Math.min(i, pricingArray.length - 1);
+        prices.push(pricingArray[priceIndex]);
+      }
     }
 
     return prices;

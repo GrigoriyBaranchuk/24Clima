@@ -52,6 +52,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
+  // Nosotros — все локали
+  for (const locale of locales) {
+    entries.push({
+      url: localeUrl(locale, "/nosotros/"),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      alternates: { languages: langAlternates("/nosotros/") },
+    });
+  }
+
+  // Contacto — все локали
+  for (const locale of locales) {
+    entries.push({
+      url: localeUrl(locale, "/contacto/"),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      alternates: { languages: langAlternates("/contacto/") },
+    });
+  }
+
   // Areas de servicio — все локали
   for (const locale of locales) {
     entries.push({
