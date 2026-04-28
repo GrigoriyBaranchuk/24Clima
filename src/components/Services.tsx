@@ -32,20 +32,39 @@ export default function Services() {
   }));
 
   return (
-    <section id="servicios" className="py-20 lg:py-28 section-gradient scroll-mt-20">
+    <section id="servicios" className="py-10 lg:py-28 section-gradient scroll-mt-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="w-full max-w-3xl mx-auto text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e3a5f] mb-4 sm:mb-6">
+        <div className="w-full max-w-3xl mx-auto text-center mb-6 lg:mb-16">
+          <h2 className="text-xl lg:text-5xl font-semibold text-[#1e3a5f] mb-2 lg:mb-6" style={{ letterSpacing: "-0.2px" }}>
             {t("title")}
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 leading-relaxed px-4 sm:px-0">
+          <p className="text-[13px] lg:text-lg text-gray-600 leading-relaxed">
             {t("subtitle")}
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Services Grid — mobile: compact 2-col cards; desktop: full 3-col cards */}
+        {/* Mobile Grid */}
+        <div className="grid grid-cols-2 gap-2 lg:hidden">
+          {services.map((service, index) => (
+            <Link
+              key={index}
+              href={`/servicios/${service.slug}`}
+              className="flex flex-col items-center text-center p-3 rounded-2xl bg-[#f5f5f7] active:scale-95 transition-transform"
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-[#7BC043] to-[#0F9D58] rounded-xl flex items-center justify-center mb-2">
+                <service.icon className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-[13px] font-semibold text-[#1e3a5f] leading-tight">
+                {service.title}
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <Card
               key={index}
@@ -105,7 +124,7 @@ export default function Services() {
         </div>
 
         {/* CTA Banner */}
-        <div className="mt-16 bg-gradient-to-r from-[#1e3a5f] to-[#0d2240] rounded-2xl p-8 lg:p-12 text-center">
+        <div className="mt-8 lg:mt-16 bg-gradient-to-r from-[#1e3a5f] to-[#0d2240] rounded-2xl p-6 lg:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
             {t("urgentTitle")}
           </h3>

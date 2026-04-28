@@ -1,0 +1,121 @@
+---
+description: Типичные ошибки и их предотвращение в проекте 24clima
+alwaysApply: true
+---
+
+# Предотвращение ошибок
+
+## Критические ошибки (приводят к падению сайта)
+
+### 1. Корневой layout без <html> и <body>
+```typescript
+// ❌ КРИТИЧНО — сломает весь сайт
+export default function RootLayout({ children }) {
+  return <>{children}</>;
+}
+
+// ✅ Обязательно <html> и <body>
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+### 2. Вложенные <html>/<body> в locale layout
+```typescript
+// ❌ Нельзя — будут вложенные html/body
+export default function LocaleLayout({ children }) {
+  return <html><body>{children}</body></html>;
+}
+
+// ✅ Locale layout возвращает <div> или Fragment
+export default function LocaleLayout({ children }) {
+  return <div>{children}</div>;
+}
+```
+
+### 3. Supabase client без проверки на null
+```typescript
+// ❌ Упадёт если env не заданы
+const { data } = await supabase.from("articles").select();
+
+// ✅ Всегда проверяй
+if (!supabase) return null;
+const { data } = await supabase.from("articles").select();
+```
+
+## Частые ошибки
+
+### 4. Забытый trailing slash в Link
+```typescript
+// ❌ Может дать 404
+<Link href="/es/servicios/cleaning">
+
+// ✅ С trailing slash (trailingSlash: true в конфиге)
+<Link href="/es/servicios/cleaning/">
+```
+
+### 5. Ключ перевода только в одном файле
+```typescript
+// ❌ Добавил только в ru.json — сломает EN и ES версии
+// messages/ru.json: "newKey": "Новый текст"
+
+// ✅ Добавляй ВО ВСЕ ТРИ: es.json, en.json, ru.json
+```
+
+### 6. Импорт серверного кода в клиентский компонент
+```typescript
+// ❌ Не работает в "use client" компонентах
+import { getTranslations } from "next-intl/server";
+
+// ✅ В клиентских — только useTranslations
+import { useTranslations } from "next-intl";
+```
+
+### 7. Service role key на клиенте
+```typescript
+// ❌ НИКОГДА — утечка серверного ключа
+const client = createClient(url, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+// ✅ Service role — только в API routes (src/app/api/)
+```
+
+### 8. CSS/стили вне Tailwind
+```typescript
+// ❌ Не используй inline styles или custom CSS модули
+<div style={{ color: 'red' }}>
+
+// ✅ Tailwind utilities
+<div className="text-red-500">
+```
+
+### 9. EMFILE при dev (turbopack)
+```bash
+# ❌ Не используй turbopack — вызывает EMFILE
+next dev --turbopack
+
+# ✅ Обычный dev
+next dev
+# Если ошибка — rm -rf .next && next dev
+```
+
+### 10. Отсутствие alt у изображений
+```typescript
+// ❌ Плохо для SEO и accessibility
+<Image src="/hero.jpg" width={800} height={400} />
+
+// ✅ Всегда указывай alt
+<Image src="/hero.jpg" width={800} height={400} alt="Обслуживание кондиционеров в Панаме" />
+```
+
+## Чек-лист перед коммитом
+1. `bun run lint` — нет ошибок
+2. Нет `any` в TypeScript коде
+3. Все новые текстовые строки — через i18n (не хардкод)
+4. Ключи переводов во всех 3 файлах messages
+5. Trailing slash в ссылках
+6. Нет секретов в коде
+7. Изображения через next/image с alt

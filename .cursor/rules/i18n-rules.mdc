@@ -1,0 +1,74 @@
+---
+description: Правила работы с мультиязычностью (next-intl) в проекте 24clima
+globs: ["src/**/*.tsx", "src/**/*.ts", "messages/**/*.json"]
+---
+
+# Правила интернационализации (i18n)
+
+## Конфигурация
+- Библиотека: **next-intl** v4.8
+- Локали: `es` (default), `en`, `ru`
+- Конфиг: `src/i18n/config.ts`
+- localePrefix: **"always"** — URL всегда содержат `/es/`, `/en/`, `/ru/`
+- Middleware: `middleware.ts` в корне проекта
+
+## Файлы переводов
+- Расположение: `messages/es.json`, `messages/en.json`, `messages/ru.json`
+- Формат: плоские ключи в секциях (не глубоко вложенные)
+- **КРИТИЧНО:** при добавлении/удалении ключа — обновляй ВСЕ ТРИ файла
+- Значения: подстановки через `{variable}`, plural через ICU
+
+## Использование в компонентах
+
+### Клиентские компоненты ("use client")
+```typescript
+import { useTranslations } from "next-intl";
+
+export default function Calculator() {
+  const t = useTranslations("calculator");
+  return <h2>{t("title")}</h2>;
+}
+```
+
+### Серверные компоненты
+```typescript
+import { getTranslations } from "next-intl/server";
+
+export default async function Page({ params }: { params: { locale: string } }) {
+  const t = await getTranslations("home");
+  return <h1>{t("title")}</h1>;
+}
+```
+
+### Metadata (SEO)
+```typescript
+import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata({ params }: Props) {
+  const t = await getTranslations({ locale: params.locale, namespace: "meta" });
+  return { title: t("title"), description: t("description") };
+}
+```
+
+## Ссылки между страницами
+- Используй `next-intl/navigation` для Link с автоматической локалью
+- Или `<Link href={`/${locale}/servicios/cleaning/`}>` с явной локалью
+- **ВСЕГДА** trailing slash в href
+
+## Добавление нового текста
+1. Добавь ключ в `messages/es.json` (основной язык)
+2. Скопируй в `messages/en.json` и `messages/ru.json`
+3. Переведи значения
+4. Используй в компоненте через `useTranslations("section")`
+
+## Добавление новой локали
+1. Добавь код в `src/i18n/config.ts` → массив `locales`
+2. Создай `messages/xx.json` по образцу `es.json`
+3. Обнови `generateStaticParams` в layout/pages
+4. Обнови `sitemap.ts`
+5. Обнови CSP если нужны новые домены
+
+## WhatsApp сообщения
+- Предзаполненные сообщения зависят от языка пользователя
+- Ключи: `packages.whatsappOrderMessage`, `whatsappMessages.*`
+- Используй `getWhatsAppLink()` из `@/lib/constants`

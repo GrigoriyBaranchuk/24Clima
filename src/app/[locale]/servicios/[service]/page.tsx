@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BottomNav from "@/components/BottomNav";
 import CleaningPackages from "@/components/CleaningPackages";
 import ServicePageViewContent from "@/components/ServicePageViewContent";
 import ServiceFAQ from "@/components/ServiceFAQ";
@@ -241,9 +242,9 @@ export default async function ServicePage({ params }: Props) {
       />
       <ServicePageViewContent serviceName={title} />
       <Header />
-      <main id="main-content" className="pt-20">
+      <main id="main-content" className="pt-14 lg:pt-20">
         {/* Hero Section */}
-        <section className="hero-gradient py-16 lg:py-24">
+        <section className="hero-gradient py-8 lg:py-24">
           <div className="container mx-auto px-4 lg:px-8 mb-4">
             <Breadcrumbs
               segments={[
@@ -274,11 +275,11 @@ export default async function ServicePage({ params }: Props) {
                   </Badge>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+                <h1 className="text-2xl lg:text-5xl font-semibold text-white mb-4 lg:mb-6" style={{ letterSpacing: "-0.3px" }}>
                   {title}
                 </h1>
 
-                <p className="text-lg text-white/90 mb-8 leading-relaxed">
+                <p className="text-[15px] lg:text-lg text-white/90 mb-4 lg:mb-8 leading-relaxed">
                   {description}
                 </p>
 
@@ -446,6 +447,7 @@ export default async function ServicePage({ params }: Props) {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BottomNav />
     </>
   );
 }

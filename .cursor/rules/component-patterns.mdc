@@ -1,0 +1,112 @@
+---
+description: Шаблоны создания компонентов и страниц в 24clima
+globs: ["src/components/**/*.tsx", "src/app/**/*.tsx"]
+---
+
+# Шаблоны компонентов
+
+## Новый клиентский компонент
+```typescript
+"use client";
+
+import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+
+interface MyComponentProps {
+  className?: string;
+  // ... другие props
+}
+
+export default function MyComponent({ className }: MyComponentProps) {
+  const t = useTranslations("mySection");
+
+  return (
+    <section className={cn("py-16 px-4", className)}>
+      <div className="container mx-auto max-w-6xl">
+        <h2 className="text-3xl font-bold text-center mb-8">
+          {t("title")}
+        </h2>
+        {/* Контент */}
+      </div>
+    </section>
+  );
+}
+```
+
+## Новая страница с локалью
+```typescript
+import { getTranslations } from "next-intl/server";
+import { getHomeKeywords } from "@/lib/seo-keywords";
+import type { Metadata } from "next";
+
+interface PageProps {
+  params: { locale: string };
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = params;
+  const t = await getTranslations({ locale, namespace: "pageName" });
+
+  return {
+    title: `${t("title")} | 24clima`,
+    description: t("description"),
+    alternates: {
+      canonical: `https://24clima.com/${locale}/page-path/`,
+      languages: {
+        es: "https://24clima.com/es/page-path/",
+        en: "https://24clima.com/en/page-path/",
+        ru: "https://24clima.com/ru/page-path/",
+      },
+    },
+  };
+}
+
+export default async function PageName({ params }: PageProps) {
+  const t = await getTranslations("pageName");
+
+  return (
+    <main>
+      <h1>{t("title")}</h1>
+    </main>
+  );
+}
+```
+
+## Новая страница услуги
+При добавлении новой услуги:
+1. Добавь slug в `generateStaticParams()` в `src/app/[locale]/servicios/[service]/page.tsx`
+2. Добавь ключевые слова в `src/lib/seo-keywords.ts` → SERVICE_KEYWORDS
+3. Добавь переводы в `messages/*.json`
+4. Обнови `src/app/sitemap.ts`
+
+## WhatsApp-кнопка с предзаполненным сообщением
+```typescript
+import { getWhatsAppLink } from "@/lib/constants";
+import { useTranslations } from "next-intl";
+
+const t = useTranslations("whatsappMessages");
+const whatsappUrl = getWhatsAppLink(t("messageKey"));
+
+<a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+  {t("buttonText")}
+</a>
+```
+
+## Адаптивный layout (типичный)
+```typescript
+// Mobile-first: колонка → ряд на md+
+<div className="flex flex-col md:flex-row gap-6">
+  <div className="w-full md:w-1/2">Левая часть</div>
+  <div className="w-full md:w-1/2">Правая часть</div>
+</div>
+
+// Сетка: 1 → 2 → 3 колонки
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {items.map(item => <Card key={item.id} {...item} />)}
+</div>
+```
+
+## UI компоненты (shadcn/ui)
+Доступные: Button, Card, Sheet, Badge, DropdownMenu
+Путь: `src/components/ui/`
+Использование: импорт напрямую `import { Button } from "@/components/ui/button"`

@@ -12,6 +12,7 @@ import BlogPromo from "@/components/BlogPromo";
 import StatsSection from "@/components/StatsSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BottomNav from "@/components/BottomNav";
 import ScrollReveal from "@/components/ScrollReveal";
 import SectionSkeleton from "@/components/SectionSkeleton";
 
@@ -60,6 +61,7 @@ export default async function Home({ params }: Props) {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BottomNav />
     </>
   );
 }

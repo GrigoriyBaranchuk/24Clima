@@ -145,11 +145,42 @@ docs/                       # Документация
 
 **План (6 фаз):**
 - Fase 0: DESIGN.md + SEO checklist ✅ DONE
-- Fase 1: Bottom navigation (BottomNav.tsx, Header mobile)
-- Fase 2: Hero + главная (app-like layout)
-- Fase 3: Внутренние страницы (услуги, контакты, блог)
-- Fase 4: Footer + анимации + жесты + «Escribenos»
-- Fase 5: SEO/GEO аудит + тестирование
+- Fase 1: Bottom navigation (BottomNav.tsx, Header mobile) ✅ DONE
+- Fase 2: Hero + главная (app-like layout) ✅ DONE
+- Fase 3: Внутренние страницы (услуги, контакты, блог) ✅ DONE
+- Fase 4: Footer + анимации + жесты + «Escribenos» ✅ DONE
+- Fase 5: SEO/GEO аудит + тестирование ✅ DONE
+
+### Сессия 4 — 2026-04-27 — Мобильный редизайн (реализация)
+- **Ветка:** `mobile-redesign`
+- **TypeScript:** компилируется без ошибок
+- **SEO аудит:** 10/10 элементов сохранены
+
+**Созданные файлы:**
+- `src/components/BottomNav.tsx` — мобильная навигация (4 таба + WhatsApp FAB)
+
+**Изменённые файлы (21):**
+- `src/components/Header.tsx` — компактный мобильный хедер (h-14, без гамбургера)
+- `src/components/WhatsAppButton.tsx` — только desktop (lg:flex)
+- `src/components/Hero.tsx` — компактный hero на мобильных (60vh, 2xl title, pill CTA)
+- `src/components/Calculator.tsx` — компактные отступы, rounded-full CTA
+- `src/components/Services.tsx` — 2x2 grid на мобильных, полные карточки на desktop
+- `src/components/CleaningPackages.tsx` — горизонтальный scroll на мобильных
+- `src/components/Problems.tsx` — уменьшенные заголовки и отступы
+- `src/components/HomeCtaBlocks.tsx` — компактные карточки на мобильных
+- `src/components/StatsSection.tsx` — горизонтальный scroll, меньше текст
+- `src/components/BlogPromo.tsx` — горизонтальный scroll карточек
+- `src/components/Contact.tsx` — компактные отступы и типографика
+- `src/components/Footer.tsx` — скрытые навигационные колонки на мобильных, pb-20 для BottomNav
+- 8 файлов page.tsx — добавлен BottomNav + адаптивный pt (pt-14 lg:pt-20)
+
+**Принципы мобильного дизайна:**
+- Breakpoint: `lg:` (1024px) разделяет mobile/desktop
+- Desktop полностью НЕ изменён
+- Apple-style типографика: font-semibold, letter-spacing -0.2/-0.3px
+- Touch targets: min 44x44px, active:scale-95
+- Horizontal scroll: snap-x для карточек (CleaningPackages, BlogPromo, Stats)
+- Pill buttons: rounded-full на мобильных CTA
 
 ---
 

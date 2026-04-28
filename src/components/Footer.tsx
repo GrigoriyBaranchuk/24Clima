@@ -28,10 +28,10 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#0d2240] text-white">
+    <footer className="bg-[#0d2240] text-white pb-20 lg:pb-0">
       {/* Main Footer */}
-      <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="container mx-auto px-4 lg:px-8 py-8 lg:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link href="/" scroll={false} className="inline-block mb-6">
@@ -43,11 +43,11 @@ export default function Footer() {
                 className="h-12 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-base text-gray-400 mb-4 leading-relaxed max-w-sm">
+            <p className="text-[13px] lg:text-base text-gray-400 mb-3 lg:mb-4 leading-relaxed max-w-sm">
               {t("description")}
             </p>
             {/* Geo Line */}
-            <p className="text-base text-gray-500 mb-6">
+            <p className="text-[12px] lg:text-base text-gray-500 mb-4 lg:mb-6">
               {tCommon("geoLine")}
             </p>
             <div className="flex items-center gap-4">
@@ -88,8 +88,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Services Column */}
-          <div>
+          {/* Services Column — hidden on mobile (BottomNav handles navigation) */}
+          <div className="hidden lg:block">
             <h4 className="font-semibold text-white mb-4">{t("servicesTitle")}</h4>
             <ul className="space-y-3">
               {services.map((service, index) => (
@@ -105,8 +105,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Problems & Contact Column */}
-          <div>
+          {/* Problems & Contact Column — hidden on mobile */}
+          <div className="hidden lg:block">
             <h4 className="font-semibold text-white mb-4">{t("problemsTitle")}</h4>
             <Link
               href="/consejos-y-guias"
@@ -175,7 +175,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-base">
+            <p className="text-gray-400 text-[12px] lg:text-base">
               © {currentYear} 24clima. {t("copyright")}
             </p>
           </div>

@@ -4,6 +4,7 @@ import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BottomNav from "@/components/BottomNav";
 import AuthorBio from "@/components/AuthorBio";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import { Button } from "@/components/ui/button";
@@ -167,9 +168,9 @@ export default async function DiagnosticoPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <Header />
-      <main id="main-content" className="pt-20">
+      <main id="main-content" className="pt-14 lg:pt-20">
         {/* Hero */}
-        <section className="hero-gradient py-16 lg:py-24">
+        <section className="hero-gradient py-8 lg:py-24">
           <div className="container mx-auto px-4 lg:px-8">
             <Breadcrumbs segments={[{ label: labels.diagnosis }]} variant="light" />
           </div>
@@ -341,6 +342,7 @@ export default async function DiagnosticoPage({ params }: Props) {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BottomNav />
     </>
   );
 }

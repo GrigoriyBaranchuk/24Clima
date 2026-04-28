@@ -105,33 +105,33 @@ export default function Calculator() {
   };
 
   return (
-    <section id="calculadora" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-[#1e3a5f] to-[#0d2240]">
+    <section id="calculadora" className="py-8 lg:py-20 bg-gradient-to-br from-[#1e3a5f] to-[#0d2240]">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="w-full max-w-2xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-6 sm:mb-8">
-            <div className="inline-flex items-center gap-2 bg-[#7BC043]/20 text-[#7BC043] px-4 py-2 rounded-full mb-4">
-              <CalcIcon className="w-5 h-5" />
-              <span className="font-medium">{t("title")}</span>
+          <div className="text-center mb-4 lg:mb-8">
+            <div className="inline-flex items-center gap-2 bg-[#7BC043]/20 text-[#7BC043] px-3 lg:px-4 py-1.5 lg:py-2 rounded-full mb-3 lg:mb-4">
+              <CalcIcon className="w-4 lg:w-5 h-4 lg:h-5" />
+              <span className="font-medium text-sm lg:text-base">{t("title")}</span>
             </div>
-            <p className="text-white/80">{t("subtitle")}</p>
+            <p className="text-white/80 text-[13px] lg:text-base">{t("subtitle")}</p>
           </div>
 
-          <Card className="bg-white/10 backdrop-blur-md border-white/20">
-            <CardContent className="p-5 sm:p-6 lg:p-8">
+          <Card className="bg-white/10 backdrop-blur-md border-white/20 rounded-2xl lg:rounded-xl">
+            <CardContent className="p-4 lg:p-8">
               {/* Quantity Selection — centered for best UX on mobile and desktop */}
-              <div className="mb-6 text-center">
-                <label className="block text-white font-medium mb-3">
+              <div className="mb-5 lg:mb-6 text-center">
+                <label className="block text-white font-semibold text-[15px] lg:text-base mb-2 lg:mb-3">
                   {t("quantity")}
                 </label>
 
                 {/* Quick Select Buttons */}
-                <div className="flex gap-2 flex-wrap justify-center mb-4">
+                <div className="flex gap-1.5 lg:gap-2 flex-wrap justify-center mb-3 lg:mb-4">
                   {quantityOptions.map((num) => (
                     <button
                       key={num}
                       onClick={() => setQuantity(num)}
-                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl font-bold text-lg transition-all active:scale-95 ${
+                      className={`w-11 h-11 lg:w-14 lg:h-14 rounded-xl font-bold text-base lg:text-lg transition-all active:scale-95 ${
                         quantity === num && quantity <= 5
                           ? "bg-[#7BC043] text-white scale-105"
                           : "bg-white/10 text-white hover:bg-white/20"
@@ -221,16 +221,16 @@ export default function Calculator() {
               )}
 
               {/* Total */}
-              <div className="bg-white/10 rounded-xl p-4 mb-4">
+              <div className="bg-white/10 rounded-xl p-3 lg:p-4 mb-3 lg:mb-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-white text-lg font-medium">{t("total")}</span>
-                  <span className="text-3xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>
+                  <span className="text-white text-[15px] lg:text-lg font-medium">{t("total")}</span>
+                  <span className="text-2xl lg:text-3xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>
                     ${total.toFixed(2)}
                   </span>
                 </div>
                 {savings > 0.01 && (
                   <div className="text-right mt-1">
-                    <span className="text-[#7BC043] text-base font-medium">
+                    <span className="text-[#7BC043] text-[13px] lg:text-base font-medium">
                       {t("savings")} ${savings.toFixed(2)}!
                     </span>
                   </div>
@@ -241,7 +241,7 @@ export default function Calculator() {
               <Button
                 asChild
                 size="lg"
-                className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-lg py-6 whatsapp-pulse"
+                className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-[15px] lg:text-lg h-12 lg:py-6 rounded-full lg:rounded-md whatsapp-pulse active:scale-95 transition-transform"
               >
                 <a
                   href={getWhatsAppLink(generateWhatsAppMessage())}

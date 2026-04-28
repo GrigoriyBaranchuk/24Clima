@@ -41,12 +41,12 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contacto" className="py-20 lg:py-28 section-light-green scroll-mt-20">
+    <section id="contacto" className="py-10 lg:py-28 section-light-green scroll-mt-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header with Image */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center mb-8 lg:mb-16">
           <div className="text-center lg:text-left">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e3a5f] mb-6">
+            <h2 className="text-xl lg:text-5xl font-semibold text-[#1e3a5f] mb-3 lg:mb-6" style={{ letterSpacing: "-0.2px" }}>
               {t("title")}
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed">

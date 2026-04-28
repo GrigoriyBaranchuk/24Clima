@@ -1,0 +1,66 @@
+---
+description: SEO оптимизация и производительность для 24clima.com
+globs: ["src/app/**/layout.tsx", "src/app/**/page.tsx", "src/app/sitemap.ts", "src/lib/seo-keywords.ts"]
+---
+
+# SEO и производительность
+
+## Metadata
+- Каждая страница ДОЛЖНА иметь уникальные `title`, `description`, `keywords`
+- Используй `generateMetadata()` в page.tsx или layout.tsx
+- Title формат: `{Заголовок страницы} | 24clima`
+- Description: 150-160 символов, включать ключевые слова
+- Keywords: из `src/lib/seo-keywords.ts` — `getHomeKeywords(locale)`, `getServiceKeywords(slug, locale)`
+
+## Canonical и alternates
+- Canonical: самоссылающийся URL по текущей локали
+- alternates.languages: ссылки на все локали с trailing slash
+```typescript
+alternates: {
+  languages: {
+    es: `https://24clima.com/es/${path}/`,
+    en: `https://24clima.com/en/${path}/`,
+    ru: `https://24clima.com/ru/${path}/`,
+  }
+}
+```
+
+## JSON-LD
+- Тип: HVACBusiness + WebSite
+- Размещение: в [locale] layout.tsx
+- Обязательные поля: name, url, telephone, address, serviceArea
+
+## Sitemap
+- Файл: `src/app/sitemap.ts` — динамическая генерация
+- Включать все страницы всех локалей
+- При добавлении новых страниц — обновлять sitemap
+
+## robots.txt
+- Файл: `public/robots.txt`
+- Allow: /
+- Sitemap: https://24clima.com/sitemap.xml
+
+## Производительность (Core Web Vitals)
+- **LCP < 2.5s**: Hero-изображения с `priority`, `next/image` с sizes
+- **FID < 100ms**: минимизируй клиентский JS, используй серверные компоненты
+- **CLS < 0.1**: задавай `width` и `height` для всех изображений
+
+## Оптимизация изображений
+- Всегда `next/image` (НЕ `<img>`)
+- Обязательные атрибуты: `width`, `height`, `alt`
+- Hero/above-fold: `priority={true}`
+- Lazy loading: по умолчанию для изображений below fold
+- Форматы: WebP/AVIF автоматически через Next.js Image Optimization
+- Remote images: домены настроены в `next.config.js` → `images.remotePatterns`
+
+## Аналитика
+- Google Analytics: `G-TQK90D11ME` → `src/components/GoogleAnalytics.tsx`
+- Яндекс.Метрика: `106804843` → `src/components/YandexMetrika.tsx`
+- Meta Pixel: через env → `src/components/MetaPixel.tsx`
+- Все скрипты: `strategy: "afterInteractive"` для минимального влияния на загрузку
+
+## CSP (Content Security Policy)
+- Настроена в `next.config.js` → `headers()`
+- При добавлении ЛЮБОГО внешнего скрипта/ресурса — обновляй CSP
+- connect-src: supabase, google analytics, yandex, facebook
+- script-src: gtm, facebook, yandex

@@ -6,6 +6,7 @@ import WhyUs from "@/components/WhyUs";
 import Reviews from "@/components/Reviews";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BottomNav from "@/components/BottomNav";
 import NosotrosCTA from "@/components/NosotrosCTA";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -100,7 +101,7 @@ export default async function NosotrosPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <Header />
-      <main id="main-content">
+      <main id="main-content" className="pt-14 lg:pt-20">
         <div className="container mx-auto px-4 lg:px-8 pt-2">
           <Breadcrumbs segments={[{ label: labels.about }]} />
         </div>
@@ -110,6 +111,7 @@ export default async function NosotrosPage({ params }: Props) {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BottomNav />
     </>
   );
 }

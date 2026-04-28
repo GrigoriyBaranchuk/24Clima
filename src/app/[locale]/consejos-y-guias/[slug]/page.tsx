@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BottomNav from "@/components/BottomNav";
 import ArticleHero from "@/components/ArticleHero";
 import ArticleRenderer from "@/components/ArticleRenderer";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
@@ -193,7 +194,7 @@ export default async function ArticlePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <ReadingProgressBar />
       <Header />
-      <main id="main-content" className="article-reading-bg min-h-screen pt-24">
+      <main id="main-content" className="article-reading-bg min-h-screen pt-16 lg:pt-24">
         <article>
           <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
             <Breadcrumbs
@@ -241,6 +242,7 @@ export default async function ArticlePage({
       </main>
       <Footer />
       <WhatsAppButton />
+      <BottomNav />
     </>
   );
 }
