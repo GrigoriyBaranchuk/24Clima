@@ -7,6 +7,7 @@ import ParallaxHero from "@/components/ParallaxHero";
 export const dynamic = "force-dynamic";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BottomNav from "@/components/BottomNav";
 import { supabase } from "@/lib/supabase";
 import { resolveImageUrls, stripMarkdownForPreview } from "@/lib/articles";
 import { normalizeSlug } from "@/lib/slug";
@@ -116,7 +117,7 @@ export default async function TipsPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Header />
-      <main id="main-content" className="min-h-screen pt-24">
+      <main id="main-content" className="min-h-screen pt-16 lg:pt-24">
         <ParallaxHero>
           <div className="container mx-auto px-4 lg:px-8 pt-4">
             <Breadcrumbs segments={[{ label: labels.blog }]} variant="light" />
@@ -150,6 +151,7 @@ export default async function TipsPage({
       </main>
       <Footer />
       <WhatsAppButton />
+      <BottomNav />
     </>
   );
 }

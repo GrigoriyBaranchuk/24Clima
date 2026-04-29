@@ -44,3 +44,10 @@ yarn-error.log*
 next-env.d.ts
 __pycache__/
 *.pyc
+
+# claude code worktrees and local state
+.claude/
+
+# cursor local artifacts
+.cursor/debug-*.log
+.cursor/prompts/

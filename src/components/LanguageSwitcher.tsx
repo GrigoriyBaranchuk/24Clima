@@ -33,14 +33,27 @@ export default function LanguageSwitcher({ isScrolled = false }: { isScrolled?: 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
+        {/* Desktop: globe + flag + name */}
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-2 text-gray-700 hover:text-[#0F9D58] hover:bg-gray-100"
+          className={`flex items-center gap-1.5 transition-colors ${
+            isScrolled
+              ? "text-gray-700 hover:text-[#0F9D58] hover:bg-gray-100"
+              : "text-white hover:text-white/80 hover:bg-white/10 lg:text-gray-700 lg:hover:text-[#0F9D58] lg:hover:bg-gray-100"
+          }`}
         >
-          <Globe className="w-4 h-4" />
-          <span className="hidden sm:inline flex items-center gap-1.5"><FlagIcon code={localeCountryCodes[locale]} /> {localeNames[locale]}</span>
-          <span className="sm:hidden"><FlagIcon code={localeCountryCodes[locale]} /></span>
+          {/* Mobile: flag + locale code in compact badge */}
+          <span className="lg:hidden flex items-center gap-1">
+            <FlagIcon code={localeCountryCodes[locale]} />
+            <span className="text-xs font-medium uppercase">{locale.toUpperCase()}</span>
+          </span>
+          {/* Desktop: globe + flag + full name */}
+          <span className="hidden lg:flex items-center gap-1.5">
+            <Globe className="w-4 h-4" />
+            <FlagIcon code={localeCountryCodes[locale]} />
+            <span>{localeNames[locale]}</span>
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[150px]">

@@ -1,0 +1,56 @@
+---
+description: Правила работы с Supabase (БД, Auth, Storage) в проекте 24clima
+globs: ["src/lib/supabase.ts", "src/lib/auth-server.ts", "src/lib/articles.ts", "src/app/api/**", "supabase/**"]
+---
+
+# Правила работы с Supabase
+
+## Клиент
+- Файл: `src/lib/supabase.ts`
+- Клиент возвращает `null` если env переменные не заданы — ВСЕГДА проверяй на null
+- Browser-safe ключ: `NEXT_PUBLIC_SUPABASE_ANON_KEY` (publishable)
+- Серверный ключ: `SUPABASE_SERVICE_ROLE_KEY` — ТОЛЬКО в API routes, НИКОГДА на клиенте
+
+```typescript
+import { supabase } from "@/lib/supabase";
+
+// ✅ Всегда проверяй на null
+if (!supabase) {
+  return <p>Supabase не настроен</p>;
+}
+const { data, error } = await supabase.from("articles").select("*");
+```
+
+## База данных (articles)
+- Таблица: `articles`
+- Миграция: `supabase/migrations/001_articles.sql`
+- Поля: `id`, `slug`, `title_ru`, `title_es`, `title_en`, `content_ru`, `content_es`, `content_en`, `image_urls`, `created_at`, `updated_at`
+- Тип: `Article` экспортирован из `@/lib/supabase`
+
+## Auth
+- Supabase Auth для админки блога
+- Серверная проверка: `src/lib/auth-server.ts`
+- Fallback админов: `ADMIN_EMAILS` в env
+
+## Storage
+- Bucket: `article-images` (public)
+- Policy: `auth.role() = 'authenticated'` для INSERT/UPDATE
+- Путь изображений: `article-images/{filename}`
+- URL: `{SUPABASE_URL}/storage/v1/object/public/article-images/{filename}`
+
+## API Routes
+- `/api/translate` — автоперевод RU→ES/EN через Google Translate API
+- Серверный ключ Supabase используется ТОЛЬКО здесь
+- Валидируй входные данные
+- Обрабатывай ошибки и возвращай правильные HTTP статусы
+
+## RLS (Row Level Security)
+- Включено для таблицы articles
+- Публичное чтение разрешено
+- Запись — только для авторизованных пользователей
+
+## Правила безопасности
+- НИКОГДА не передавай `SUPABASE_SERVICE_ROLE_KEY` на клиент
+- НИКОГДА не используй service role key в клиентских компонентах
+- Проверяй авторизацию на сервере перед мутациями
+- Санитизируй slug и content перед записью в БД

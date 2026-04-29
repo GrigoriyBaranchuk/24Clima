@@ -55,24 +55,24 @@ export default async function BlogPromo({ locale }: BlogPromoProps) {
   if (articles.length === 0) return null;
 
   return (
-    <section className="py-16 lg:py-24 section-gradient" aria-labelledby="blog-promo-heading">
+    <section className="py-8 lg:py-24 section-gradient" aria-labelledby="blog-promo-heading">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-center gap-2 mb-10">
-          <BookOpen className="w-8 h-8 text-[#0F9D58]" aria-hidden />
-          <h2 id="blog-promo-heading" className="text-2xl sm:text-3xl font-bold text-[#1e3a5f]">
+        <div className="flex items-center justify-center gap-2 mb-4 lg:mb-10">
+          <BookOpen className="w-5 lg:w-8 h-5 lg:h-8 text-[#0F9D58]" aria-hidden />
+          <h2 id="blog-promo-heading" className="text-xl lg:text-3xl font-semibold text-[#1e3a5f]" style={{ letterSpacing: "-0.2px" }}>
             {t("title")}
           </h2>
         </div>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-[13px] lg:text-base text-gray-600 mb-6 lg:mb-12 max-w-2xl mx-auto">
           {t("subtitle")}
         </p>
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 lg:pb-0 lg:grid lg:grid-cols-3 lg:gap-8 lg:overflow-visible max-w-5xl mx-auto" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}>
           {articles.map((article) => (
             <Link
               key={article.slug}
               href={`/consejos-y-guias/${article.slug}`}
               scroll={false}
-              className="group block bg-white rounded-2xl border border-gray-200 shadow-md overflow-hidden hover:shadow-xl hover:border-[#7BC043]/30 transition-all duration-300"
+              className="group block bg-white rounded-2xl border border-gray-200 shadow-md overflow-hidden hover:shadow-xl hover:border-[#7BC043]/30 transition-all duration-300 min-w-[75vw] lg:min-w-0 snap-center"
             >
               {article.image_urls[0] ? (
                 <div className="aspect-video relative overflow-hidden">

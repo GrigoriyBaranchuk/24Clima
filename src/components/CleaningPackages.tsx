@@ -55,23 +55,23 @@ export default function CleaningPackages() {
   ];
 
   return (
-    <section id="paquetes" className="py-16 lg:py-20 section-gradient">
+    <section id="paquetes" className="py-8 lg:py-20 section-gradient">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="w-full max-w-2xl mx-auto text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1e3a5f] mb-3">
+        <div className="w-full max-w-2xl mx-auto text-center mb-6 lg:mb-10">
+          <h2 className="text-xl lg:text-4xl font-semibold text-[#1e3a5f] mb-2 lg:mb-3" style={{ letterSpacing: "-0.2px" }}>
             {t("title")}
           </h2>
-          <p className="text-gray-600">{t("subtitle")}</p>
+          <p className="text-[13px] lg:text-base text-gray-600">{t("subtitle")}</p>
         </div>
 
-        {/* Packages Grid */}
-        <div className="w-full grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {/* Packages Grid — horizontal scroll on mobile */}
+        <div className="w-full flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 lg:pb-0 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible max-w-5xl mx-auto" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}>
           {packages.map((pkg) => (
             <Card
               key={pkg.key}
-              className={`relative overflow-hidden transition-all duration-300 hover:shadow-xl ${pkg.bgClass} ${pkg.borderClass} ${
-                pkg.highlight ? "md:-translate-y-2 shadow-lg" : ""
+              className={`relative overflow-hidden transition-all duration-300 hover:shadow-xl min-w-[75vw] lg:min-w-0 snap-center ${pkg.bgClass} ${pkg.borderClass} ${
+                pkg.highlight ? "lg:-translate-y-2 shadow-lg" : ""
               }`}
             >
               {/* Highlight Badge */}

@@ -4,6 +4,7 @@ import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BottomNav from "@/components/BottomNav";
 import { MapPin, Clock, ChevronRight } from "lucide-react";
 import { SERVICE_AREAS } from "@/lib/areas-data";
 import { BUSINESS_DATA } from "@/lib/business-data";
@@ -169,9 +170,9 @@ export default async function AreasPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <Header />
-      <main id="main-content" className="pt-20">
+      <main id="main-content" className="pt-14 lg:pt-20">
         {/* Hero */}
-        <section className="hero-gradient py-16 lg:py-24">
+        <section className="hero-gradient py-8 lg:py-24">
           <div className="container mx-auto px-4 lg:px-8">
             <Breadcrumbs segments={[{ label: labels.serviceAreas }]} variant="light" />
           </div>
@@ -290,6 +291,7 @@ export default async function AreasPage({ params }: Props) {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BottomNav />
     </>
   );
 }

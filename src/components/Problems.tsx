@@ -48,24 +48,24 @@ export default function Problems() {
   ];
 
   return (
-    <section id="problemas" className="py-20 lg:py-28 section-gradient-alt scroll-mt-20">
+    <section id="problemas" className="py-10 lg:py-28 section-gradient-alt scroll-mt-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="w-full max-w-3xl mx-auto text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-3 sm:px-4 py-2 rounded-full mb-4 sm:mb-6">
-            <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="font-medium text-sm sm:text-base">{t("badge")}</span>
+        <div className="w-full max-w-3xl mx-auto text-center mb-6 lg:mb-16">
+          <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 px-3 py-1.5 lg:py-2 rounded-full mb-3 lg:mb-6">
+            <AlertTriangle className="w-4 h-4 lg:w-5 lg:h-5" />
+            <span className="font-medium text-xs lg:text-base">{t("badge")}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#1e3a5f] mb-4 sm:mb-6 px-4 sm:px-0">
+          <h2 className="text-xl lg:text-5xl font-semibold text-[#1e3a5f] mb-2 lg:mb-6" style={{ letterSpacing: "-0.2px" }}>
             {t("title")}
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 leading-relaxed px-4 sm:px-0">
+          <p className="text-[13px] lg:text-lg text-gray-600 leading-relaxed">
             {t("subtitle")}
           </p>
         </div>
 
         {/* Problems Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
           {problems.map((problem, index) => (
             <Card
               key={index}
@@ -126,7 +126,7 @@ export default function Problems() {
         </div>
 
         {/* Additional Info — flex col for Safari centering */}
-        <div className="mt-16 flex flex-col items-center text-center">
+        <div className="mt-8 lg:mt-16 flex flex-col items-center text-center">
           <p className="text-gray-600 mb-4">
             {t("notInList")}
           </p>

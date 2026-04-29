@@ -4,6 +4,7 @@
     "contact": "Contacto",
     "services": "Servicios",
     "tips": "Consejos y Guías",
+    "blog": "Blog",
     "problems": "Problemas",
     "about": "Nosotros",
     "serviceAreas": "Zonas de servicio",
@@ -41,7 +42,10 @@
     "stat2Value": "24/7",
     "stat2Label": "Disponibilidad",
     "stat3Value": "9+",
-    "stat3Label": "Años de experiencia"
+    "stat3Label": "Años de experiencia",
+    "callButton": "Llamar",
+    "greeting": "Bienvenido",
+    "mobileTitle": "Aire acondicionado profesional en Panamá"
   },
   "packages": {
     "title": "Elige tu paquete de limpieza",
@@ -88,6 +92,9 @@
     "total": "Total",
     "savings": "¡Ahorras",
     "cta": "Pedir por WhatsApp",
+    "units": "unidades",
+    "mobileTitle": "Calculadora de precios",
+    "mobileSubtitle": "Calcule el costo de limpieza",
     "whatsappMessage": "Hola, quiero contratar el servicio de limpieza:\n\n📦 Paquete: {package}\n🔢 Cantidad: {quantity} equipo(s)\n💵 Precios por unidad:\n{breakdown}\n\n💰 TOTAL: ${total} USD\n\n¿Cuándo pueden venir?"
   },
   "services": {
@@ -97,6 +104,7 @@
     "urgentTitle": "¿Necesitas un servicio urgente?",
     "urgentSubtitle": "Nuestros técnicos están disponibles para atenderte de inmediato.",
     "cleaning": {
+      "shortTitle": "Limpieza",
       "title": "Limpieza Profunda de Aire Acondicionado en Panamá",
       "description": "Limpieza profesional de aire acondicionado en Ciudad de Panamá. Elimina hongos, bacterias y malos olores. Mejora el rendimiento del equipo. Servicio disponible 24/7.",
       "benefit1": "Elimina bacterias y hongos",
@@ -115,6 +123,7 @@
       "faq5A": "Sí. Respaldamos nuestro trabajo y puedes contactarnos si surge cualquier problema tras la limpieza."
     },
     "maintenance": {
+      "shortTitle": "Mantenimiento",
       "title": "Mantenimiento Preventivo de Aire Acondicionado en Panamá",
       "description": "Mantenimiento preventivo de aires acondicionados en Panamá. Evita averías costosas, prolonga la vida del equipo y garantiza un aire limpio. Técnicos certificados.",
       "benefit1": "Previene fallas mayores",
@@ -133,6 +142,7 @@
       "faq5A": "En la mayoría de los casos sí. Un mantenimiento regular detecta problemas a tiempo y reduce el riesgo de averías costosas."
     },
     "repair": {
+      "shortTitle": "Reparación",
       "title": "Reparación de Aire Acondicionado en Ciudad de Panamá",
       "description": "Reparación de aires acondicionados en Ciudad de Panamá. Diagnóstico rápido, repuestos originales y garantía en el trabajo. Atendemos cualquier marca y modelo.",
       "benefit1": "Diagnóstico preciso",
@@ -151,6 +161,7 @@
       "faq5A": "Atendemos todas las marcas: LG, Samsung, Mabe, Daikin, Carrier, York, y demás equipos split y de ventana."
     },
     "installation": {
+      "shortTitle": "Instalación",
       "title": "Instalación de Aire Acondicionado en Panamá",
       "description": "Instalación profesional de aires acondicionados en Panamá. Incluye cableado, soportes, prueba de funcionamiento y limpieza del área. Técnicos certificados.",
       "priceFrom": "desde $120",
@@ -170,6 +181,7 @@
       "faq5A": "Ciudad de Panamá, Costa del Este, Punta Pacífica, Albrook, Clayton, Panamá Pacífico y zonas aledañas."
     },
     "gasRecharge": {
+      "shortTitle": "Carga de gas",
       "title": "Carga de Gas Refrigerante para Aire Acondicionado en Panamá",
       "description": "Carga de gas refrigerante para aires acondicionados en Panamá. Si tu equipo no enfría correctamente, recargamos con gas original. Servicio rápido y garantizado.",
       "benefit1": "Gases certificados",
@@ -188,6 +200,7 @@
       "faq5A": "Sí. Respaldamos el servicio de carga; si hay una fuga no detectada, la revisamos sin costo adicional en el período de garantía."
     },
     "emergency": {
+      "shortTitle": "Emergencia",
       "title": "Servicio de Emergencia de Aire Acondicionado 24/7 en Panamá",
       "description": "Servicio de emergencia de aire acondicionado 24/7 en Ciudad de Panamá. Atendemos fallas críticas en cualquier momento, incluyendo fines de semana y feriados.",
       "benefit1": "Disponible 24/7",

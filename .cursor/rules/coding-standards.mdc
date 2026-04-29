@@ -1,0 +1,99 @@
+---
+description: Стандарты кодирования проекта 24clima — TypeScript, React, стилизация, безопасность
+alwaysApply: true
+---
+
+# Стандарты кодирования 24clima
+
+## Общие принципы
+- Язык кода: **TypeScript** (strict mode). Никогда не используй `any` — всегда типизируй.
+- Форматирование: **Biome** (не Prettier). Запуск: `bun run format`
+- Линтинг: **ESLint** + `next lint`. Запуск: `bun run lint`
+- Комментарии в коде: на **русском** языке (для команды)
+- Commit messages: на **английском**
+
+## TypeScript
+- Всегда используй `interface` для props компонентов (не `type`)
+- Используй `as const` для литеральных объектов
+- Не используй `enum` — используй `as const` объекты или union types
+- Экспортируй типы через `export type` (не `export`)
+- Импорты типов: `import type { ... }` (isolatedModules: true)
+- Path alias: `@/components/...`, `@/lib/...`, `@/i18n/...` (НЕ относительные пути из глубины)
+
+## React-компоненты
+- Функциональные компоненты с `function` (не arrow functions для компонентов)
+- Клиентские компоненты: добавляй `"use client"` в первую строку
+- Серверные компоненты: по умолчанию (без директивы) — предпочтительны
+- Props деструктурируй в аргументах функции
+- Не используй `React.FC` — типизируй props напрямую
+- Каждый компонент — отдельный файл, имя файла = имя компонента (PascalCase)
+- Хуки: используй `useState`, `useEffect`, `useCallback`, `useMemo` — оптимизируй ререндеры
+
+```typescript
+// ✅ Правильно
+"use client";
+
+interface CalculatorProps {
+  locale: string;
+  initialCount?: number;
+}
+
+export default function Calculator({ locale, initialCount = 1 }: CalculatorProps) {
+  // ...
+}
+
+// ❌ Неправильно
+export const Calculator: React.FC<{locale: any}> = (props) => { ... }
+```
+
+## Стилизация (Tailwind CSS)
+- Используй ТОЛЬКО Tailwind utility classes — никакого custom CSS (кроме globals.css)
+- Responsive: mobile-first (`sm:`, `md:`, `lg:`, `xl:`)
+- Для условных классов используй `cn()` из `@/lib/utils`
+- Цвета: используй CSS variables из globals.css (не хардкод hex)
+- Анимации: `tailwindcss-animate` (уже подключён)
+
+```typescript
+import { cn } from "@/lib/utils";
+
+<div className={cn(
+  "flex flex-col gap-4 p-6",
+  isActive && "bg-primary text-primary-foreground",
+  className
+)} />
+```
+
+## Next.js App Router
+- Layouts: корневой layout ОБЯЗАТЕЛЬНО содержит `<html>` и `<body>`
+- [locale] layout: возвращает `<div>`, НЕ вложенные `<html>`/`<body>`
+- `generateMetadata()` — для SEO metadata в layout/page
+- `generateStaticParams()` — для статической генерации [locale] и [slug]
+- Все ссылки: `<Link href=".../">` с trailing slash
+- Images: `<Image>` из `next/image` (не `<img>`)
+- Динамические импорты: `dynamic()` для тяжёлых клиентских компонентов
+
+## Производительность
+- Серверные компоненты по умолчанию — минимизируй клиентский JS
+- `"use client"` только когда нужны хуки, обработчики событий или browser API
+- Lazy loading: `next/dynamic` для компонентов ниже fold
+- Изображения: `next/image` с `width`, `height`, `alt`; формат WebP/AVIF автоматически
+- Шрифты: `next/font` (уже настроено)
+
+## Безопасность
+- НИКОГДА не коммить секреты (.env.local, API keys, service role keys)
+- Supabase anon key — OK для клиента; service role key — ТОЛЬКО в API routes (серверная сторона)
+- CSP заголовки настроены в next.config.js — при добавлении внешних скриптов обновляй CSP
+- XSS: не используй `dangerouslySetInnerHTML` без санитизации
+- Входные данные: валидируй на сервере в API routes
+- CORS: Next.js API routes по умолчанию same-origin
+
+## Работа с файлами переводов (messages/*.json)
+- Структура ключей ОДИНАКОВАЯ во всех трёх файлах (es.json, en.json, ru.json)
+- При добавлении нового ключа — добавляй ВО ВСЕ три файла
+- Неиспользуемые ключи — удаляй из всех файлов
+- Ключи: camelCase, вложенные через точку в useTranslations
+
+## Git
+- НЕ коммитить: `.env.local`, `.next/`, `node_modules/`, `*.tsbuildinfo`
+- Ветки: `main` (production), `dev` (разработка), `feature/*` (фичи)
+- Перед пушем: `bun run lint` — должен проходить без ошибок
