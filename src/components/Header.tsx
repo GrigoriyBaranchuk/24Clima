@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
+import { Phone, Bell, Home } from "lucide-react";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
 import { metaPixelEvent } from "@/components/MetaPixel";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -63,12 +63,42 @@ export default function Header() {
       Ir al contenido principal
     </a>
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md ${
-        isScrolled ? "shadow-lg" : "shadow-sm"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-md shadow-lg"
+          : "bg-[#0d1b2a] lg:bg-white/95 lg:backdrop-blur-md shadow-sm"
       }`}
     >
       <nav className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-14 lg:h-20">
+        {/* ===== MOBILE HEADER ===== */}
+        <div className="flex lg:hidden items-center justify-between h-12">
+          {/* Left: house icon + 24clima text */}
+          <Link href="/" scroll={false} className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-[#7BC043] rounded-xl flex items-center justify-center">
+              <Home className="w-4 h-4 text-white" />
+            </div>
+            <span className={`font-semibold text-[15px] transition-colors ${isScrolled ? "text-gray-900" : "text-white"}`}>
+              24clima
+            </span>
+          </Link>
+          {/* Right: bell + locale badge */}
+          <div className="flex items-center gap-2">
+            <button
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                isScrolled
+                  ? "bg-gray-100 text-gray-600"
+                  : "bg-white/10 text-white/70"
+              }`}
+              aria-label="Notificaciones"
+            >
+              <Bell className="w-4 h-4" />
+            </button>
+            <LanguageSwitcher isScrolled={isScrolled} />
+          </div>
+        </div>
+
+        {/* ===== DESKTOP HEADER ===== */}
+        <div className="hidden lg:flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" scroll={false} className="flex items-center">
             <Image
@@ -76,12 +106,12 @@ export default function Header() {
               alt="24clima - Servicio de aire acondicionado en Panamá"
               width={160}
               height={50}
-              className="h-9 lg:h-12 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="flex items-center gap-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -96,7 +126,7 @@ export default function Header() {
           </div>
 
           {/* CTA Button & Language Switcher */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <LanguageSwitcher isScrolled={isScrolled} />
             <a
               href={`tel:+50768282120`}
@@ -118,18 +148,6 @@ export default function Header() {
                 {t("whatsapp")}
               </a>
             </Button>
-          </div>
-
-          {/* Mobile: Compact header (navigation is in BottomNav) */}
-          <div className="flex lg:hidden items-center gap-2">
-            <LanguageSwitcher isScrolled={isScrolled} />
-            <a
-              href="tel:+50768282120"
-              className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
-              aria-label="Llamar a 24clima"
-            >
-              <Phone className="w-4 h-4" />
-            </a>
           </div>
         </div>
       </nav>

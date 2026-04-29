@@ -100,6 +100,67 @@ docs/                       # Документация
 
 ## История работы
 
+### Сессия 6 — 2026-04-29 — Mobile performance overhaul
+
+**Цель:** ускорить отклик мобильной версии без изменения визуального дизайна. План из 9 пунктов с приоритезацией по выгоде.
+
+**Результат — все 9 пунктов внедрены, дизайн нетронут.**
+
+| # | Что сделано | Файлы |
+|---|---|---|
+| 1 | `Hero`, `Footer`, `Services`, `ServicesGrid` переведены на **Server Components** (async + `getTranslations`). onClick (metaPixelEvent) вынесен в `TrackedWhatsAppLink` (client island) | `src/components/{Hero,Footer,Services,ServicesGrid}.tsx` |
+| 2 | **UA-detection через `headers()`** — desktop-only блоки (CleaningPackages, StatsSection, Problems, HomeCtaBlocks, BlogPromo, Footer) НЕ рендерятся в HTML на mobile UA | `src/lib/device.ts`, оба `page.tsx`, `middleware.ts` |
+| 3 | `ScrollReveal` загружается только на desktop UA через `RevealOnDesktop` server-обёртку | `src/components/RevealOnDesktop.tsx` |
+| 4 | Calculator разделён на `CalculatorMobile` + `CalculatorDesktop`. Server-orchestrator `Calculator.tsx` выбирает вариант. Hybrid logic: на mobile UA только Mobile, на desktop UA оба + CSS fallback по viewport (lg:) | `src/components/Calculator{,Mobile,Desktop}.tsx`, `src/lib/calculator-pricing.ts` |
+| 5 | JSON-LD проверен — уже минифицирован (`JSON.stringify` без indent во всех 12+ местах) | (no changes needed) |
+| 6 | `next.config.js`: `formats: ["image/avif", "image/webp"]` + `minimumCacheTTL: 60 days` | `next.config.js` |
+| 7 | GA + Yandex Metrika отложены до first user interaction (click/touch/scroll/keydown) или 3s idle. Meta Pixel оставлен на `lazyOnload` (важен для конверсий) | `src/components/LazyAnalytics.tsx` |
+| 8 | `next.config.js`: `compress: true`, `poweredByHeader: false`, `productionBrowserSourceMaps: false` | `next.config.js` |
+| 9 | Service Worker (manual, no deps): stale-while-revalidate для HTML, cache-first для static/images. PWA готов | `public/sw.js`, `src/components/ServiceWorkerRegister.tsx` |
+
+**Промежуточные баги, которые попутно починил:**
+- `MISSING_MESSAGE: calculator.perUnit` → переключил на `tPackages("perUnit")`
+- 404 на `/uploads/ryhor-baranchuk-opt.webp` → положил временную заглушку (нужна реальная фотография)
+- BottomNav контраст: `text-gray-400` → `text-gray-700`, `font-medium` → `font-semibold`, `strokeWidth: 2`
+- Calculator viewport-mismatch: на desktop UA + узкий viewport показывался desktop calculator; теперь рендерятся оба + CSS-переключатель по `lg:`
+- Build error `next/headers in pages/ directory` — webpack cache повреждён после структурных изменений; решается `rm -rf .next`
+
+**Промежуточные UI правки сделанные ранее в Сессии 5:**
+- Главная — single screen (`fixed inset-0` на mobile + `Footer` обёрнут `hidden lg:block`)
+- Hero: «Llamar» → «Nosotros» (Link → /nosotros)
+- Calculator: chevron + Apple-style dropdown тарифов с зелёным чекмарком
+- `GoogleRatingCard.tsx` (mobile-only) — 5★ + ссылка на Google Maps
+- BottomNav: 5 элементов (Inicio · Servicios · WA FAB · Blog · Problemas)
+- Новые страницы `/servicios` (mobile-list через `ServicesGrid` + desktop `<Services />`)
+- `messages/{es,en,ru}.json` — ключи `common.blog` + `services.<X>.shortTitle`
+
+**SEO-чеклист (10/10 сохранено):**
+- h1 на каждой странице
+- JSON-LD: HVACBusiness, WebSite, Service, FAQPage, BreadcrumbList, ItemList — все целы и минифицированы
+- meta title/description/canonical/hreflang — не тронуты
+- data-ai-summary в layout
+- aria-* на новых интерактивных элементах
+- skip-to-main-content
+- next/image, font-size 16px на inputs
+
+**TypeScript на финале:** `npx tsc --noEmit` → exit 0.
+
+**Что должен сделать пользователь после deploy:**
+1. `Ctrl+C` → `rm -rf .next` → `bun dev` (для middleware и `.next` cache reset)
+2. ~~Заменить временную фотографию автора~~ ✅ DONE — реальное фото загружено (см. ниже)
+3. Production benchmark: `bun run build && bun start` → Lighthouse Mobile + Slow 4G
+
+**Добавлено в финале сессии:**
+- Реальное фото автора Ryhor Baranchuk в `public/uploads/ryhor-baranchuk-opt.webp`
+  - Источник: `~/Downloads/IMG_7285.jpg` (155 KB, 934×924 JPEG)
+  - Конвертировано через ffmpeg: 600×600 center-crop WebP, 33.9 KB
+  - Лицо в центре, на фоне кондиционер + манометры — сильный E-E-A-T сигнал
+  - Используется в `AuthorBio` (блог), JSON-LD `Person.image`, OpenGraph
+
+**Известный нюанс:** `?_mobile=1` query (для тестирования mobile-варианта на desktop) работает только в development (защищено `process.env.NODE_ENV !== "production"`).
+
+---
+
 ### Сессия 1 — Начальная разработка
 - Создан сайт на Next.js 15 + Tailwind + Supabase
 - Реализована мультиязычность (es/en/ru)
@@ -150,6 +211,39 @@ docs/                       # Документация
 - Fase 3: Внутренние страницы (услуги, контакты, блог) ✅ DONE
 - Fase 4: Footer + анимации + жесты + «Escribenos» ✅ DONE
 - Fase 5: SEO/GEO аудит + тестирование ✅ DONE
+
+### Сессия 5 — 2026-04-28 — Мобильная главная: single-screen + новые страницы
+
+**Цель:** убрать прокрутку с главной (фит в один экран), Hero с правильными CTA, Apple-style dropdown тарифов в калькуляторе, Google Maps плашка вместо отзывов, новый bottom nav (Inicio, Servicios, WA, Blog, Problemas).
+
+**Изменения:**
+- `messages/{es,en,ru}.json` — добавлен ключ `common.blog` (Blog / Блог).
+- `src/components/BottomNav.tsx` — Tips → Blog (FileText), Contact → Problemas (AlertTriangle, → /problemas).
+- `src/components/Hero.tsx` — кнопка «Llamar» (tel:) заменена на «Nosotros» (Link → /nosotros, иконка Users).
+- `src/components/Calculator.tsx` — переделан мобильный dropdown тарифов в Apple-sheet стиле: список с границей, чекмарк на выбранном, цена под названием. Калькулятор увеличен (p-5, текст 17/22/26px).
+- `src/components/GoogleRatingCard.tsx` — НОВЫЙ. Mobile-only плашка: Google «G» + 5★ + ссылка на https://maps.app.goo.gl/HRgdnx2fS25pu48fA.
+- `src/components/ServicesGrid.tsx` — НОВЫЙ. Mobile-only список услуг (6 карточек) для страницы /servicios. Иконка с градиентом + title + description + chevron.
+- `src/app/[locale]/page.tsx` — переписан: на mobile только Hero + Services + Calculator + GoogleRatingCard в `h-[100dvh] overflow-hidden`. Все остальные блоки (CleaningPackages, Stats, Problems, HomeCtaBlocks, BlogPromo) обёрнуты в `hidden lg:block` — десктоп сохранён без изменений.
+- `src/app/[locale]/servicios/page.tsx` — НОВАЯ страница (раньше был только /servicios/[service]/). Meta + canonical + hreflang + JSON-LD ItemList + Breadcrumbs. На mobile показывает ServicesGrid, на desktop — `<Services />`.
+- `src/app/[locale]/problemas/page.tsx` — уже существовала, используется как есть (BottomNav теперь ведёт сюда).
+
+**SEO-чеклист (10/10 сохранено):**
+- [x] h1 на каждой странице (Hero, ServicesGrid, ProblemsContent)
+- [x] JSON-LD: HVACBusiness, Service, Article, FAQPage сохранены; добавлены ItemList + BreadcrumbList на /servicios
+- [x] Meta title/description: добавлены для /servicios (es/en/ru), все остальные не тронуты
+- [x] Canonical URLs + hreflang alternates сохранены
+- [x] data-ai-summary в layout не тронут
+- [x] aria-label на новых интерактивных элементах (Google card, dropdown тарифов, services list)
+- [x] skip-to-main-content сохранён в Header
+- [x] GA4 / Yandex / Meta Pixel tracking сохранены (metaPixelEvent на новых CTA)
+- [x] next/image не нарушен; новых изображений не добавлено
+- [x] Input font-size: новых input полей нет
+
+**Десктопная версия НЕ изменена.** Все правки — под `lg:hidden` или специальным mobile order.
+
+**TypeScript:** `npx tsc --noEmit` → exit 0, ошибок нет.
+
+---
 
 ### Сессия 4 — 2026-04-27 — Мобильный редизайн (реализация)
 - **Ветка:** `mobile-redesign`

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import { Home, Wrench, FileText, UserRound } from "lucide-react";
+import { Home, Wrench, FileText, AlertTriangle } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/constants";
 import { metaPixelEvent } from "@/components/MetaPixel";
 
@@ -35,14 +35,14 @@ export default function BottomNav() {
     },
     // WhatsApp FAB goes in the middle (rendered separately)
     {
-      name: t("tips"),
+      name: t("blog"),
       href: "/consejos-y-guias" as const,
       icon: FileText,
     },
     {
-      name: t("contact"),
-      href: "/contacto" as const,
-      icon: UserRound,
+      name: t("problems"),
+      href: "/problemas" as const,
+      icon: AlertTriangle,
     },
   ];
 
@@ -68,11 +68,11 @@ export default function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-0.5 py-2 px-3 min-w-[64px] transition-colors ${
-                active ? "text-[#7BC043]" : "text-gray-400"
+                active ? "text-[#7BC043]" : "text-gray-700"
               }`}
             >
-              <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 1.5} />
-              <span className="text-[10px] font-medium leading-tight">{tab.name}</span>
+              <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} />
+              <span className="text-[10px] font-semibold leading-tight">{tab.name}</span>
             </Link>
           );
         })}
@@ -103,11 +103,11 @@ export default function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-0.5 py-2 px-3 min-w-[64px] transition-colors ${
-                active ? "text-[#7BC043]" : "text-gray-400"
+                active ? "text-[#7BC043]" : "text-gray-700"
               }`}
             >
-              <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 1.5} />
-              <span className="text-[10px] font-medium leading-tight">{tab.name}</span>
+              <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} />
+              <span className="text-[10px] font-semibold leading-tight">{tab.name}</span>
             </Link>
           );
         })}

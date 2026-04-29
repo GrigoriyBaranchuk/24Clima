@@ -10,6 +10,10 @@ export default function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const pathname = url.pathname;
 
+  // Dev-only: ?_mobile=1 forces mobile rendering (for QA on desktop)
+  // This sets x-force-mobile header which isMobileDevice() checks.
+  const forceMobile = url.searchParams.get("_mobile") === "1";
+
   // 1. www → non-www (308 Permanent Redirect)
   if (url.hostname === `www.${PRODUCTION_HOST}`) {
     const target = new URL(request.url);
@@ -46,6 +50,11 @@ export default function middleware(request: NextRequest) {
   }
 
   // 5. Остальное (/, /consejos-y-guias/, /servicios/... ) — отдаётся из app/(es)/
+  if (forceMobile && process.env.NODE_ENV !== "production") {
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set("x-force-mobile", "1");
+    return NextResponse.next({ request: { headers: requestHeaders } });
+  }
   return NextResponse.next();
 }
 

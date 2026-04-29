@@ -4,6 +4,7 @@
     "contact": "Contact",
     "services": "Services",
     "tips": "Tips and Guides",
+    "blog": "Blog",
     "problems": "Problems",
     "about": "About Us",
     "serviceAreas": "Service Areas",
@@ -41,7 +42,10 @@
     "stat2Value": "24/7",
     "stat2Label": "Availability",
     "stat3Value": "9+",
-    "stat3Label": "Years of experience"
+    "stat3Label": "Years of experience",
+    "callButton": "Call",
+    "greeting": "Welcome",
+    "mobileTitle": "Professional air conditioning in Panama"
   },
   "packages": {
     "title": "Choose your cleaning package",
@@ -88,6 +92,9 @@
     "total": "Total",
     "savings": "You save",
     "cta": "Order via WhatsApp",
+    "units": "units",
+    "mobileTitle": "Price calculator",
+    "mobileSubtitle": "Calculate the cost of cleaning",
     "whatsappMessage": "Hello, I want to order cleaning service:\n\n📦 Package: {package}\n🔢 Quantity: {quantity} unit(s)\n💵 Prices per unit:\n{breakdown}\n\n💰 TOTAL: ${total} USD\n\nWhen can you come?"
   },
   "services": {
@@ -97,6 +104,7 @@
     "urgentTitle": "Need urgent service?",
     "urgentSubtitle": "Our technicians are available to assist you immediately.",
     "cleaning": {
+      "shortTitle": "Cleaning",
       "title": "Air Conditioner Deep Cleaning Service in Panama",
       "description": "Professional air conditioner cleaning in Panama City. Removes mold, bacteria and bad odors. Improves equipment performance and air quality. Available 24/7.",
       "benefit1": "Eliminates bacteria and mold",
@@ -115,6 +123,7 @@
       "faq5A": "Yes. We stand behind our work and you can contact us if any issue arises after the cleaning."
     },
     "maintenance": {
+      "shortTitle": "Maintenance",
       "title": "Preventive Air Conditioner Maintenance in Panama",
       "description": "Preventive air conditioner maintenance in Panama. Avoids costly repairs, extends equipment life and ensures clean air. Certified technicians available daily.",
       "benefit1": "Prevents major failures",
@@ -133,6 +142,7 @@
       "faq5A": "In most cases yes. Regular maintenance catches issues early and reduces the risk of costly breakdowns."
     },
     "repair": {
+      "shortTitle": "Repair",
       "title": "Air Conditioner Repair Service in Panama City",
       "description": "Air conditioner repair in Panama City. Fast diagnosis, original parts and work guarantee. We service any brand and model across Panama City and surrounding areas.",
       "benefit1": "Accurate diagnosis",
@@ -151,6 +161,7 @@
       "faq5A": "We service all brands: LG, Samsung, Mabe, Daikin, Carrier, York, and other split and window units."
     },
     "installation": {
+      "shortTitle": "Installation",
       "title": "Professional Air Conditioner Installation in Panama",
       "description": "Professional air conditioner installation in Panama. Includes wiring, brackets, functional test and area cleanup. Certified technicians with years of experience.",
       "priceFrom": "from $120",
@@ -170,6 +181,7 @@
       "faq5A": "Panama City, Costa del Este, Punta Pacífica, Albrook, Clayton, Panama Pacifico and surrounding areas."
     },
     "gasRecharge": {
+      "shortTitle": "Gas recharge",
       "title": "AC Refrigerant Gas Recharge Service in Panama",
       "description": "AC refrigerant gas recharge in Panama. If your unit is not cooling properly, we recharge with original refrigerant gas. Fast, guaranteed service across Panama City.",
       "benefit1": "Certified gases",
@@ -188,6 +200,7 @@
       "faq5A": "Yes. We warranty the recharge service; if an undetected leak appears we will recheck within the warranty period at no extra cost."
     },
     "emergency": {
+      "shortTitle": "Emergency",
       "title": "24/7 Emergency Air Conditioner Service in Panama",
       "description": "24/7 emergency air conditioner service in Panama City. We handle critical failures at any time, including weekends and holidays. Call us now for immediate assistance.",
       "benefit1": "Available 24/7",
