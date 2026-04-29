@@ -37,21 +37,21 @@ export default function CalculatorMobile() {
   return (
     <section
       id="calculadora"
-      className="py-2 bg-[#0d1b2a]"
+      className="py-1.5 bg-[#0d1b2a]"
     >
       <div className="container mx-auto px-4">
         <div className="w-full max-w-2xl mx-auto">
-          <div className="bg-[#162a3e] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+          <div className="bg-[#162a3e] rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
             {/* Title row with chevron — toggles tariff selection */}
             <button
               type="button"
               onClick={() => setShowTariff(!showTariff)}
-              className="flex items-center justify-between w-full mb-1.5 active:opacity-70 transition-opacity"
+              className="flex items-center justify-between w-full mb-1 active:opacity-70 transition-opacity"
               aria-expanded={showTariff}
               aria-controls="mobile-tariff-list"
             >
               <div className="flex flex-col items-start">
-                <h3 className="text-white font-semibold text-[17px]" style={{ letterSpacing: "-0.2px" }}>
+                <h3 className="text-white font-semibold text-[16px]" style={{ letterSpacing: "-0.2px" }}>
                   {t("mobileTitle")}
                 </h3>
                 <span className="text-[#7BC043] text-[12px] font-medium mt-0.5">
@@ -62,7 +62,7 @@ export default function CalculatorMobile() {
                 className={`w-5 h-5 text-white/50 transition-transform duration-200 ${showTariff ? "rotate-90" : ""}`}
               />
             </button>
-            <p className="text-white/55 text-[13px] mb-4">{t("mobileSubtitle")}</p>
+            <p className="text-white/55 text-[12px] mb-3">{t("mobileSubtitle")}</p>
 
             {/* Apple-style sheet: tariff selection */}
             {showTariff && (
@@ -105,30 +105,30 @@ export default function CalculatorMobile() {
             )}
 
             {/* Quantity + price row */}
-            <div className="flex items-center justify-between mt-1">
-              <div className="flex items-center gap-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={decrement}
-                  className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+                  className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="text-white font-bold text-[22px] w-8 text-center" style={{ fontVariantNumeric: "tabular-nums" }}>
+                <span className="text-white font-bold text-[20px] w-7 text-center" style={{ fontVariantNumeric: "tabular-nums" }}>
                   {quantity}
                 </span>
                 <button
                   type="button"
                   onClick={increment}
-                  className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+                  className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
-                <span className="text-white/60 text-[13px] ml-1">{t("units")}</span>
+                <span className="text-white/60 text-[12px] ml-0.5">{t("units")}</span>
               </div>
-              <span className="text-[#7BC043] font-bold text-[26px]" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "-0.5px" }}>
+              <span className="text-[#7BC043] font-bold text-[24px]" style={{ fontVariantNumeric: "tabular-nums", letterSpacing: "-0.5px" }}>
                 ${total.toFixed(2)}
               </span>
             </div>

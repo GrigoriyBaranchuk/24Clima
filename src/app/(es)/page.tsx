@@ -33,7 +33,7 @@ export default async function Home() {
       */}
       <main
         id="main-content"
-        className="fixed inset-0 lg:relative lg:inset-auto flex flex-col lg:block lg:h-auto lg:overflow-visible overflow-hidden pt-12 pb-[72px] lg:pt-0 lg:pb-0 bg-[#0d1b2a] lg:bg-transparent z-10 lg:z-auto"
+        className="flex flex-col lg:block min-h-[100dvh] lg:min-h-0 lg:h-auto pt-12 pb-[80px] lg:pt-0 lg:pb-0 bg-[#0d1b2a] lg:bg-transparent"
       >
         {/* Hero — both — order 1 */}
         <div className="order-1 shrink-0">

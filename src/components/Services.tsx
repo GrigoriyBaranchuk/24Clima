@@ -42,12 +42,12 @@ export default async function Services() {
   const mobileServices = services.slice(0, 4);
 
   return (
-    <section id="servicios" className="py-3 lg:py-28 bg-[#0d1b2a] lg:bg-transparent lg:section-gradient scroll-mt-20">
+    <section id="servicios" className="py-1.5 lg:py-28 bg-[#0d1b2a] lg:bg-transparent lg:section-gradient scroll-mt-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="w-full max-w-3xl mx-auto text-center lg:text-center mb-2 lg:mb-16">
+        <div className="w-full max-w-3xl mx-auto text-center lg:text-center mb-1.5 lg:mb-16">
           {/* Mobile: uppercase label */}
-          <h2 className="lg:hidden text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">
+          <h2 className="lg:hidden text-[11px] font-semibold text-white/50 uppercase tracking-widest mb-1.5">
             {t("title")}
           </h2>
           {/* Desktop: large title */}
@@ -60,15 +60,15 @@ export default async function Services() {
         </div>
 
         {/* Mobile Grid — dark cards, 4 services, unique icon colors */}
-        <div className="grid grid-cols-2 gap-2.5 lg:hidden">
+        <div className="grid grid-cols-2 gap-2 lg:hidden">
           {mobileServices.map((service, index) => (
             <Link
               key={index}
               href={`/servicios/${service.slug}`}
-              className="flex flex-col items-center text-center p-3 rounded-2xl bg-[#162a3e] active:scale-95 transition-transform"
+              className="flex flex-col items-center text-center py-2.5 px-3 rounded-2xl bg-[#162a3e] active:scale-95 transition-transform"
             >
-              <div className={`w-10 h-10 bg-gradient-to-br ${mobileIconColors[index]} rounded-xl flex items-center justify-center mb-2`}>
-                <service.icon className="w-5 h-5 text-white" />
+              <div className={`w-9 h-9 bg-gradient-to-br ${mobileIconColors[index]} rounded-xl flex items-center justify-center mb-1.5`}>
+                <service.icon className="w-[18px] h-[18px] text-white" />
               </div>
               <span className="text-[13px] font-semibold text-white leading-tight">
                 {service.shortTitle}

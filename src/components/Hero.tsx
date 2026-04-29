@@ -26,7 +26,7 @@ export default async function Hero() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#7BC043] rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 py-3 pt-14 lg:py-32 relative z-10">
+      <div className="container mx-auto px-4 lg:px-8 py-2 lg:py-32 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div>
@@ -36,11 +36,11 @@ export default async function Hero() {
               {t("trustBadge")}
             </Badge>
 
-            {/* Greeting — mobile only */}
-            <p className="lg:hidden text-white/60 text-sm mb-1">{t("greeting")}</p>
+            {/* Greeting — mobile only (smaller, less margin) */}
+            <p className="lg:hidden text-white/60 text-[12px] mb-0.5">{t("greeting")}</p>
 
             {/* Mobile H1 — simplified, no green highlight */}
-            <h1 className="lg:hidden text-[22px] font-semibold text-white leading-tight mb-3" style={{ letterSpacing: "-0.3px" }}>
+            <h1 className="lg:hidden text-[20px] font-semibold text-white leading-[1.15] mb-2" style={{ letterSpacing: "-0.3px" }}>
               {t("mobileTitle")}
             </h1>
 
@@ -72,7 +72,7 @@ export default async function Hero() {
               <Button
                 asChild
                 size="lg"
-                className="flex-1 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-[15px] h-11 rounded-full active:scale-95 transition-transform"
+                className="flex-1 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-[14px] h-10 rounded-full active:scale-95 transition-transform"
               >
                 <TrackedWhatsAppLink
                   href={getWhatsAppLink(tWhatsapp("quote"))}
@@ -85,7 +85,7 @@ export default async function Hero() {
               <Button
                 asChild
                 size="lg"
-                className="flex-1 bg-white/15 hover:bg-white/25 text-white font-semibold text-[15px] h-11 rounded-full active:scale-95 transition-transform backdrop-blur-sm"
+                className="flex-1 bg-white/15 hover:bg-white/25 text-white font-semibold text-[14px] h-10 rounded-full active:scale-95 transition-transform backdrop-blur-sm"
               >
                 <Link href="/nosotros">
                   <Users className="w-4 h-4 mr-1.5" />
