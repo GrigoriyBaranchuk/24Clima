@@ -55,10 +55,13 @@ export default function Header() {
 
   return (
     <>
-    {/* Skip to main content — accessibility (keyboard navigation) */}
+    {/* Skip to main content — keyboard-only accessibility.
+        Uses focus-visible (NOT focus) so it appears only on Tab/keyboard
+        navigation. On touch/tap (iOS Safari) it stays sr-only and never
+        covers the logo. Screen-reader users keep the WCAG 2.4.1 benefit. */}
     <a
       href="#main-content"
-      className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1e3a5f] focus:text-white focus:rounded-md focus:text-sm focus:font-semibold focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#7BC043]"
+      className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-2 focus-visible:z-[100] focus-visible:px-4 focus-visible:py-2 focus-visible:bg-[#1e3a5f] focus-visible:text-white focus-visible:rounded-md focus-visible:text-sm focus-visible:font-semibold focus-visible:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7BC043]"
     >
       Ir al contenido principal
     </a>
