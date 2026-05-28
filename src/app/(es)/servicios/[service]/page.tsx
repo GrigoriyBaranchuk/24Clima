@@ -183,13 +183,6 @@ export default async function ServicePage({
       ...(pricing.note ? { description: pricing.note } : {}),
     },
     termsOfService: `Garantía: ${pricing.warrantyDays} días (${warrantyDurationISO(pricing.warrantyDays)}).`,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: BUSINESS_DATA.rating.value,
-      reviewCount: BUSINESS_DATA.rating.count,
-      bestRating: "5",
-      worstRating: "1",
-    },
   };
 
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
