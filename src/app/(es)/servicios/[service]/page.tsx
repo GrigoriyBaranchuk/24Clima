@@ -146,7 +146,13 @@ export default async function ServicePage({
     name: title,
     description,
     url: canonicalUrl,
-    provider: { "@id": BUSINESS_DATA.organizationId },
+    provider: {
+      "@type": "HVACBusiness",
+      "@id": BUSINESS_DATA.organizationId,
+      name: BUSINESS_DATA.name,
+      url: BUSINESS_DATA.url,
+      telephone: BUSINESS_DATA.telephone,
+    },
     areaServed: BUSINESS_DATA.areaServed.map((city) => ({ "@type": "City", name: city })),
     serviceType: title,
     hoursAvailable: {
