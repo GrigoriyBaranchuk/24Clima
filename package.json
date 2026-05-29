@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 0.0.0.0",
-    "build": "next build",
-    "start": "next start",
+    "dev": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next dev -H 0.0.0.0",
+    "build": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next build",
+    "start": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next start",
     "lint": "bunx tsc -p tsconfig.lint.json --noEmit && next lint",
     "format": "bunx biome format --write"
   },

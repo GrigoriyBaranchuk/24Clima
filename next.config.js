@@ -1,3 +1,14 @@
+// Node 25+ ships a stubbed `globalThis.localStorage = {}` without a usable
+// `getItem`/`setItem`. Libraries that probe `typeof globalThis.localStorage`
+// then crash in SSR (Supabase auth-js, Next dev overlay, etc.). Strip it here
+// — next.config.js loads before any server module.
+if (typeof globalThis !== "undefined") {
+  const ls = globalThis.localStorage;
+  if (ls && typeof ls === "object" && typeof ls.getItem !== "function") {
+    delete globalThis.localStorage;
+  }
+}
+
 const createNextIntlPlugin = require("next-intl/plugin");
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
