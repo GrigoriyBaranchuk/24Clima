@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 type Props = {
   /** Final value as displayed string, e.g. "+800", "9+", "24/7" */
@@ -14,31 +13,34 @@ type Props = {
 
 /**
  * Animates an integer value from 0 to the parsed target when the element
- * enters the viewport. Designed to be SEO/CWV-safe:
+ * enters the viewport.
  *
- * - SSR renders the FINAL value (the `value` prop). No-JS users and
- *   Googlebot's first-pass DOM see the real number — same string as before.
+ * SEO/CWV safety:
+ * - SSR renders the FINAL value. No-JS and Googlebot see the real number.
  * - useState initial value matches SSR → no hydration mismatch.
- * - Animation only kicks in after IntersectionObserver triggers on the
- *   client; if `prefers-reduced-motion: reduce` is on, no animation at all.
- * - Only animates once per mount (we track with a ref) — re-entering the
- *   viewport later doesn't re-trigger.
- * - If `value` doesn't contain a parseable integer (e.g. "24/7"), renders
- *   as a static span.
+ * - Animation runs at most once per mount.
  *
- * Pattern: render `+800` → IO triggers → reset to 0 → tick to 800. Reads
- * to the user as "the stat counted up when I scrolled here." For
- * pages where the stat is above-the-fold, the IO fires almost immediately
- * after hydration; expect a brief 0→target tick.
+ * Avoiding the "downshift glitch":
+ * If the element is ALREADY in the viewport when the component mounts
+ * (e.g. stats above the fold on desktop), we skip the animation entirely
+ * and keep the SSR value visible — otherwise the user would see the
+ * number flash from "+800" down to "+0" and tick back up, which reads
+ * as a backwards countdown. Animation only runs when the user actively
+ * scrolls the element INTO view from outside.
+ *
+ * If `value` has no parseable integer (e.g. "24/7"), renders as static.
  */
 export default function CountUp({ value, duration = 1200, className, style }: Props) {
   const match = value.match(/^([+\-]?)(\d+)(.*)$/);
   const [display, setDisplay] = useState<string>(value);
+  const ref = useRef<HTMLSpanElement>(null);
   const animated = useRef(false);
-  const { ref, isVisible } = useScrollReveal<HTMLSpanElement>();
 
   useEffect(() => {
-    if (!isVisible || !match || animated.current) return;
+    if (!match || animated.current) return;
+    const el = ref.current;
+    if (!el) return;
+
     const [, prefix, numStr, suffix] = match;
     const target = parseInt(numStr, 10);
     if (isNaN(target) || target === 0) return;
@@ -48,26 +50,57 @@ export default function CountUp({ value, duration = 1200, className, style }: Pr
       return;
     }
 
-    animated.current = true;
+    // Synchronously check whether the element is already in the viewport.
+    // If so, skip animation — we don't want to reset to 0 in front of a
+    // user who already saw the final value (reads as backwards countdown).
+    const rect = el.getBoundingClientRect();
+    const alreadyInView =
+      rect.top < window.innerHeight && rect.bottom > 0;
+    if (alreadyInView) {
+      animated.current = true;
+      return;
+    }
 
     let frameId = 0;
     let startTs: number | null = null;
     const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
 
-    const tick = (ts: number) => {
-      if (startTs === null) startTs = ts;
-      const progress = Math.min((ts - startTs) / duration, 1);
-      const current = Math.round(target * easeOutQuart(progress));
-      setDisplay(`${prefix}${current}${suffix}`);
-      if (progress < 1) {
-        frameId = requestAnimationFrame(tick);
-      } else {
-        setDisplay(value);
-      }
+    const start = () => {
+      // Begin from 0 (or base) — only safe because we confirmed the
+      // element is not yet visible at the moment of this call.
+      setDisplay(`${prefix}0${suffix}`);
+      const tick = (ts: number) => {
+        if (startTs === null) startTs = ts;
+        const progress = Math.min((ts - startTs) / duration, 1);
+        const current = Math.round(target * easeOutQuart(progress));
+        setDisplay(`${prefix}${current}${suffix}`);
+        if (progress < 1) {
+          frameId = requestAnimationFrame(tick);
+        } else {
+          setDisplay(value);
+        }
+      };
+      frameId = requestAnimationFrame(tick);
     };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, [isVisible, value, duration, match]);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !animated.current) {
+          animated.current = true;
+          observer.unobserve(el);
+          start();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+    );
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frameId);
+    };
+  }, [value, duration, match]);
 
   if (!match) {
     return (
