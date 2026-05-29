@@ -71,21 +71,27 @@ export default {
         sm: 'calc(var(--radius) - 4px)'
       },
       container: {
-      center: true,
-      padding: {
-        DEFAULT: '1rem',
-        sm: '2rem',
-        lg: '4rem',
-        xl: '5rem',
-        '2xl': '6rem',
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '2rem',
+          lg: '4rem',
+          xl: '5rem',
+          '2xl': '6rem',
+        },
+        screens: {
+          sm: '640px',
+          md: '768px',
+          lg: '1024px',
+          xl: '1280px',
+          '2xl': '1536px',
+        },
       },
-      screens: {
-        sm: '640px',
-        md: '768px',
-        lg: '1024px',
-        xl: '1280px',
-        '2xl': '1536px',
+      transitionTimingFunction: {
+        'out-emil': 'cubic-bezier(0.23, 1, 0.32, 1)',
       },
+      transitionDuration: {
+        '220': '220ms',
       },
     }
   },

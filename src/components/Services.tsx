@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, ArrowRight } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/constants";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
+import RevealOnDesktop from "@/components/RevealOnDesktop";
+import SectionDividerStroke from "@/components/SectionDividerStroke";
 import type { ServiceSlug } from "@/lib/services";
 
 export default async function Services() {
@@ -51,9 +53,12 @@ export default async function Services() {
             {t("title")}
           </h2>
           {/* Desktop: large title */}
-          <h2 className="hidden lg:block text-5xl font-semibold text-[#1e3a5f] mb-6" style={{ letterSpacing: "-0.2px" }}>
+          <h2 className="hidden lg:block text-5xl font-semibold text-[#1e3a5f] mb-4" style={{ letterSpacing: "-0.2px" }}>
             {t("title")}
           </h2>
+          <div className="hidden lg:block mb-6 max-w-[120px] mx-auto">
+            <SectionDividerStroke width={1} />
+          </div>
           <p className="hidden lg:block text-lg text-gray-600 leading-relaxed">
             {t("subtitle")}
           </p>
@@ -77,12 +82,12 @@ export default async function Services() {
           ))}
         </div>
 
-        {/* Desktop Grid */}
+        {/* Desktop Grid — staggered reveal, max 6 cards × 70ms = 350ms total (within 400ms budget) */}
         <div className="hidden lg:grid lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
+            <RevealOnDesktop key={index} delay={index * 70} className="h-full">
             <Card
-              key={index}
-              className="card-hover border-0 shadow-lg bg-white overflow-hidden group"
+              className="card-hover border-0 shadow-lg bg-white overflow-hidden group h-full"
             >
               <CardHeader className="pb-4">
                 <div className="w-14 h-14 bg-gradient-to-br from-[#7BC043] to-[#0F9D58] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -132,6 +137,7 @@ export default async function Services() {
                 </div>
               </CardContent>
             </Card>
+            </RevealOnDesktop>
           ))}
         </div>
 

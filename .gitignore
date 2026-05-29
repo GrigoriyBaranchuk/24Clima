@@ -45,8 +45,20 @@ next-env.d.ts
 __pycache__/
 *.pyc
 
-# claude code worktrees and local state
-.claude/
+# claude code: keep shared agents + project settings tracked,
+# ignore personal/local-state pieces.
+.claude/settings.local.json
+.claude/skills/
+.claude/worktrees/
+
+# installed third-party skills — restored from skills-lock.json
+# only our project-authored skill is tracked
+.agents/skills/*
+!.agents/skills/24clima-seo-guide/
+!.agents/skills/24clima-seo-guide/**
+
+# local design review screenshots (not for repo)
+/design-review/
 
 # cursor local artifacts
 .cursor/debug-*.log

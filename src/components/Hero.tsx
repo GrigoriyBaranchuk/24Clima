@@ -6,6 +6,7 @@ import { Check, Users } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { getWhatsAppLink, SOCIAL_LINKS } from "@/lib/constants";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
+import CountUp from "@/components/CountUp";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -44,10 +45,29 @@ export default async function Hero() {
               {t("mobileTitle")}
             </h1>
 
-            {/* Desktop H1 — SEO Optimized with green highlight */}
+            {/* Desktop H1 — SEO Optimized with green highlight + drawn underline */}
             <h1 className="hidden lg:block text-6xl font-semibold text-white leading-tight mb-4" style={{ letterSpacing: "-0.3px" }}>
               {t("title")}{" "}
-              <span className="text-[#7BC043]">{t("titleHighlight")}</span>
+              <span className="relative inline-block">
+                <span className="text-[#7BC043]">{t("titleHighlight")}</span>
+                <svg
+                  className="hero-underline-draw pointer-events-none absolute left-0 right-0 -bottom-1 w-full"
+                  height="6"
+                  viewBox="0 0 100 6"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M 0 3 L 100 3"
+                    stroke="#7BC043"
+                    strokeWidth="2"
+                    fill="none"
+                    pathLength={100}
+                    strokeDasharray="100"
+                    strokeDashoffset="100"
+                  />
+                </svg>
+              </span>
             </h1>
 
             {/* Price Highlight — desktop only (mobile has it in Calculator) */}
@@ -94,29 +114,32 @@ export default async function Hero() {
               </Button>
             </div>
 
-            {/* CTA Buttons — Desktop (unchanged) */}
-            <div className="hidden lg:flex flex-row gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-lg px-8 py-6 whatsapp-pulse"
-              >
-                <TrackedWhatsAppLink
-                  href={getWhatsAppLink(tWhatsapp("quote"))}
-                  eventName="Lead"
+            {/* CTA Buttons — Desktop */}
+            <div className="hidden lg:flex flex-col gap-3">
+              <div className="flex flex-row gap-4">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-lg px-9 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 whatsapp-pulse"
                 >
-                  <WhatsAppIcon className="w-6 h-6 mr-2" />
-                  {tCommon("scheduleService")}
-                </TrackedWhatsAppLink>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-[#1e3a5f] font-semibold text-lg px-8 py-6 bg-[#7BC043]/20"
-              >
-                <a href="#calculadora">{tCommon("viewServices")}</a>
-              </Button>
+                  <TrackedWhatsAppLink
+                    href={getWhatsAppLink(tWhatsapp("quote"))}
+                    eventName="Lead"
+                  >
+                    <WhatsAppIcon className="w-6 h-6 mr-2" />
+                    {tCommon("scheduleService")}
+                  </TrackedWhatsAppLink>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-white/40 bg-transparent text-white/90 hover:bg-white/10 hover:border-white hover:text-white font-medium text-lg px-8 py-6 backdrop-blur-sm"
+                >
+                  <a href="#calculadora">{tCommon("viewServices")}</a>
+                </Button>
+              </div>
+              <p className="text-sm text-white/60 pl-1">{t("trustLine")}</p>
             </div>
 
             {/* Social Media Buttons — desktop only */}
@@ -166,7 +189,7 @@ export default async function Hero() {
         {/* Quick Stats — desktop only (mobile has StatsSection component) */}
         <div className="hidden lg:grid grid-cols-3 gap-8 mt-16 pt-8 border-t border-white/20">
           <div className="text-left">
-            <p className="text-4xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>{t("stat1Value")}</p>
+            <CountUp value={t("stat1Value")} className="text-4xl font-bold text-[#7BC043] block" style={{ fontVariantNumeric: "tabular-nums" }} />
             <p className="text-white/70 text-sm">{t("stat1Label")}</p>
           </div>
           <div className="text-left">
@@ -174,7 +197,7 @@ export default async function Hero() {
             <p className="text-white/70 text-sm">{t("stat2Label")}</p>
           </div>
           <div className="text-left">
-            <p className="text-4xl font-bold text-[#7BC043]" style={{ fontVariantNumeric: "tabular-nums" }}>{t("stat3Value")}</p>
+            <CountUp value={t("stat3Value")} className="text-4xl font-bold text-[#7BC043] block" style={{ fontVariantNumeric: "tabular-nums" }} />
             <p className="text-white/70 text-sm">{t("stat3Label")}</p>
           </div>
         </div>

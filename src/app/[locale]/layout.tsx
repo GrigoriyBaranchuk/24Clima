@@ -10,6 +10,7 @@ import MetaPixel from "@/components/MetaPixel";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import ScrollToHash from "@/components/ScrollToHash";
 import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
+import DesktopWhatsAppFab from "@/components/DesktopWhatsAppFab";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -127,6 +128,7 @@ export default async function LocaleLayout({
         <ScrollToHash />
         {children}
         <GoogleReviewsBadge />
+        <DesktopWhatsAppFab />
       </NextIntlClientProvider>
     </div>
   );
