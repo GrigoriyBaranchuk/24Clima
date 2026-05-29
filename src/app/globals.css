@@ -99,6 +99,14 @@
   animation: whatsapp-pulse 2s 5;
 }
 
+/* Hero highlight underline — SVG stroke draw after LCP paint */
+@keyframes hero-underline-draw {
+  to { stroke-dashoffset: 0; }
+}
+.hero-underline-draw path {
+  animation: hero-underline-draw 600ms cubic-bezier(0.16, 1, 0.3, 1) 800ms forwards;
+}
+
 /* Hero CTA entrance animation — slide up + fade in */
 @keyframes cta-entrance {
   0% {
@@ -308,6 +316,12 @@
   .bottom-bar-enter {
     animation: none !important;
     opacity: 1 !important;
+  }
+
+  /* Reduced motion: show the underline fully drawn from the start. */
+  .hero-underline-draw path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
   }
 
   .card-hover:hover {
