@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, ArrowRight } from "lucide-react";
+import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, ArrowRight, Building2 } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/constants";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import RevealOnDesktop from "@/components/RevealOnDesktop";
@@ -13,6 +13,7 @@ export default async function Services() {
   const t = await getTranslations("services");
   const tCommon = await getTranslations("common");
   const tWhatsapp = await getTranslations("whatsappMessages");
+  const tPropertyManagement = await getTranslations("propertyManagement");
 
   const serviceList: { icon: typeof Droplets; slug: ServiceSlug; translationKey: string }[] = [
     { icon: Droplets, slug: "limpieza", translationKey: "cleaning" },
@@ -165,6 +166,27 @@ export default async function Services() {
             </TrackedWhatsAppLink>
           </Button>
         </div>
+
+        {/* Property-manager segment hand-off — bold, visible on every viewport */}
+        <Link
+          href="/servicio-para-administradoras-ph"
+          className="hidden lg:flex group mt-10 items-center justify-between gap-6 p-6 lg:p-8 rounded-2xl border-2 border-[#0F9D58]/30 bg-gradient-to-r from-[#0F9D58]/5 to-[#7BC043]/5 hover:from-[#0F9D58]/10 hover:to-[#7BC043]/10 hover:border-[#0F9D58] transition-colors"
+        >
+          <div className="flex items-center gap-5">
+            <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-[#0F9D58] flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Building2 className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0F9D58] mb-1">
+                {tPropertyManagement("breadcrumb")}
+              </p>
+              <p className="text-xl lg:text-2xl font-semibold text-[#1e3a5f]">
+                {tPropertyManagement("servicesHandoff")}
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="hidden md:block w-6 h-6 text-[#0F9D58] flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+        </Link>
       </div>
     </section>
   );

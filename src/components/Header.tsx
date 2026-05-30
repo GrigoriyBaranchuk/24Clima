@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Phone, Bell, Home } from "lucide-react";
+import { Phone, Bell, Home, Building2 } from "lucide-react";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
 import { metaPixelEvent } from "@/components/MetaPixel";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -114,7 +114,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-7">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -126,6 +126,15 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
+            {/* Standout "Para PH" entry — visual pill, separate from text links */}
+            <Link
+              href="/servicio-para-administradoras-ph"
+              scroll={false}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold text-[#0F9D58] border border-[#0F9D58]/40 bg-[#0F9D58]/5 hover:bg-[#0F9D58] hover:text-white hover:border-[#0F9D58] transition-colors"
+            >
+              <Building2 className="w-4 h-4" />
+              {t("navPh")}
+            </Link>
           </div>
 
           {/* CTA Button & Language Switcher */}

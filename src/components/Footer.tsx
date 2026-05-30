@@ -8,6 +8,7 @@ export default async function Footer() {
   const t = await getTranslations("footer");
   const tWhatsapp = await getTranslations("whatsappMessages");
   const tCommon = await getTranslations("common");
+  const tPropertyManagement = await getTranslations("propertyManagement");
   const currentYear = new Date().getFullYear();
 
   const services = [
@@ -123,6 +124,13 @@ export default async function Footer() {
               className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
             >
               {tCommon("serviceAreas")}
+            </Link>
+            <Link
+              href="/servicio-para-administradoras-ph"
+              scroll={false}
+              className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
+            >
+              {tPropertyManagement("breadcrumb")}
             </Link>
             <Link
               href="/diagnostico"

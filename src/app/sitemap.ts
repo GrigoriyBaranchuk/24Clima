@@ -121,6 +121,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  // PH segment: property-manager landing + maintenance contract landing.
+  // No priority/changeFrequency — Google ignores both (per skill rule).
+  for (const locale of locales) {
+    const phPath = "/servicio-para-administradoras-ph/";
+    entries.push({
+      url: localeUrl(locale, phPath),
+      lastModified: now,
+      alternates: { languages: langAlternates(phPath) },
+    });
+    const contractPath = "/contrato-mantenimiento-aire-acondicionado/";
+    entries.push({
+      url: localeUrl(locale, contractPath),
+      lastModified: now,
+      alternates: { languages: langAlternates(contractPath) },
+    });
+  }
+
   // Tips articles — только для локалей, где есть контент
   const articles = await getArticlesWithLocales();
   for (const a of articles) {
