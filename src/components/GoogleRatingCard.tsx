@@ -1,7 +1,7 @@
 "use client";
 
-import { Star } from "lucide-react";
 import { metaPixelEvent } from "@/components/MetaPixel";
+import { Star } from "lucide-react";
 
 const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/HRgdnx2fS25pu48fA";
 
@@ -48,10 +48,16 @@ export default function GoogleRatingCard() {
           <div className="flex items-center gap-1.5">
             <div className="flex gap-0.5" aria-hidden="true">
               {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} className="w-3.5 h-3.5 text-[#EF9F27] fill-[#EF9F27]" />
+                <Star
+                  key={s}
+                  className="w-3.5 h-3.5 text-[#EF9F27] fill-[#EF9F27]"
+                />
               ))}
             </div>
-            <span className="text-white font-semibold text-[13px] tabular-nums" aria-label="5 de 5 estrellas">
+            <span
+              className="text-white font-semibold text-[13px] tabular-nums"
+              aria-label="5 de 5 estrellas"
+            >
               5.0
             </span>
           </div>
@@ -62,7 +68,10 @@ export default function GoogleRatingCard() {
       </div>
 
       {/* Right: chevron-like arrow */}
-      <span className="text-white/40 text-[20px] leading-none shrink-0" aria-hidden="true">
+      <span
+        className="text-white/40 text-[20px] leading-none shrink-0 transition-transform active:translate-x-0.5"
+        aria-hidden="true"
+      >
         ›
       </span>
     </a>

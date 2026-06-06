@@ -1,9 +1,15 @@
+import RevealOnDesktop from "@/components/RevealOnDesktop";
+import { Award, Clock, MapPin, Star, Users } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { Users, Award, Star, Clock, MapPin } from "lucide-react";
 
 type StatItem = {
   value: string;
-  labelKey: "clients" | "expertYears" | "rating" | "availability" | "zonesCovered";
+  labelKey:
+    | "clients"
+    | "expertYears"
+    | "rating"
+    | "availability"
+    | "zonesCovered";
   icon: React.ComponentType<{ className?: string }>;
   /**
    * Machine-readable value for GEO/AI extraction via microdata.
@@ -92,27 +98,39 @@ export default async function StatsSection({ locale: _locale }: Props = {}) {
           role="list"
           style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
         >
-          {STATS.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <li
-                key={stat.labelKey}
-                className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 lg:p-6 flex flex-col items-center text-center hover:bg-white/15 transition-colors min-w-[120px] lg:min-w-0 snap-center"
-                data-stat-name={stat.itemName}
-                data-stat-value={stat.itemValue}
-              >
-                <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-full bg-[#7BC043]/20 flex items-center justify-center mb-2 lg:mb-3">
-                  <Icon className="w-5 h-5 lg:w-7 lg:h-7 text-[#7BC043]" />
-                </div>
-                <div className="text-xl lg:text-4xl font-bold text-white" style={{ fontVariantNumeric: "tabular-nums" }}>
-                  {stat.value}
-                </div>
-                <div className="mt-1 lg:mt-2 text-[11px] lg:text-base text-white/80 leading-snug">
-                  {t(stat.labelKey)}
-                </div>
-              </li>
-            );
-          })}
+          {
+            await Promise.all(
+              STATS.map(async (stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <RevealOnDesktop
+                    key={stat.labelKey}
+                    animation="fade-up"
+                    delay={index * 80}
+                  >
+                    <li
+                      className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 lg:p-6 flex flex-col items-center text-center lg:hover:bg-white/15 transition-colors min-w-[120px] lg:min-w-0 snap-center"
+                      data-stat-name={stat.itemName}
+                      data-stat-value={stat.itemValue}
+                    >
+                      <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-full bg-[#7BC043]/20 flex items-center justify-center mb-2 lg:mb-3">
+                        <Icon className="w-5 h-5 lg:w-7 lg:h-7 text-[#7BC043]" />
+                      </div>
+                      <div
+                        className="text-xl lg:text-4xl font-bold text-white"
+                        style={{ fontVariantNumeric: "tabular-nums" }}
+                      >
+                        {stat.value}
+                      </div>
+                      <div className="mt-1 lg:mt-2 text-[11px] lg:text-base text-white/80 leading-snug">
+                        {t(stat.labelKey)}
+                      </div>
+                    </li>
+                  </RevealOnDesktop>
+                );
+              }),
+            )
+          }
         </ul>
       </div>
     </section>

@@ -175,7 +175,7 @@
 
 /* Card hover effects */
 .card-hover {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-hover:hover {
@@ -326,6 +326,7 @@
 
   .card-hover:hover {
     transform: none !important;
+    box-shadow: none !important;
   }
 
   html {

@@ -6,15 +6,27 @@ export default function ReadingProgressBar() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    let ticking = false;
+
+    const update = () => {
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       if (docHeight <= 0) {
-        setProgress(100);
-        return;
+        setProgress(1);
+      } else {
+        const scrolled = window.scrollY / docHeight;
+        setProgress(Math.min(scrolled, 1));
       }
-      const scrolled = (window.scrollY / docHeight) * 100;
-      setProgress(Math.min(scrolled, 100));
+      ticking = false;
     };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
@@ -22,8 +34,8 @@ export default function ReadingProgressBar() {
 
   return (
     <div
-      className="fixed left-0 top-0 z-50 h-1 bg-[#7BC043] transition-all duration-150 ease-out"
-      style={{ width: `${progress}%` }}
+      className="fixed left-0 top-0 z-50 h-1 w-full bg-[#7BC043] transition-transform duration-150 ease-out motion-reduce:transition-none"
+      style={{ transform: `scaleX(${progress})`, transformOrigin: "left" }}
       aria-hidden
     />
   );

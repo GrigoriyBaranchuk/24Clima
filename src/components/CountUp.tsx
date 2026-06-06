@@ -30,7 +30,12 @@ type Props = {
  *
  * If `value` has no parseable integer (e.g. "24/7"), renders as static.
  */
-export default function CountUp({ value, duration = 1200, className, style }: Props) {
+export default function CountUp({
+  value,
+  duration = 1200,
+  className,
+  style,
+}: Props) {
   const match = value.match(/^([+\-]?)(\d+)(.*)$/);
   const [display, setDisplay] = useState<string>(value);
   const ref = useRef<HTMLSpanElement>(null);
@@ -42,8 +47,8 @@ export default function CountUp({ value, duration = 1200, className, style }: Pr
     if (!el) return;
 
     const [, prefix, numStr, suffix] = match;
-    const target = parseInt(numStr, 10);
-    if (isNaN(target) || target === 0) return;
+    const target = Number.parseInt(numStr, 10);
+    if (Number.isNaN(target) || target === 0) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       animated.current = true;
@@ -54,8 +59,7 @@ export default function CountUp({ value, duration = 1200, className, style }: Pr
     // If so, skip animation — we don't want to reset to 0 in front of a
     // user who already saw the final value (reads as backwards countdown).
     const rect = el.getBoundingClientRect();
-    const alreadyInView =
-      rect.top < window.innerHeight && rect.bottom > 0;
+    const alreadyInView = rect.top < window.innerHeight && rect.bottom > 0;
     if (alreadyInView) {
       animated.current = true;
       return;
@@ -63,18 +67,21 @@ export default function CountUp({ value, duration = 1200, className, style }: Pr
 
     let frameId = 0;
     let startTs: number | null = null;
-    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+    const easeOutQuart = (t: number) => 1 - (1 - t) ** 4;
 
     const start = () => {
       // Begin from 0 (or base) — only safe because we confirmed the
       // element is not yet visible at the moment of this call.
-      setDisplay(`${prefix}0${suffix}`);
+      // Write intermediate frames straight to the DOM via the ref to avoid
+      // a React re-render every animation frame; React state is committed
+      // only once at the end so the DOM and React agree on the final value.
+      el.textContent = `${prefix}0${suffix}`;
       const tick = (ts: number) => {
         if (startTs === null) startTs = ts;
         const progress = Math.min((ts - startTs) / duration, 1);
         const current = Math.round(target * easeOutQuart(progress));
-        setDisplay(`${prefix}${current}${suffix}`);
         if (progress < 1) {
+          el.textContent = `${prefix}${current}${suffix}`;
           frameId = requestAnimationFrame(tick);
         } else {
           setDisplay(value);
@@ -92,7 +99,7 @@ export default function CountUp({ value, duration = 1200, className, style }: Pr
           start();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
     );
     observer.observe(el);
 

@@ -1,10 +1,10 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/routing";
-import { Home, Wrench, FileText, AlertTriangle } from "lucide-react";
-import { getWhatsAppLink } from "@/lib/constants";
 import { metaPixelEvent } from "@/components/MetaPixel";
+import { Link, usePathname } from "@/i18n/routing";
+import { getWhatsAppLink } from "@/lib/constants";
+import { AlertTriangle, FileText, Home, Wrench } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const WHATSAPP_SVG = (
   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@ export default function BottomNav() {
       aria-label="Navegación principal móvil"
     >
       {/* Background bar */}
-      <div className="absolute inset-0 bg-white/95 backdrop-blur-md border-t border-gray-200/80" />
+      <div className="absolute inset-0 bg-white/95 border-t border-gray-200/80" />
 
       {/* Tab items + FAB */}
       <div
@@ -72,7 +72,9 @@ export default function BottomNav() {
               }`}
             >
               <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} />
-              <span className="text-[10px] font-semibold leading-tight">{tab.name}</span>
+              <span className="text-[10px] font-semibold leading-tight">
+                {tab.name}
+              </span>
             </Link>
           );
         })}
@@ -107,7 +109,9 @@ export default function BottomNav() {
               }`}
             >
               <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} />
-              <span className="text-[10px] font-semibold leading-tight">{tab.name}</span>
+              <span className="text-[10px] font-semibold leading-tight">
+                {tab.name}
+              </span>
             </Link>
           );
         })}

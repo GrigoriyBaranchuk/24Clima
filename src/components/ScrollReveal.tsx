@@ -11,6 +11,31 @@ interface ScrollRevealProps {
   delay?: number;
 }
 
+const hiddenStyles: Record<string, React.CSSProperties> = {
+  "fade-up": {
+    opacity: 0,
+    transform: "translateY(30px)",
+    willChange: "opacity, transform",
+  },
+  "fade-in": {
+    opacity: 0,
+    transform: "none",
+    willChange: "opacity, transform",
+  },
+  "fade-left": {
+    opacity: 0,
+    transform: "translateX(-30px)",
+    willChange: "opacity, transform",
+  },
+  "fade-right": {
+    opacity: 0,
+    transform: "translateX(30px)",
+    willChange: "opacity, transform",
+  },
+};
+
+const visibleStyles: React.CSSProperties = { opacity: 1, transform: "none" };
+
 /**
  * Wrapper component that animates children into view on scroll.
  * Respects prefers-reduced-motion via the hook.
@@ -29,15 +54,6 @@ export default function ScrollReveal({
     transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
     transitionDelay: `${delay}ms`,
   };
-
-  const hiddenStyles: Record<string, React.CSSProperties> = {
-    "fade-up": { opacity: 0, transform: "translateY(30px)" },
-    "fade-in": { opacity: 0, transform: "none" },
-    "fade-left": { opacity: 0, transform: "translateX(-30px)" },
-    "fade-right": { opacity: 0, transform: "translateX(30px)" },
-  };
-
-  const visibleStyles: React.CSSProperties = { opacity: 1, transform: "none" };
 
   return (
     <div

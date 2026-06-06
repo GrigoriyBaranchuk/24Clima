@@ -54,8 +54,10 @@ export default function SectionDividerStroke({
           pathLength={100}
           strokeDasharray="100"
           strokeDashoffset={isVisible ? 0 : 100}
+          opacity={isVisible ? 1 : 0}
           style={{
-            transition: "stroke-dashoffset 800ms cubic-bezier(0.16, 1, 0.3, 1)",
+            transition:
+              "stroke-dashoffset 800ms cubic-bezier(0.16, 1, 0.3, 1), opacity 800ms ease",
           }}
         />
       </svg>
