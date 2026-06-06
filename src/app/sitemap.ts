@@ -136,6 +136,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       alternates: { languages: langAlternates(contractPath) },
     });
+    const eventCoolingPath = "/alquiler-aire-acondicionado-eventos/";
+    entries.push({
+      url: localeUrl(locale, eventCoolingPath),
+      lastModified: now,
+      alternates: { languages: langAlternates(eventCoolingPath) },
+    });
   }
 
   // Tips articles — только для локалей, где есть контент

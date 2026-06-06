@@ -72,7 +72,7 @@ export default async function EsRootLayout({ children }: { children: React.React
   return (
     <div lang="es" className={`${inter.variable} ${lora.variable} font-sans antialiased`}>
       <p className="sr-only" aria-hidden="true" data-ai-summary="true">
-        24clima — professional air conditioning service in Panama City: installation, maintenance, deep cleaning, repair, refrigerant recharge. 24/7. Online cost calculator for AC cleaning. Languages: Spanish, English, Russian. Contact: WhatsApp +507 6828 2120.
+        24clima — professional air conditioning service in Panama City and Panamá Oeste (Arraiján, La Chorrera): installation, maintenance, deep cleaning, repair, refrigerant recharge. Also temporary AC/cooling rental for events (tents, expos, conferences, weddings). 24/7. Online cost calculator for AC cleaning. Languages: Spanish, English, Russian. Contact: WhatsApp +507 6828 2120.
       </p>
       <LazyAnalytics />
       <MetaPixel />

@@ -296,3 +296,11 @@ docs/                       # Документация
 - `docs/claude-seo-README.md` — документация SEO-скилла
 - `.cursor/rules/` — правила для Cursor AI
 - `docs/` — документация разработчика
+
+## Сессия 2026-06-06 — Panamá Oeste + аренда холода для мероприятий
+
+**Задача 1 — Гео-расширение (SEO/GEO):** добавлены 9 зон Panamá Oeste в `src/lib/areas-data.ts` (Arraiján, Nuevo Arraiján, Vista Alegre, Costa Verde, La Chorrera, El Espino, La Floresta, Vacamonte, Playa Dorada Residences) с es/en/ru-описаниями, GeoCoordinates и responseTime. Синхронизировано: `business-data.ts` areaServed, `layout.tsx` HVACBusiness areaServed (+ «Panamá Oeste»), on-page копи и meta на обоих вариантах `areas-de-servicio` (hero/CTA/description). Бизнес-факт: появился сотрудник на западе → честный городской уровень выезда. Costa Verde + Playa Dorada Residences — приоритет `<1.5h`.
+
+**Задача 2 — Landing аренды холода (лид-ген):** `/alquiler-aire-acondicionado-eventos/` (роуты `(es)` + `[locale]`, компонент `EventCoolingContent.tsx`, namespace `eventCooling` в es/en/ru, запись в `sitemap.ts`, JSON-LD Service+FAQPage+BreadcrumbList). Статус: лид-ген, парка техники нет — тест спроса. Бриф составлен с codex (целевые сегменты + честное позиционирование «без переобещаний»).
+
+**SEO-гейт:** seo-reviewer → flag-with-conditions; все 3 условия закрыты (areaServed синхронизирован до 9, data-ai-summary обновлён, NAP-span на `[locale]`). `tsc` чисто, `bun run build` зелёный, все JSON-LD валидны.
