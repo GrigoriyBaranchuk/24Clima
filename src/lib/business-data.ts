@@ -36,6 +36,16 @@ export const BUSINESS_DATA = {
     "El Cangrejo",
     "Obarrio",
     "Bella Vista",
+    // Panamá Oeste
+    "Arraiján",
+    "Nuevo Arraiján",
+    "Vista Alegre",
+    "Costa Verde",
+    "La Chorrera",
+    "El Espino",
+    "La Floresta",
+    "Vacamonte",
+    "Playa Dorada Residences",
   ],
   expert: {
     name: "Ryhor Baranchuk",

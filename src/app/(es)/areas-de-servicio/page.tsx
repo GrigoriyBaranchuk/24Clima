@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE),
   title: "Zonas de Servicio AC en Panamá | Cobertura 24/7 — 24clima",
   description:
-    "Servicio de aire acondicionado en 10+ zonas de Ciudad de Panamá: Costa del Este, Punta Pacífica, Clayton, Albrook, San Francisco y más. Llegada en <2h. ★5.0.",
+    "Servicio de aire acondicionado en Ciudad de Panamá y Panamá Oeste: Costa del Este, Punta Pacífica, Clayton, Arraiján, La Chorrera y más. Respuesta rápida. ★5.0.",
   alternates: {
     canonical: CANONICAL,
     languages: {
@@ -80,8 +80,8 @@ export default function AreasPage() {
               Servicio de Aire Acondicionado en Ciudad de Panamá
             </h1>
             <p className="text-lg text-white/80 max-w-3xl mx-auto">
-              Cobertura en 10+ zonas de la ciudad. Maestro HVAC con 9+ años de experiencia.
-              Llegada en menos de 2 horas. Servicio 24/7/365.
+              Cobertura en la ciudad y Panamá Oeste (Arraiján, La Chorrera y más).
+              Maestro HVAC con 9+ años de experiencia. Servicio 24/7/365.
             </p>
           </div>
         </section>
@@ -168,7 +168,7 @@ export default function AreasPage() {
               ¿No ve su zona? Contáctenos
             </h2>
             <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-              Cubrimos toda la zona metropolitana de Ciudad de Panamá.
+              Cubrimos la zona metropolitana de Ciudad de Panamá y Panamá Oeste.
               Escríbanos y confirmamos la cobertura en su área.
             </p>
             <Button

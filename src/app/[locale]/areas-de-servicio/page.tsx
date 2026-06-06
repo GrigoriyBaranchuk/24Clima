@@ -23,8 +23,8 @@ const titles: Record<string, string> = {
 };
 
 const descriptions: Record<string, string> = {
-  en: "Air conditioning service in 10+ zones of Panama City: Costa del Este, Punta Pacífica, Clayton, Albrook, San Francisco and more. Arrival in <2h. ★5.0.",
-  ru: "Обслуживание кондиционеров в 10+ районах Панама-Сити: Costa del Este, Punta Pacífica, Clayton, Albrook, San Francisco и др. Приезд менее 2ч. ★5.0.",
+  en: "Air conditioning service across Panama City and Panamá Oeste: Costa del Este, Punta Pacífica, Clayton, Arraiján, La Chorrera and more. Fast arrival. ★5.0.",
+  ru: "Обслуживание кондиционеров в Панама-Сити и Panamá Oeste: Costa del Este, Punta Pacífica, Clayton, Arraiján, La Chorrera и др. Быстрый выезд. ★5.0.",
 };
 
 const heroTitle: Record<SupportedLocale, string> = {
@@ -34,9 +34,9 @@ const heroTitle: Record<SupportedLocale, string> = {
 };
 
 const heroSubtitle: Record<SupportedLocale, string> = {
-  es: "Cobertura en 10+ zonas de la ciudad. Maestro HVAC con 9+ años de experiencia. Llegada en menos de 2 horas. Servicio 24/7/365.",
-  en: "Coverage in 10+ city zones. HVAC Master with 9+ years of experience. Arrival in under 2 hours. Service 24/7/365.",
-  ru: "Покрытие 10+ районов города. Мастер HVAC с опытом 9+ лет. Приезд менее чем за 2 часа. Сервис 24/7/365.",
+  es: "Cobertura en la ciudad y Panamá Oeste (Arraiján, La Chorrera y más). Maestro HVAC con 9+ años de experiencia. Servicio 24/7/365.",
+  en: "Coverage across the city and Panamá Oeste (Arraiján, La Chorrera and more). HVAC Master with 9+ years of experience. Service 24/7/365.",
+  ru: "Покрытие города и Panamá Oeste (Arraiján, La Chorrera и др.). Мастер HVAC с опытом 9+ лет. Сервис 24/7/365.",
 };
 
 const zonesHeading: Record<SupportedLocale, string> = {
@@ -64,9 +64,9 @@ const ctaTitle: Record<SupportedLocale, string> = {
 };
 
 const ctaText: Record<SupportedLocale, string> = {
-  es: "Cubrimos toda la zona metropolitana de Ciudad de Panamá. Escríbanos y confirmamos la cobertura en su área.",
-  en: "We cover the entire metropolitan area of Panama City. Write to us and we'll confirm coverage in your area.",
-  ru: "Мы обслуживаем всю столичную зону Панама-Сити. Напишите нам, и мы подтвердим покрытие в вашем районе.",
+  es: "Cubrimos la zona metropolitana de Ciudad de Panamá y Panamá Oeste. Escríbanos y confirmamos la cobertura en su área.",
+  en: "We cover the metropolitan area of Panama City and Panamá Oeste. Write to us and we'll confirm coverage in your area.",
+  ru: "Мы обслуживаем столичную зону Панама-Сити и Panamá Oeste. Напишите нам, и мы подтвердим покрытие в вашем районе.",
 };
 
 const ctaButton: Record<SupportedLocale, string> = {
