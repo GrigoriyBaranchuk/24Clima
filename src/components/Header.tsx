@@ -4,11 +4,12 @@ import { metaPixelEvent } from "@/components/MetaPixel";
 import { Button } from "@/components/ui/button";
 import { Link, usePathname } from "@/i18n/routing";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
-import { Bell, Building2, Home, Phone } from "lucide-react";
+import { Building2, ChevronDown, Home, Menu, Phone, Tent } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 
 const HEADER_OFFSET_PX = 80; // h-20
 
@@ -25,6 +26,8 @@ export default function Header() {
   const tWhatsapp = useTranslations("whatsappMessages");
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [solOpen, setSolOpen] = useState(false);
   const navigation = [
     { name: t("home"), href: "/", isAnchor: false },
     { name: t("tips"), href: "/consejos-y-guias", isAnchor: false },
@@ -32,6 +35,19 @@ export default function Header() {
     { name: t("problems"), href: "/#problemas", isAnchor: true },
     { name: t("about"), href: "/nosotros", isAnchor: false },
     { name: t("contact"), href: "/contacto", isAnchor: false },
+  ];
+  // Niche segment landings, grouped under the "Soluciones" dropdown.
+  const solutions = [
+    {
+      name: t("navPh"),
+      href: "/servicio-para-administradoras-ph",
+      Icon: Building2,
+    },
+    {
+      name: t("events"),
+      href: "/alquiler-aire-acondicionado-eventos",
+      Icon: Tent,
+    },
   ];
 
   const isHomePage = pathname === "/" || pathname === "";
@@ -90,18 +106,58 @@ export default function Header() {
                 24clima
               </span>
             </Link>
-            {/* Right: bell + locale badge */}
+            {/* Right: menu + locale badge */}
             <div className="flex items-center gap-2">
-              <button
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                  isScrolled
-                    ? "bg-gray-100 text-gray-600"
-                    : "bg-white/10 text-white/70"
-                }`}
-                aria-label="Notificaciones"
-              >
-                <Bell className="w-4 h-4" />
-              </button>
+              <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+                <SheetTrigger asChild>
+                  <button
+                    type="button"
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                      isScrolled
+                        ? "bg-gray-100 text-gray-600"
+                        : "bg-white/10 text-white/70"
+                    }`}
+                    aria-label="Menú"
+                  >
+                    <Menu className="w-4 h-4" />
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[85%] max-w-sm p-0">
+                  <SheetTitle className="sr-only">Menú</SheetTitle>
+                  <nav className="flex h-full flex-col gap-0.5 overflow-y-auto p-4 pt-14">
+                    {navigation.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        scroll={false}
+                        onClick={(e) => {
+                          handleNavClick(item, e);
+                          setMenuOpen(false);
+                        }}
+                        className="rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                    <div className="my-2 h-px bg-gray-200" />
+                    <span className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                      {t("solutions")}
+                    </span>
+                    {solutions.map(({ name, href, Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        scroll={false}
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
+                      >
+                        <Icon className="w-5 h-5 text-[#0F9D58]" />
+                        {name}
+                      </Link>
+                    ))}
+                  </nav>
+                </SheetContent>
+              </Sheet>
               <LanguageSwitcher isScrolled={isScrolled} />
             </div>
           </div>
@@ -132,15 +188,59 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
-              {/* Standout "Para PH" entry — visual pill, separate from text links */}
-              <Link
-                href="/servicio-para-administradoras-ph"
-                scroll={false}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold text-[#0F9D58] border border-[#0F9D58]/40 bg-[#0F9D58]/5 hover:bg-[#0F9D58] hover:text-white hover:border-[#0F9D58] transition-colors"
+              {/* "Soluciones" dropdown — niche segment landings (Para PH,
+                eventos). Links are ALWAYS rendered in the DOM (only visually
+                toggled) so they stay crawlable; SEO-reviewed. Motion uses
+                opacity+transform only, 150ms, off under reduced-motion. */}
+              <div
+                className="relative"
+                onMouseEnter={() => setSolOpen(true)}
+                onMouseLeave={() => setSolOpen(false)}
+                onFocus={() => setSolOpen(true)}
+                onBlur={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                    setSolOpen(false);
+                  }
+                }}
               >
-                <Building2 className="w-4 h-4" />
-                {t("navPh")}
-              </Link>
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={solOpen}
+                  className="inline-flex items-center gap-1 text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
+                >
+                  {t("solutions")}
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-150 motion-reduce:transition-none ${
+                      solOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                <div
+                  role="menu"
+                  aria-label={t("solutions")}
+                  className={`absolute right-0 top-full pt-2 w-60 transition-[opacity,transform] duration-150 motion-reduce:transition-none ${
+                    solOpen
+                      ? "opacity-100 visible translate-y-0"
+                      : "opacity-0 invisible -translate-y-1 pointer-events-none"
+                  }`}
+                >
+                  <div className="rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl">
+                    {solutions.map(({ name, href, Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        role="menuitem"
+                        scroll={false}
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-[#0F9D58]/10 hover:text-[#0F9D58]"
+                      >
+                        <Icon className="w-4 h-4 text-[#0F9D58]" />
+                        {name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* CTA Button & Language Switcher */}

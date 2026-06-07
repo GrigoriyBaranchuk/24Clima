@@ -19,7 +19,9 @@
     "checkAvailability": "Проверить доступность",
     "viewDetails": "Подробнее",
     "geoLine": "Сервис в городе Панама-Сити, Республика Панама",
-    "navPh": "Для PH"
+    "navPh": "Для PH",
+    "solutions": "Решения",
+    "events": "Мероприятия"
   },
   "homeCta": {
     "nosotrosTitle": "Почему мы?",
