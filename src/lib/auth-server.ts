@@ -3,6 +3,7 @@
  * Do not import in client components.
  */
 
+import { createHash, timingSafeEqual } from "node:crypto";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 
@@ -74,6 +75,24 @@ export async function isAdmin(userId: string, email?: string): Promise<boolean> 
   const allowed = getAdminEmails();
   if (allowed.length && email) return allowed.includes(email.trim().toLowerCase());
   return false;
+}
+
+/**
+ * Verify the shared secret used by partner SaaS to publish articles (server-to-server).
+ * Reads ARTICLES_API_SECRET from env; compares the request's Bearer token in constant time.
+ * Fail-closed: returns false if the secret is not configured or the header is missing/mismatched.
+ */
+export function verifyArticlesApiSecret(req: NextRequest): boolean {
+  const secret = process.env.ARTICLES_API_SECRET ?? "";
+  if (!secret) return false;
+  const auth = req.headers.get("authorization");
+  if (!auth?.startsWith("Bearer ")) return false;
+  const token = auth.slice(7).trim();
+  if (!token) return false;
+  // Compare fixed-length digests so neither length nor content leaks via timing.
+  const a = createHash("sha256").update(token).digest();
+  const b = createHash("sha256").update(secret).digest();
+  return timingSafeEqual(a, b);
 }
 
 /**
