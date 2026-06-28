@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 function pct(curr: number, prev: number): string {
-  if (prev === 0) return curr === 0 ? "0%" : "nuevo";
+  if (prev === 0) return curr === 0 ? "0%" : "новый";
   const d = ((curr - prev) / prev) * 100;
   return `${d >= 0 ? "+" : ""}${d.toFixed(0)}%`;
 }
@@ -32,31 +32,31 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Kpi
-          label="Clics (GSC, 7d)"
+          label="Клики (GSC, 7д)"
           value={String(data.gsc.clicksCurr)}
-          delta={`${pct(data.gsc.clicksCurr, data.gsc.clicksPrev)} vs previa`}
+          delta={`${pct(data.gsc.clicksCurr, data.gsc.clicksPrev)} к пред.`}
           good={data.gsc.clicksCurr >= data.gsc.clicksPrev}
         />
         <Kpi
-          label="Sesiones orgánicas (7d)"
+          label="Органические сессии (7д)"
           value={String(data.ga4.sessionsCurr)}
-          delta={`${pct(data.ga4.sessionsCurr, data.ga4.sessionsPrev)} vs previa`}
+          delta={`${pct(data.ga4.sessionsCurr, data.ga4.sessionsPrev)} к пред.`}
           good={data.ga4.sessionsCurr >= data.ga4.sessionsPrev}
         />
         <Kpi
-          label="Citado en IA"
+          label="Цитирование в ИИ"
           value={citedRate == null ? "—" : `${citedRate}%`}
-          delta={`${data.aiMentions.citedCurr}/${data.aiMentions.totalCurr} consultas`}
+          delta={`${data.aiMentions.citedCurr}/${data.aiMentions.totalCurr} запросов`}
           good={data.aiMentions.citedCurr >= data.aiMentions.citedPrev}
         />
-        <Kpi label="Gasto DataForSEO (8d)" value={`$${data.weeklyCost.toFixed(2)}`} />
+        <Kpi label="Расходы DataForSEO (8д)" value={`$${data.weeklyCost.toFixed(2)}`} />
       </div>
 
       {/* Charts */}
       <div className="grid lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <h3 className="font-semibold text-[#1e3a5f]">Clics e impresiones (GSC)</h3>
+            <h3 className="font-semibold text-[#1e3a5f]">Клики и показы (GSC)</h3>
           </CardHeader>
           <CardContent>
             {data.gsc.series.length ? (
@@ -66,19 +66,19 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
                   <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={(d: string) => d.slice(5)} />
                   <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="clicks" stroke="hsl(var(--chart-1))" dot={false} name="Clics" />
-                  <Line type="monotone" dataKey="impressions" stroke="hsl(var(--chart-2))" dot={false} name="Impresiones" />
+                  <Line type="monotone" dataKey="clicks" stroke="hsl(var(--chart-1))" dot={false} name="Клики" />
+                  <Line type="monotone" dataKey="impressions" stroke="hsl(var(--chart-2))" dot={false} name="Показы" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <p className="text-sm text-gray-500">Sin datos todavía.</p>
+              <p className="text-sm text-gray-500">Пока нет данных.</p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <h3 className="font-semibold text-[#1e3a5f]">Sesiones orgánicas (GA4)</h3>
+            <h3 className="font-semibold text-[#1e3a5f]">Органические сессии (GA4)</h3>
           </CardHeader>
           <CardContent>
             {data.ga4.series.length ? (
@@ -88,11 +88,11 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
                   <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={(d: string) => d.slice(5)} />
                   <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="sessions" stroke="hsl(var(--chart-3))" dot={false} name="Sesiones" />
+                  <Line type="monotone" dataKey="sessions" stroke="hsl(var(--chart-3))" dot={false} name="Сессии" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <p className="text-sm text-gray-500">Sin datos todavía.</p>
+              <p className="text-sm text-gray-500">Пока нет данных.</p>
             )}
           </CardContent>
         </Card>
@@ -101,7 +101,7 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
       {/* Rankings table */}
       <Card>
         <CardHeader>
-          <h3 className="font-semibold text-[#1e3a5f]">Posiciones SERP (DataForSEO)</h3>
+          <h3 className="font-semibold text-[#1e3a5f]">Позиции в выдаче (DataForSEO)</h3>
         </CardHeader>
         <CardContent>
           {data.rankings.rows.length ? (
@@ -109,10 +109,10 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-left text-gray-500 border-b">
-                    <th className="py-2 pr-4">Keyword</th>
-                    <th className="py-2 px-2">Actual</th>
-                    <th className="py-2 px-2">Previa</th>
-                    <th className="py-2 px-2">Vol.</th>
+                    <th className="py-2 pr-4">Запрос</th>
+                    <th className="py-2 px-2">Текущая</th>
+                    <th className="py-2 px-2">Пред.</th>
+                    <th className="py-2 px-2">Объём</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -134,7 +134,7 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
               </table>
             </div>
           ) : (
-            <p className="text-sm text-gray-500">Sin datos de posiciones todavía.</p>
+            <p className="text-sm text-gray-500">Пока нет данных о позициях.</p>
           )}
         </CardContent>
       </Card>
@@ -143,7 +143,7 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
       <div className="grid lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <h3 className="font-semibold text-[#1e3a5f]">Core Web Vitals (campo)</h3>
+            <h3 className="font-semibold text-[#1e3a5f]">Core Web Vitals (поле)</h3>
           </CardHeader>
           <CardContent>
             {data.cwv.breaches.length ? (
@@ -155,24 +155,24 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-green-600">✅ Sin breaches de CWV.</p>
+              <p className="text-sm text-green-600">✅ Нарушений CWV нет.</p>
             )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <h3 className="font-semibold text-[#1e3a5f]">Backlinks</h3>
+            <h3 className="font-semibold text-[#1e3a5f]">Бэклинки</h3>
           </CardHeader>
           <CardContent>
             {data.backlinks.snapshot ? (
               <ul className="text-sm space-y-1">
-                <li>Dominios de referencia: <b>{String(data.backlinks.snapshot.referring_domains ?? "—")}</b></li>
-                <li>Backlinks: <b>{String(data.backlinks.snapshot.backlinks ?? "—")}</b></li>
-                <li>Rank: {String(data.backlinks.snapshot.rank ?? "—")}</li>
+                <li>Ссылающиеся домены: <b>{String(data.backlinks.snapshot.referring_domains ?? "—")}</b></li>
+                <li>Бэклинки: <b>{String(data.backlinks.snapshot.backlinks ?? "—")}</b></li>
+                <li>Ранг: {String(data.backlinks.snapshot.rank ?? "—")}</li>
               </ul>
             ) : (
-              <p className="text-sm text-gray-500">Sin datos de backlinks todavía.</p>
+              <p className="text-sm text-gray-500">Пока нет данных о бэклинках.</p>
             )}
           </CardContent>
         </Card>

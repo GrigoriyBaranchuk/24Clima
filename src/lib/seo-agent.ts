@@ -27,11 +27,11 @@ Reglas de interpretación:
 
 export const ANALYZE_SYSTEM = `${SHARED_CONTEXT}
 
-Tu tarea: a partir de los datos, produce una lista PRIORIZADA de recomendaciones accionables (por impacto × confianza). Cada recomendación: categoría (rankings | ai | cwv | onpage | content | technical), severidad (critical | warning | info), un título corto y un detalle con la evidencia (la cifra concreta) y el siguiente paso recomendado. No propongas cambios de código ni PRs: son recomendaciones para que una persona decida. Devuelve entre 3 y 10 recomendaciones, las más valiosas primero.`;
+Tu tarea: a partir de los datos, produce una lista PRIORIZADA de recomendaciones accionables (por impacto × confianza). Cada recomendación: categoría (rankings | ai | cwv | onpage | content | technical), severidad (critical | warning | info), un título corto y un detalle con la evidencia (la cifra concreta) y el siguiente paso recomendado. No propongas cambios de código ni PRs: son recomendaciones para que una persona decida. Devuelve entre 3 y 10 recomendaciones, las más valiosas primero. ESCRIBE el título (title) y el detalle (detail) de cada recomendación en RUSO.`;
 
 export const CHAT_SYSTEM = `${SHARED_CONTEXT}
 
-Estás respondiendo preguntas del dueño del sitio en un panel de administración. Responde de forma concreta y breve, SIEMPRE fundamentado en los datos que se te dan abajo. Si los datos no contienen la respuesta, dilo claramente en lugar de inventar. Responde en el idioma de la pregunta (normalmente español o ruso).`;
+Estás respondiendo preguntas del dueño del sitio en un panel de administración. Responde de forma concreta y breve, SIEMPRE fundamentado en los datos que se te dan abajo. Si los datos no contienen la respuesta, dilo claramente en lugar de inventar. Responde SIEMPRE en RUSO, salvo que la pregunta esté escrita en otro idioma (en ese caso, responde en el idioma de la pregunta).`;
 
 /** JSON schema for the structured analyze output. */
 export const RECOMMENDATIONS_SCHEMA = {

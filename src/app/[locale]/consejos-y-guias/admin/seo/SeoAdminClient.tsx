@@ -83,7 +83,7 @@ export default function SeoAdminClient() {
         body: JSON.stringify({ source }),
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      setToast(data.ok ? `Datos actualizados (${source}).` : `Error: ${data.error ?? res.status}`);
+      setToast(data.ok ? `Данные обновлены (${source}).` : `Ошибка: ${data.error ?? res.status}`);
       await loadMetrics();
     } finally {
       setBusy(null);
@@ -96,7 +96,7 @@ export default function SeoAdminClient() {
     try {
       const res = await authFetch("/api/admin/seo/analyze", { method: "POST" });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; inserted?: number; error?: string };
-      setToast(data.ok ? `Análisis listo: ${data.inserted ?? 0} recomendaciones.` : `Error: ${data.error ?? res.status}`);
+      setToast(data.ok ? `Анализ готов: ${data.inserted ?? 0} рекомендаций.` : `Ошибка: ${data.error ?? res.status}`);
       setRecoKey((k) => k + 1);
     } finally {
       setBusy(null);
@@ -106,7 +106,7 @@ export default function SeoAdminClient() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Cargando…</div>
+        <div className="animate-pulse text-gray-500">Загрузка…</div>
       </div>
     );
   }
@@ -116,11 +116,11 @@ export default function SeoAdminClient() {
       <main id="main-content" className="min-h-screen pt-24 flex items-center justify-center px-4">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <h1 className="text-2xl font-bold text-[#1e3a5f]">SEO · Panel</h1>
+            <h1 className="text-2xl font-bold text-[#1e3a5f]">SEO · Панель</h1>
           </CardHeader>
           <CardContent>
             {!supabase ? (
-              <p className="text-gray-600 text-center text-sm">Supabase no está configurado.</p>
+              <p className="text-gray-600 text-center text-sm">Supabase не настроен.</p>
             ) : (
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
@@ -134,7 +134,7 @@ export default function SeoAdminClient() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
                   <input
                     type="password"
                     value={password}
@@ -144,7 +144,7 @@ export default function SeoAdminClient() {
                   />
                 </div>
                 {loginError && <p className="text-red-600 text-sm">{loginError}</p>}
-                <Button type="submit" className="w-full">Entrar</Button>
+                <Button type="submit" className="w-full">Войти</Button>
               </form>
             )}
           </CardContent>
@@ -159,9 +159,9 @@ export default function SeoAdminClient() {
     <main id="main-content" className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4 lg:px-8 max-w-5xl space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-[#1e3a5f]">SEO · Panel del agente</h1>
+          <h1 className="text-2xl font-bold text-[#1e3a5f]">SEO · Панель агента</h1>
           <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="w-4 h-4 mr-2" /> Salir
+            <LogOut className="w-4 h-4 mr-2" /> Выйти
           </Button>
         </div>
 
@@ -170,13 +170,13 @@ export default function SeoAdminClient() {
           <CardContent className="pt-6">
             <div className="flex flex-wrap items-center gap-3">
               <Button onClick={() => runSync("google")} disabled={busy !== null}>
-                <Database className={`w-4 h-4 mr-2 ${busy === "google" ? "animate-pulse" : ""}`} /> Actualizar Google
+                <Database className={`w-4 h-4 mr-2 ${busy === "google" ? "animate-pulse" : ""}`} /> Обновить Google
               </Button>
               <Button onClick={() => runSync("dataforseo")} disabled={busy !== null}>
-                <Database className={`w-4 h-4 mr-2 ${busy === "dataforseo" ? "animate-pulse" : ""}`} /> Actualizar DataForSEO
+                <Database className={`w-4 h-4 mr-2 ${busy === "dataforseo" ? "animate-pulse" : ""}`} /> Обновить DataForSEO
               </Button>
               <Button variant="secondary" onClick={runAnalyze} disabled={busy !== null}>
-                <Sparkles className={`w-4 h-4 mr-2 ${busy === "analyze" ? "animate-pulse" : ""}`} /> Pedir análisis del agente
+                <Sparkles className={`w-4 h-4 mr-2 ${busy === "analyze" ? "animate-pulse" : ""}`} /> Запросить анализ агента
               </Button>
               <Button variant="outline" size="sm" onClick={loadMetrics} disabled={metricsLoading}>
                 <RefreshCw className={`w-4 h-4 ${metricsLoading ? "animate-spin" : ""}`} />
@@ -184,12 +184,12 @@ export default function SeoAdminClient() {
             </div>
             {toast && <p className="mt-3 text-sm text-gray-600">{toast}</p>}
             {staleSources.length > 0 && (
-              <p className="mt-2 text-sm text-amber-600">⚠️ Fuentes con datos viejos/fallidos: {staleSources.join(", ")}</p>
+              <p className="mt-2 text-sm text-amber-600">⚠️ Источники с устаревшими/неуспешными данными: {staleSources.join(", ")}</p>
             )}
           </CardContent>
         </Card>
 
-        {metrics ? <MetricsOverview data={metrics} /> : <p className="text-sm text-gray-500">Cargando métricas…</p>}
+        {metrics ? <MetricsOverview data={metrics} /> : <p className="text-sm text-gray-500">Загрузка метрик…</p>}
 
         <RecommendationsPanel authFetch={authFetch} reloadKey={recoKey} />
         <ChatPanel authFetch={authFetch} />

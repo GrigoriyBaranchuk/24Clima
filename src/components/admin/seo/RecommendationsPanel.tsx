@@ -23,6 +23,12 @@ const SEV_STYLE: Record<string, string> = {
   info: "bg-sky-100 text-sky-700",
 };
 
+const SEV_LABEL: Record<string, string> = {
+  critical: "критично",
+  warning: "предупреждение",
+  info: "инфо",
+};
+
 export function RecommendationsPanel({ authFetch, reloadKey = 0 }: { authFetch: AuthFetch; reloadKey?: number }) {
   const [recos, setRecos] = useState<Reco[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,16 +60,16 @@ export function RecommendationsPanel({ authFetch, reloadKey = 0 }: { authFetch: 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <h3 className="font-semibold text-[#1e3a5f]">Recomendaciones del agente</h3>
+        <h3 className="font-semibold text-[#1e3a5f]">Рекомендации агента</h3>
         <Button variant="outline" size="sm" onClick={load} disabled={loading}>
           <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
         </Button>
       </CardHeader>
       <CardContent>
         {loading ? (
-          <p className="text-sm text-gray-500">Cargando…</p>
+          <p className="text-sm text-gray-500">Загрузка…</p>
         ) : recos.length === 0 ? (
-          <p className="text-sm text-gray-500">No hay recomendaciones nuevas. Pulsa «Pedir análisis del agente» arriba.</p>
+          <p className="text-sm text-gray-500">Новых рекомендаций нет. Нажмите «Запросить анализ агента» выше.</p>
         ) : (
           <ul className="space-y-3">
             {recos.map((r) => (
@@ -72,7 +78,7 @@ export function RecommendationsPanel({ authFetch, reloadKey = 0 }: { authFetch: 
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className={`text-xs px-2 py-0.5 rounded-full ${SEV_STYLE[r.severity] ?? SEV_STYLE.info}`}>
-                        {r.severity}
+                        {SEV_LABEL[r.severity] ?? r.severity}
                       </span>
                       <span className="text-xs text-gray-400">{r.category}</span>
                     </div>
@@ -80,13 +86,13 @@ export function RecommendationsPanel({ authFetch, reloadKey = 0 }: { authFetch: 
                     <p className="mt-1 text-sm text-gray-600 whitespace-pre-wrap">{r.detail}</p>
                   </div>
                   <div className="flex gap-1 shrink-0">
-                    <Button variant="outline" size="sm" title="Aceptar" onClick={() => setStatus(r.id, "accepted")}>
+                    <Button variant="outline" size="sm" title="Принять" onClick={() => setStatus(r.id, "accepted")}>
                       <Check className="w-4 h-4 text-green-600" />
                     </Button>
-                    <Button variant="outline" size="sm" title="Hecho" onClick={() => setStatus(r.id, "done")}>
+                    <Button variant="outline" size="sm" title="Готово" onClick={() => setStatus(r.id, "done")}>
                       <CheckCheck className="w-4 h-4 text-sky-600" />
                     </Button>
-                    <Button variant="outline" size="sm" title="Rechazar" onClick={() => setStatus(r.id, "rejected")}>
+                    <Button variant="outline" size="sm" title="Отклонить" onClick={() => setStatus(r.id, "rejected")}>
                       <X className="w-4 h-4 text-red-600" />
                     </Button>
                   </div>

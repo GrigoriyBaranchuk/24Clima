@@ -40,7 +40,7 @@ export function ChatPanel({ authFetch }: { authFetch: AuthFetch }) {
         const err = await res.json().catch(() => ({}));
         setMessages((prev) => {
           const copy = [...prev];
-          copy[copy.length - 1] = { role: "assistant", content: `[Error: ${(err as { error?: string }).error ?? res.status}]` };
+          copy[copy.length - 1] = { role: "assistant", content: `[Ошибка: ${(err as { error?: string }).error ?? res.status}]` };
           return copy;
         });
         return;
@@ -62,7 +62,7 @@ export function ChatPanel({ authFetch }: { authFetch: AuthFetch }) {
     } catch {
       setMessages((prev) => {
         const copy = [...prev];
-        copy[copy.length - 1] = { role: "assistant", content: "[Error de red]" };
+        copy[copy.length - 1] = { role: "assistant", content: "[Ошибка сети]" };
         return copy;
       });
     } finally {
@@ -74,12 +74,12 @@ export function ChatPanel({ authFetch }: { authFetch: AuthFetch }) {
   return (
     <Card>
       <CardHeader>
-        <h3 className="font-semibold text-[#1e3a5f]">Chat con el agente</h3>
-        <p className="text-xs text-gray-500">Pregunta sobre los datos: «¿por qué cayó la posición de X?», «¿qué keyword priorizar?»</p>
+        <h3 className="font-semibold text-[#1e3a5f]">Чат с агентом</h3>
+        <p className="text-xs text-gray-500">Спросите о данных: «почему упала позиция X?», «какой запрос приоритизировать?»</p>
       </CardHeader>
       <CardContent>
         <div ref={scrollRef} className="h-72 overflow-y-auto space-y-3 mb-3 pr-1">
-          {messages.length === 0 && <p className="text-sm text-gray-400">Aún no hay mensajes.</p>}
+          {messages.length === 0 && <p className="text-sm text-gray-400">Пока нет сообщений.</p>}
           {messages.map((m, i) => (
             <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
@@ -102,7 +102,7 @@ export function ChatPanel({ authFetch }: { authFetch: AuthFetch }) {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Escribe tu pregunta…"
+            placeholder="Введите вопрос…"
             disabled={streaming}
             className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm"
           />
