@@ -304,3 +304,23 @@ docs/                       # Документация
 **Задача 2 — Landing аренды холода (лид-ген):** `/alquiler-aire-acondicionado-eventos/` (роуты `(es)` + `[locale]`, компонент `EventCoolingContent.tsx`, namespace `eventCooling` в es/en/ru, запись в `sitemap.ts`, JSON-LD Service+FAQPage+BreadcrumbList). Статус: лид-ген, парка техники нет — тест спроса. Бриф составлен с codex (целевые сегменты + честное позиционирование «без переобещаний»).
 
 **SEO-гейт:** seo-reviewer → flag-with-conditions; все 3 условия закрыты (areaServed синхронизирован до 9, data-ai-summary обновлён, NAP-span на `[locale]`). `tsc` чисто, `bun run build` зелёный, все JSON-LD валидны.
+
+## Сессия 2026-06-27 — Система SEO/GEO/AI-мониторинга + админ-дашборд
+
+Цель: непрерывный feedback-loop для SEO + интерфейс для владельца. План ревьюился через codex (24 находки, ~20 учтены) + claude-api skill. Полная wiki-страница: `memory/wiki/concepts/seo-monitoring-system.md`.
+
+**Часть A — Бэкенд мониторинга (гибрид):**
+- `004_seo_monitoring.sql` — 9 таблиц `seo_*` (RLS, без select-политики; ключи NOT NULL; `seo_sync_runs` различает «0» vs «API упал»; CWV field/lab раздельно).
+- `src/app/api/sync-seo/route.ts` (Google, daily) — JWT SA (`google-auth-library`), GSC пагинация `startRow` + `encodeURIComponent` + окно 10д, GA4 organic, PSI mobile, `?preflight=1`.
+- `src/app/api/sync-dataforseo/route.ts` (weekly) — AI mentions + rankings + on_page/instant_pages + backlinks; трекинг `cost`.
+- `src/lib/seo-tracking.ts` (keywords/URLs из `SERVICE_SLUGS`), `scripts/seo-digest.ts` + `.github/workflows/{seo-dataforseo,seo-digest}.yml` (недельный дайджест в GitHub issue), playbook `.agents/skills/24clima-seo-guide/references/monitoring-playbook.md`. Исправлен невалидный YAML в `SKILL.md`.
+
+**Часть B — Админ-дашборд `/consejos-y-guias/admin/seo`:**
+- Интерактивный агент в бэкенде сайта (`@anthropic-ai/sdk`, `claude-opus-4-8`, смена на sonnet в `src/lib/seo-agent.ts`); автономные PR — в Claude Code routine.
+- `005_seo_recommendations.sql`; `src/lib/seo-aggregate.ts` (общий считатель, юзают дайджест+дашборд+агент).
+- 5 роутов `src/app/api/admin/seo/{metrics,sync,analyze,recommendations,chat}` — все под `requireAdmin`. `analyze`=structured output; `chat`=streaming; `sync`=прокси через `CRON_SECRET`.
+- Страница + `src/components/admin/seo/*` (recharts, кнопки, ревью рекомендаций, чат). Логин = Supabase auth (`ADMIN_EMAILS`). Добавлен `admin/layout.tsx` noindex (защищает обе админ-страницы). Не в sitemap.
+
+**Статус:** `lint` + `build` зелёные. **НЕ закоммичено, НЕ запушено** (ждёт явного OK). Документация: `docs/seo-monitoring.md`.
+
+**TODO (человек, до запуска):** 1) Google Cloud (3 API + SA + GSC/GA4 доступ + GA4 property id + PSI key → base64). 2) DataForSEO login/pass (location 2591/es). 3) Env: `GOOGLE_SA_KEY_BASE64`, `GSC_SITE_URL`, `GA4_PROPERTY_ID`, `PAGESPEED_API_KEY`, `DATAFORSEO_LOGIN/PASSWORD`, `ANTHROPIC_API_KEY`. 4) Применить миграции `004` + `005`. 5) GitHub secrets: `CRON_SECRET`, `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`. 6) Проверить `…/api/sync-seo?preflight=1` + зайти на `…/admin/seo`. 7) Промотить playbook-агента в `/schedule` routine (после 1-2 недель данных).

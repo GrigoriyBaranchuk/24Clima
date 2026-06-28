@@ -1,6 +1,6 @@
 ---
 name: 24clima-seo-guide
-description: Project-specific SEO/Local SEO (GEO)/AEO rulebook for 24clima.com, sourced directly from current Google documentation (Search Central, web.dev, structured data guides). Use when changing any of: page/route structure, metadata, JSON-LD, hreflang, sitemap, robots, headers/CSP, hero/CTA content, animations or scroll behavior, image markup, semantic HTML, geo meta tags, AI summary block, or analytics. Codifies what Google currently says, what's on the site, and what must not break.
+description: "Project-specific SEO/Local SEO (GEO)/AEO rulebook for 24clima.com, sourced directly from current Google documentation (Search Central, web.dev, structured data guides). Use when changing any of: page/route structure, metadata, JSON-LD, hreflang, sitemap, robots, headers/CSP, hero/CTA content, animations or scroll behavior, image markup, semantic HTML, geo meta tags, AI summary block, or analytics. Codifies what Google currently says, what's on the site, and what must not break."
 ---
 
 # 24clima.com SEO/GEO Guide

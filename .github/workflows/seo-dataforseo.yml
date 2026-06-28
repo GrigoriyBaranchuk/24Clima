@@ -1,0 +1,31 @@
+name: SEO — DataForSEO ingest (weekly)
+
+# DataForSEO is pay-per-request, so this runs weekly (not via Vercel cron, which
+# is capped at 2 daily jobs on Hobby). It simply triggers the deployed Vercel
+# endpoint, which does the actual API calls + Supabase writes.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch: {} # allow manual runs
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger /api/sync-dataforseo
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://24clima.com' }}
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/out.json -w '%{http_code}' \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "${SITE_URL}/api/sync-dataforseo")
+          echo "HTTP ${code}"
+          cat /tmp/out.json
+          # 200 ok, 207 partial (some sources failed) — both acceptable to continue.
+          if [ "$code" != "200" ] && [ "$code" != "207" ]; then
+            echo "::error::sync-dataforseo returned ${code}"
+            exit 1
+          fi

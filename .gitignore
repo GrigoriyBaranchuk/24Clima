@@ -63,3 +63,4 @@ __pycache__/
 # cursor local artifacts
 .cursor/debug-*.log
 .cursor/prompts/
+.gstack/

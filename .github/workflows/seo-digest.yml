@@ -1,0 +1,34 @@
+name: SEO — weekly digest
+
+# Deterministic digest: reads the seo_* Supabase tables and opens/updates a
+# single `seo-digest` GitHub issue. No LLM. Runs after the DataForSEO ingest so
+# the week's data has landed.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC (3h after DataForSEO ingest)
+  workflow_dispatch: {}
+
+permissions:
+  issues: write # GITHUB_TOKEN needs to create/update the digest issue
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      - name: Build + publish digest
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_REPOSITORY is provided automatically by Actions.
+        run: bun run scripts/seo-digest.ts
