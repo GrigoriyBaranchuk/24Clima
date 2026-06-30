@@ -28,7 +28,7 @@ jobs:
         run: |
           set -uo pipefail   # NOT -e: we want every source to run even if one fails.
           failed=()
-          for source in ai rankings onpage backlinks; do
+          for source in rankings onpage backlinks; do
             echo "::group::source=${source}"
             out="/tmp/seo-${source}.json"
             # Trailing slash is required: Next.js trailingSlash:true 308-redirects

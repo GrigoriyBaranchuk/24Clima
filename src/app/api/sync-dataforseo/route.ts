@@ -111,56 +111,9 @@ type SourceResult = {
   duration_ms?: number;
 };
 
-// ---------------------------------------------------------------------------
-// AI mentions — Google AI Overview + ChatGPT citations of TARGET_DOMAIN.
-// ---------------------------------------------------------------------------
-async function syncAiMentions(supabase: SupabaseClient, date: string): Promise<SourceResult> {
-  const keywords = TRACKED_KEYWORDS.slice(0, MAX_TRACKED_KEYWORDS);
-  const perKeyword = await runBounded(keywords, KEYWORD_CONCURRENCY, async (keyword) => {
-    try {
-      const json = await dfsPost("/dataforseo_labs/ai_mentions/live", {
-        keyword,
-        target: TARGET_DOMAIN,
-        location_code: LOCATION_CODE,
-        language_code: LANGUAGE_CODE,
-      });
-      const cost = json.cost ?? 0;
-      const items = (json.tasks?.[0]?.result?.[0] as { items?: AiMentionItem[] } | undefined)?.items ?? [];
-      // Aggregate per ai_source for this keyword.
-      const bySource = new Map<string, { cited: boolean; position: number | null; competitors: unknown[]; urls: string[] }>();
-      for (const it of items) {
-        const src = it.ai_source ?? "ai_overview";
-        const entry = bySource.get(src) ?? { cited: false, position: null, competitors: [], urls: [] };
-        const isOurs = (it.domain ?? "").includes(TARGET_DOMAIN);
-        if (isOurs) {
-          entry.cited = true;
-          if (entry.position == null) entry.position = it.rank_absolute ?? null;
-        } else if (it.domain) {
-          entry.competitors.push({ domain: it.domain, rank: it.rank_absolute ?? null });
-        }
-        if (it.url) entry.urls.push(it.url);
-        bySource.set(src, entry);
-      }
-      const rows = [...bySource.entries()].map(([ai_source, e]) => ({
-        date,
-        keyword,
-        ai_source,
-        cited: e.cited,
-        position: e.position,
-        competitors: e.competitors.slice(0, 10),
-        source_urls: e.urls.slice(0, 10),
-      }));
-      if (!rows.length) return { rows: 0, cost, error: null as string | null };
-      const { error } = await supabase
-        .from("seo_ai_mentions")
-        .upsert(rows, { onConflict: "date,keyword,ai_source", ignoreDuplicates: false });
-      return { rows: error ? 0 : rows.length, cost, error: error?.message ?? null };
-    } catch (e) {
-      return { rows: 0, cost: 0, error: String(e).slice(0, 200) };
-    }
-  });
-  return aggregate("dfs_ai", perKeyword);
-}
+// Note: AI-visibility (Google AI Overview citations) is no longer a separate
+// source. It is extracted from the SERP advanced response inside syncRankings —
+// one paid call yields both rankings AND AI Overview citations. See writeAiOverview.
 
 /**
  * Status for a source: clean when no error; "partial" when some rows landed
@@ -184,12 +137,63 @@ function aggregate(
   return { source, status: statusFor(rows, firstError), rows, cost, error: firstError };
 }
 
-type AiMentionItem = {
-  ai_source?: string;
-  domain?: string;
-  url?: string;
+// ---------------------------------------------------------------------------
+// AI Overview citations — parsed from the SERP advanced response (no extra call).
+// `load_async_ai_overview` resolves the references for asynchronously-rendered
+// overviews (tiny surcharge, refunded when there is no async AIO). We record a
+// row only when an AI Overview is actually present, so the dashboard's
+// "cited in X/Y" denominator means "queries that triggered an AI Overview".
+// ---------------------------------------------------------------------------
+type AiOverviewRef = { domain?: string; url?: string };
+type AiOverviewItem = {
+  type?: string;
   rank_absolute?: number;
+  references?: AiOverviewRef[];
+  items?: { references?: AiOverviewRef[] }[];
 };
+
+const normDomain = (d: string) => d.toLowerCase().replace(/^www\./, "");
+
+/**
+ * If the SERP carries an AI Overview, upsert one seo_ai_mentions row capturing
+ * whether TARGET_DOMAIN is among the cited sources. Returns an error message on
+ * upsert failure, or null (including when there is no AI Overview to record).
+ */
+async function writeAiOverview(
+  supabase: SupabaseClient,
+  date: string,
+  keyword: string,
+  items: SerpItem[]
+): Promise<string | null> {
+  const aio = items.find((i) => i.type === "ai_overview") as AiOverviewItem | undefined;
+  if (!aio) return null;
+  const refs: AiOverviewRef[] = [
+    ...(aio.references ?? []),
+    ...(aio.items ?? []).flatMap((x) => x.references ?? []),
+  ];
+  const distinct: string[] = [];
+  const urls: string[] = [];
+  for (const ref of refs) {
+    const domain = normDomain(String(ref.domain ?? ""));
+    if (domain && !distinct.includes(domain)) distinct.push(domain);
+    const url = ref.url ? String(ref.url) : "";
+    if (url && !urls.includes(url)) urls.push(url);
+  }
+  const ourIdx = distinct.indexOf(TARGET_DOMAIN);
+  const row = {
+    date,
+    keyword,
+    ai_source: "ai_overview",
+    cited: ourIdx >= 0,
+    position: ourIdx >= 0 ? ourIdx + 1 : null,
+    competitors: distinct.filter((d) => d !== TARGET_DOMAIN).slice(0, 10).map((domain) => ({ domain })),
+    source_urls: urls.slice(0, 10),
+  };
+  const { error } = await supabase
+    .from("seo_ai_mentions")
+    .upsert(row, { onConflict: "date,keyword,ai_source", ignoreDuplicates: false });
+  return error?.message ?? null;
+}
 
 // ---------------------------------------------------------------------------
 // Rankings — absolute SERP position + top competitors per tracked keyword.
@@ -203,14 +207,16 @@ async function syncRankings(supabase: SupabaseClient, date: string): Promise<Sou
         location_code: LOCATION_CODE,
         language_code: LANGUAGE_CODE,
         depth: 20, // keep 20 so positions 11-20 are still captured (we rank below 10 on most terms)
+        load_async_ai_overview: true, // resolve AI Overview references in the same call
       });
       const cost = json.cost ?? 0;
       const result = json.tasks?.[0]?.result?.[0] as { items?: SerpItem[]; keyword_info?: { search_volume?: number } } | undefined;
-      const items = (result?.items ?? []).filter((i) => i.type === "organic");
+      const allItems = result?.items ?? [];
+      const organic = allItems.filter((i) => i.type === "organic");
       let ourPos: number | null = null;
       let ourUrl: string | null = null;
       const competitors: { domain: string; position: number }[] = [];
-      for (const it of items) {
+      for (const it of organic) {
         const domain = it.domain ?? "";
         if (domain.includes(TARGET_DOMAIN)) {
           if (ourPos == null) {
@@ -233,7 +239,9 @@ async function syncRankings(supabase: SupabaseClient, date: string): Promise<Sou
       const { error } = await supabase
         .from("seo_rankings")
         .upsert(row, { onConflict: "date,keyword,location_code", ignoreDuplicates: false });
-      return { rows: error ? 0 : 1, cost, error: error?.message ?? null };
+      // Same SERP response → AI Overview citations, no extra paid request.
+      const aiError = await writeAiOverview(supabase, date, keyword, allItems);
+      return { rows: error ? 0 : 1, cost, error: error?.message ?? aiError ?? null };
     } catch (e) {
       return { rows: 0, cost: 0, error: String(e).slice(0, 200) };
     }
@@ -349,13 +357,12 @@ async function syncBacklinks(supabase: SupabaseClient, date: string): Promise<So
 }
 
 // Each source individually finishes well under Vercel's 60s function cap; the
-// full set (~78s) does not. The weekly GitHub Action invokes one source per
-// request via ?source=… so every call stays in budget. The bare endpoint (no
-// ?source) still runs all four sequentially — legacy/manual only, can time out.
+// full set does not. The weekly GitHub Action invokes one source per request
+// via ?source=… so every call stays in budget. The bare endpoint (no ?source)
+// still runs all sources sequentially — legacy/manual only, can time out.
 type SyncFn = (supabase: SupabaseClient, date: string) => Promise<SourceResult>;
 const SYNC_SOURCES: Record<string, SyncFn> = {
-  ai: syncAiMentions,
-  rankings: syncRankings,
+  rankings: syncRankings, // also writes AI Overview citations (seo_ai_mentions)
   onpage: syncOnPage,
   backlinks: syncBacklinks,
 };
@@ -371,7 +378,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD not set" }, { status: 503 });
   }
 
-  // Optional ?source=ai|rankings|onpage|backlinks — run a single source so the
+  // Optional ?source=rankings|onpage|backlinks — run a single source so the
   // request stays under the 60s cap. Unknown values are rejected (a typo must
   // never silently fall through to the all-sources path and 504).
   const sourceParam = req.nextUrl.searchParams.get("source");

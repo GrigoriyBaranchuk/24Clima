@@ -96,7 +96,9 @@ export async function buildSeoAggregate(supabase: SupabaseClient): Promise<SeoAg
     .gte("run_at", new Date(Date.now() - 8 * 864e5).toISOString())
     .order("run_at", { ascending: false });
   const runRows = (runs ?? []) as Row[];
-  const sources = ["gsc", "ga4", "psi", "dfs_ai", "dfs_rankings", "dfs_onpage", "dfs_backlinks"];
+  // AI Overview visibility is now ingested by the rankings sync (one SERP call),
+  // so there is no standalone dfs_ai run — dfs_rankings health covers it.
+  const sources = ["gsc", "ga4", "psi", "dfs_rankings", "dfs_onpage", "dfs_backlinks"];
   const weeklyCost = runRows.reduce((s, r) => s + (Number(r.cost) || 0), 0);
   const syncHealth = sources.map((src) => {
     const last = runRows.find((r) => r.source === src);
