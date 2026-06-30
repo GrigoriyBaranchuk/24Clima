@@ -31,10 +31,13 @@ jobs:
           for source in ai rankings onpage backlinks; do
             echo "::group::source=${source}"
             out="/tmp/seo-${source}.json"
+            # Trailing slash is required: Next.js trailingSlash:true 308-redirects
+            # /api/sync-dataforseo → /api/sync-dataforseo/ and curl would not
+            # resend the Authorization header across the redirect.
             code=$(curl -sS -o "$out" -w '%{http_code}' \
               --retry 2 --retry-all-errors --connect-timeout 10 --max-time 70 \
               -H "Authorization: Bearer ${CRON_SECRET}" \
-              "${SITE_URL}/api/sync-dataforseo?source=${source}") || code="000"
+              "${SITE_URL}/api/sync-dataforseo/?source=${source}") || code="000"
             echo "HTTP ${code}"
             cat "$out" 2>/dev/null || true
             echo
