@@ -57,6 +57,32 @@ type DfsResponse = {
   tasks?: { status_code?: number; status_message?: string; cost?: number; result?: unknown[] }[];
 };
 
+/**
+ * Run `worker` over `items` with at most `limit` in flight. Used to fan out the
+ * per-keyword DataForSEO calls so a source finishes well under Vercel's 60s cap
+ * (12 sequential SERP calls were ~59s — one keyword away from a 504). Bounded so
+ * we never hammer DataForSEO with one request per keyword all at once.
+ */
+async function runBounded<T, R>(
+  items: readonly T[],
+  limit: number,
+  worker: (item: T, index: number) => Promise<R>
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let cursor = 0;
+  const pump = async () => {
+    while (cursor < items.length) {
+      const i = cursor++;
+      results[i] = await worker(items[i], i);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, pump));
+  return results;
+}
+
+/** Max concurrent per-keyword DataForSEO requests within a single source. */
+const KEYWORD_CONCURRENCY = 4;
+
 async function writeRun(
   supabase: SupabaseClient,
   row: { source: string; status: "ok" | "partial" | "error"; rows_written?: number; window_start?: string; window_end?: string; cost?: number; error?: string | null }
@@ -89,10 +115,8 @@ type SourceResult = {
 // AI mentions — Google AI Overview + ChatGPT citations of TARGET_DOMAIN.
 // ---------------------------------------------------------------------------
 async function syncAiMentions(supabase: SupabaseClient, date: string): Promise<SourceResult> {
-  let total = 0;
-  let cost = 0;
-  let partial = false;
-  for (const keyword of TRACKED_KEYWORDS.slice(0, MAX_TRACKED_KEYWORDS)) {
+  const keywords = TRACKED_KEYWORDS.slice(0, MAX_TRACKED_KEYWORDS);
+  const perKeyword = await runBounded(keywords, KEYWORD_CONCURRENCY, async (keyword) => {
     try {
       const json = await dfsPost("/dataforseo_labs/ai_mentions/live", {
         keyword,
@@ -100,7 +124,7 @@ async function syncAiMentions(supabase: SupabaseClient, date: string): Promise<S
         location_code: LOCATION_CODE,
         language_code: LANGUAGE_CODE,
       });
-      cost += json.cost ?? 0;
+      const cost = json.cost ?? 0;
       const items = (json.tasks?.[0]?.result?.[0] as { items?: AiMentionItem[] } | undefined)?.items ?? [];
       // Aggregate per ai_source for this keyword.
       const bySource = new Map<string, { cited: boolean; position: number | null; competitors: unknown[]; urls: string[] }>();
@@ -126,18 +150,38 @@ async function syncAiMentions(supabase: SupabaseClient, date: string): Promise<S
         competitors: e.competitors.slice(0, 10),
         source_urls: e.urls.slice(0, 10),
       }));
-      if (rows.length) {
-        const { error } = await supabase
-          .from("seo_ai_mentions")
-          .upsert(rows, { onConflict: "date,keyword,ai_source", ignoreDuplicates: false });
-        if (error) partial = true;
-        else total += rows.length;
-      }
-    } catch {
-      partial = true;
+      if (!rows.length) return { rows: 0, cost, error: null as string | null };
+      const { error } = await supabase
+        .from("seo_ai_mentions")
+        .upsert(rows, { onConflict: "date,keyword,ai_source", ignoreDuplicates: false });
+      return { rows: error ? 0 : rows.length, cost, error: error?.message ?? null };
+    } catch (e) {
+      return { rows: 0, cost: 0, error: String(e).slice(0, 200) };
     }
-  }
-  return { source: "dfs_ai", status: partial ? "partial" : "ok", rows: total, cost };
+  });
+  return aggregate("dfs_ai", perKeyword);
+}
+
+/**
+ * Status for a source: clean when no error; "partial" when some rows landed
+ * despite an error; "error" when an error left nothing written (total failure).
+ * Keeping the total-failure case as "error" lets the GET handler flag it (207 /
+ * ok:false) instead of masquerading as a successful run.
+ */
+function statusFor(rows: number, error?: string | null): SourceResult["status"] {
+  if (!error) return "ok";
+  return rows > 0 ? "partial" : "error";
+}
+
+/** Fold per-keyword outcomes into a SourceResult; surface the first error seen. */
+function aggregate(
+  source: string,
+  parts: { rows: number; cost: number; error: string | null }[]
+): SourceResult {
+  const rows = parts.reduce((s, p) => s + p.rows, 0);
+  const cost = parts.reduce((s, p) => s + p.cost, 0);
+  const firstError = parts.find((p) => p.error)?.error ?? undefined;
+  return { source, status: statusFor(rows, firstError), rows, cost, error: firstError };
 }
 
 type AiMentionItem = {
@@ -151,18 +195,16 @@ type AiMentionItem = {
 // Rankings — absolute SERP position + top competitors per tracked keyword.
 // ---------------------------------------------------------------------------
 async function syncRankings(supabase: SupabaseClient, date: string): Promise<SourceResult> {
-  let total = 0;
-  let cost = 0;
-  let partial = false;
-  for (const keyword of TRACKED_KEYWORDS.slice(0, MAX_TRACKED_KEYWORDS)) {
+  const keywords = TRACKED_KEYWORDS.slice(0, MAX_TRACKED_KEYWORDS);
+  const perKeyword = await runBounded(keywords, KEYWORD_CONCURRENCY, async (keyword) => {
     try {
       const json = await dfsPost("/serp/google/organic/live/advanced", {
         keyword,
         location_code: LOCATION_CODE,
         language_code: LANGUAGE_CODE,
-        depth: 20,
+        depth: 20, // keep 20 so positions 11-20 are still captured (we rank below 10 on most terms)
       });
-      cost += json.cost ?? 0;
+      const cost = json.cost ?? 0;
       const result = json.tasks?.[0]?.result?.[0] as { items?: SerpItem[]; keyword_info?: { search_volume?: number } } | undefined;
       const items = (result?.items ?? []).filter((i) => i.type === "organic");
       let ourPos: number | null = null;
@@ -191,13 +233,12 @@ async function syncRankings(supabase: SupabaseClient, date: string): Promise<Sou
       const { error } = await supabase
         .from("seo_rankings")
         .upsert(row, { onConflict: "date,keyword,location_code", ignoreDuplicates: false });
-      if (error) partial = true;
-      else total += 1;
-    } catch {
-      partial = true;
+      return { rows: error ? 0 : 1, cost, error: error?.message ?? null };
+    } catch (e) {
+      return { rows: 0, cost: 0, error: String(e).slice(0, 200) };
     }
-  }
-  return { source: "dfs_rankings", status: partial ? "partial" : "ok", rows: total, cost };
+  });
+  return aggregate("dfs_rankings", perKeyword);
 }
 
 type SerpItem = {
@@ -213,14 +254,14 @@ type SerpItem = {
 async function syncOnPage(supabase: SupabaseClient, date: string): Promise<SourceResult> {
   let total = 0;
   let cost = 0;
-  let partial = false;
+  let firstError: string | undefined;
   for (const url of monitoredUrls()) {
     try {
       const json = await dfsPost("/on_page/instant_pages", { url });
       cost += json.cost ?? 0;
       const page = (json.tasks?.[0]?.result?.[0] as { items?: OnPageItem[] } | undefined)?.items?.[0];
       if (!page) {
-        partial = true;
+        firstError ??= `no page for ${url}`;
         continue;
       }
       const rows: { date: string; url: string; issue_type: string; severity: string; detail: string }[] = [];
@@ -252,14 +293,17 @@ async function syncOnPage(supabase: SupabaseClient, date: string): Promise<Sourc
         const { error } = await supabase
           .from("seo_onpage_issues")
           .upsert(rows, { onConflict: "date,url,issue_type", ignoreDuplicates: false });
-        if (error) partial = true;
-        else total += rows.length;
+        if (error) {
+          firstError ??= error.message;
+        } else {
+          total += rows.length;
+        }
       }
-    } catch {
-      partial = true;
+    } catch (e) {
+      firstError ??= String(e).slice(0, 200);
     }
   }
-  return { source: "dfs_onpage", status: partial ? "partial" : "ok", rows: total, cost };
+  return { source: "dfs_onpage", status: statusFor(total, firstError), rows: total, cost, error: firstError };
 }
 
 type OnPageItem = { checks?: Record<string, boolean> };
@@ -275,8 +319,17 @@ async function syncBacklinks(supabase: SupabaseClient, date: string): Promise<So
       backlinks_status_type: "live",
     });
     const cost = json.cost ?? 0;
-    const result = json.tasks?.[0]?.result?.[0] as Record<string, unknown> | undefined;
-    if (!result) return { source: "dfs_backlinks", status: "error", rows: 0, cost, error: "no result" };
+    const task = json.tasks?.[0];
+    const result = task?.result?.[0] as Record<string, unknown> | undefined;
+    if (!result) {
+      // Surface DataForSEO's own reason (e.g. 40204 "Access denied" = the
+      // account has no Backlinks API subscription) instead of a bare "no result".
+      const reason =
+        task?.status_code && task.status_code !== 20000
+          ? `DataForSEO ${task.status_code}: ${task.status_message ?? "no message"}`
+          : "no result";
+      return { source: "dfs_backlinks", status: "error", rows: 0, cost, error: reason };
+    }
     const snapshot = {
       referring_domains: result.referring_domains ?? null,
       backlinks: result.backlinks ?? null,
@@ -352,9 +405,11 @@ export async function GET(req: NextRequest) {
   }
 
   const totalCost = results.reduce((s, r) => s + r.cost, 0);
-  const anyError = results.some((r) => r.status === "error");
+  // Any non-ok source (partial OR total failure) → 207 + ok:false, so a run that
+  // carries an error string in its body can never report as a clean success.
+  const anyNonOk = results.some((r) => r.status !== "ok");
   return NextResponse.json(
-    { ok: !anyError, date, source: sourceParam ?? "all", total_cost: totalCost, results },
-    { status: anyError ? 207 : 200 }
+    { ok: !anyNonOk, date, source: sourceParam ?? "all", total_cost: totalCost, results },
+    { status: anyNonOk ? 207 : 200 }
   );
 }
