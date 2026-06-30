@@ -82,6 +82,7 @@ type SourceResult = {
   rows: number;
   cost: number;
   error?: string;
+  duration_ms?: number;
 };
 
 // ---------------------------------------------------------------------------
@@ -294,6 +295,18 @@ async function syncBacklinks(supabase: SupabaseClient, date: string): Promise<So
   }
 }
 
+// Each source individually finishes well under Vercel's 60s function cap; the
+// full set (~78s) does not. The weekly GitHub Action invokes one source per
+// request via ?source=… so every call stays in budget. The bare endpoint (no
+// ?source) still runs all four sequentially — legacy/manual only, can time out.
+type SyncFn = (supabase: SupabaseClient, date: string) => Promise<SourceResult>;
+const SYNC_SOURCES: Record<string, SyncFn> = {
+  ai: syncAiMentions,
+  rankings: syncRankings,
+  onpage: syncOnPage,
+  backlinks: syncBacklinks,
+};
+
 export async function GET(req: NextRequest) {
   if (!checkCronAuth(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -305,13 +318,27 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD not set" }, { status: 503 });
   }
 
+  // Optional ?source=ai|rankings|onpage|backlinks — run a single source so the
+  // request stays under the 60s cap. Unknown values are rejected (a typo must
+  // never silently fall through to the all-sources path and 504).
+  const sourceParam = req.nextUrl.searchParams.get("source");
+  if (sourceParam !== null && !(sourceParam in SYNC_SOURCES)) {
+    return NextResponse.json(
+      { error: `Unknown source "${sourceParam}". Valid: ${Object.keys(SYNC_SOURCES).join(", ")}` },
+      { status: 400 }
+    );
+  }
+  const fns: SyncFn[] = sourceParam ? [SYNC_SOURCES[sourceParam]] : Object.values(SYNC_SOURCES);
+
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   const date = ymd(new Date());
 
   // Run sequentially to keep concurrent DataForSEO load (and cost spikes) bounded.
   const results: SourceResult[] = [];
-  for (const fn of [syncAiMentions, syncRankings, syncOnPage, syncBacklinks]) {
+  for (const fn of fns) {
+    const started = Date.now();
     const r = await fn(supabase, date);
+    r.duration_ms = Date.now() - started;
     results.push(r);
     await writeRun(supabase, {
       source: r.source,
@@ -327,7 +354,7 @@ export async function GET(req: NextRequest) {
   const totalCost = results.reduce((s, r) => s + r.cost, 0);
   const anyError = results.some((r) => r.status === "error");
   return NextResponse.json(
-    { ok: !anyError, date, total_cost: totalCost, results },
+    { ok: !anyError, date, source: sourceParam ?? "all", total_cost: totalCost, results },
     { status: anyError ? 207 : 200 }
   );
 }

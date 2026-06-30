@@ -1,31 +1,52 @@
 name: SEO — DataForSEO ingest (weekly)
 
 # DataForSEO is pay-per-request, so this runs weekly (not via Vercel cron, which
-# is capped at 2 daily jobs on Hobby). It simply triggers the deployed Vercel
-# endpoint, which does the actual API calls + Supabase writes.
+# is capped at 2 daily jobs on Hobby). It triggers the deployed Vercel endpoint,
+# which does the actual API calls + Supabase writes.
+#
+# The full 4-source sync (~78s) exceeds Vercel Hobby's 60s function cap → 504.
+# So we invoke ONE source per request (?source=…); each finishes well under 60s.
 
 on:
   schedule:
     - cron: "0 6 * * 1" # Mondays 06:00 UTC
   workflow_dispatch: {} # allow manual runs
 
+# Never let a manual run overlap the scheduled one (double DataForSEO spend).
+concurrency:
+  group: seo-dataforseo
+  cancel-in-progress: false
+
 jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger /api/sync-dataforseo
+      - name: Trigger /api/sync-dataforseo per source
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           SITE_URL: ${{ vars.SITE_URL || 'https://24clima.com' }}
         run: |
-          set -euo pipefail
-          code=$(curl -sS -o /tmp/out.json -w '%{http_code}' \
-            -H "Authorization: Bearer ${CRON_SECRET}" \
-            "${SITE_URL}/api/sync-dataforseo")
-          echo "HTTP ${code}"
-          cat /tmp/out.json
-          # 200 ok, 207 partial (some sources failed) — both acceptable to continue.
-          if [ "$code" != "200" ] && [ "$code" != "207" ]; then
-            echo "::error::sync-dataforseo returned ${code}"
+          set -uo pipefail   # NOT -e: we want every source to run even if one fails.
+          failed=()
+          for source in ai rankings onpage backlinks; do
+            echo "::group::source=${source}"
+            out="/tmp/seo-${source}.json"
+            code=$(curl -sS -o "$out" -w '%{http_code}' \
+              --retry 2 --retry-all-errors --connect-timeout 10 --max-time 70 \
+              -H "Authorization: Bearer ${CRON_SECRET}" \
+              "${SITE_URL}/api/sync-dataforseo?source=${source}") || code="000"
+            echo "HTTP ${code}"
+            cat "$out" 2>/dev/null || true
+            echo
+            # 200 ok, 207 partial (some keywords/sources errored) — both acceptable.
+            if [ "$code" != "200" ] && [ "$code" != "207" ]; then
+              echo "::error::source=${source} returned ${code}"
+              failed+=("${source}:${code}")
+            fi
+            echo "::endgroup::"
+          done
+          if [ ${#failed[@]} -ne 0 ]; then
+            echo "::error::DataForSEO ingest failed for: ${failed[*]}"
             exit 1
           fi
+          echo "All sources ingested."
