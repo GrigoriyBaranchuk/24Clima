@@ -324,3 +324,14 @@ docs/                       # Документация
 **Статус:** `lint` + `build` зелёные. **НЕ закоммичено, НЕ запушено** (ждёт явного OK). Документация: `docs/seo-monitoring.md`.
 
 **TODO (человек, до запуска):** 1) Google Cloud (3 API + SA + GSC/GA4 доступ + GA4 property id + PSI key → base64). 2) DataForSEO login/pass (location 2591/es). 3) Env: `GOOGLE_SA_KEY_BASE64`, `GSC_SITE_URL`, `GA4_PROPERTY_ID`, `PAGESPEED_API_KEY`, `DATAFORSEO_LOGIN/PASSWORD`, `ANTHROPIC_API_KEY`. 4) Применить миграции `004` + `005`. 5) GitHub secrets: `CRON_SECRET`, `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`. 6) Проверить `…/api/sync-seo?preflight=1` + зайти на `…/admin/seo`. 7) Промотить playbook-агента в `/schedule` routine (после 1-2 недель данных).
+
+## Сессия 2026-07-05 — Фикс GSC «Отзыву назначено несколько общих оценок»
+
+GSC (02.07) флагал страницы статей (`/consejos-y-guias/aire-acondicionado-inverter-12000-btu-panama/`, 2 элемента «24clima»). Диагноз: единственный `aggregateRating` сайта (layout `HVACBusiness`) склеивался парсером Google по `@id #organization` с инлайн-декларациями в `publisher`/`worksFor` Article JSON-LD → «рейтинг у нескольких сущностей». Плюс это self-serving review — звёзды невозможны с 2019 г. независимо от источника цифр (трактовка «из Google reviews = ок» была ошибочной).
+
+Фикс (commit `2615556`, ревью: seo-reviewer approve + codex подтвердил диагноз, 520k токенов):
+- `layout.tsx`: убран `aggregateRating` из `HVACBusiness`;
+- `Reviews.tsx`: убран спящий Organization JSON-LD (aggregateRating + review), UI отзывов сохранён, удалён неиспользуемый проп `pageUrl`;
+- skill-доки `24clima-seo-guide` (json-ld-catalog.md — инцидент 2026-07, local-seo.md — исправлена трактовка self-serving) обновлены.
+
+`bun run build` зелёный, prerendered HTML без `aggregateRating`. После деплоя: Rich Results Test на статью + «Проверить исправление» в GSC.

@@ -24,10 +24,12 @@ Format: `JSON.stringify(obj)` (no indent argument), minified.
 
 ### `HVACBusiness` — site-wide, in `src/app/layout.tsx`
 
-Root organization schema. The single source of truth for NAP and aggregate rating.
+Root organization schema. The single source of truth for NAP.
 
 **Required by Google** (for LocalBusiness): `address` (PostalAddress) and `name`.
-**Recommended by Google**: `aggregateRating`, `geo` (5+ decimal places), `openingHoursSpecification`, `priceRange` (≤ 100 chars), `telephone`, `url`, `department`, `review`.
+**Recommended by Google**: `geo` (5+ decimal places), `openingHoursSpecification`, `priceRange` (≤ 100 chars), `telephone`, `url`, `department`.
+
+**No `aggregateRating` / `review` here** (removed 2026-07, see incident below): any rating markup about 24clima placed by 24clima is a self-serving review — ineligible for stars since Sept 2019, even when the numbers come from Google reviews. It also collided with the `@id: #organization` re-declarations in article `publisher`/`worksFor`, producing the GSC error "Review has multiple aggregate ratings".
 
 Source: [Local business structured data](https://developers.google.com/search/docs/appearance/structured-data/local-business)
 
@@ -155,6 +157,16 @@ Two-layer GSC error. Documented because the same pattern keeps re-appearing in J
 1. Always duplicate `@type` next to `@id` — don't rely on graph-stitching across `<script>` blocks.
 2. Put `aggregateRating` only on parents from [the review snippet whitelist](https://developers.google.com/search/docs/appearance/structured-data/review-snippet).
 3. After fixing one Rich Results Test error, immediately re-run it — the next error often appears the moment the first is gone.
+
+## Historical incident — 2026-07 — "Review has multiple aggregate ratings" on article pages
+
+GSC flagged article URLs (`/consejos-y-guias/<slug>/`) with two items both named "24clima". The page DOM contained exactly ONE `aggregateRating` (on the layout `HVACBusiness`), but article `publisher` and `author.worksFor` re-declare the same `@id: #organization` inline (per Lesson 1 above). Google's parser merges the declarations and attributes the rating to multiple instances of the entity → "multiple aggregate ratings".
+
+Fix: removed `aggregateRating` from the layout `HVACBusiness` and the dormant `Organization` JSON-LD (with `review` array) from `src/components/Reviews.tsx`. No SERP loss: self-serving org ratings never render stars anyway ([review snippet docs](https://developers.google.com/search/docs/appearance/structured-data/review-snippet) — "If the entity that's being reviewed controls the reviews about itself... ineligible", and embedding reviews from third-party sites like Google is explicitly called out as still self-serving).
+
+**Lessons:**
+1. `aggregateRating` about our own organization is dead markup — never add it back, regardless of where the numbers come from.
+2. Lesson 1 of the 2026-05 incident (inline `@type` next to `@id`) is still correct, but it means any rated entity re-declared across blocks gets flagged — one more reason rating markup must not live on `#organization`.
 
 ## Audit scripts
 

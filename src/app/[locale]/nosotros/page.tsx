@@ -1,15 +1,19 @@
+import BottomNav from "@/components/BottomNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import NosotrosCTA from "@/components/NosotrosCTA";
+import Reviews from "@/components/Reviews";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import WhyUs from "@/components/WhyUs";
+import { type Locale, getLocalePrefix, locales } from "@/i18n/config";
+import {
+  buildBreadcrumbJsonLd,
+  getLabels,
+  localePath,
+} from "@/lib/breadcrumb-helper";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
-import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
-import Header from "@/components/Header";
-import WhyUs from "@/components/WhyUs";
-import Reviews from "@/components/Reviews";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import BottomNav from "@/components/BottomNav";
-import NosotrosCTA from "@/components/NosotrosCTA";
-import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
-import Breadcrumbs from "@/components/Breadcrumbs";
 
 const titles: Record<string, string> = {
   en: "About Us | 24clima — Air Conditioning Service in Panama",
@@ -17,10 +21,8 @@ const titles: Record<string, string> = {
 };
 
 const descriptions: Record<string, string> = {
-  en:
-    "Meet the 24clima team. Experience, professionalism and commitment to quality in AC cleaning, maintenance, repair and installation in Panama City.",
-  ru:
-    "Команда 24clima. Опыт, профессионализм и качество в чистке, обслуживании, ремонте и установке кондиционеров в Панама-Сити.",
+  en: "Meet the 24clima team. Experience, professionalism and commitment to quality in AC cleaning, maintenance, repair and installation in Panama City.",
+  ru: "Команда 24clima. Опыт, профессионализм и качество в чистке, обслуживании, ремонте и установке кондиционеров в Панама-Сити.",
 };
 
 export function generateStaticParams() {
@@ -94,7 +96,9 @@ export default async function NosotrosPage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(getAboutJsonLd(locale)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getAboutJsonLd(locale)),
+        }}
       />
       <script
         type="application/ld+json"
@@ -106,7 +110,7 @@ export default async function NosotrosPage({ params }: Props) {
           <Breadcrumbs segments={[{ label: labels.about }]} />
         </div>
         <WhyUs />
-        <Reviews pageUrl={`https://24clima.com${getLocalePrefix(locale as Locale)}/nosotros/`} />
+        <Reviews />
         <NosotrosCTA />
       </main>
       <Footer />

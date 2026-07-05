@@ -93,9 +93,7 @@ The ICBM coordinates point to Panama City center — neighborhood precision, not
 > "Ratings must be sourced directly from users."
 > — same source
 
-**For 24clima**: our `aggregateRating` (`ratingValue: "5.0"`, `reviewCount: "11"` at last sync) comes from Google reviews, not from an on-site form. This satisfies the policy.
-
-When the Google review count changes, update via `sync-reviews` API route (`src/app/api/sync-reviews/route.ts`) — that's the path of truth. Don't hand-edit the layout schema.
+**For 24clima**: this policy applies to us in full — "sourced from Google reviews" does NOT exempt the markup, because Google explicitly counts republishing third-party reviews about yourself as self-serving. That earlier reading was wrong; it produced the GSC error "Review has multiple aggregate ratings" (2026-07). `aggregateRating`/`review` markup about 24clima was removed from `src/app/layout.tsx` and `src/components/Reviews.tsx` and must not come back. The real rating lives in Google Business Profile and renders in Maps/local pack on its own.
 
 ## Things that look like Local SEO but aren't on-site work
 
@@ -112,7 +110,7 @@ For any change touching `app/layout.tsx`, `/contacto`, `/nosotros`, `/areas-de-s
 - [ ] `areaServed` matches the visible `/areas-de-servicio/` list
 - [ ] No new locations without ground-truth confirmation
 - [ ] Geo meta tags untouched
-- [ ] `aggregateRating` reflects real numbers (or comes from `sync-reviews`)
+- [ ] No `aggregateRating`/`review` markup about 24clima itself anywhere (self-serving, removed 2026-07)
 - [ ] `addressRegion: "Panamá"` (with accent)
 - [ ] Locale-specific `og:locale` correct in each layout
 - [ ] Validated with [Rich Results Test](https://search.google.com/test/rich-results)
