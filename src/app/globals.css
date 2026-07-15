@@ -2,55 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    /* Typography — accessibility-first (min 14px for reading, 16px body) */
-    --text-body: 1rem;
-    --text-body-lg: 1.125rem;
-    --text-caption: 0.875rem;
-    --leading-body: 1.625;
-    --leading-heading: 1.25;
-
-    --background: 0 0% 100%;
-    --foreground: 215 40% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 215 40% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 40% 15%;
-    --primary: 150 60% 40%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 205 80% 55%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 15% 45%;
-    --accent: 205 80% 55%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 20% 90%;
-    --input: 214 20% 90%;
-    --ring: 150 60% 40%;
-    --radius: 0.625rem;
-
-    /* Brand Colors (HSL for shadcn compatibility) */
-    --brand-green: 150 60% 40%;
-    --brand-green-light: 90 55% 50%;
-    --brand-navy: 215 55% 25%;
-    --brand-cyan: 195 85% 45%;
-
-    /* Brand Colors (hex — for direct use in gradients, arbitrary values, etc.) */
-    --color-brand-green: #7BC043;
-    --color-brand-green-dark: #0F9D58;
-    --color-brand-navy: #1e3a5f;
-    --color-brand-navy-dark: #0d2240;
-    --color-brand-navy-deepest: #0a1628;
-    --color-whatsapp: #25D366;
-    --color-whatsapp-hover: #20BD5A;
-  }
-
-  /* Dark mode variables removed — not currently used.
-     Re-add when dark mode toggle is implemented. */
-}
+/* Дизайн-токены (:root переменные, .hero-gradient, .whatsapp-pulse) живут
+   в @24clima/design/tokens.css — импортируется в layout.tsx ПЕРЕД этим файлом.
+   Правки токенов — только в репозитории 24clima-design. */
 
 @layer base {
   * {
@@ -80,23 +34,6 @@
   .text-balance {
     text-wrap: balance;
   }
-}
-
-/* WhatsApp button animation */
-@keyframes whatsapp-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-  }
-}
-
-.whatsapp-pulse {
-  animation: whatsapp-pulse 2s 5;
 }
 
 /* Hero highlight underline — SVG stroke draw after LCP paint */
@@ -152,11 +89,7 @@
   animation: bottom-bar-slide-up 0.3s ease-out forwards;
 }
 
-/* Gradient backgrounds */
-.hero-gradient {
-  background: linear-gradient(135deg, var(--color-brand-navy) 0%, var(--color-brand-navy-dark) 50%, var(--color-brand-navy-deepest) 100%);
-}
-
+/* Gradient backgrounds (.hero-gradient — в @24clima/design) */
 .section-gradient {
   background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%);
 }

@@ -18,6 +18,14 @@
 Owner: Ryhor Baranchuk (ryhor@24clima.com, +507 6828-2120).
 Язык контента: испанский. Язык разработки: русский/английский.
 
+## Дизайн-система (общая с shop.24clima.com)
+
+Токены (цвета, шрифты, радиусы) и Tailwind-preset живут в пакете
+`@24clima/design` → приватный репо `~/Projects/24clima-design`
+(github.com/GrigoriyBaranchuk/24clima-design). Значения токенов НЕ менять
+в globals.css/tailwind.config — только в пакете, затем новый тег и bump
+зависимости в обоих проектах (workflow — в README пакета).
+
 ## Важные файлы для AI
 
 - `DESIGN.md` — бренд-бук мобильной версии (Apple-style). ЧИТАЙ ПЕРЕД ДИЗАЙН-ИЗМЕНЕНИЯМИ.

@@ -1,3 +1,5 @@
+// Порядок важен: сначала токены дизайн-системы, потом локальные стили.
+import "@24clima/design/tokens.css";
 import "./globals.css";
 
 // Root layout: Next.js requires <html> and <body> here.

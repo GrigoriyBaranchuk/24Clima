@@ -100,6 +100,31 @@ docs/                       # Документация
 
 ## История работы
 
+### Сессия 7 — 2026-07-15 — Общая дизайн-система @24clima/design
+
+Дизайн-токены вынесены в отдельный приватный пакет-репозиторий
+`~/Projects/24clima-design` (github.com/GrigoriyBaranchuk/24clima-design),
+общий для сайта и shop.24clima.com:
+
+- `tokens.css` — все :root переменные (shadcn HSL, brand hex, typography) +
+  `.hero-gradient` + `.whatsapp-pulse` (2s×5). Импорт в `src/app/layout.tsx`
+  ПЕРЕД globals.css.
+- `tailwind-preset.js` — общая тема (colors/fonts/container/radius/easing),
+  подключён через `presets:` в tailwind.config.ts; в конфиге сайта остались
+  только chart-цвета и плагины.
+- Зависимость: `git+ssh://...#v0.1.0` (тег, не ветка — детерминизм по ревью
+  Codex). Обновление: новый тег в пакете → bump в package.json → bun install →
+  коммит lockfile.
+- Шрифты: preset ссылается на `var(--font-inter, Inter)` — на сайте резолвится
+  next/font-переменная (висит на <div>, поэтому НЕЛЬЗЯ определять --font-sans
+  в :root — заморозит fallback), в shop срабатывает fallback на Google Fonts.
+- Vercel: репо приватный → в vercel.json добавлен installCommand с
+  `insteadOf ssh://git@github.com/` + токен из env `GH_PAT`
+  (fine-grained PAT, Contents:Read на 24clima-design). БЕЗ GH_PAT прод-деплой
+  падает на bun install.
+- Проверка: билды обоих проектов зелёные, скомпилированные CSS-токены
+  побайтово идентичны до/после. SEO-элементы не тронуты.
+
 ### Сессия 6 — 2026-04-29 — Mobile performance overhaul
 
 **Цель:** ускорить отклик мобильной версии без изменения визуального дизайна. План из 9 пунктов с приоритезацией по выгоде.

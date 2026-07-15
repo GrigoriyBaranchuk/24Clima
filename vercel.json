@@ -2,6 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "installCommand": "git config --global url.\"https://$GH_PAT@github.com/\".insteadOf \"ssh://git@github.com/\" && bun install",
   "crons": [
     {
       "path": "/api/sync-reviews",
