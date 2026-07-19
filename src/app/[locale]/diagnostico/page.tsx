@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import AuthorBio from "@/components/AuthorBio";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
@@ -341,7 +340,6 @@ export default async function DiagnosticoPage({ params }: Props) {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import WhyUs from "@/components/WhyUs";
 import Reviews from "@/components/Reviews";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import NosotrosCTA from "@/components/NosotrosCTA";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -78,7 +77,6 @@ export default function NosotrosPage() {
         <NosotrosCTA />
       </main>
       <Footer />
-      <WhatsAppButton />
     </>
   );
 }

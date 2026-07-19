@@ -2,7 +2,6 @@ import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { MapPin, Clock, ChevronRight } from "lucide-react";
 import { SERVICE_AREAS } from "@/lib/areas-data";
 import { BUSINESS_DATA } from "@/lib/business-data";
@@ -190,7 +189,6 @@ export default function AreasPage() {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
     </>
   );
 }

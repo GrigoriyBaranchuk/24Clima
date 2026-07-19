@@ -6,7 +6,6 @@ import ParallaxHero from "@/components/ParallaxHero";
 
 export const dynamic = "force-dynamic";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import { supabase } from "@/lib/supabase";
 import { resolveImageUrls, stripMarkdownForPreview } from "@/lib/articles";
@@ -150,7 +149,6 @@ export default async function TipsPage({
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

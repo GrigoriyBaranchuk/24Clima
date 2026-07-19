@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import { MapPin, Clock, ChevronRight } from "lucide-react";
 import { SERVICE_AREAS } from "@/lib/areas-data";
@@ -290,7 +289,6 @@ export default async function AreasPage({ params }: Props) {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

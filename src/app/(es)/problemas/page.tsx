@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import ProblemsContent from "@/components/ProblemsContent";
 
@@ -42,7 +41,6 @@ export default function ProblemasPage() {
         <ProblemsContent />
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

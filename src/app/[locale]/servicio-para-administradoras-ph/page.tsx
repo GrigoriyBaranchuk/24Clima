@@ -3,7 +3,6 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PropertyManagementContent from "@/components/PropertyManagementContent";
@@ -120,7 +119,6 @@ export default async function PHAdminPage({
         <PropertyManagementContent />
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

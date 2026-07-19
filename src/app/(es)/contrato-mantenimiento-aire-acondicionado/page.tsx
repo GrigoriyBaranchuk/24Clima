@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import MaintenanceContractContent from "@/components/MaintenanceContractContent";
@@ -105,7 +104,6 @@ export default async function MaintenanceContractPage() {
         <MaintenanceContractContent />
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

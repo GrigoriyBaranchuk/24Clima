@@ -3,7 +3,6 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import MaintenanceContractContent from "@/components/MaintenanceContractContent";
@@ -121,7 +120,6 @@ export default async function MaintenanceContractPage({
         <MaintenanceContractContent />
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );
