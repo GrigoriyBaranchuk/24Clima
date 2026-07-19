@@ -46,12 +46,18 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [solOpen, setSolOpen] = useState(false);
   const navigation = [
-    { name: t("home"), href: "/", isAnchor: false },
-    { name: t("tips"), href: "/consejos-y-guias", isAnchor: false },
-    { name: t("services"), href: "/#servicios", isAnchor: true },
-    { name: t("problems"), href: "/#problemas", isAnchor: true },
-    { name: t("about"), href: "/nosotros", isAnchor: false },
-    { name: t("contact"), href: "/contacto", isAnchor: false },
+    { name: t("home"), href: "/", isAnchor: false, external: false },
+    { name: t("tips"), href: "/consejos-y-guias", isAnchor: false, external: false },
+    { name: t("services"), href: "/#servicios", isAnchor: true, external: false },
+    { name: t("problems"), href: "/#problemas", isAnchor: true, external: false },
+    { name: t("about"), href: "/nosotros", isAnchor: false, external: false },
+    {
+      name: t("shop"),
+      href: "https://shop.24clima.com",
+      isAnchor: false,
+      external: true,
+    },
+    { name: t("contact"), href: "/contacto", isAnchor: false, external: false },
   ];
   // Niche segment landings, grouped under the "Soluciones" dropdown.
   const solutions = [
