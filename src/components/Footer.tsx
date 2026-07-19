@@ -139,6 +139,14 @@ export default async function Footer() {
             >
               {tCommon("diagnosis")}
             </Link>
+            <a
+              href="https://shop.24clima.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-gray-400 hover:text-[#7BC043] transition-colors block mb-3"
+            >
+              {tCommon("shop")}
+            </a>
             <Link
               href="/contacto"
               scroll={false}
