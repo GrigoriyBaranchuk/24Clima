@@ -29,12 +29,18 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [solOpen, setSolOpen] = useState(false);
   const navigation = [
-    { name: t("home"), href: "/", isAnchor: false },
-    { name: t("tips"), href: "/consejos-y-guias", isAnchor: false },
-    { name: t("services"), href: "/#servicios", isAnchor: true },
-    { name: t("problems"), href: "/#problemas", isAnchor: true },
-    { name: t("about"), href: "/nosotros", isAnchor: false },
-    { name: t("contact"), href: "/contacto", isAnchor: false },
+    { name: t("home"), href: "/", isAnchor: false, external: false },
+    { name: t("tips"), href: "/consejos-y-guias", isAnchor: false, external: false },
+    { name: t("services"), href: "/#servicios", isAnchor: true, external: false },
+    { name: t("problems"), href: "/#problemas", isAnchor: true, external: false },
+    { name: t("about"), href: "/nosotros", isAnchor: false, external: false },
+    {
+      name: t("shop"),
+      href: "https://shop.24clima.com",
+      isAnchor: false,
+      external: true,
+    },
+    { name: t("contact"), href: "/contacto", isAnchor: false, external: false },
   ];
   // Niche segment landings, grouped under the "Soluciones" dropdown.
   const solutions = [
@@ -125,20 +131,33 @@ export default function Header() {
                 <SheetContent side="right" className="w-[85%] max-w-sm p-0">
                   <SheetTitle className="sr-only">Menú</SheetTitle>
                   <nav className="flex h-full flex-col gap-0.5 overflow-y-auto p-4 pt-14">
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        scroll={false}
-                        onClick={(e) => {
-                          handleNavClick(item, e);
-                          setMenuOpen(false);
-                        }}
-                        className="rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+                    {navigation.map((item) =>
+                      item.external ? (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setMenuOpen(false)}
+                          className="rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
+                        >
+                          {item.name}
+                        </a>
+                      ) : (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          scroll={false}
+                          onClick={(e) => {
+                            handleNavClick(item, e);
+                            setMenuOpen(false);
+                          }}
+                          className="rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
+                        >
+                          {item.name}
+                        </Link>
+                      ),
+                    )}
                     <div className="my-2 h-px bg-gray-200" />
                     <span className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
                       {t("solutions")}
@@ -177,17 +196,29 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <div className="flex items-center gap-7">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  scroll={false}
-                  onClick={(e) => handleNavClick(item, e)}
-                  className="text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navigation.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    scroll={false}
+                    onClick={(e) => handleNavClick(item, e)}
+                    className="text-base font-medium text-gray-700 transition-colors hover:text-[#0F9D58]"
+                  >
+                    {item.name}
+                  </Link>
+                ),
+              )}
               {/* "Soluciones" dropdown — niche segment landings (Para PH,
                 eventos). Links are ALWAYS rendered in the DOM (only visually
                 toggled) so they stay crawlable; SEO-reviewed. Motion uses
