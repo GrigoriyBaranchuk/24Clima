@@ -16,7 +16,7 @@
  * navigation.
  */
 
-const CACHE_VERSION = "v1-2026-04-29";
+const CACHE_VERSION = "v2-2026-07-19";
 const HTML_CACHE = `24c-html-${CACHE_VERSION}`;
 const STATIC_CACHE = `24c-static-${CACHE_VERSION}`;
 const IMG_CACHE = `24c-img-${CACHE_VERSION}`;
@@ -113,10 +113,15 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   // Bypass Next.js dev/HMR, RSC payloads, and any non-cacheable internals.
+  // Also never cache or intercept the shop section (/tienda, incl. locale
+  // prefixes) or the API proxy — those must always hit the network fresh.
   if (
     url.pathname.startsWith("/_next/webpack-hmr") ||
     url.pathname.startsWith("/api/") ||
     url.pathname.startsWith("/_next/data/") ||
+    url.pathname.startsWith("/tienda") ||
+    url.pathname.startsWith("/en/tienda") ||
+    url.pathname.startsWith("/ru/tienda") ||
     url.search.includes("_rsc=")
   ) {
     return;

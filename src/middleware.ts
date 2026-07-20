@@ -1,7 +1,7 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
-import { routing } from "./src/i18n/routing";
-import { OLD_SERVICE_SLUG_TO_NEW } from "./src/lib/services";
+import { routing } from "./i18n/routing";
+import { OLD_SERVICE_SLUG_TO_NEW } from "./lib/services";
 
 const intlMiddleware = createMiddleware(routing);
 const PRODUCTION_HOST = "24clima.com";
@@ -14,11 +14,37 @@ export default function middleware(request: NextRequest) {
   // This sets x-force-mobile header which isMobileDevice() checks.
   const forceMobile = url.searchParams.get("_mobile") === "1";
 
-  // 1. www → non-www (308 Permanent Redirect)
+  // 1. www → non-www (308 Permanent Redirect) — host normalization first.
   if (url.hostname === `www.${PRODUCTION_HOST}`) {
     const target = new URL(request.url);
     target.hostname = PRODUCTION_HOST;
     target.protocol = "https:";
+    return NextResponse.redirect(target, { status: 308 });
+  }
+
+  // 1a. /api/* — pass through untouched (defense-in-depth). The matcher below
+  // already excludes /api, and skipTrailingSlashRedirect (next.config.js) means
+  // the framework does no slash handling either, so API paths must never be
+  // slash-normalized or redirected here — that would mangle /api/v1 POSTs.
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
+  // 1b. Canonical trailing-slash enforcement for PAGE paths (308).
+  // next.config.js sets skipTrailingSlashRedirect, disabling Next's automatic
+  // slash redirect, so we re-add it here for GET/HEAD navigations to extension-
+  // less paths. It runs AFTER host normalization but BEFORE the locale redirects
+  // below, so those always receive an already-slashed path and emit slashed
+  // targets — no redirect chains.
+  if (
+    (request.method === "GET" || request.method === "HEAD") &&
+    !pathname.endsWith("/") &&
+    !pathname.startsWith("/_next") &&
+    !pathname.startsWith("/_vercel") &&
+    !(pathname.split("/").pop() ?? "").includes(".")
+  ) {
+    const target = new URL(`${pathname}/`, request.url);
+    target.search = url.search;
     return NextResponse.redirect(target, { status: 308 });
   }
 
@@ -65,6 +91,8 @@ export const config = {
     "/es/",
     "/es/:path*",
     "/(en|ru)/:path*",
+    // Note: /api is explicitly excluded here (negative lookahead) so middleware
+    // never runs for API paths — the 1a pass-through above is defense-in-depth.
     "/((?!api|_next|_vercel|.*\\..*).*)",
   ],
 };
