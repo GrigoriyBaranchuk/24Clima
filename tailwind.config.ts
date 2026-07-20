@@ -9,6 +9,8 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    // Ported shop (tienda) feature — pages/components/lib live under src/features.
+    "./src/features/**/*.{js,ts,jsx,tsx,mdx}",
     // Shared design-system components ship raw TSX — Tailwind must scan them
     // so their token classes (bg-whatsapp, bg-brand-navy-dark, …) get generated.
     "./node_modules/@24clima/design/components/**/*.{js,ts,jsx,tsx}",

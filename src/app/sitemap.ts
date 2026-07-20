@@ -3,6 +3,15 @@ import { supabase } from "@/lib/supabase";
 import { normalizeSlug } from "@/lib/slug";
 import { locales, defaultLocale, getLocalePrefix } from "@/i18n/config";
 import { SERVICE_SLUGS } from "@/lib/services";
+import { api as tiendaApi } from "@/features/tienda/lib/api-client";
+import type { Category as TiendaCategory, SitemapItem as TiendaSitemapItem } from "@/features/tienda/lib/api-client";
+import {
+  tiendaHomeUrl,
+  tiendaProfesionalUrl,
+  tiendaCategoryUrl,
+  tiendaProductUrl,
+  tiendaLangAlternates,
+} from "@/features/tienda/lib/tienda-url";
 
 const BASE = "https://24clima.com";
 
@@ -163,6 +172,62 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         alternates: articleLangAlternates ? { languages: articleLangAlternates } : undefined,
       });
     }
+  }
+
+  // Tienda (shop) section — home, profesional, categories, products fetched from
+  // the shop API. Gated behind a successful catalog fetch: if the backend is cold
+  // or down we log and skip ALL tienda entries, leaving the marketing sitemap
+  // unchanged (never throw). Cart/checkout/account are intentionally excluded
+  // (noindex conversion/private surfaces). Per-locale alternates via tiendaUrl.
+  try {
+    const [tiendaCategories, tiendaProducts]: [TiendaCategory[], TiendaSitemapItem[]] =
+      await Promise.all([tiendaApi.getCategoriesCached(), tiendaApi.getSitemap()]);
+
+    for (const locale of locales) {
+      entries.push({
+        url: tiendaHomeUrl(locale),
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.9,
+        alternates: { languages: tiendaLangAlternates("") },
+      });
+      entries.push({
+        url: tiendaProfesionalUrl(locale),
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+        alternates: { languages: tiendaLangAlternates("/profesional") },
+      });
+    }
+
+    for (const c of tiendaCategories) {
+      const path = `/category/${c.slug}`;
+      for (const locale of locales) {
+        entries.push({
+          url: tiendaCategoryUrl(locale, c.slug),
+          lastModified: now,
+          changeFrequency: "weekly" as const,
+          priority: 0.7,
+          alternates: { languages: tiendaLangAlternates(path) },
+        });
+      }
+    }
+
+    for (const p of tiendaProducts) {
+      const lastModified = p.updated_at ? new Date(p.updated_at) : now;
+      const path = `/product/${p.slug}`;
+      for (const locale of locales) {
+        entries.push({
+          url: tiendaProductUrl(locale, p.slug),
+          lastModified,
+          changeFrequency: "weekly" as const,
+          priority: 0.6,
+          alternates: { languages: tiendaLangAlternates(path) },
+        });
+      }
+    }
+  } catch (e) {
+    console.error("[sitemap] tienda catalog API fetch failed, emitting marketing sitemap only:", e);
   }
 
   return entries;
