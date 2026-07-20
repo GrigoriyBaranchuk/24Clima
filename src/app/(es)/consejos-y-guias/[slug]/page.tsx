@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import ArticleHero from "@/components/ArticleHero";
 import ArticleRenderer from "@/components/ArticleRenderer";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
@@ -209,7 +208,6 @@ export default async function ArticlePage({
         </article>
       </main>
       <Footer />
-      <WhatsAppButton />
     </>
   );
 }

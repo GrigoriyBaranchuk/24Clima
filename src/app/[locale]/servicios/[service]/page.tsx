@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import CleaningPackages from "@/components/CleaningPackages";
 import ServicePageViewContent from "@/components/ServicePageViewContent";
@@ -445,7 +444,6 @@ export default async function ServicePage({ params }: Props) {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

@@ -3,7 +3,6 @@ import { getTranslations } from "next-intl/server";
 import Header from "@/components/Header";
 import ParallaxHero from "@/components/ParallaxHero";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { supabase } from "@/lib/supabase";
 import { resolveImageUrls, stripMarkdownForPreview } from "@/lib/articles";
 import { normalizeSlug } from "@/lib/slug";
@@ -111,7 +110,6 @@ export default async function TipsPage() {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
     </>
   );
 }

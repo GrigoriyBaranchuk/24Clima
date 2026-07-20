@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import NosotrosCTA from "@/components/NosotrosCTA";
 import Reviews from "@/components/Reviews";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import WhyUs from "@/components/WhyUs";
 import { type Locale, getLocalePrefix, locales } from "@/i18n/config";
 import {
@@ -114,7 +113,6 @@ export default async function NosotrosPage({ params }: Props) {
         <NosotrosCTA />
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

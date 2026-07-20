@@ -4,7 +4,6 @@ import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -112,7 +111,6 @@ export default async function ContactoPage({ params }: Props) {
         <Contact />
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

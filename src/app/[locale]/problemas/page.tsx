@@ -3,7 +3,6 @@ import { setRequestLocale } from "next-intl/server";
 import { locales, type Locale, getLocalePrefix } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import ProblemsContent from "@/components/ProblemsContent";
 
@@ -53,7 +52,6 @@ export default async function ProblemasPage({ params }: Props) {
         <ProblemsContent />
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

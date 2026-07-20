@@ -16,6 +16,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   trailingSlash: true,
+  // Transpile the shared design package (ships raw TSX/ESM components).
+  transpilePackages: ["@24clima/design"],
   // Enable gzip/brotli compression on HTML, JS, CSS, fonts.
   // Vercel does this at the edge already, but explicit is safer if
   // self-hosting or running behind a different proxy.

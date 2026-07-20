@@ -3,7 +3,6 @@ import { setRequestLocale } from "next-intl/server";
 import { locales, type Locale, getLocalePrefix, defaultLocale } from "@/i18n/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import ServicesGrid from "@/components/ServicesGrid";
 import Services from "@/components/Services";
@@ -116,7 +115,6 @@ export default async function ServiciosPage({ params }: Props) {
         </div>
       </main>
       <Footer />
-      <WhatsAppButton />
       <BottomNav />
     </>
   );

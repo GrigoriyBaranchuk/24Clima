@@ -11,7 +11,6 @@ import BlogPromo from "@/components/BlogPromo";
 import StatsSection from "@/components/StatsSection";
 import GoogleRatingCard from "@/components/GoogleRatingCard";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import BottomNav from "@/components/BottomNav";
 import ScrollReveal from "@/components/ScrollReveal";
 import RevealOnDesktop from "@/components/RevealOnDesktop";
@@ -98,7 +97,6 @@ export default async function Home() {
           <Footer />
         </div>
       )}
-      <WhatsAppButton />
       <BottomNav />
     </>
   );
