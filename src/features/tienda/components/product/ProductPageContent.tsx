@@ -40,15 +40,6 @@ export function ProductPageContent(props: Props) {
       <div className="grid gap-8 lg:grid-cols-2">
         <div>
           <div className="relative aspect-square overflow-hidden rounded-xl bg-muted">
-            {product.brand && (
-              <div className="absolute left-0 top-0 z-10 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-card/90 shadow-md backdrop-blur-sm">
-                {product.brand.logo_url ? (
-                  <img src={product.brand.logo_url} alt={product.brand.name} className="h-full w-full object-cover" />
-                ) : (
-                  <span className="text-sm font-medium text-card-foreground">{product.brand.name}</span>
-                )}
-              </div>
-            )}
             {mainImage ? (
               <Image
                 src={mainImage.url}
