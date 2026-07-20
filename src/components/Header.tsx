@@ -53,9 +53,9 @@ export default function Header() {
     { name: t("about"), href: "/nosotros", isAnchor: false, external: false },
     {
       name: t("shop"),
-      href: "https://shop.24clima.com",
+      href: "/tienda",
       isAnchor: false,
-      external: true,
+      external: false,
     },
     { name: t("contact"), href: "/contacto", isAnchor: false, external: false },
   ];

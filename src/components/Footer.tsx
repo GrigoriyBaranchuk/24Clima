@@ -116,7 +116,7 @@ export default async function Footer() {
         <FooterLink href="/diagnostico" LinkComponent={FooterNavLink}>
           {tCommon("diagnosis")}
         </FooterLink>
-        <FooterLink href="https://shop.24clima.com" external>
+        <FooterLink href="/tienda" LinkComponent={FooterNavLink}>
           {tCommon("shop")}
         </FooterLink>
         <FooterLink href="/contacto" LinkComponent={FooterNavLink}>

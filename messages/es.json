@@ -556,5 +556,136 @@
     "coverageLink": "Ver zonas de cobertura",
     "whatsappMessage": "Hola, necesito alquiler de aire acondicionado / enfriamiento para un evento en Panamá. Le comparto fecha, ubicación y cantidad de personas.",
     "whatsappVisita": "Hola, quisiera solicitar una visita técnica para el enfriamiento de un evento en Panamá."
+  },
+  "tienda": {
+    "common": {
+      "home": "Inicio",
+      "catalog": "Catálogo",
+      "cart": "Carrito",
+      "account": "Mi cuenta",
+      "whatsapp": "WhatsApp",
+      "contact": "Contacto",
+      "geoLine": "Tienda en Panamá. Envíos en todo el país.",
+      "whatsappInquiry": "Hola, tengo una consulta sobre 24Clima Shop."
+    },
+    "nav": {
+      "airConditioning": "Aire acondicionado",
+      "categories": "Categorías",
+      "professional": "Profesional"
+    },
+    "filters": {
+      "showPro": "Mostrar productos para instaladores"
+    },
+    "badge": {
+      "professional": "Profesional"
+    },
+    "profesional": {
+      "title": "Zona Profesional",
+      "intro": "Productos para empresas de montaje y servicio: manómetros, tuberías de cobre, químicos y herramientas para instaladores de HVAC/R.",
+      "metaDescription": "Catálogo profesional 24Clima: manómetros, tuberías de cobre, químicos y herramientas para empresas de montaje y servicio de aire acondicionado en Panamá."
+    },
+    "footer": {
+      "description": "Tienda oficial 24Clima. Equipos de aire acondicionado, repuestos y materiales para instaladores. B2C y B2B.",
+      "links": "Enlaces",
+      "contactTitle": "Contacto",
+      "copyright": "Panamá.",
+      "privacyPolicy": "Política de privacidad",
+      "termsOfService": "Términos de uso"
+    },
+    "home": {
+      "title": "Aire acondicionado y climatización",
+      "subtitle": "Equipos, repuestos y materiales. B2C y B2B. Envíos en Panamá.",
+      "featured": "Productos destacados",
+      "viewCatalog": "Ver catálogo",
+      "noProducts": "No hay productos aún.",
+      "filterCategory": "Categoría",
+      "filterBrand": "Marca",
+      "filterSort": "Ordenar",
+      "filterAll": "Todas",
+      "sortNewest": "Más recientes",
+      "sortPriceAsc": "Precio: menor a mayor",
+      "sortPriceDesc": "Precio: mayor a menor",
+      "sortNameAsc": "Nombre: A–Z",
+      "sortNameDesc": "Nombre: Z–A",
+      "filterBtu": "BTU",
+      "btuMin": "BTU mín",
+      "btuMax": "BTU máx",
+      "btuLabel": "BTU",
+      "activeFilters": "Filtros activos",
+      "clearFilter": "Quitar"
+    },
+    "category": {
+      "noProducts": "No hay productos en esta categoría.",
+      "aire-acondicionado": "Aire acondicionado"
+    },
+    "product": {
+      "addToCart": "Añadir al carrito",
+      "askWhatsApp": "Preguntar por WhatsApp",
+      "description": "Descripción",
+      "specsTitle": "Ficha técnica",
+      "faqTitle": "Preguntas frecuentes",
+      "askWhatsAppMessage": "Hola, me interesa: {name} ({sku})"
+    },
+    "cart": {
+      "title": "Carrito",
+      "empty": "Tu carrito está vacío.",
+      "viewCatalog": "Ver catálogo",
+      "checkout": "Ir a pagar",
+      "total": "Total",
+      "guestCta": "Regístrate para continuar con la compra o envía tu carrito por WhatsApp.",
+      "registerToCheckout": "Registrarse",
+      "whatsappCart": "Enviar carrito por WhatsApp",
+      "continueShopping": "Seguir comprando",
+      "quantity": "Cant.",
+      "remove": "Quitar",
+      "update": "Actualizar"
+    },
+    "checkout": {
+      "title": "Finalizar pedido",
+      "total": "Total",
+      "name": "Nombre",
+      "email": "Email",
+      "phone": "Teléfono",
+      "shippingAddress": "Dirección de envío",
+      "region": "Provincia / Corregimiento",
+      "notes": "Notas",
+      "paymentMethod": "Forma de pago",
+      "cashOnDelivery": "Pago contra entrega",
+      "bankTransfer": "Transferencia bancaria",
+      "confirmOrder": "Confirmar pedido",
+      "processing": "Procesando…",
+      "emptyCart": "No hay ítems en el carrito. Añade productos antes de continuar."
+    },
+    "order": {
+      "status": "Estado",
+      "orderNumber": "Pedido"
+    },
+    "account": {
+      "title": "Mi cuenta",
+      "intro": "Inicia sesión para B2B o accede al panel de administración.",
+      "registerTitle": "Crear cuenta",
+      "registerIntro": "Regístrate para continuar con la compra y gestionar tus pedidos.",
+      "registerSuccess": "Cuenta creada.",
+      "registerSignInNow": "Ya puedes iniciar sesión.",
+      "signedIn": "Has iniciado sesión.",
+      "goToAccount": "Ir a Mi cuenta",
+      "email": "Email",
+      "password": "Contraseña",
+      "passwordHint": "Mínimo 8 caracteres.",
+      "fullName": "Nombre completo",
+      "phone": "Teléfono",
+      "registering": "Creando cuenta…",
+      "registerSubmit": "Crear cuenta",
+      "backToAccount": "Volver a Mi cuenta",
+      "logout": "Cerrar sesión",
+      "signIn": "Iniciar sesión",
+      "signInIntro": "Inicia sesión en tu cuenta.",
+      "hello": "Hola"
+    },
+    "admin": {
+      "title": "Admin",
+      "intro": "Panel mínimo. Proteger con auth en producción.",
+      "orders": "Pedidos"
+    }
   }
 }

@@ -556,5 +556,136 @@
     "coverageLink": "See coverage areas",
     "whatsappMessage": "Hello, I need air conditioning / cooling rental for an event in Panama. I'll share the date, location and number of people.",
     "whatsappVisita": "Hello, I'd like to request a technical site visit for cooling an event in Panama."
+  },
+  "tienda": {
+    "common": {
+      "home": "Home",
+      "catalog": "Catalog",
+      "cart": "Cart",
+      "account": "My account",
+      "whatsapp": "WhatsApp",
+      "contact": "Contact",
+      "geoLine": "Store in Panama. Nationwide shipping.",
+      "whatsappInquiry": "Hi, I have a question about 24Clima Shop."
+    },
+    "nav": {
+      "airConditioning": "Air conditioning",
+      "categories": "Categories",
+      "professional": "Professional"
+    },
+    "filters": {
+      "showPro": "Show products for installers"
+    },
+    "badge": {
+      "professional": "Professional"
+    },
+    "profesional": {
+      "title": "Professional Zone",
+      "intro": "Products for installation and service companies: manifold gauges, copper tubing, chemicals and tools for HVAC/R installers.",
+      "metaDescription": "24Clima professional catalog: manifold gauges, copper tubing, chemicals and tools for air conditioning installation and service companies in Panama."
+    },
+    "footer": {
+      "description": "Official 24Clima store. Air conditioning equipment, parts and materials for installers. B2C and B2B.",
+      "links": "Links",
+      "contactTitle": "Contact",
+      "copyright": "Panama.",
+      "privacyPolicy": "Privacy policy",
+      "termsOfService": "Terms of service"
+    },
+    "home": {
+      "title": "Air conditioning and HVAC",
+      "subtitle": "Equipment, parts and materials. B2C and B2B. Shipping across Panama.",
+      "featured": "Featured products",
+      "viewCatalog": "View catalog",
+      "noProducts": "No products yet.",
+      "filterCategory": "Category",
+      "filterBrand": "Brand",
+      "filterSort": "Sort",
+      "filterAll": "All",
+      "sortNewest": "Newest",
+      "sortPriceAsc": "Price: low to high",
+      "sortPriceDesc": "Price: high to low",
+      "sortNameAsc": "Name: A–Z",
+      "sortNameDesc": "Name: Z–A",
+      "filterBtu": "BTU",
+      "btuMin": "Min BTU",
+      "btuMax": "Max BTU",
+      "btuLabel": "BTU",
+      "activeFilters": "Active filters",
+      "clearFilter": "Clear"
+    },
+    "category": {
+      "noProducts": "No products in this category.",
+      "aire-acondicionado": "Air conditioning"
+    },
+    "product": {
+      "addToCart": "Add to cart",
+      "askWhatsApp": "Ask on WhatsApp",
+      "description": "Description",
+      "specsTitle": "Specifications",
+      "faqTitle": "Frequently asked questions",
+      "askWhatsAppMessage": "Hi, I'm interested in: {name} ({sku})"
+    },
+    "cart": {
+      "title": "Cart",
+      "empty": "Your cart is empty.",
+      "viewCatalog": "View catalog",
+      "checkout": "Checkout",
+      "total": "Total",
+      "guestCta": "Register to continue checkout or send your cart via WhatsApp.",
+      "registerToCheckout": "Register to continue",
+      "whatsappCart": "Send cart via WhatsApp",
+      "continueShopping": "Continue shopping",
+      "quantity": "Qty",
+      "remove": "Remove",
+      "update": "Update"
+    },
+    "checkout": {
+      "title": "Checkout",
+      "total": "Total",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "shippingAddress": "Shipping address",
+      "region": "Province / District",
+      "notes": "Notes",
+      "paymentMethod": "Payment method",
+      "cashOnDelivery": "Cash on delivery",
+      "bankTransfer": "Bank transfer",
+      "confirmOrder": "Confirm order",
+      "processing": "Processing…",
+      "emptyCart": "No items in cart. Add products before continuing."
+    },
+    "order": {
+      "status": "Status",
+      "orderNumber": "Order"
+    },
+    "account": {
+      "title": "My account",
+      "intro": "Sign in for B2B or access the admin panel.",
+      "registerTitle": "Create account",
+      "registerIntro": "Register to continue checkout and manage your orders.",
+      "registerSuccess": "Account created.",
+      "registerSignInNow": "You can sign in now.",
+      "signedIn": "You are signed in.",
+      "goToAccount": "Go to My account",
+      "email": "Email",
+      "password": "Password",
+      "passwordHint": "At least 8 characters.",
+      "fullName": "Full name",
+      "phone": "Phone",
+      "registering": "Creating account…",
+      "registerSubmit": "Create account",
+      "backToAccount": "Back to My account",
+      "logout": "Log out",
+      "signIn": "Sign in",
+      "signInIntro": "Sign in to your account.",
+      "hello": "Hello"
+    },
+    "admin": {
+      "title": "Admin",
+      "intro": "Minimal panel. Protect with auth in production.",
+      "orders": "Orders"
+    }
   }
 }
