@@ -18,15 +18,6 @@ export function ProductCard({ product: p, btuLabel, professionalLabel, noImageLa
       className="group card-hover rounded-xl border border-border bg-card p-4 shadow-sm transition hover:border-primary/30 hover:shadow-md"
     >
       <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
-        {p.brand && (
-          <div className="absolute left-0 top-0 z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center overflow-hidden rounded-full bg-card/90 shadow-sm backdrop-blur-sm">
-            {p.brand.logo_url ? (
-              <img src={p.brand.logo_url} alt={p.brand.name} className="h-full w-full object-cover" />
-            ) : (
-              <span className="text-xs font-medium text-card-foreground">{p.brand.name}</span>
-            )}
-          </div>
-        )}
         {p.is_b2b_only && (
           <span className="absolute right-2 top-2 z-10 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground shadow-sm">
             {professionalLabel}
