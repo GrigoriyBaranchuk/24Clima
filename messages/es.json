@@ -637,7 +637,8 @@
       "reviewFormSuccess": "¡Gracias! Tu opinión aparecerá después de ser revisada.",
       "reviewFormError": "No se pudo enviar. Inténtalo de nuevo.",
       "delivery": "Pide antes del mediodía y recíbelo hoy mismo; después del mediodía, entrega al día siguiente.",
-      "deliveryRegion": "Entrega en Panamá",
+      "deliveryRegion": "Entrega gratis en la Ciudad de Panamá",
+      "returns": "Devoluciones dentro de 7 días",
       "warranty": "Garantía: {months, plural, one {# mes} other {# meses}}"
     },
     "cart": {

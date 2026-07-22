@@ -67,6 +67,7 @@ export async function TiendaProductPage({ locale, slug }: { locale: string; slug
         faqTitle={t("faqTitle")}
         deliveryLabel={t("delivery")}
         deliveryRegionLabel={t("deliveryRegion")}
+        returnsLabel={t("returns")}
         warrantyLabel={
           product.warranty_months != null
             ? t("warranty", { months: product.warranty_months })
