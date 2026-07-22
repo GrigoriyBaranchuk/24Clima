@@ -219,6 +219,19 @@ export const api = {
     fetchCatalogApi<ProductsResponse>(`/v1/catalog/products?${buildProductsQuery(params)}`),
   getProduct: (slug: string, locale?: string) =>
     fetchCatalogApi<ProductDetail>(productPath(slug, locale)),
+  /**
+   * Submit a customer review. Public (no auth). The review is NOT published
+   * immediately — it goes to owner moderation and the API answers `{status: "pending"}`.
+   * `website` is a honeypot: a hidden field a human leaves empty.
+   */
+  submitReview: (
+    slug: string,
+    data: { author_name: string; rating: number; text: string | null; locale: string; website: string }
+  ) =>
+    fetchCatalogApi<{ status: string }>(`/v1/catalog/products/${slug}/reviews`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
 
   // Cached (ISR) variants — server-only. Time-revalidated + tag-invalidated via /api/revalidate.
   /** Product detail: revalidate hourly, tag "product:{slug}" (invalidated on publish/update). */

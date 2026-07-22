@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Star, Truck, ShieldCheck } from "lucide-react";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
+import { ReviewForm } from "./ReviewForm";
 import type { ProductDetail } from "../../lib/api-client";
 import { WhatsAppCta } from "@24clima/design/components";
 
@@ -241,6 +242,9 @@ export function ProductPageContent(props: Props) {
           </ul>
         </section>
       )}
+
+      {/* Always visible — anyone can leave a review (published only after moderation). */}
+      <ReviewForm slug={product.slug} locale={locale} />
     </div>
   );
 }
