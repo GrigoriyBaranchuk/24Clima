@@ -637,7 +637,8 @@
       "reviewFormSuccess": "Thank you! Your review will appear after it has been checked.",
       "reviewFormError": "Could not send. Please try again.",
       "delivery": "Order before noon for same-day delivery; after noon, next-day delivery.",
-      "deliveryRegion": "Delivery across Panama",
+      "deliveryRegion": "Free delivery in Panama City",
+      "returns": "7-day returns",
       "warranty": "Warranty: {months, plural, one {# month} other {# months}}"
     },
     "cart": {

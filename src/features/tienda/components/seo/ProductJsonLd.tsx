@@ -52,6 +52,11 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
       seller: { "@type": "Organization", name: "24Clima" },
       shippingDetails: {
         "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: "0",
+          currency: "USD",
+        },
         shippingDestination: {
           "@type": "DefinedRegion",
           addressCountry: "PA",
@@ -72,6 +77,12 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
             unitCode: "DAY",
           },
         },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "PA",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 7,
       },
       ...(product.warranty_months != null
         ? {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Star, Truck, ShieldCheck } from "lucide-react";
+import { Star, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
 import { ReviewForm } from "./ReviewForm";
 import type { ProductDetail } from "../../lib/api-client";
@@ -17,6 +17,7 @@ type Props = {
   faqTitle: string;
   deliveryLabel: string;
   deliveryRegionLabel: string;
+  returnsLabel: string;
   warrantyLabel?: string;
   professionalLabel: string;
   whatsappNumber: string;
@@ -52,6 +53,7 @@ export function ProductPageContent(props: Props) {
     faqTitle,
     deliveryLabel,
     deliveryRegionLabel,
+    returnsLabel,
     warrantyLabel,
     professionalLabel,
     whatsappNumber,
@@ -148,6 +150,10 @@ export function ProductPageContent(props: Props) {
                 <p className="text-foreground">{deliveryLabel}</p>
                 <p className="mt-1 text-muted-foreground">{deliveryRegionLabel}</p>
               </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <RotateCcw className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+              <p className="text-sm text-foreground">{returnsLabel}</p>
             </div>
             {warrantyLabel && (
               <div className="flex items-start gap-3">
