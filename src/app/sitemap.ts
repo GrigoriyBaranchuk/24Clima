@@ -8,6 +8,7 @@ import type { Category as TiendaCategory, SitemapItem as TiendaSitemapItem } fro
 import {
   tiendaHomeUrl,
   tiendaProfesionalUrl,
+  tiendaDevolucionesUrl,
   tiendaCategoryUrl,
   tiendaProductUrl,
   tiendaLangAlternates,
@@ -172,6 +173,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         alternates: articleLangAlternates ? { languages: articleLangAlternates } : undefined,
       });
     }
+  }
+
+  // Tienda returns policy — static content page, not gated behind the catalog API.
+  for (const locale of locales) {
+    entries.push({
+      url: tiendaDevolucionesUrl(locale),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: { languages: tiendaLangAlternates("/devoluciones") },
+    });
   }
 
   // Tienda (shop) section — home, profesional, categories, products fetched from

@@ -153,7 +153,12 @@ export function ProductPageContent(props: Props) {
             </div>
             <div className="flex items-start gap-3">
               <RotateCcw className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-              <p className="text-sm text-foreground">{returnsLabel}</p>
+              <LocalizedTiendaLink
+                href="/devoluciones"
+                className="text-sm text-foreground underline-offset-2 hover:underline hover:text-primary"
+              >
+                {returnsLabel}
+              </LocalizedTiendaLink>
             </div>
             {warrantyLabel && (
               <div className="flex items-start gap-3">
