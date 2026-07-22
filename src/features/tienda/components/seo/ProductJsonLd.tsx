@@ -31,6 +31,7 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
     "@type": "Product",
     name: product.name,
     sku: product.sku,
+    mpn: product.sku,
     url,
     ...(images.length ? { image: images } : {}),
     ...(product.description || product.short_description
@@ -46,8 +47,44 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
       price: String(product.price),
       priceCurrency: "USD",
       availability,
+      itemCondition: "https://schema.org/NewCondition",
       url,
       seller: { "@type": "Organization", name: "24Clima" },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "PA",
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          cutoffTime: "12:00:00-05:00",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 0,
+            maxValue: 0,
+            unitCode: "DAY",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 0,
+            maxValue: 1,
+            unitCode: "DAY",
+          },
+        },
+      },
+      ...(product.warranty_months != null
+        ? {
+            warranty: {
+              "@type": "WarrantyPromise",
+              durationOfWarranty: {
+                "@type": "QuantitativeValue",
+                value: product.warranty_months,
+                unitCode: "MON",
+              },
+            },
+          }
+        : {}),
     };
   }
 

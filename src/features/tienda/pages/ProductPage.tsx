@@ -65,6 +65,13 @@ export async function TiendaProductPage({ locale, slug }: { locale: string; slug
         descriptionLabel={t("description")}
         specsTitle={t("specsTitle")}
         faqTitle={t("faqTitle")}
+        deliveryLabel={t("delivery")}
+        deliveryRegionLabel={t("deliveryRegion")}
+        warrantyLabel={
+          product.warranty_months != null
+            ? t("warranty", { months: product.warranty_months })
+            : undefined
+        }
         professionalLabel={tBadge("professional")}
         whatsappNumber={whatsappNumber}
         whatsappOrderText={whatsappOrderText}

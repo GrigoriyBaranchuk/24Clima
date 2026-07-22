@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Star } from "lucide-react";
+import { Star, Truck, ShieldCheck } from "lucide-react";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
 import type { ProductDetail } from "../../lib/api-client";
 import { WhatsAppCta } from "@24clima/design/components";
@@ -14,6 +14,9 @@ type Props = {
   descriptionLabel: string;
   specsTitle: string;
   faqTitle: string;
+  deliveryLabel: string;
+  deliveryRegionLabel: string;
+  warrantyLabel?: string;
   professionalLabel: string;
   whatsappNumber: string;
   whatsappOrderText: string;
@@ -46,6 +49,9 @@ export function ProductPageContent(props: Props) {
     descriptionLabel,
     specsTitle,
     faqTitle,
+    deliveryLabel,
+    deliveryRegionLabel,
+    warrantyLabel,
     professionalLabel,
     whatsappNumber,
     whatsappOrderText,
@@ -133,6 +139,21 @@ export function ProductPageContent(props: Props) {
             >
               {askWhatsAppLabel}
             </WhatsAppCta>
+          </div>
+          <div className="mt-6 space-y-3 rounded-lg border border-border bg-muted/40 p-4">
+            <div className="flex items-start gap-3">
+              <Truck className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+              <div className="text-sm">
+                <p className="text-foreground">{deliveryLabel}</p>
+                <p className="mt-1 text-muted-foreground">{deliveryRegionLabel}</p>
+              </div>
+            </div>
+            {warrantyLabel && (
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                <p className="text-sm text-foreground">{warrantyLabel}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
