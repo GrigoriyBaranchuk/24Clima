@@ -624,7 +624,10 @@
       "description": "Description",
       "specsTitle": "Specifications",
       "faqTitle": "Frequently asked questions",
-      "askWhatsAppMessage": "Hi, I'm interested in: {name} ({sku})"
+      "askWhatsAppMessage": "Hi, I'm interested in: {name} ({sku})",
+      "reviewsTitle": "Customer reviews",
+      "reviewOutOf": "{avg} out of 5",
+      "reviewCount": "{count, plural, one {# review} other {# reviews}}"
     },
     "cart": {
       "title": "Cart",

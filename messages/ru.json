@@ -624,7 +624,10 @@
       "description": "Описание",
       "specsTitle": "Технические характеристики",
       "faqTitle": "Часто задаваемые вопросы",
-      "askWhatsAppMessage": "Здравствуйте, меня интересует: {name} ({sku})"
+      "askWhatsAppMessage": "Здравствуйте, меня интересует: {name} ({sku})",
+      "reviewsTitle": "Отзывы покупателей",
+      "reviewOutOf": "{avg} из 5",
+      "reviewCount": "{count, plural, one {# отзыв} few {# отзыва} many {# отзывов} other {# отзыва}}"
     },
     "cart": {
       "title": "Корзина",

@@ -49,6 +49,11 @@ export async function TiendaProductPage({ locale, slug }: { locale: string; slug
   if (!product) notFound();
   const whatsappNumber = "50768282120";
   const whatsappOrderText = t("askWhatsAppMessage", { name: product.name, sku: product.sku });
+  // Reviews labels (only meaningful when the backend returns reviews).
+  const ratingAvg = product.rating_avg;
+  const ratingCount = product.rating_count ?? 0;
+  const reviewOutOfLabel = ratingAvg != null ? t("reviewOutOf", { avg: ratingAvg }) : "";
+  const reviewCountLabel = t("reviewCount", { count: ratingCount });
 
   return (
     <TiendaShell>
@@ -63,6 +68,10 @@ export async function TiendaProductPage({ locale, slug }: { locale: string; slug
         professionalLabel={tBadge("professional")}
         whatsappNumber={whatsappNumber}
         whatsappOrderText={whatsappOrderText}
+        reviewsTitle={t("reviewsTitle")}
+        reviewOutOfLabel={reviewOutOfLabel}
+        reviewCountLabel={reviewCountLabel}
+        locale={locale}
       />
     </TiendaShell>
   );

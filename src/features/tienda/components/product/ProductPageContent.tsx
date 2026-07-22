@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { Star } from "lucide-react";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
 import type { ProductDetail } from "../../lib/api-client";
 import { WhatsAppCta } from "@24clima/design/components";
@@ -16,7 +17,26 @@ type Props = {
   professionalLabel: string;
   whatsappNumber: string;
   whatsappOrderText: string;
+  reviewsTitle: string;
+  reviewOutOfLabel: string;
+  reviewCountLabel: string;
+  locale: string;
 };
+
+/** Five stars, `filled` of them in brand green (no second accent colour — see DESIGN.md). */
+function Stars({ filled }: { filled: number }) {
+  const n = Math.max(0, Math.min(5, Math.round(filled)));
+  return (
+    <span className="inline-flex" aria-hidden="true">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <Star
+          key={i}
+          className={`h-4 w-4 ${i < n ? "fill-primary text-primary" : "fill-none text-muted-foreground/40"}`}
+        />
+      ))}
+    </span>
+  );
+}
 
 export function ProductPageContent(props: Props) {
   const {
@@ -29,11 +49,25 @@ export function ProductPageContent(props: Props) {
     professionalLabel,
     whatsappNumber,
     whatsappOrderText,
+    reviewsTitle,
+    reviewOutOfLabel,
+    reviewCountLabel,
+    locale,
   } = props;
   const images = product.images?.length ? product.images : [];
   const [selectedIndex, setSelectedIndex] = useState(0);
   const mainImage = images[selectedIndex];
   const faq = product.faq?.filter((f) => f.q && f.a) ?? [];
+  // Reviews render ONLY when the backend supplies them — never a default/fake rating.
+  const reviews = (product.reviews ?? []).filter((r) => r.author && r.rating);
+  const ratingAvg = product.rating_avg;
+  const showReviews = reviews.length > 0 && ratingAvg != null;
+  const dateFmt = new Intl.DateTimeFormat(locale, { year: "numeric", month: "long", day: "numeric" });
+  const formatReviewDate = (d: string | null): string | null => {
+    if (!d) return null;
+    const parsed = new Date(d);
+    return Number.isNaN(parsed.getTime()) ? null : dateFmt.format(parsed);
+  };
 
   return (
     <div className="container mx-auto px-4 lg:px-8 py-8">
@@ -150,6 +184,40 @@ export function ProductPageContent(props: Props) {
               </details>
             ))}
           </div>
+        </section>
+      )}
+
+      {showReviews && (
+        <section className="mt-12 border-t border-border pt-8">
+          <h2 className="text-lg font-semibold text-foreground">{reviewsTitle}</h2>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <Stars filled={ratingAvg} />
+            <span className="text-lg font-semibold text-foreground">{reviewOutOfLabel}</span>
+            <span className="text-sm text-muted-foreground">{reviewCountLabel}</span>
+          </div>
+          <ul className="mt-6 space-y-4">
+            {reviews.map((r, i) => {
+              const when = formatReviewDate(r.date);
+              return (
+                <li key={i} className="rounded-lg border border-border bg-card p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Stars filled={r.rating} />
+                      <span className="font-medium text-foreground">{r.author}</span>
+                    </div>
+                    {when && (
+                      <time dateTime={r.date ?? undefined} className="text-xs text-muted-foreground">
+                        {when}
+                      </time>
+                    )}
+                  </div>
+                  {r.text && (
+                    <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{r.text}</p>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </section>
       )}
     </div>
