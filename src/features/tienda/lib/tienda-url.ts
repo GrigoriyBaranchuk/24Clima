@@ -40,6 +40,10 @@ export function tiendaProfesionalUrl(locale: string): string {
   return tiendaUrl(locale, "/profesional");
 }
 
+export function tiendaDevolucionesUrl(locale: string): string {
+  return tiendaUrl(locale, "/devoluciones");
+}
+
 /**
  * hreflang alternates map for a tienda-relative `path`, in the site's as-needed
  * scheme: { "x-default": es, es, en, ru }. Mirrors sitemap.ts / servicios pages.

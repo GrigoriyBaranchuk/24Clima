@@ -83,6 +83,8 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
         applicableCountry: "PA",
         returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
         merchantReturnDays: 7,
+        merchantReturnLink: "https://24clima.com/tienda/devoluciones/",
+        returnFees: "https://schema.org/FreeReturn",
       },
       ...(product.warranty_months != null
         ? {
