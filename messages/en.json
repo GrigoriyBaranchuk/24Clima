@@ -624,7 +624,10 @@
       "description": "Description",
       "specsTitle": "Specifications",
       "faqTitle": "Frequently asked questions",
-      "askWhatsAppMessage": "Hi, I'm interested in: {name} ({sku})"
+      "askWhatsAppMessage": "Hi, I'm interested in: {name} ({sku})",
+      "delivery": "Order before noon for same-day delivery; after noon, next-day delivery.",
+      "deliveryRegion": "Delivery across Panama",
+      "warranty": "Warranty: {months, plural, one {# month} other {# months}}"
     },
     "cart": {
       "title": "Cart",

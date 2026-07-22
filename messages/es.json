@@ -624,7 +624,10 @@
       "description": "Descripción",
       "specsTitle": "Ficha técnica",
       "faqTitle": "Preguntas frecuentes",
-      "askWhatsAppMessage": "Hola, me interesa: {name} ({sku})"
+      "askWhatsAppMessage": "Hola, me interesa: {name} ({sku})",
+      "delivery": "Pide antes del mediodía y recíbelo hoy mismo; después del mediodía, entrega al día siguiente.",
+      "deliveryRegion": "Entrega en Panamá",
+      "warranty": "Garantía: {months, plural, one {# mes} other {# meses}}"
     },
     "cart": {
       "title": "Carrito",
