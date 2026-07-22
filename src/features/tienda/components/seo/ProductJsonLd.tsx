@@ -88,6 +88,35 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
     };
   }
 
+  // Ratings/reviews: emit ONLY when the backend actually reports reviews. Never
+  // synthesize a default rating (see git d12f1a6: self-serving aggregateRating).
+  const ratingCount = product.rating_count ?? 0;
+  const ratingAvg = product.rating_avg;
+  if (ratingCount > 0 && ratingAvg != null) {
+    productLd.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: ratingAvg,
+      reviewCount: ratingCount,
+      bestRating: "5",
+      worstRating: "1",
+    };
+    const reviews = product.reviews ?? [];
+    if (reviews.length > 0) {
+      productLd.review = reviews.map((r) => ({
+        "@type": "Review",
+        author: { "@type": "Person", name: r.author },
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: r.rating,
+          bestRating: "5",
+          worstRating: "1",
+        },
+        ...(r.text ? { reviewBody: r.text } : {}),
+        ...(r.date ? { datePublished: r.date } : {}),
+      }));
+    }
+  }
+
   const breadcrumbItems: { name: string; item: string }[] = [
     { name: homeLabel, item: tiendaHomeUrl(locale) },
   ];

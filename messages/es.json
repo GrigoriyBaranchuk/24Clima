@@ -625,6 +625,9 @@
       "specsTitle": "Ficha técnica",
       "faqTitle": "Preguntas frecuentes",
       "askWhatsAppMessage": "Hola, me interesa: {name} ({sku})",
+      "reviewsTitle": "Opiniones de clientes",
+      "reviewOutOf": "{avg} de 5",
+      "reviewCount": "{count, plural, one {# opinión} other {# opiniones}}",
       "delivery": "Pide antes del mediodía y recíbelo hoy mismo; después del mediodía, entrega al día siguiente.",
       "deliveryRegion": "Entrega en Panamá",
       "warranty": "Garantía: {months, plural, one {# mes} other {# meses}}"

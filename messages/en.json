@@ -625,6 +625,9 @@
       "specsTitle": "Specifications",
       "faqTitle": "Frequently asked questions",
       "askWhatsAppMessage": "Hi, I'm interested in: {name} ({sku})",
+      "reviewsTitle": "Customer reviews",
+      "reviewOutOf": "{avg} out of 5",
+      "reviewCount": "{count, plural, one {# review} other {# reviews}}",
       "delivery": "Order before noon for same-day delivery; after noon, next-day delivery.",
       "deliveryRegion": "Delivery across Panama",
       "warranty": "Warranty: {months, plural, one {# month} other {# months}}"

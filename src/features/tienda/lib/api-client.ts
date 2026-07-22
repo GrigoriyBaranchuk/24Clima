@@ -105,6 +105,13 @@ export type ProductList = {
   category: Category | null;
   btu: number | null;
 };
+export type ProductReview = {
+  author: string;
+  rating: number;
+  text: string | null;
+  date: string | null;
+  locale: string | null;
+};
 export type ProductDetail = ProductList & {
   description: string | null;
   warranty_months: number | null;
@@ -115,6 +122,10 @@ export type ProductDetail = ProductList & {
   moq: number;
   pack_size: number;
   faq?: { q: string; a: string }[] | null;
+  // Reviews (backend may still be old — all optional; render only when present).
+  reviews?: ProductReview[] | null;
+  rating_avg?: number | null;
+  rating_count?: number | null;
 };
 export type ProductsResponse = { items: ProductList[]; total: number };
 export type SitemapItem = { slug: string; updated_at: string | null; is_b2b_only: boolean };
