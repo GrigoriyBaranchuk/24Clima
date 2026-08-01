@@ -4,7 +4,9 @@ import { JWT } from "google-auth-library";
 import { monitoredUrls } from "@/lib/seo-tracking";
 
 // Node runtime (default) — JWT signing needs Node crypto. Do NOT set edge.
-export const maxDuration = 60;
+// 11 URLs × 2 form factors on top of GSC and GA4. At 60s the PSI pass was being
+// cut off partway through the list every run.
+export const maxDuration = 300;
 
 const CRON_SECRET = process.env.CRON_SECRET;
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -211,78 +213,163 @@ async function syncGa4(
 // ---------------------------------------------------------------------------
 // PSI — PageSpeed Insights per monitored URL. Field (CrUX) + lab rows.
 // ---------------------------------------------------------------------------
+/** Both form factors: desktop and mobile can fail completely different audits. */
+const PSI_STRATEGIES = ["mobile", "desktop"] as const;
+/** All four categories come back in a single request — no extra round trips. */
+const PSI_CATEGORIES = ["performance", "accessibility", "best-practices", "seo"] as const;
+/**
+ * PSI answers in ~10s and this route also runs GSC and GA4 before it. Serially,
+ * the 11 monitored URLs never finished inside the function timeout — the tail of
+ * the list was silently never measured (4–8 of 11 pages landed on a normal day).
+ * Doubling the work for desktop makes bounded parallelism mandatory.
+ */
+const PSI_CONCURRENCY = 4;
+
+/** Fetches one page × form factor. Returns null when PSI didn't answer. */
+async function fetchPsiTarget(
+  url: string,
+  strategy: (typeof PSI_STRATEGIES)[number],
+  date: string,
+): Promise<{ cwv: CwvRow[]; audits: AuditRow[] } | null> {
+  const endpoint = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
+  endpoint.searchParams.set("url", url);
+  endpoint.searchParams.set("strategy", strategy);
+  for (const category of PSI_CATEGORIES) endpoint.searchParams.append("category", category);
+  if (PAGESPEED_API_KEY) endpoint.searchParams.set("key", PAGESPEED_API_KEY);
+
+  let res: Response;
+  try {
+    res = await fetch(endpoint.toString());
+  } catch {
+    return null;
+  }
+  if (!res.ok) return null;
+  const data = (await res.json().catch(() => null)) as PsiResponse | null;
+  if (!data) return null;
+
+  const cwv: CwvRow[] = [];
+
+  // Lab (Lighthouse) — always present.
+  const lab = data.lighthouseResult;
+  if (lab) {
+    cwv.push({
+      date,
+      url,
+      strategy,
+      source: "lab",
+      lcp_ms: lab.audits?.["largest-contentful-paint"]?.numericValue ?? null,
+      inp_ms: lab.audits?.["interaction-to-next-paint"]?.numericValue ?? null,
+      cls: lab.audits?.["cumulative-layout-shift"]?.numericValue ?? null,
+      perf_score: categoryScore(lab, "performance"),
+      a11y_score: categoryScore(lab, "accessibility"),
+      best_practices_score: categoryScore(lab, "best-practices"),
+      seo_score: categoryScore(lab, "seo"),
+    });
+  }
+  // Field (CrUX) — only when the URL has enough real-user data.
+  const field = data.loadingExperience?.metrics;
+  if (field) {
+    cwv.push({
+      date,
+      url,
+      strategy,
+      source: "field",
+      lcp_ms: field.LARGEST_CONTENTFUL_PAINT_MS?.percentile ?? null,
+      inp_ms: field.INTERACTION_TO_NEXT_PAINT?.percentile ?? null,
+      cls:
+        typeof field.CUMULATIVE_LAYOUT_SHIFT_SCORE?.percentile === "number"
+          ? field.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100 // CrUX returns CLS×100
+          : null,
+      // Category scores are a lab-only concept; field rows stay null.
+      perf_score: null,
+      a11y_score: null,
+      best_practices_score: null,
+      seo_score: null,
+    });
+  }
+
+  return { cwv, audits: lab ? failedAudits(lab, date, url, strategy) : [] };
+}
+
+function categoryScore(
+  lab: NonNullable<PsiResponse["lighthouseResult"]>,
+  category: (typeof PSI_CATEGORIES)[number],
+): number | null {
+  const score = lab.categories?.[category]?.score;
+  return typeof score === "number" ? score * 100 : null;
+}
+
+/**
+ * Audits scoring below 0.9 — what Lighthouse shows as failed or needing work.
+ * A null score means informative / manual / not-applicable, which is not a
+ * finding. An audit can belong to several categories; the first one wins so the
+ * rows stay unique per (date, url, strategy, audit_id).
+ */
+function failedAudits(
+  lab: NonNullable<PsiResponse["lighthouseResult"]>,
+  date: string,
+  url: string,
+  strategy: string,
+): AuditRow[] {
+  const byAuditId = new Map<string, AuditRow>();
+  for (const [category, cat] of Object.entries(lab.categories ?? {})) {
+    for (const ref of cat?.auditRefs ?? []) {
+      if (byAuditId.has(ref.id)) continue;
+      const audit = lab.audits?.[ref.id];
+      if (!audit || typeof audit.score !== "number" || audit.score >= 0.9) continue;
+      byAuditId.set(ref.id, {
+        date,
+        url,
+        strategy,
+        category,
+        audit_id: ref.id,
+        title: audit.title ?? ref.id,
+        score: audit.score,
+        display_value: audit.displayValue ?? null,
+      });
+    }
+  }
+  return [...byAuditId.values()];
+}
+
 async function syncPsi(supabase: SupabaseClient, date: string): Promise<SourceResult> {
-  const urls = monitoredUrls();
+  const targets = monitoredUrls().flatMap((url) =>
+    PSI_STRATEGIES.map((strategy) => ({ url, strategy })),
+  );
   let total = 0;
   let partial = false;
 
-  for (const url of urls) {
-    const endpoint = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
-    endpoint.searchParams.set("url", url);
-    endpoint.searchParams.set("strategy", "mobile");
-    endpoint.searchParams.set("category", "performance");
-    if (PAGESPEED_API_KEY) endpoint.searchParams.set("key", PAGESPEED_API_KEY);
+  for (let i = 0; i < targets.length; i += PSI_CONCURRENCY) {
+    const batch = targets.slice(i, i + PSI_CONCURRENCY);
+    const results = await Promise.all(
+      batch.map(async (t) => ({ target: t, data: await fetchPsiTarget(t.url, t.strategy, date) })),
+    );
 
-    let res: Response;
-    try {
-      res = await fetch(endpoint.toString());
-    } catch {
-      partial = true;
-      continue;
-    }
-    if (!res.ok) {
-      partial = true;
-      continue;
-    }
-    const data = (await res.json().catch(() => null)) as PsiResponse | null;
-    if (!data) {
-      partial = true;
-      continue;
-    }
-
-    const rows: CwvRow[] = [];
-
-    // Lab (Lighthouse) — always present.
-    const lab = data.lighthouseResult;
-    if (lab) {
-      rows.push({
-        date,
-        url,
-        strategy: "mobile",
-        source: "lab",
-        lcp_ms: lab.audits?.["largest-contentful-paint"]?.numericValue ?? null,
-        inp_ms: lab.audits?.["interaction-to-next-paint"]?.numericValue ?? null,
-        cls: lab.audits?.["cumulative-layout-shift"]?.numericValue ?? null,
-        perf_score:
-          typeof lab.categories?.performance?.score === "number"
-            ? lab.categories.performance.score * 100
-            : null,
-      });
-    }
-    // Field (CrUX) — only when the URL has enough real-user data.
-    const field = data.loadingExperience?.metrics;
-    if (field) {
-      rows.push({
-        date,
-        url,
-        strategy: "mobile",
-        source: "field",
-        lcp_ms: field.LARGEST_CONTENTFUL_PAINT_MS?.percentile ?? null,
-        inp_ms: field.INTERACTION_TO_NEXT_PAINT?.percentile ?? null,
-        cls:
-          typeof field.CUMULATIVE_LAYOUT_SHIFT_SCORE?.percentile === "number"
-            ? field.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100 // CrUX returns CLS×100
-            : null,
-        perf_score: null,
-      });
-    }
-
-    if (rows.length) {
-      const { error } = await supabase
-        .from("seo_cwv_snapshots")
-        .upsert(rows, { onConflict: "date,url,strategy,source", ignoreDuplicates: false });
-      if (error) partial = true;
-      else total += rows.length;
+    for (const { target, data } of results) {
+      if (!data) {
+        partial = true;
+        continue;
+      }
+      if (data.cwv.length) {
+        const { error } = await supabase
+          .from("seo_cwv_snapshots")
+          .upsert(data.cwv, { onConflict: "date,url,strategy,source", ignoreDuplicates: false });
+        if (error) partial = true;
+        else total += data.cwv.length;
+      }
+      // Replace the day's findings for this page rather than merging: an audit
+      // that now passes must disappear, and upsert alone would leave it behind.
+      const { error: delError } = await supabase
+        .from("seo_psi_audits")
+        .delete()
+        .eq("date", date)
+        .eq("url", target.url)
+        .eq("strategy", target.strategy);
+      if (delError) partial = true;
+      if (data.audits.length) {
+        const { error } = await supabase.from("seo_psi_audits").insert(data.audits);
+        if (error) partial = true;
+      }
     }
   }
 
@@ -298,12 +385,29 @@ type CwvRow = {
   inp_ms: number | null;
   cls: number | null;
   perf_score: number | null;
+  a11y_score: number | null;
+  best_practices_score: number | null;
+  seo_score: number | null;
+};
+
+type AuditRow = {
+  date: string;
+  url: string;
+  strategy: string;
+  category: string;
+  audit_id: string;
+  title: string;
+  score: number;
+  display_value: string | null;
 };
 
 type PsiResponse = {
   lighthouseResult?: {
-    categories?: { performance?: { score?: number } };
-    audits?: Record<string, { numericValue?: number }>;
+    categories?: Record<string, { score?: number; auditRefs?: { id: string }[] } | undefined>;
+    audits?: Record<
+      string,
+      { numericValue?: number; score?: number | null; title?: string; displayValue?: string }
+    >;
   };
   loadingExperience?: {
     metrics?: {

@@ -139,14 +139,17 @@ export default function ProblemsContent() {
                         <Icon className="w-6 h-6 text-red-500" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold text-[#1e3a5f] mb-2">{problem.title}</h3>
+                        {/* h2: the page's only other heading is the h1, so a
+                            card title at h3 skipped a level. Sizing comes from
+                            the classes, so nothing changes visually. */}
+                        <h2 className="text-xl font-semibold text-[#1e3a5f] mb-2">{problem.title}</h2>
                         <p className="text-gray-600 text-base leading-relaxed">{problem.description}</p>
                       </div>
                     </div>
                   </div>
                   <div className="p-6 pt-4">
                     <div className="mb-6">
-                      <h4 className="font-semibold text-[#1e3a5f] mb-3">{t("possibleCauses")}</h4>
+                      <h3 className="font-semibold text-[#1e3a5f] mb-3">{t("possibleCauses")}</h3>
                       <ul className="grid grid-cols-2 gap-2">
                         {problem.causes.map((cause, idx) => (
                           <li key={idx} className="flex items-center gap-2 text-base text-gray-600">
@@ -157,7 +160,7 @@ export default function ProblemsContent() {
                       </ul>
                     </div>
                     <div className="bg-green-50 rounded-lg p-4 mb-6">
-                      <h4 className="font-semibold text-[#0F9D58] mb-2">{t("ourSolution")}</h4>
+                      <h3 className="font-semibold text-[#0F9D58] mb-2">{t("ourSolution")}</h3>
                       <p className="text-base text-gray-700">{problem.solution}</p>
                     </div>
                     <Button asChild className="w-full bg-[#1e3a5f] hover:bg-[#0d2240] text-white">

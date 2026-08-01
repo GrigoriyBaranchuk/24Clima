@@ -2,14 +2,20 @@
 
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-interface ScrollRevealProps {
+type ScrollRevealProps = {
   children: React.ReactNode;
   className?: string;
   /** Animation variant */
   animation?: "fade-up" | "fade-in" | "fade-left" | "fade-right";
   /** Delay in ms (applied as transition-delay) */
   delay?: number;
-}
+  /**
+   * Tag to render. Defaults to `div`; pass `li` when the wrapper sits directly
+   * inside a `<ul>` — otherwise the wrapper breaks the list's semantics by
+   * standing between the list and its items.
+   */
+  as?: "div" | "li";
+} & { [key: `data-${string}`]: string | number | undefined };
 
 const hiddenStyles: Record<string, React.CSSProperties> = {
   "fade-up": {
@@ -45,6 +51,8 @@ export default function ScrollReveal({
   className = "",
   animation = "fade-up",
   delay = 0,
+  as: Tag = "div",
+  ...rest
 }: ScrollRevealProps) {
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
 
@@ -56,15 +64,18 @@ export default function ScrollReveal({
   };
 
   return (
-    <div
-      ref={ref}
+    <Tag
+      // The hook is generic over one element type; `div` and `li` are different
+      // DOM interfaces, so the ref needs a cast to satisfy both tags.
+      ref={ref as React.RefObject<HTMLDivElement & HTMLLIElement>}
       className={className}
       style={{
         ...baseStyles,
         ...(isVisible ? visibleStyles : hiddenStyles[animation]),
       }}
+      {...rest}
     >
       {children}
-    </div>
+    </Tag>
   );
 }
