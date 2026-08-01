@@ -4,7 +4,7 @@ import { buildSeoAggregate, aggregateToContext } from "@/lib/seo-aggregate";
 import { getAnthropic, SEO_AGENT_MODEL, CHAT_SYSTEM } from "@/lib/seo-agent";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -31,8 +31,11 @@ export async function POST(req: NextRequest) {
 
   const stream = anthropic.messages.stream({
     model: SEO_AGENT_MODEL,
-    max_tokens: 2000,
-    output_config: { effort: "medium" },
+    max_tokens: 8000,
+    // Low effort keeps thinking short: we only stream text_delta, so every
+    // thinking token is dead air in the admin chat. The task is Q&A over data
+    // already in the prompt, not deep reasoning.
+    output_config: { effort: "low" },
     system,
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
   });

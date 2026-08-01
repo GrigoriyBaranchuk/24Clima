@@ -7,8 +7,14 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 
-/** One place to swap the model. Opus is the default; sonnet is the cheaper option. */
-export const SEO_AGENT_MODEL = "claude-opus-4-8";
+/**
+ * One place to swap the model. Opus is the default; sonnet is the cheaper option.
+ *
+ * On Opus 5 thinking is ON unless the request says otherwise, and `max_tokens`
+ * caps thinking + answer together — so both routes budget for it (analyze needs
+ * the headroom most: a truncated response means unparseable JSON).
+ */
+export const SEO_AGENT_MODEL = "claude-opus-5";
 
 /** Returns an Anthropic client, or null if the API key isn't configured. */
 export function getAnthropic(): Anthropic | null {

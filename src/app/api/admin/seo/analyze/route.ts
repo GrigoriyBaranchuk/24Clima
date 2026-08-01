@@ -10,7 +10,9 @@ import {
 } from "@/lib/seo-agent";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+// Thinking runs before the JSON comes back, so the whole call takes longer than
+// it did on Opus 4.8 — 60s was cutting it close.
+export const maxDuration = 300;
 
 export async function POST(req: NextRequest) {
   const auth = await requireAdmin(req);
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest) {
   try {
     const response = await anthropic.messages.create({
       model: SEO_AGENT_MODEL,
-      max_tokens: 4000,
+      max_tokens: 12000,
       system: ANALYZE_SYSTEM,
       output_config: {
         effort: "medium",
@@ -37,6 +39,14 @@ export async function POST(req: NextRequest) {
       },
       messages: [{ role: "user", content: `Datos de esta semana:\n\n${context}` }],
     });
+    // Both cases would otherwise surface as an opaque JSON parse error: a
+    // truncated answer isn't valid JSON, and a refusal has no text block at all.
+    if (response.stop_reason === "max_tokens") {
+      throw new Error("respuesta truncada (max_tokens) — subir el límite");
+    }
+    if (response.stop_reason === "refusal") {
+      throw new Error("el modelo rechazó la petición");
+    }
     const textBlock = response.content.find((b) => b.type === "text");
     const parsed = JSON.parse(textBlock && "text" in textBlock ? textBlock.text : "{}") as {
       recommendations?: AgentRecommendation[];
