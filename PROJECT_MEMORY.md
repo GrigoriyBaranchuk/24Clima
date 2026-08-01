@@ -360,3 +360,19 @@ GSC (02.07) флагал страницы статей (`/consejos-y-guias/aire-
 - skill-доки `24clima-seo-guide` (json-ld-catalog.md — инцидент 2026-07, local-seo.md — исправлена трактовка self-serving) обновлены.
 
 `bun run build` зелёный, prerendered HTML без `aggregateRating`. После деплоя: Rich Results Test на статью + «Проверить исправление» в GSC.
+
+## Сессия 2026-07-31 — Фикс невидимых графиков на `/consejos-y-guias/admin/seo`
+
+Симптом: на дашборде оба LineChart (GSC клики/показы, GA4 сессии) рисовались пустыми — только сетка, оси и тултип, без линий.
+
+Диагноз: в `src/components/admin/seo/MetricsOverview.tsx` серии задавались как `stroke="hsl(var(--chart-1..3))"`, но CSS-переменные `--chart-1..5` **нигде не определены** — ни в `src/app/globals.css`, ни в `@24clima/design/tokens.css`. На них ссылается только `tailwind.config.ts` (`colors.chart.1..5`), т.е. маппинг Tailwind тоже висит на пустых переменных. Невалидный `stroke` откатывается в initial value `none` → path не рисуется. Проверено в браузере: `getComputedStyle(path).stroke === "none"` для `hsl(var(--chart-1))`, обе явные hex-линии видны.
+
+Фикс (commit `4c12c16`, ветка `worktree-fix+seo-chart-colors`):
+- локальная константа `CHART` с явными hex: `#29a366` (брендовый зелёный, hsl 150 60% 40%) и `#4059c4`;
+- палитра прогнана валидатором skill `dataviz`: ΔE 25.5 (deutan) / 14.1 (tritan), контраст к фону ≥3:1 — все проверки PASS;
+- добавлены `<Legend/>` для двухсерийного графика и `strokeWidth={2}`;
+- токены НЕ трогали (правило: значения живут в `@24clima/design`).
+
+`tsc --noEmit` и `npm run build` зелёные. Biome ругается на этот файл (сортировка импортов + форматтер) — **предсуществующее**, есть и на `main` до правки, не трогали чтобы не хоронить диff.
+
+**Грабли на будущее:** `tailwind.config.ts` до сих пор объявляет `colors.chart.1..5` через несуществующие `--chart-*`. Любой `bg-chart-1`/`text-chart-2`/`stroke-chart-3` в новом коде молча даст невидимый элемент. Либо определить переменные в пакете `@24clima/design`, либо выпилить блок из `tailwind.config.ts`.
