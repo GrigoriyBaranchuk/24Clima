@@ -125,6 +125,7 @@ export default function CalculatorDesktop() {
                       type="number"
                       min="1"
                       max="99"
+                      aria-label={t("quantity")}
                       value={quantity}
                       onChange={(e) => handleQuantityChange(e.target.value)}
                       className="w-16 h-12 text-center bg-transparent text-white font-bold text-lg border-x border-white/20 focus:outline-none focus:bg-white/10 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"

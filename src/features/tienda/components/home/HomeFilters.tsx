@@ -1,5 +1,7 @@
 "use client";
 
+import { useId } from "react";
+
 import { useRouter, usePathname } from "@/i18n/routing";
 import type { Category, Brand } from "../../lib/api-client";
 
@@ -54,6 +56,14 @@ export function HomeFilters(props: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const showBtuFilter = currentCategory === AIR_CONDITIONING_SLUG;
+  // The selects keep their <h3> as the visible group heading (page outline
+  // stays intact) and borrow it as accessible name via aria-labelledby; the
+  // BTU fields already have real <label>s, they just weren't associated.
+  const categoryLabelId = useId();
+  const brandLabelId = useId();
+  const sortLabelId = useId();
+  const btuMinId = useId();
+  const btuMaxId = useId();
 
   function updateParams(updates: {
     category?: string | null;
@@ -91,10 +101,14 @@ export function HomeFilters(props: Props) {
   return (
     <aside className="space-y-6">
       <div className="rounded-2xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <h3
+          id={categoryLabelId}
+          className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground"
+        >
           {labels.filterCategory}
         </h3>
         <select
+          aria-labelledby={categoryLabelId}
           value={currentCategory ?? ""}
           onChange={(e) => updateParams({ category: e.target.value || null })}
           className="w-full rounded-xl border border-input/80 bg-background/80 px-4 py-3 text-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
@@ -109,10 +123,14 @@ export function HomeFilters(props: Props) {
       </div>
 
       <div className="rounded-2xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <h3
+          id={brandLabelId}
+          className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground"
+        >
           {labels.filterBrand}
         </h3>
         <select
+          aria-labelledby={brandLabelId}
           value={currentBrand ?? ""}
           onChange={(e) => updateParams({ brand: e.target.value || null })}
           className="w-full rounded-xl border border-input/80 bg-background/80 px-4 py-3 text-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
@@ -133,8 +151,11 @@ export function HomeFilters(props: Props) {
           </h3>
           <div className="space-y-3">
             <div>
-              <label className="mb-1 block text-xs text-muted-foreground">{labels.btuMin}</label>
+              <label htmlFor={btuMinId} className="mb-1 block text-xs text-muted-foreground">
+                {labels.btuMin}
+              </label>
               <input
+                id={btuMinId}
                 type="number"
                 min={0}
                 step={1000}
@@ -148,8 +169,11 @@ export function HomeFilters(props: Props) {
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-muted-foreground">{labels.btuMax}</label>
+              <label htmlFor={btuMaxId} className="mb-1 block text-xs text-muted-foreground">
+                {labels.btuMax}
+              </label>
               <input
+                id={btuMaxId}
                 type="number"
                 min={0}
                 step={1000}
@@ -167,10 +191,14 @@ export function HomeFilters(props: Props) {
       )}
 
       <div className="rounded-2xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <h3
+          id={sortLabelId}
+          className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground"
+        >
           {labels.filterSort}
         </h3>
         <select
+          aria-labelledby={sortLabelId}
           value={currentSort}
           onChange={(e) => updateParams({ sort: e.target.value })}
           className="w-full rounded-xl border border-input/80 bg-background/80 px-4 py-3 text-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"

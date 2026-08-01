@@ -191,8 +191,9 @@ export default function AdminClient() {
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t("email")}</label>
+                <label htmlFor="admin-email" className="block text-sm font-medium text-gray-700 mb-1">{t("email")}</label>
                 <input
+                  id="admin-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -201,8 +202,9 @@ export default function AdminClient() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t("password")}</label>
+                <label htmlFor="admin-password" className="block text-sm font-medium text-gray-700 mb-1">{t("password")}</label>
                 <input
+                  id="admin-password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -282,8 +284,9 @@ export default function AdminClient() {
         <Card ref={formCardRef}>
           <CardContent className="pt-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t("slug")}</label>
+              <label htmlFor="admin-slug" className="block text-sm font-medium text-gray-700 mb-1">{t("slug")}</label>
               <input
+                id="admin-slug"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
                 placeholder="como-elegir-condicionador"
@@ -291,8 +294,9 @@ export default function AdminClient() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitle")}</label>
+              <label htmlFor="admin-title-ru" className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitle")}</label>
               <input
+                id="admin-title-ru"
                 value={titleRu}
                 onChange={(e) => setTitleRu(e.target.value)}
                 placeholder="Как выбрать кондиционер в комнату"
@@ -300,8 +304,9 @@ export default function AdminClient() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitleEs")}</label>
+              <label htmlFor="admin-title-es" className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitleEs")}</label>
               <input
+                id="admin-title-es"
                 value={titleEs}
                 onChange={(e) => setTitleEs(e.target.value)}
                 placeholder="Cómo elegir un acondicionador de aire"
@@ -309,8 +314,9 @@ export default function AdminClient() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitleEn")}</label>
+              <label htmlFor="admin-title-en" className="block text-sm font-medium text-gray-700 mb-1">{t("articleTitleEn")}</label>
               <input
+                id="admin-title-en"
                 value={titleEn}
                 onChange={(e) => setTitleEn(e.target.value)}
                 placeholder="How to choose an air conditioner"
@@ -318,8 +324,9 @@ export default function AdminClient() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleContent")}</label>
+              <label htmlFor="admin-content-ru" className="block text-sm font-medium text-gray-700 mb-1">{t("articleContent")}</label>
               <textarea
+                id="admin-content-ru"
                 value={contentRu}
                 onChange={(e) => setContentRu(e.target.value)}
                 placeholder="Текст статьи на русском. Можно использовать HTML: <p>, <h2>, <ul>, <li>, <img src='url'> и т.д."
@@ -328,8 +335,9 @@ export default function AdminClient() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleContentEs")}</label>
+              <label htmlFor="admin-content-es" className="block text-sm font-medium text-gray-700 mb-1">{t("articleContentEs")}</label>
               <textarea
+                id="admin-content-es"
                 value={contentEs}
                 onChange={(e) => setContentEs(e.target.value)}
                 placeholder="Contenido en español (opcional)"
@@ -338,8 +346,9 @@ export default function AdminClient() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t("articleContentEn")}</label>
+              <label htmlFor="admin-content-en" className="block text-sm font-medium text-gray-700 mb-1">{t("articleContentEn")}</label>
               <textarea
+                id="admin-content-en"
                 value={contentEn}
                 onChange={(e) => setContentEn(e.target.value)}
                 placeholder="Content in English (optional)"
@@ -348,8 +357,9 @@ export default function AdminClient() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t("addImage")}</label>
+              <label htmlFor="admin-image" className="block text-sm font-medium text-gray-700 mb-2">{t("addImage")}</label>
               <input
+                id="admin-image"
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}

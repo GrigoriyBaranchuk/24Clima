@@ -124,8 +124,11 @@ export default function SeoAdminClient() {
             ) : (
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label htmlFor="seo-login-email" className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
                   <input
+                    id="seo-login-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -134,8 +137,11 @@ export default function SeoAdminClient() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
+                  <label htmlFor="seo-login-password" className="block text-sm font-medium text-gray-700 mb-1">
+                    Пароль
+                  </label>
                   <input
+                    id="seo-login-password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

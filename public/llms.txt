@@ -1,0 +1,48 @@
+# 24clima
+
+> Air conditioning (HVAC) service company in Panama City and Panamá Oeste. Installation, maintenance, deep cleaning, repair and refrigerant recharge, plus temporary AC rental for events. Available 24/7. Quotes and bookings go through WhatsApp: +507 6828-2120.
+
+Site content is written in Spanish (default, no URL prefix). English and Russian translations of the same pages live under `/en/` and `/ru/`. Prices range from $29.99 to $600. Founded 2024. Instagram: https://www.instagram.com/24clima
+
+## Services
+
+- [AC deep cleaning](https://24clima.com/servicios/limpieza/): coil and filter cleaning, the entry-level service (from $29.99 per unit).
+- [Maintenance](https://24clima.com/servicios/mantenimiento/): scheduled preventive maintenance for split and window units.
+- [Repair](https://24clima.com/servicios/reparacion/): diagnosis and repair of units that fail to cool, leak or make noise.
+- [Installation](https://24clima.com/servicios/instalacion/): installation of new split, multi-split and window units.
+- [Refrigerant recharge](https://24clima.com/servicios/carga-de-gas/): gas top-up and leak detection.
+- [24/7 emergency service](https://24clima.com/servicios/emergencia/): same-day and after-hours callouts.
+
+## For businesses and property managers
+
+- [Service for PH property administrators](https://24clima.com/servicio-para-administradoras-ph/): building-wide AC service for condominium administrators.
+- [Maintenance contracts](https://24clima.com/contrato-mantenimiento-aire-acondicionado/): recurring maintenance agreements.
+- [AC rental for events](https://24clima.com/alquiler-aire-acondicionado-eventos/): temporary cooling for tents, expos, conferences and weddings.
+
+## Tools and information
+
+- [Cleaning cost calculator](https://24clima.com/diagnostico/): estimates AC cleaning cost by number of units.
+- [Service areas](https://24clima.com/areas-de-servicio/): the zones covered, listed below.
+- [Guides and advice](https://24clima.com/consejos-y-guias/): articles on choosing, running and maintaining air conditioners in Panama's tropical climate.
+- [About](https://24clima.com/nosotros/): company background and technical credentials.
+- [Contact](https://24clima.com/contacto/): contact form and WhatsApp.
+
+## Store
+
+- [Online store](https://24clima.com/tienda/): air conditioners, materials and supplies.
+- [Air conditioners](https://24clima.com/tienda/category/aire-acondicionado/)
+- [Materials and supplies](https://24clima.com/tienda/category/materiales-insumos/)
+- [Professional tools](https://24clima.com/tienda/profesional/)
+- [Returns policy](https://24clima.com/tienda/devoluciones/)
+
+## Service area
+
+Ciudad de Panamá: Costa del Este, Punta Pacífica, Albrook, Clayton, Panamá Pacífico, San Francisco, El Cangrejo, Obarrio, Bella Vista.
+Panamá Oeste: Arraiján, Nuevo Arraiján, Vista Alegre, Costa Verde, La Chorrera, El Espino, La Floresta, Vacamonte, Playa Dorada Residences.
+
+## Contact
+
+- WhatsApp (primary): +507 6828-2120 — https://wa.me/50768282120
+- Hours: 24 hours a day, 7 days a week
+- Location: Ciudad de Panamá, Panamá, Panama
+- Languages spoken: Spanish, English, Russian
