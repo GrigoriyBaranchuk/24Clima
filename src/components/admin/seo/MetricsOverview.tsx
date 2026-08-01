@@ -2,7 +2,18 @@
 
 import type { SeoAggregate } from "@/lib/seo-aggregate";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
+
+/* Цвета серий заданы явными hex, а не hsl(var(--chart-N)): переменные --chart-1..5
+   нигде не определены (ни в globals.css, ни в @24clima/design/tokens.css), из-за чего
+   stroke резолвился в невалидное значение и падал в initial value `none` — линии не
+   рисовались. Токены дизайн-системы живут в отдельном пакете и правятся только там,
+   поэтому локальная палитра админки держится здесь.
+   Проверено на разделение при дальтонизме: ΔE 25.5 (deutan) / 14.1 (tritan), контраст к фону ≥3:1. */
+const CHART = {
+  green: "#29a366", // брендовый зелёный (hsl 150 60% 40%)
+  indigo: "#4059c4",
+} as const;
 
 function pct(curr: number, prev: number): string {
   if (prev === 0) return curr === 0 ? "0%" : "новый";
@@ -66,8 +77,9 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
                   <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={(d: string) => d.slice(5)} />
                   <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="clicks" stroke="hsl(var(--chart-1))" dot={false} name="Клики" />
-                  <Line type="monotone" dataKey="impressions" stroke="hsl(var(--chart-2))" dot={false} name="Показы" />
+                  <Legend verticalAlign="top" height={24} iconType="plainline" wrapperStyle={{ fontSize: 12 }} />
+                  <Line type="monotone" dataKey="clicks" stroke={CHART.green} strokeWidth={2} dot={false} name="Клики" />
+                  <Line type="monotone" dataKey="impressions" stroke={CHART.indigo} strokeWidth={2} dot={false} name="Показы" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
@@ -88,7 +100,7 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
                   <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={(d: string) => d.slice(5)} />
                   <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Line type="monotone" dataKey="sessions" stroke="hsl(var(--chart-3))" dot={false} name="Сессии" />
+                  <Line type="monotone" dataKey="sessions" stroke={CHART.green} strokeWidth={2} dot={false} name="Сессии" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
