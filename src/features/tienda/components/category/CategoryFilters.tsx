@@ -1,5 +1,7 @@
 "use client";
 
+import { useId } from "react";
+
 import { useRouter, usePathname } from "@/i18n/routing";
 
 type Props = {
@@ -21,6 +23,10 @@ export function CategoryFilters({
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
+  // useId: the filter panel can render more than once per page (sidebar +
+  // mobile sheet), and duplicate ids would break label↔input association.
+  const btuMinId = useId();
+  const btuMaxId = useId();
 
   function updateParams(updates: { btu_min?: number | null; btu_max?: number | null; include_pro?: boolean }) {
     const btuMin = updates.btu_min !== undefined ? updates.btu_min : currentBtuMin;
@@ -45,8 +51,11 @@ export function CategoryFilters({
           </h3>
           <div className="flex flex-wrap items-end gap-4">
             <div>
-              <label className="mb-1 block text-xs text-muted-foreground">{labels.btuMin}</label>
+              <label htmlFor={btuMinId} className="mb-1 block text-xs text-muted-foreground">
+                {labels.btuMin}
+              </label>
               <input
+                id={btuMinId}
                 type="number"
                 min={0}
                 step={1000}
@@ -60,8 +69,11 @@ export function CategoryFilters({
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-muted-foreground">{labels.btuMax}</label>
+              <label htmlFor={btuMaxId} className="mb-1 block text-xs text-muted-foreground">
+                {labels.btuMax}
+              </label>
               <input
+                id={btuMaxId}
                 type="number"
                 min={0}
                 step={1000}

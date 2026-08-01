@@ -102,6 +102,7 @@ export function ChatPanel({ authFetch }: { authFetch: AuthFetch }) {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            aria-label="Вопрос SEO-агенту"
             placeholder="Введите вопрос…"
             disabled={streaming}
             className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm"
