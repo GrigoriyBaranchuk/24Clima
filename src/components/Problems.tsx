@@ -172,7 +172,7 @@ export default async function Problems() {
           <ProblemsLeadButton
             href={getWhatsAppLink(tWhatsapp("problemIntro"))}
             size="lg"
-            className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold"
+            className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold"
           >
             {t("describeByWhatsApp")}
           </ProblemsLeadButton>

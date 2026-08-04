@@ -85,13 +85,13 @@ export default function BottomNav() {
             href={getWhatsAppLink(tWhatsapp("general"))}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center w-[52px] h-[52px] rounded-full bg-[#25D366] shadow-[0_4px_12px_rgba(37,211,102,0.35)] border-[3px] border-white active:scale-95 transition-transform"
+            className="flex items-center justify-center w-[52px] h-[52px] rounded-full bg-whatsapp-contrast shadow-[0_4px_12px_rgba(37,211,102,0.35)] border-[3px] border-white active:scale-95 transition-transform"
             aria-label="Escribenos por WhatsApp"
             onClick={() => metaPixelEvent("Contact")}
           >
             {WHATSAPP_SVG}
           </a>
-          <span className="text-[10px] font-semibold text-[#25D366] mt-0.5 leading-tight">
+          <span className="text-[10px] font-semibold text-whatsapp-contrast mt-0.5 leading-tight">
             Escribenos
           </span>
         </div>

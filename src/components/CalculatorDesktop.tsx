@@ -102,7 +102,7 @@ export default function CalculatorDesktop() {
                       onClick={() => setQuantity(num)}
                       className={`w-14 h-14 rounded-xl font-bold text-lg transition-all active:scale-95 ${
                         quantity === num && quantity <= 5
-                          ? "bg-[#7BC043] text-white scale-105"
+                          ? "bg-brand-green-contrast text-white scale-105"
                           : "bg-white/10 text-white hover:bg-white/20"
                       }`}
                     >
@@ -208,7 +208,7 @@ export default function CalculatorDesktop() {
               <Button
                 asChild
                 size="lg"
-                className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-lg py-6 rounded-md whatsapp-pulse"
+                className="w-full bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-lg py-6 rounded-md whatsapp-pulse"
               >
                 <a
                   href={getWhatsAppLink(generateWhatsAppMessage())}

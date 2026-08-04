@@ -115,7 +115,7 @@ export default function ProblemsContent() {
                         <Button
                           asChild
                           size="sm"
-                          className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold rounded-full h-10 active:scale-95 transition-transform"
+                          className="w-full bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold rounded-full h-10 active:scale-95 transition-transform"
                         >
                           <a
                             href={getWhatsAppLink(problem.title)}
@@ -188,7 +188,7 @@ export default function ProblemsContent() {
           <Button
             asChild
             size="lg"
-            className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold rounded-full lg:rounded-md active:scale-95 transition-transform"
+            className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold rounded-full lg:rounded-md active:scale-95 transition-transform"
           >
             <a
               href={getWhatsAppLink(tWhatsapp("problemIntro"))}

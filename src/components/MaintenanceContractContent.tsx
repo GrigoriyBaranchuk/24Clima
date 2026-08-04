@@ -97,7 +97,7 @@ export default async function MaintenanceContractContent() {
             }`}
           >
             {tier.highlight && (
-              <div className="absolute top-0 right-6 -translate-y-1/2 bg-[#7BC043] text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+              <div className="absolute top-0 right-6 -translate-y-1/2 bg-brand-green-contrast text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                 <Star className="w-3 h-3" />
                 {t("tierLabel")}
               </div>
@@ -123,7 +123,7 @@ export default async function MaintenanceContractContent() {
               size="lg"
               className={`w-full ${
                 tier.highlight
-                  ? "bg-[#25D366] hover:bg-[#20BD5A] text-white"
+                  ? "bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white"
                   : "bg-[#1e3a5f] hover:bg-[#0d2240] text-white"
               }`}
             >
@@ -178,7 +178,7 @@ export default async function MaintenanceContractContent() {
         <Button
           asChild
           size="lg"
-          className="relative z-10 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
+          className="relative z-10 bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
         >
           <TrackedWhatsAppLink
             href={getWhatsAppLink(t("footerCtaWhatsappMessage"))}

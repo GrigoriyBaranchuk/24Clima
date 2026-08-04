@@ -95,7 +95,7 @@ export default async function EventCoolingContent() {
             <Button
               asChild
               size="lg"
-              className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
+              className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
             >
               <TrackedWhatsAppLink href={getWhatsAppLink(t("whatsappMessage"))} eventName="Lead">
                 <MessageCircle className="w-5 h-5 mr-2" />
@@ -251,7 +251,7 @@ export default async function EventCoolingContent() {
           <Button
             asChild
             size="lg"
-            className="relative z-10 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
+            className="relative z-10 bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
           >
             <TrackedWhatsAppLink href={getWhatsAppLink(t("whatsappMessage"))} eventName="Lead">
               <MessageCircle className="w-5 h-5 mr-2" />

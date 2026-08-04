@@ -67,7 +67,7 @@ export default function Contact() {
 
         {/* Main CTA Card — w-full for Safari centering */}
         <div className="w-full max-w-4xl mx-auto mb-12">
-          <Card className="bg-gradient-to-r from-[#25D366] to-[#128C7E] border-0 shadow-2xl overflow-hidden">
+          <Card className="bg-gradient-to-r from-whatsapp-contrast to-[#128C7E] border-0 shadow-2xl overflow-hidden">
             <CardContent className="p-8 lg:p-12">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div className="text-white">
@@ -86,7 +86,7 @@ export default function Contact() {
                   <Button
                     asChild
                     size="lg"
-                    className="bg-white text-[#25D366] hover:bg-gray-100 font-bold text-lg px-8 py-6 shadow-lg whatsapp-pulse"
+                    className="bg-white text-whatsapp-contrast hover:bg-gray-100 font-bold text-lg px-8 py-6 shadow-lg whatsapp-pulse"
                   >
                     <a
                       href={getWhatsAppLink(tWhatsapp("appointment"))}
@@ -122,11 +122,11 @@ export default function Contact() {
             >
               <Card className={`card-hover border-0 shadow-md h-full ${method.primary ? "bg-[#25D366]/5 border-2 border-[#25D366]/20" : "bg-gray-50"}`}>
                 <CardContent className="p-6 text-center">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 ${method.primary ? "bg-[#25D366]" : "bg-[#1e3a5f]"}`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 ${method.primary ? "bg-whatsapp-contrast" : "bg-[#1e3a5f]"}`}>
                     <method.icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-[#1e3a5f] mb-1">{method.title}</h3>
-                  <p className={`font-medium mb-1 ${method.primary ? "text-[#25D366]" : "text-gray-700"}`}>
+                  <p className={`font-medium mb-1 ${method.primary ? "text-whatsapp-contrast" : "text-gray-700"}`}>
                     {method.value}
                   </p>
                   <p className="text-base text-gray-500">{method.description}</p>

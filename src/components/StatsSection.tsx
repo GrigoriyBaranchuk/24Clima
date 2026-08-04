@@ -76,7 +76,7 @@ export default async function StatsSection({ locale: _locale }: Props = {}) {
       {/* Decorative blur background — desktop only */}
       <div className="absolute inset-0 opacity-10 pointer-events-none hidden lg:block">
         <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-80 h-80 bg-[#7BC043] rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-80 h-80 bg-brand-green rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">

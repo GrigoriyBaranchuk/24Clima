@@ -287,7 +287,7 @@ export default async function DiagnosticoPage({ params }: Props) {
                   <Button
                     asChild
                     size="sm"
-                    className="bg-[#25D366] hover:bg-[#20BD5A] text-white"
+                    className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white"
                   >
                     <TrackedWhatsAppLink
                       href={`https://wa.me/50768282120?text=${encodeURIComponent(
@@ -324,7 +324,7 @@ export default async function DiagnosticoPage({ params }: Props) {
             <Button
               asChild
               size="lg"
-              className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold"
+              className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold"
             >
               <TrackedWhatsAppLink
                 href={`https://wa.me/50768282120?text=${encodeURIComponent(whatsAppGenericMsg[locale])}`}

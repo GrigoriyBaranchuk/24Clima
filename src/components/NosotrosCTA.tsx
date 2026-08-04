@@ -23,7 +23,7 @@ export default function NosotrosCTA() {
           <Button
             asChild
             size="lg"
-            className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-lg px-8 py-6 active:scale-[0.98] transition-all"
+            className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-lg px-8 py-6 active:scale-[0.98] transition-all"
           >
             <a
               href={getWhatsAppLink(tWhatsapp("general"))}

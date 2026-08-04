@@ -63,7 +63,7 @@ export default async function PropertyManagementContent() {
             <Button
               asChild
               size="lg"
-              className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
+              className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
             >
               <TrackedWhatsAppLink
                 href={getWhatsAppLink(t("whatsappMessage"))}
@@ -102,7 +102,7 @@ export default async function PropertyManagementContent() {
               key={key}
               className="group p-6 rounded-2xl bg-white border border-gray-200 hover:border-[#7BC043]/50 hover:shadow-md transition-[box-shadow,border-color,transform] hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
             >
-              <div className="w-11 h-11 rounded-xl bg-[#7BC043]/10 flex items-center justify-center mb-4 group-hover:bg-[#7BC043] transition-colors">
+              <div className="w-11 h-11 rounded-xl bg-[#7BC043]/10 flex items-center justify-center mb-4 group-hover:bg-brand-green-contrast transition-colors">
                 <Icon className="w-5 h-5 text-[#0F9D58] group-hover:text-white transition-colors" />
               </div>
               <p className="text-base text-gray-700 leading-relaxed">{t(key)}</p>
@@ -226,7 +226,7 @@ export default async function PropertyManagementContent() {
         <Button
           asChild
           size="lg"
-          className="relative z-10 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
+          className="relative z-10 bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-base px-8 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
         >
           <TrackedWhatsAppLink
             href={getWhatsAppLink(t("whatsappMessage"))}

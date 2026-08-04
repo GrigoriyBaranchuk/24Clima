@@ -265,7 +265,7 @@ export default async function ServicePage({ params }: Props) {
                 </Link>
 
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-16 h-16 bg-[#7BC043] rounded-2xl flex items-center justify-center">
+                  <div className="w-16 h-16 bg-brand-green-contrast rounded-2xl flex items-center justify-center">
                     <Icon className="w-8 h-8 text-white" />
                   </div>
                   <Badge className="bg-white/20 text-white border-white/30">
@@ -297,7 +297,7 @@ export default async function ServicePage({ params }: Props) {
                   <Button
                     asChild
                     size="lg"
-                    className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold"
+                    className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold"
                   >
                     <TrackedWhatsAppLink href={whatsappLink} eventName="Lead">
                       <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -388,7 +388,7 @@ export default async function ServicePage({ params }: Props) {
             <Button
               asChild
               size="lg"
-              className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold"
+              className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold"
             >
               <TrackedWhatsAppLink href={whatsappLink} eventName="Lead">
                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
