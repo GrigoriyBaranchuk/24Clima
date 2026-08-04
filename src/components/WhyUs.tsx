@@ -28,7 +28,7 @@ export default function WhyUs() {
     >
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#7BC043] rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-green rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl" />
       </div>
 
@@ -65,7 +65,7 @@ export default function WhyUs() {
               key={index}
               className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 group"
             >
-              <div className="w-14 h-14 bg-[#7BC043] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 bg-brand-green-contrast rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <reason.icon className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">

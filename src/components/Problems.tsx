@@ -119,9 +119,11 @@ export default async function Problems() {
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="mb-6">
-                  <h4 className="font-semibold text-[#1e3a5f] mb-3">
+                  {/* h3, not h4: the section heading is an h2 and CardTitle
+                      renders a div, so h4 skipped a level. */}
+                  <h3 className="font-semibold text-[#1e3a5f] mb-3">
                     {t("possibleCauses")}
-                  </h4>
+                  </h3>
                   <ul className="grid grid-cols-2 gap-2">
                     {problem.causes.map((cause, idx) => (
                       <li
@@ -135,7 +137,7 @@ export default async function Problems() {
                   </ul>
                 </div>
                 <div className="bg-green-50 rounded-lg p-4 mb-6">
-                  <h4 className="font-semibold text-[#0F9D58] mb-2 flex items-center gap-2">
+                  <h3 className="font-semibold text-[#0F9D58] mb-2 flex items-center gap-2">
                     <svg
                       className="w-5 h-5"
                       fill="none"
@@ -150,7 +152,7 @@ export default async function Problems() {
                       />
                     </svg>
                     {t("ourSolution")}
-                  </h4>
+                  </h3>
                   <p className="text-base text-gray-700">{problem.solution}</p>
                 </div>
                 <ProblemsLeadButton
@@ -170,7 +172,7 @@ export default async function Problems() {
           <ProblemsLeadButton
             href={getWhatsAppLink(tWhatsapp("problemIntro"))}
             size="lg"
-            className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold"
+            className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold"
           >
             {t("describeByWhatsApp")}
           </ProblemsLeadButton>

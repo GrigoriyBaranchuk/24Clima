@@ -105,7 +105,7 @@ export default async function Services() {
                 <ul className="space-y-2 mb-6">
                   {service.benefits.map((benefit, idx) => (
                     <li key={idx} className="flex items-center gap-2 text-base text-gray-700">
-                      <div className="w-1.5 h-1.5 bg-[#7BC043] rounded-full" />
+                      <div className="w-1.5 h-1.5 bg-brand-green-contrast rounded-full" />
                       {benefit}
                     </li>
                   ))}
@@ -153,7 +153,7 @@ export default async function Services() {
           <Button
             asChild
             size="lg"
-            className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold"
+            className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold"
           >
             <TrackedWhatsAppLink
               href={getWhatsAppLink(tWhatsapp("emergency"))}

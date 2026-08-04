@@ -6,6 +6,10 @@ import { Star } from "lucide-react";
  * Compact floating Google Reviews badge — visible on all pages.
  * Shows star rating as a persistent trust signal.
  * Links to Google Business profile for social proof.
+ *
+ * The aria-label opens with the visible text ("5.0", then "Google"): WCAG 2.5.3
+ * wants the visible label contained in the accessible name, and the old label
+ * ("Google Reviews — 5.0 estrellas") reversed that order.
  */
 export default function GoogleReviewsBadge() {
   return (
@@ -14,7 +18,7 @@ export default function GoogleReviewsBadge() {
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 left-6 z-40 hidden sm:flex items-center gap-2 bg-white rounded-full px-4 py-2.5 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow group"
-      aria-label="Google Reviews — 5.0 estrellas"
+      aria-label="5.0 Google — ver reseñas"
     >
       {/* Google "G" icon */}
       <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">

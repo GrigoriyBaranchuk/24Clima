@@ -84,7 +84,7 @@ export default function CleaningPackages() {
             >
               {/* Highlight Badge */}
               {pkg.highlight && (
-                <div className="absolute top-0 right-0 bg-[#7BC043] text-white text-sm font-bold px-3 py-1.5 rounded-bl-lg">
+                <div className="absolute top-0 right-0 bg-brand-green-contrast text-white text-sm font-bold px-3 py-1.5 rounded-bl-lg">
                   <Star className="w-3 h-3 inline mr-1" />
                   {pkg.label}
                 </div>
@@ -93,7 +93,7 @@ export default function CleaningPackages() {
               <CardHeader className="text-center pb-2">
                 <div
                   className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3 ${
-                    pkg.highlight ? "bg-[#7BC043]" : "bg-gray-100"
+                    pkg.highlight ? "bg-brand-green-contrast" : "bg-gray-100"
                   }`}
                 >
                   <pkg.icon
@@ -138,7 +138,7 @@ export default function CleaningPackages() {
                   asChild
                   className={`w-full ${
                     pkg.highlight
-                      ? "bg-[#25D366] hover:bg-[#20BD5A] text-white"
+                      ? "bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white"
                       : "bg-[#1e3a5f] hover:bg-[#0d2240] text-white"
                   }`}
                 >

@@ -34,7 +34,7 @@ export default function ReadingProgressBar() {
 
   return (
     <div
-      className="fixed left-0 top-0 z-50 h-1 w-full bg-[#7BC043] transition-transform duration-150 ease-out motion-reduce:transition-none"
+      className="fixed left-0 top-0 z-50 h-1 w-full bg-brand-green-contrast transition-transform duration-150 ease-out motion-reduce:transition-none"
       style={{ transform: `scaleX(${progress})`, transformOrigin: "left" }}
       aria-hidden
     />

@@ -24,7 +24,7 @@ export default async function Hero() {
       {/* Background Pattern — desktop only */}
       <div className="absolute inset-0 opacity-10 hidden lg:block">
         <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#7BC043] rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-brand-green rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 py-2 lg:py-32 relative z-10">
@@ -71,7 +71,7 @@ export default async function Hero() {
             </h1>
 
             {/* Price Highlight — desktop only (mobile has it in Calculator) */}
-            <div className="hidden lg:inline-block bg-[#7BC043] px-6 py-3 rounded-xl mb-4 shadow-lg shadow-[#7BC043]/30">
+            <div className="hidden lg:inline-block bg-brand-green-contrast px-6 py-3 rounded-xl mb-4 shadow-lg shadow-[#7BC043]/30">
               <p className="text-4xl font-bold text-white" style={{ fontVariantNumeric: "tabular-nums" }}>
                 {t("subtitle")}
               </p>
@@ -92,7 +92,7 @@ export default async function Hero() {
               <Button
                 asChild
                 size="lg"
-                className="flex-1 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-[14px] h-10 rounded-full active:scale-95 transition-transform"
+                className="flex-1 bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-[14px] h-10 rounded-full active:scale-95 transition-transform"
               >
                 <TrackedWhatsAppLink
                   href={getWhatsAppLink(tWhatsapp("quote"))}
@@ -120,7 +120,7 @@ export default async function Hero() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold text-lg px-9 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 whatsapp-pulse"
+                  className="bg-whatsapp-contrast hover:bg-whatsapp-contrast-hover text-white font-semibold text-lg px-9 py-6 shadow-lg shadow-[#25D366]/40 hover:shadow-xl hover:shadow-[#25D366]/50 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 whatsapp-pulse"
                 >
                   <TrackedWhatsAppLink
                     href={getWhatsAppLink(tWhatsapp("quote"))}

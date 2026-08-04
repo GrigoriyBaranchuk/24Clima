@@ -5,7 +5,7 @@
     "": {
       "name": "nextjs-shadcn",
       "dependencies": {
-        "@24clima/design": "git+ssh://git@github.com/GrigoriyBaranchuk/24clima-design.git#v0.2.0",
+        "@24clima/design": "git+ssh://git@github.com/GrigoriyBaranchuk/24clima-design.git#v0.2.1",
         "@anthropic-ai/sdk": "^0.106.0",
         "@radix-ui/react-dialog": "^1.1.15",
         "@radix-ui/react-dropdown-menu": "^2.1.16",
@@ -43,7 +43,7 @@
     },
   },
   "packages": {
-    "@24clima/design": ["@24clima/design@git+ssh://git@github.com/GrigoriyBaranchuk/24clima-design.git#3c2bf80f5b2c798f19a154cf782a9541a13640d1", { "peerDependencies": { "react": ">=18", "react-dom": ">=18" } }, "3c2bf80f5b2c798f19a154cf782a9541a13640d1"],
+    "@24clima/design": ["@24clima/design@git+ssh://git@github.com/GrigoriyBaranchuk/24clima-design.git#bb34013e1f8c0f1ea8981dcf3afc29e916b425b6", { "peerDependencies": { "react": ">=18", "react-dom": ">=18" } }, "bb34013e1f8c0f1ea8981dcf3afc29e916b425b6"],
 
     "@alloc/quick-lru": ["@alloc/quick-lru@5.2.0", "", {}, "sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw=="],
 

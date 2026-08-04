@@ -94,7 +94,7 @@ export default function CalculatorMobile() {
                         </span>
                       </div>
                       {selected && (
-                        <div className="w-6 h-6 rounded-full bg-[#7BC043] flex items-center justify-center shadow-[0_0_0_3px_rgba(123,192,67,0.18)]">
+                        <div className="w-6 h-6 rounded-full bg-brand-green-contrast flex items-center justify-center shadow-[0_0_0_3px_rgba(123,192,67,0.18)]">
                           <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />
                         </div>
                       )}

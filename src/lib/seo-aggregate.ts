@@ -78,6 +78,10 @@ export type SeoAggregate = {
     notCited: { keyword: string; aiSource: string }[];
   };
   cwv: { latestDate: string | null; breaches: { url: string; lcp: number | null; inp: number | null; cls: number | null }[] };
+  psi: {
+    scores: { url: string; strategy: string; perf: number | null; a11y: number | null; bestPractices: number | null; seo: number | null }[];
+    audits: { url: string; strategy: string; category: string; title: string; displayValue: string | null; score: number }[];
+  };
   onpage: { latestDate: string | null; total: number; critical: { url: string; issueType: string }[] };
   backlinks: { snapshot: Record<string, unknown> | null; date: string | null };
 };
@@ -200,6 +204,35 @@ export async function buildSeoAggregate(supabase: SupabaseClient): Promise<SeoAg
     }))
     .filter((r) => (r.lcp ?? 0) > 2500 || (r.inp ?? 0) > 200 || (r.cls ?? 0) > 0.1);
 
+  // --- PSI lab scores + failed audits ---
+  // Deliberately separate from `breaches` above: those are field (CrUX) numbers
+  // and the playbook forbids comparing the two. In practice CrUX has no data for
+  // this site, so without these lab rows the agent sees no page-speed signal at
+  // all.
+  const psiScores = cwv
+    .filter((r) => String(r.date) === latestCwvDate && r.source === "lab")
+    .map((r) => ({
+      url: String(r.url),
+      strategy: String(r.strategy),
+      perf: r.perf_score == null ? null : Number(r.perf_score),
+      a11y: r.a11y_score == null ? null : Number(r.a11y_score),
+      bestPractices: r.best_practices_score == null ? null : Number(r.best_practices_score),
+      seo: r.seo_score == null ? null : Number(r.seo_score),
+    }));
+  const psiAuditRows = await fetchSince(supabase, "seo_psi_audits", d7);
+  const latestAuditDate = psiAuditRows.reduce((m, r) => (String(r.date) > m ? String(r.date) : m), "");
+  const psiAudits = psiAuditRows
+    .filter((r) => String(r.date) === latestAuditDate)
+    .map((r) => ({
+      url: String(r.url),
+      strategy: String(r.strategy),
+      category: String(r.category),
+      title: String(r.title),
+      displayValue: r.display_value == null ? null : String(r.display_value),
+      score: r.score == null ? 1 : Number(r.score),
+    }))
+    .sort((a, b) => a.score - b.score);
+
   // --- On-page ---
   const onpage = await fetchSince(supabase, "seo_onpage_issues", d7);
   const latestOpDate = onpage.reduce((m, r) => (String(r.date) > m ? String(r.date) : m), "");
@@ -236,6 +269,7 @@ export async function buildSeoAggregate(supabase: SupabaseClient): Promise<SeoAg
     rankings: { latestDate: latestRankDate || null, prevDate: prevRankDate, rows: rankRows },
     aiMentions,
     cwv: { latestDate: latestCwvDate || null, breaches },
+    psi: { scores: psiScores, audits: psiAudits },
     onpage: onpageOut,
     backlinks: {
       snapshot: latestBl ? (latestBl.metric_snapshot as Record<string, unknown>) : null,
@@ -265,6 +299,22 @@ export function aggregateToContext(a: SeoAggregate): string {
   lines.push(`AI citations: cited in ${a.aiMentions.citedCurr}/${a.aiMentions.totalCurr} queries (prev ${a.aiMentions.citedPrev}/${a.aiMentions.totalPrev}).`);
   if (a.aiMentions.notCited.length) {
     lines.push(`  Not cited: ${a.aiMentions.notCited.slice(0, 8).map((n) => `${n.keyword} (${n.aiSource})`).join(", ")}`);
+  }
+  if (a.psi.scores.length) {
+    lines.push("PageSpeed Insights (Lighthouse LAB, no son datos de campo — no compares con CrUX):");
+    for (const s of a.psi.scores.slice(0, 12)) {
+      lines.push(
+        `  - ${s.url} [${s.strategy}]: perf ${s.perf ?? "—"}, accesibilidad ${s.a11y ?? "—"}, buenas prácticas ${s.bestPractices ?? "—"}, SEO ${s.seo ?? "—"}`,
+      );
+    }
+  }
+  if (a.psi.audits.length) {
+    lines.push("Auditorías PSI que fallan (peores primero):");
+    for (const au of a.psi.audits.slice(0, 12)) {
+      lines.push(
+        `  - [${au.strategy}/${au.category}] ${au.title}${au.displayValue ? ` (${au.displayValue})` : ""} — ${au.url}`,
+      );
+    }
   }
   if (a.cwv.breaches.length) {
     lines.push("CWV field breaches (LCP>2.5s / INP>200ms / CLS>0.1):");
