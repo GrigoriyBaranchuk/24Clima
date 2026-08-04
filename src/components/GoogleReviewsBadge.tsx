@@ -7,9 +7,11 @@ import { Star } from "lucide-react";
  * Shows star rating as a persistent trust signal.
  * Links to Google Business profile for social proof.
  *
- * The aria-label opens with the visible text ("5.0", then "Google"): WCAG 2.5.3
- * wants the visible label contained in the accessible name, and the old label
- * ("Google Reviews — 5.0 estrellas") reversed that order.
+ * No aria-label: the accessible name is built from the content, so it starts
+ * with the visible text ("5.0", "Google") by construction and the extra context
+ * is appended as screen-reader-only text. An aria-label saying the same thing
+ * still tripped axe's label-content-name-mismatch, so the name is derived from
+ * the markup instead of restated next to it (WCAG 2.5.3 Label in Name).
  */
 export default function GoogleReviewsBadge() {
   return (
@@ -18,7 +20,6 @@ export default function GoogleReviewsBadge() {
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 left-6 z-40 hidden sm:flex items-center gap-2 bg-white rounded-full px-4 py-2.5 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow group"
-      aria-label="5.0 Google — ver reseñas"
     >
       {/* Google "G" icon */}
       <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
@@ -32,6 +33,7 @@ export default function GoogleReviewsBadge() {
         <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
       </div>
       <span className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">Google</span>
+      <span className="sr-only">ver reseñas</span>
     </a>
   );
 }
