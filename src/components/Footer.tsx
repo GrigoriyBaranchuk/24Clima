@@ -72,7 +72,9 @@ export default async function Footer() {
           {t("description")}
         </p>
         {/* Geo Line */}
-        <p className="text-[12px] lg:text-base text-gray-500 mb-4 lg:mb-6">
+        {/* gray-400, как строка выше: gray-500 на тёмном фоне футера даёт
+            контраст 3.29 при норме 4.5 (Lighthouse), gray-400 — 6.27. */}
+        <p className="text-[12px] lg:text-base text-gray-400 mb-4 lg:mb-6">
           {tCommon("geoLine")}
         </p>
         <FooterSocial
