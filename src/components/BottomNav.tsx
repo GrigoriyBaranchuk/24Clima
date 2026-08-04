@@ -68,7 +68,7 @@ export default function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-0.5 py-2 px-3 min-w-[64px] transition-colors ${
-                active ? "text-[#7BC043]" : "text-gray-700"
+                active ? "text-brand-green-on-light" : "text-gray-700"
               }`}
             >
               <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} />
@@ -91,7 +91,7 @@ export default function BottomNav() {
           >
             {WHATSAPP_SVG}
           </a>
-          <span className="text-[10px] font-semibold text-whatsapp-contrast mt-0.5 leading-tight">
+          <span className="text-[10px] font-semibold text-whatsapp-on-light mt-0.5 leading-tight">
             Escribenos
           </span>
         </div>
@@ -105,7 +105,7 @@ export default function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-0.5 py-2 px-3 min-w-[64px] transition-colors ${
-                active ? "text-[#7BC043]" : "text-gray-700"
+                active ? "text-brand-green-on-light" : "text-gray-700"
               }`}
             >
               <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} />

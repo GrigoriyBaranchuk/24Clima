@@ -17,7 +17,10 @@ export default function GoogleRatingCard() {
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => metaPixelEvent("ViewContent")}
-      aria-label="Ver nuestras reseñas en Google Maps"
+      // Без aria-label: он говорил «Ver nuestras reseñas en Google Maps», тогда
+      // как на экране написано «5.0 · Excelente en Google Maps» — видимый текст
+      // в доступное имя не входил (WCAG 2.5.3). Теперь имя собирается из
+      // содержимого, а недостающий глагол добавлен скрытым текстом.
       className="lg:hidden flex items-center justify-between gap-3 mx-4 px-4 py-3 rounded-2xl bg-[#162a3e] active:scale-[0.98] transition-transform shadow-[0_2px_8px_rgba(0,0,0,0.25)]"
     >
       {/* Left: Google "G" + label */}
@@ -64,6 +67,7 @@ export default function GoogleRatingCard() {
           <span className="text-white/60 text-[12px] mt-0.5 truncate">
             Excelente en Google Maps
           </span>
+          <span className="sr-only">ver reseñas</span>
         </div>
       </div>
 
