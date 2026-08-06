@@ -449,6 +449,7 @@
     "title": "Управление статьями",
     "login": "Войти",
     "logout": "Выйти",
+    "seoAgent": "SEO-агент",
     "email": "Email",
     "password": "Пароль",
     "articleTitle": "Заголовок (русский)",

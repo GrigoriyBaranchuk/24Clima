@@ -7,7 +7,8 @@ import { supabase } from "@/lib/supabase";
 import { normalizeSlug } from "@/lib/slug";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { LogOut, Save, Trash2, Pencil } from "lucide-react";
+import { LogOut, Save, Trash2, Pencil, BarChart3 } from "lucide-react";
+import { Link } from "@/i18n/routing";
 
 const BUCKET = "article-images";
 
@@ -226,12 +227,22 @@ export default function AdminClient() {
   return (
     <main id="main-content" className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-wrap justify-between items-center gap-3 mb-8">
           <h1 className="text-2xl font-bold text-[#1e3a5f]">{t("title")}</h1>
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="w-4 h-4 mr-2" />
-            {t("logout")}
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            {/* href без локального префикса: Link из @/i18n/routing сам добавит /ru или /en
+                (localePrefix: "as-needed"), для es префикса быть не должно. */}
+            <Button asChild variant="outline">
+              <Link href="/consejos-y-guias/admin/seo">
+                <BarChart3 className="w-4 h-4 mr-2" />
+                {t("seoAgent")}
+              </Link>
+            </Button>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="w-4 h-4 mr-2" />
+              {t("logout")}
+            </Button>
+          </div>
         </div>
         {articles.length > 0 && (
           <Card className="mb-6">

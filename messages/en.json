@@ -449,6 +449,7 @@
     "title": "Manage articles",
     "login": "Sign in",
     "logout": "Sign out",
+    "seoAgent": "SEO agent",
     "email": "Email",
     "password": "Password",
     "articleTitle": "Title (Russian)",
