@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 import AuthorBio from "@/components/AuthorBio";
+import DiagnosticoDirectAnswer from "@/components/DiagnosticoDirectAnswer";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import { Button } from "@/components/ui/button";
 import { Stethoscope, AlertTriangle, ChevronRight, Lightbulb, Phone, Thermometer, Droplets, Volume2, Zap, Wind, DollarSign } from "lucide-react";
@@ -185,6 +186,8 @@ export default async function DiagnosticoPage({ params }: Props) {
             </p>
           </div>
         </section>
+
+        <DiagnosticoDirectAnswer locale={locale} />
 
         {/* Quick Nav */}
         <section className="bg-white border-b">

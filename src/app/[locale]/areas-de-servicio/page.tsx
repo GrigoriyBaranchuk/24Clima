@@ -9,6 +9,7 @@ import { SERVICE_AREAS } from "@/lib/areas-data";
 import { BUSINESS_DATA } from "@/lib/business-data";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import AreasPricingNote from "@/components/AreasPricingNote";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import { Button } from "@/components/ui/button";
 
@@ -187,6 +188,8 @@ export default async function AreasPage({ params }: Props) {
             </p>
           </div>
         </section>
+
+        <AreasPricingNote locale={locale} />
 
         {/* Google Maps Embed */}
         <section className="bg-gray-100">

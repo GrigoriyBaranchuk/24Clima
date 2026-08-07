@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 import ServicesGrid from "@/components/ServicesGrid";
 import Services from "@/components/Services";
+import ServicesAnswerBlock from "@/components/ServicesAnswerBlock";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
 import { SERVICE_SLUGS, SLUG_TO_TRANSLATION_KEY } from "@/lib/services";
@@ -79,6 +80,7 @@ export default function ServiciosPage() {
         <div className="hidden lg:block">
           <Services />
         </div>
+        <ServicesAnswerBlock locale="es" />
       </main>
       <Footer />
       <BottomNav />
