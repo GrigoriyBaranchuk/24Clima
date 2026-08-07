@@ -72,14 +72,40 @@ export function MetricsOverview({ data }: { data: SeoAggregate }) {
           <CardContent>
             {data.gsc.series.length ? (
               <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={data.gsc.series} margin={{ left: -16, right: 8, top: 4 }}>
+                <LineChart data={data.gsc.series} margin={{ left: -16, right: -16, top: 4 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
                   <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={(d: string) => d.slice(5)} />
-                  <YAxis tick={{ fontSize: 10 }} />
+                  {/* Две шкалы: клики (единицы) иначе вжимаются в ось шкалой показов (сотни).
+                      Подписи каждой оси окрашены в цвет своей серии, а сторона продублирована
+                      в легенде — иначе непонятно, какая линия к какой шкале относится.
+                      Важно: при разных шкалах точки пересечения линий физического смысла не имеют. */}
+                  <YAxis yAxisId="clicks" tick={{ fontSize: 10, fill: CHART.green }} allowDecimals={false} />
+                  <YAxis
+                    yAxisId="impressions"
+                    orientation="right"
+                    tick={{ fontSize: 10, fill: CHART.indigo }}
+                    allowDecimals={false}
+                  />
                   <Tooltip />
                   <Legend verticalAlign="top" height={24} iconType="plainline" wrapperStyle={{ fontSize: 12 }} />
-                  <Line type="monotone" dataKey="clicks" stroke={CHART.green} strokeWidth={2} dot={false} name="Клики" />
-                  <Line type="monotone" dataKey="impressions" stroke={CHART.indigo} strokeWidth={2} dot={false} name="Показы" />
+                  <Line
+                    yAxisId="clicks"
+                    type="monotone"
+                    dataKey="clicks"
+                    stroke={CHART.green}
+                    strokeWidth={2}
+                    dot={false}
+                    name="Клики (шкала слева)"
+                  />
+                  <Line
+                    yAxisId="impressions"
+                    type="monotone"
+                    dataKey="impressions"
+                    stroke={CHART.indigo}
+                    strokeWidth={2}
+                    dot={false}
+                    name="Показы (шкала справа)"
+                  />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
