@@ -27,6 +27,28 @@ const CHART = {
   marker: "#d97706", // amber-600: не пересекается с цветами серий
 } as const;
 
+/* Окно графиков. Агрегат отдаёт 60 дней — на всю ширину экрана это нечитаемая гребёнка,
+   поэтому на дашборде показываем последние 28. Срез делается здесь, а не в seo-aggregate:
+   полные 60 дней нужны другим потребителям агрегата (дайджест). */
+const CHART_DAYS = 28;
+
+/* Окно отсчитывается от последней точки с данными, а не от «сегодня»: синк GSC/GA4
+   отстаёт на день-два, и якорь на сегодня молча съедал бы часть окна. */
+function lastDays<T extends { date: string }>(series: T[]): T[] {
+  const last = series.at(-1)?.date;
+  if (!last) return series;
+  const cutoff = new Date(`${last}T00:00:00Z`);
+  cutoff.setUTCDate(cutoff.getUTCDate() - (CHART_DAYS - 1));
+  const from = cutoff.toISOString().slice(0, 10);
+  // Даты в ISO date-only, поэтому строковое сравнение эквивалентно календарному.
+  return series.filter((p) => p.date >= from);
+}
+
+/** «2026-08-05» → «05-08» (ДД-ММ). */
+function formatDateLabel(d: string): string {
+  return `${d.slice(8, 10)}-${d.slice(5, 7)}`;
+}
+
 /** Выполненная рекомендация — источник засечки на графиках. */
 export type RecoMarker = {
   id: number;
@@ -45,7 +67,8 @@ function panamaDate(iso: string): string {
   });
 }
 
-/** Среднее метрики за 7 дней до даты vs после (включая её саму). null — мало точек. */
+/** Среднее метрики за 7 дней до даты vs после (включая её саму). null — мало точек.
+    Считается по полной 60-дневной серии агрегата, а не по видимому окну. */
 function trendAround(
   series: Record<string, unknown>[],
   key: string,
@@ -144,7 +167,7 @@ function MarkerGlyph(props: {
   );
 }
 
-/* Засечка привязывается к ближайшей дате, реально существующей в серии:
+/* Засечка привязывается к ближайшей дате, реально существующей в видимом окне серии:
    GSC отдаёт данные с лагом ~2 дня, поэтому «сделано сегодня» без снаппинга
    просто не отрисовалось бы на категориальной оси X. */
 function snapToSeries(
@@ -165,6 +188,8 @@ export function MetricsOverview({
   const citedRate = data.aiMentions.totalCurr
     ? Math.round((data.aiMentions.citedCurr / data.aiMentions.totalCurr) * 100)
     : null;
+  const gscSeries = lastDays(data.gsc.series);
+  const ga4Series = lastDays(data.ga4.series);
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedIdx, setSelectedIdx] = useState(0);
@@ -258,26 +283,30 @@ export function MetricsOverview({
         />
       </div>
 
-      {/* Charts */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      {/* Charts: по одному на всю ширину — в две колонки полотно было слишком узким,
+          28 точек и подписи осей не читались. */}
+      <div className="space-y-6">
         <Card>
           <CardHeader>
             <h3 className="font-semibold text-[#1e3a5f]">
-              Клики и показы (GSC)
+              Клики и показы (GSC) — 28 дней
             </h3>
           </CardHeader>
           <CardContent>
-            {data.gsc.series.length ? (
-              <ResponsiveContainer width="100%" height={220}>
+            {gscSeries.length ? (
+              <ResponsiveContainer width="100%" height={300}>
                 <LineChart
-                  data={data.gsc.series}
-                  margin={{ left: -16, right: -16, top: 4 }}
+                  data={gscSeries}
+                  margin={{ left: -8, right: 8, top: 4 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                  {/* minTickGap вместо фиксированного interval: recharts сам прорежает подписи
+                      под ширину контейнера, поэтому на мобиле они не слипаются. */}
                   <XAxis
                     dataKey="date"
                     tick={{ fontSize: 10 }}
-                    tickFormatter={(d: string) => d.slice(5)}
+                    tickFormatter={formatDateLabel}
+                    minTickGap={16}
                   />
                   {/* Две шкалы: клики (единицы) иначе вжимаются в ось шкалой показов (сотни).
                       Подписи каждой оси окрашены в цвет своей серии, а сторона продублирована
@@ -294,10 +323,11 @@ export function MetricsOverview({
                     tick={{ fontSize: 10, fill: CHART.indigo }}
                     allowDecimals={false}
                   />
-                  <Tooltip />
+                  <Tooltip labelFormatter={(d) => formatDateLabel(String(d))} />
+                  {/* Без фиксированного height: на узком экране легенда переносится на две
+                      строки, и жёстко зарезервированные 24px давали наезд подписи на линии. */}
                   <Legend
                     verticalAlign="top"
-                    height={24}
                     iconType="plainline"
                     wrapperStyle={{ fontSize: 12 }}
                   />
@@ -320,7 +350,7 @@ export function MetricsOverview({
                     name="Показы (шкала справа)"
                   />
                   {renderMarkers(
-                    data.gsc.series.map((p) => p.date),
+                    gscSeries.map((p) => p.date),
                     "clicks",
                   )}
                 </LineChart>
@@ -334,24 +364,25 @@ export function MetricsOverview({
         <Card>
           <CardHeader>
             <h3 className="font-semibold text-[#1e3a5f]">
-              Органические сессии (GA4)
+              Органические сессии (GA4) — 28 дней
             </h3>
           </CardHeader>
           <CardContent>
-            {data.ga4.series.length ? (
-              <ResponsiveContainer width="100%" height={220}>
+            {ga4Series.length ? (
+              <ResponsiveContainer width="100%" height={300}>
                 <LineChart
-                  data={data.ga4.series}
-                  margin={{ left: -16, right: 8, top: 4 }}
+                  data={ga4Series}
+                  margin={{ left: -8, right: 8, top: 4 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
                   <XAxis
                     dataKey="date"
                     tick={{ fontSize: 10 }}
-                    tickFormatter={(d: string) => d.slice(5)}
+                    tickFormatter={formatDateLabel}
+                    minTickGap={16}
                   />
-                  <YAxis tick={{ fontSize: 10 }} />
-                  <Tooltip />
+                  <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
+                  <Tooltip labelFormatter={(d) => formatDateLabel(String(d))} />
                   <Line
                     type="monotone"
                     dataKey="sessions"
@@ -360,7 +391,7 @@ export function MetricsOverview({
                     dot={false}
                     name="Сессии"
                   />
-                  {renderMarkers(data.ga4.series.map((p) => p.date))}
+                  {renderMarkers(ga4Series.map((p) => p.date))}
                 </LineChart>
               </ResponsiveContainer>
             ) : (
@@ -372,7 +403,7 @@ export function MetricsOverview({
 
       {markerGroups.size > 0 && (
         <p className="text-xs text-gray-400 -mt-3">
-          ● — внедрённая рекомендация (в пределах окна графиков). Нажмите на
+          ● — внедрённая рекомендация (в пределах окна 28 дней). Нажмите на
           засечку, чтобы увидеть динамику.
         </p>
       )}
