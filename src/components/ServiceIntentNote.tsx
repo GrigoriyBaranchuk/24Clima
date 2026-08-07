@@ -1,0 +1,83 @@
+import { Link } from "@/i18n/routing";
+import type { ServiceSlug } from "@/lib/services";
+
+type SupportedLocale = "es" | "en" | "ru";
+
+type Props = {
+  service: ServiceSlug;
+  locale: SupportedLocale;
+};
+
+interface IntentNote {
+  title: Record<SupportedLocale, string>;
+  text: Record<SupportedLocale, string>;
+  linkHref: string;
+  linkLabel: Record<SupportedLocale, string>;
+}
+
+/**
+ * Google muestra resultados casi idénticos para «limpieza» y «mantenimiento
+ * aire acondicionado Panamá» — este bloque separa las intenciones y
+ * enlaza la página hermana.
+ */
+const INTENT_NOTES: Partial<Record<ServiceSlug, IntentNote>> = {
+  limpieza: {
+    title: {
+      es: "¿Limpieza profunda o mantenimiento preventivo?",
+      en: "Deep cleaning or preventive maintenance?",
+      ru: "Глубокая чистка или профилактика?",
+    },
+    text: {
+      es: "La limpieza profunda (desde $29.99) desmonta el equipo y lava el evaporador, la turbina y el drenaje — se recomienda 1–2 veces al año. El mantenimiento preventivo (desde $50) es una revisión trimestral más ligera: filtros, presión de gas, electricidad y lubricación. Si su equipo huele mal o enfría poco, empiece por la limpieza; para protegerlo todo el año, combine ambos.",
+      en: "Deep cleaning (from $29.99) disassembles the unit and washes the evaporator, turbine, and drain — recommended 1–2 times a year. Preventive maintenance (from $50) is a lighter quarterly check: filters, gas pressure, electrics, and lubrication. If your unit smells bad or cools poorly, start with a cleaning; to protect it year-round, combine both.",
+      ru: "Глубокая чистка (от $29.99) — это разборка блока и мойка испарителя, турбины и дренажа, рекомендуется 1–2 раза в год. Профилактика (от $50) — более лёгкий квартальный осмотр: фильтры, давление газа, электрика и смазка. Если кондиционер пахнет или плохо холодит — начните с чистки; для круглогодичной защиты сочетайте обе услуги.",
+    },
+    linkHref: "/servicios/mantenimiento",
+    linkLabel: {
+      es: "Ver mantenimiento preventivo",
+      en: "See preventive maintenance",
+      ru: "Подробнее о профилактике",
+    },
+  },
+  mantenimiento: {
+    title: {
+      es: "¿Mantenimiento preventivo o limpieza profunda?",
+      en: "Preventive maintenance or deep cleaning?",
+      ru: "Профилактика или глубокая чистка?",
+    },
+    text: {
+      es: "El mantenimiento preventivo (desde $50) es una revisión trimestral: filtros, presión de gas, inspección eléctrica y lubricación — evita averías y mantiene la eficiencia. La limpieza profunda (desde $29.99) va más allá: desmonta el equipo y lava el evaporador y la turbina con espuma antibacterial. Si nunca ha limpiado su equipo a fondo, empiece por ahí; luego el plan trimestral lo mantiene en forma.",
+      en: "Preventive maintenance (from $50) is a quarterly check: filters, gas pressure, electrical inspection, and lubrication — it prevents breakdowns and keeps efficiency up. Deep cleaning (from $29.99) goes further: it disassembles the unit and washes the evaporator and turbine with antibacterial foam. If your unit has never been deep-cleaned, start there; then the quarterly plan keeps it in shape.",
+      ru: "Профилактика (от $50) — квартальный осмотр: фильтры, давление газа, электрика и смазка; предотвращает поломки и сохраняет эффективность. Глубокая чистка (от $29.99) идёт дальше: разборка блока и мойка испарителя и турбины антибактериальной пеной. Если глубокой чистки ещё не было — начните с неё, а квартальный план поддержит результат.",
+    },
+    linkHref: "/servicios/limpieza",
+    linkLabel: {
+      es: "Ver limpieza profunda",
+      en: "See deep cleaning",
+      ru: "Подробнее о чистке",
+    },
+  },
+};
+
+/** Bloque estático de desambiguación de intención (server component). */
+export default function ServiceIntentNote({ service, locale }: Props) {
+  const note = INTENT_NOTES[service];
+  if (!note) return null;
+
+  return (
+    <section className="py-12 bg-gray-50" aria-labelledby="intent-note-heading">
+      <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
+        <h2 id="intent-note-heading" className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-4">
+          {note.title[locale]}
+        </h2>
+        <p className="text-gray-700 leading-relaxed mb-4">{note.text[locale]}</p>
+        <Link
+          href={note.linkHref}
+          className="font-semibold text-[#0F9D58] hover:underline"
+        >
+          {note.linkLabel[locale]} →
+        </Link>
+      </div>
+    </section>
+  );
+}

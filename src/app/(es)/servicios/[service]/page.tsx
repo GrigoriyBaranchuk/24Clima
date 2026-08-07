@@ -10,6 +10,9 @@ import ServiceFAQ from "@/components/ServiceFAQ";
 import ServiceCitations from "@/components/ServiceCitations";
 import ServiceStatsBar from "@/components/ServiceStatsBar";
 import ServiceExpandedContent from "@/components/ServiceExpandedContent";
+import ServicePricingTable from "@/components/ServicePricingTable";
+import ServiceCoverageAreas from "@/components/ServiceCoverageAreas";
+import ServiceIntentNote from "@/components/ServiceIntentNote";
 import AuthorBio from "@/components/AuthorBio";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import Calculator from "@/components/Calculator";
@@ -228,7 +231,7 @@ export default async function ServicePage({
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">{title}</h1>
                 <p className="text-lg text-white/90 mb-8 leading-relaxed">{description}</p>
-                {translationKey === "installation" && (
+                {["installation", "cleaning", "maintenance"].includes(translationKey) && (
                   <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
                     {t(`${translationKey}.priceFrom`)}
                     <span className="text-white/80 text-base font-normal ml-1">USD</span>
@@ -261,6 +264,7 @@ export default async function ServicePage({
           </div>
         </section>
         <ServiceStatsBar service={service} locale="es" />
+        <ServicePricingTable service={service} locale="es" />
         {isCleaningPage && <CleaningPackages />}
         {isCleaningPage && <Calculator />}
         {!isCleaningPage && (
@@ -302,6 +306,8 @@ export default async function ServicePage({
         <div className="container mx-auto px-4 lg:px-8 max-w-4xl py-12">
           <AuthorBio locale="es" variant="card" includeJsonLd={false} />
         </div>
+        <ServiceIntentNote service={service} locale="es" />
+        <ServiceCoverageAreas service={service} locale="es" />
         <section className="py-16 lg:py-24 bg-gray-50">
           <div className="container mx-auto px-4 lg:px-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-[#1e3a5f] text-center mb-12">{t("title")}</h2>

@@ -214,7 +214,12 @@
       "faq4Q": "Is the price per unit or per visit?",
       "faq4A": "The price is per unit. If you have multiple units, we offer quantity discounts; you can use the calculator on the page to see the total.",
       "faq5Q": "Do you offer a warranty on the service?",
-      "faq5A": "Yes. We stand behind our work and you can contact us if any issue arises after the cleaning."
+      "faq5A": "Yes. We stand behind our work and you can contact us if any issue arises after the cleaning.",
+      "faq6Q": "How much does AC cleaning cost in Panama?",
+      "faq6A": "$29.99 per split (up to 24,000 BTU) when cleaning 2 or more units; a single unit costs $35. Cassette from $60 and central system from $50. The price includes disassembly, evaporator wash with antibacterial foam, drain cleaning, and a 60-day warranty.",
+      "faq7Q": "Is deep cleaning the same as maintenance?",
+      "faq7A": "No. Deep cleaning disassembles the unit and washes the evaporator, turbine, and drain — recommended 1–2 times a year. Preventive maintenance is a quarterly check from $50: filters, gas pressure, electrics, and lubrication. Ideally, combine both.",
+      "priceFrom": "from $29.99"
     },
     "maintenance": {
       "shortTitle": "Maintenance",
@@ -233,7 +238,12 @@
       "faq4Q": "Can I sign up for a maintenance plan?",
       "faq4A": "Yes. We offer periodic plans for homes and businesses; message us on WhatsApp for a custom quote.",
       "faq5Q": "Does maintenance reduce the need for repairs?",
-      "faq5A": "In most cases yes. Regular maintenance catches issues early and reduces the risk of costly breakdowns."
+      "faq5A": "In most cases yes. Regular maintenance catches issues early and reduces the risk of costly breakdowns.",
+      "faq6Q": "How much does AC maintenance cost in Panama?",
+      "faq6A": "$50 per visit for a residential split and $80 for a cassette unit. The annual plan of 4 quarterly visits keeps the price at $50 per visit and includes filter cleaning, gas check, electrical inspection, and lubrication, with a 60-day warranty.",
+      "faq7Q": "What is the difference between maintenance and deep cleaning?",
+      "faq7A": "Maintenance is a preventive quarterly check: filters, gas pressure, electrics, and lubrication. Deep cleaning, from $29.99 per unit, disassembles the equipment and washes the evaporator and turbine with antibacterial foam. If your unit smells or cools poorly, start with a cleaning.",
+      "priceFrom": "from $50"
     },
     "repair": {
       "shortTitle": "Repair",
@@ -258,7 +268,7 @@
       "shortTitle": "Installation",
       "title": "Professional Air Conditioner Installation in Panama",
       "description": "Professional air conditioner installation in Panama. Includes wiring, brackets, functional test and area cleanup. Certified technicians with years of experience.",
-      "priceFrom": "from $120",
+      "priceFrom": "from $200",
       "benefit1": "Guaranteed installation",
       "benefit2": "All brands",
       "benefit3": "Personalized advice",
@@ -272,7 +282,11 @@
       "faq4Q": "Can I buy the unit myself and only hire installation?",
       "faq4A": "Yes. Many customers buy the unit and hire us only for installation; just ensure the unit is suitable for the space.",
       "faq5Q": "What areas do you serve?",
-      "faq5A": "Panama City, Costa del Este, Punta Pacífica, Albrook, Clayton, Panama Pacifico and surrounding areas."
+      "faq5A": "Panama City, Costa del Este, Punta Pacífica, Albrook, Clayton, Panama Pacifico and surrounding areas.",
+      "faq6Q": "How much does it cost to install an air conditioner in Panama?",
+      "faq6A": "A back-to-back installation of a 9,000–24,000 BTU split costs $200 and includes the outdoor bracket, rubber bases, connection to an existing outlet, and standard materials. Extras: electrical feed from the breaker panel +$50, additional piping +$20/m. Ducted or multi-split installations are quoted free of charge. 90-day warranty.",
+      "faq7Q": "Why are some installations advertised from $65?",
+      "faq7A": "Offers of $65–140 in Panama usually cover basic labor only: brackets, materials, and electrical wiring are charged separately. Our $200 price is all-inclusive — standard materials, professional vacuum pump evacuation, and a written 90-day warranty."
     },
     "gasRecharge": {
       "shortTitle": "Gas recharge",

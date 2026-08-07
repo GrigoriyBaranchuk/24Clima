@@ -11,6 +11,9 @@ import ServiceFAQ from "@/components/ServiceFAQ";
 import ServiceCitations from "@/components/ServiceCitations";
 import ServiceStatsBar from "@/components/ServiceStatsBar";
 import ServiceExpandedContent from "@/components/ServiceExpandedContent";
+import ServicePricingTable from "@/components/ServicePricingTable";
+import ServiceCoverageAreas from "@/components/ServiceCoverageAreas";
+import ServiceIntentNote from "@/components/ServiceIntentNote";
 import AuthorBio from "@/components/AuthorBio";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import Calculator from "@/components/Calculator";
@@ -281,7 +284,7 @@ export default async function ServicePage({ params }: Props) {
                   {description}
                 </p>
 
-                {translationKey === "installation" && (
+                {["installation", "cleaning", "maintenance"].includes(translationKey) && (
                   <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
                     {t(`${translationKey}.priceFrom`)}
                     <span className="text-white/80 text-base font-normal ml-1">USD</span>
@@ -337,6 +340,11 @@ export default async function ServicePage({ params }: Props) {
         </section>
 
         <ServiceStatsBar
+          service={service as ServiceSlug}
+          locale={locale === "en" || locale === "ru" ? locale : "es"}
+        />
+
+        <ServicePricingTable
           service={service as ServiceSlug}
           locale={locale === "en" || locale === "ru" ? locale : "es"}
         />
@@ -413,6 +421,15 @@ export default async function ServicePage({ params }: Props) {
             includeJsonLd={false}
           />
         </div>
+
+        <ServiceIntentNote
+          service={service as ServiceSlug}
+          locale={locale === "en" || locale === "ru" ? locale : "es"}
+        />
+        <ServiceCoverageAreas
+          service={service as ServiceSlug}
+          locale={locale === "en" || locale === "ru" ? locale : "es"}
+        />
 
         {/* Other Services */}
         <section className="py-16 lg:py-24 bg-gray-50">
