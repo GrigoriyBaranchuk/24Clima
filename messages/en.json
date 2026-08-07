@@ -305,7 +305,8 @@
       "faq4Q": "How long does a recharge last?",
       "faq4A": "If there is no leak, a charge can last years. If the level drops soon, it usually indicates a leak that should be fixed.",
       "faq5Q": "Do you warranty the recharge?",
-      "faq5A": "Yes. We warranty the recharge service; if an undetected leak appears we will recheck within the warranty period at no extra cost."
+      "faq5A": "Yes. We warranty the recharge service; if an undetected leak appears we will recheck within the warranty period at no extra cost.",
+      "priceFrom": "from $120"
     },
     "emergency": {
       "shortTitle": "Emergency",

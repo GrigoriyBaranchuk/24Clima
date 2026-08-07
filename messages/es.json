@@ -305,7 +305,8 @@
       "faq4Q": "¿Cuánto dura una carga de gas?",
       "faq4A": "Si no hay fuga, una carga puede durar años. Si el nivel baja pronto, suele indicar una fuga que debe repararse.",
       "faq5Q": "¿Dan garantía en la carga?",
-      "faq5A": "Sí. Respaldamos el servicio de carga; si hay una fuga no detectada, la revisamos sin costo adicional en el período de garantía."
+      "faq5A": "Sí. Respaldamos el servicio de carga; si hay una fuga no detectada, la revisamos sin costo adicional en el período de garantía.",
+      "priceFrom": "desde $120"
     },
     "emergency": {
       "shortTitle": "Emergencia",

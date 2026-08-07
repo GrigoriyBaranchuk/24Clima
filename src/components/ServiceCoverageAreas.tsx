@@ -11,7 +11,7 @@ type Props = {
 };
 
 /** Solo en las páginas de servicios comerciales prioritarios. */
-const TARGET_SERVICES: ServiceSlug[] = ["instalacion", "mantenimiento", "limpieza"];
+const TARGET_SERVICES: ServiceSlug[] = ["instalacion", "mantenimiento", "limpieza", "carga-de-gas"];
 
 const TITLE: Record<SupportedLocale, string> = {
   es: "Zonas de cobertura en Ciudad de Panamá",

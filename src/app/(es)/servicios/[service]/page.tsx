@@ -231,7 +231,7 @@ export default async function ServicePage({
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">{title}</h1>
                 <p className="text-lg text-white/90 mb-8 leading-relaxed">{description}</p>
-                {["installation", "cleaning", "maintenance"].includes(translationKey) && (
+                {["installation", "cleaning", "maintenance", "gasRecharge"].includes(translationKey) && (
                   <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
                     {t(`${translationKey}.priceFrom`)}
                     <span className="text-white/80 text-base font-normal ml-1">USD</span>

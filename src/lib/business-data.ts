@@ -256,4 +256,39 @@ export const SERVICE_PRICING_TABLES: Partial<Record<ServiceSlug, ServicePricingT
       ru: "Гарантия 60 дней на каждый визит. Включает отчёт о состоянии оборудования и рекомендации. Без скрытых платежей: итоговая цена известна до начала работ.",
     },
   },
+  "carga-de-gas": {
+    rows: [
+      {
+        concept: {
+          es: "Recarga completa de gas refrigerante (R-410A)",
+          en: "Full refrigerant recharge (R-410A)",
+          ru: "Полная заправка хладагентом (R-410A)",
+        },
+        price: { es: "desde $120", en: "from $120", ru: "от $120" },
+        detail: {
+          es: "Incluye detección y reparación de la fuga. El precio final depende del BTU del equipo y la longitud de la tubería (hasta $210)",
+          en: "Includes leak detection and repair. Final price depends on unit BTU and piping length (up to $210)",
+          ru: "Включает поиск и устранение утечки. Итоговая цена зависит от BTU и длины трассы (до $210)",
+        },
+      },
+      {
+        concept: {
+          es: "Equipos inverter — carga completa por peso",
+          en: "Inverter units — full charge by weight",
+          ru: "Инверторные блоки — полная заправка по весу",
+        },
+        price: { es: "incluido", en: "included", ru: "включено" },
+        detail: {
+          es: "Los equipos inverter no se rellenan: requieren vacío y carga completa por peso con balanza de precisión",
+          en: "Inverter units can't be topped up: they require vacuum and a full charge by weight with a precision scale",
+          ru: "Инверторные блоки не дозаправляются: требуется вакуумирование и полная заправка по весу",
+        },
+      },
+    ],
+    footnote: {
+      es: "Garantía de 60 días. No recargamos sin encontrar y reparar primero la causa de la pérdida de gas — recargar con fuga es tirar el dinero.",
+      en: "60-day warranty. We don't recharge without first finding and repairing the cause of the gas loss — recharging with a leak is throwing money away.",
+      ru: "Гарантия 60 дней. Не заправляем, пока не найдена и не устранена причина утечки — заправка с утечкой означает выброшенные деньги.",
+    },
+  },
 };
