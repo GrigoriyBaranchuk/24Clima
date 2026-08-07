@@ -48,8 +48,13 @@ __pycache__/
 # claude code: keep shared agents + project settings tracked,
 # ignore personal/local-state pieces.
 .claude/settings.local.json
-.claude/skills/
+.claude/skills/*
+!.claude/skills/seo-tasks/
+!.claude/skills/seo-tasks/**
 .claude/worktrees/
+
+# рабочие документы /seo-tasks (temp-промты)
+/tmp/
 
 # installed third-party skills — restored from skills-lock.json
 # only our project-authored skill is tracked

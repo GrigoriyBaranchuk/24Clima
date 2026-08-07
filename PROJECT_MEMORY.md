@@ -376,3 +376,17 @@ GSC (02.07) флагал страницы статей (`/consejos-y-guias/aire-
 `tsc --noEmit` и `npm run build` зелёные. Biome ругается на этот файл (сортировка импортов + форматтер) — **предсуществующее**, есть и на `main` до правки, не трогали чтобы не хоронить диff.
 
 **Грабли на будущее:** `tailwind.config.ts` до сих пор объявляет `colors.chart.1..5` через несуществующие `--chart-*`. Любой `bg-chart-1`/`text-chart-2`/`stroke-chart-3` в новом коде молча даст невидимый элемент. Либо определить переменные в пакете `@24clima/design`, либо выпилить блок из `tailwind.config.ts`.
+
+## Сессия 2026-08-07 — Замкнутый цикл рекомендаций SEO-агента (дашборд ↔ терминал) + засечки на графиках
+
+Задача: рекомендации агента, принятые на `/consejos-y-guias/admin/seo` (✓), должны попадать в терминал (Claude Code) как рабочий промт, а после выполнения — отображаться засечками на графиках метрик с динамикой до/после.
+
+Сделано (ветка `worktree-feat-seo-reco-loop`; план прогнан через codex consult — 24 замечания, ключевые учтены):
+- **Миграция `006_seo_reco_resolution.sql`**: `seo_recommendations` + `resolution text` (что сделано: текст + commit sha) и `done_at timestamptz`; backfill из `updated_at` для старых done; constraint `seo_reco_done_at_consistency` (`done` ⇔ `done_at is not null`) — защищает оба пути записи (API и прямой SQL из скилла). **НЕ применена к проду** (Management API заблокирован политикой; применить: SQL editor или `mcp apply_migration` после OK).
+- **API** `/api/admin/seo/recommendations`: PATCH принимает `resolution` (trim, ≤2000), `done_at` ставится/чистится атомарно по статусу; GET `?status=done` сортирует по `done_at`.
+- **`RecommendationsPanel`**: вкладки Новые/Принятые/Готово (раньше accepted исчезали в никуда), кнопки по вкладке, показ resolution в «Готово», `onStatusChange` → родитель перезагружает маркеры.
+- **`MetricsOverview`**: проп `markers` (done-рекомендации) → вертикальные ReferenceLine + кликабельный глиф (невидимая зона нажатия r=14, счётчик при нескольких за день, Enter/Space) на обоих графиках; клик → карточка: select при нескольких, resolution, тренд «среднее 7д до → 7д после» по кликам/показам/сессиям с пометкой «корреляция, не причинность». Таймзона: `done_at` → дата Панамы (`sv-SE` + `America/Panama`); снаппинг к ближайшей дате серии (лаг GSC ~2 дня).
+- **Скилл `/seo-tasks`** (`.claude/skills/seo-tasks/SKILL.md`, добавлен negation в .gitignore): забрать accepted из Supabase (проект `qgvfnpafbzzgnryoxnoj`) → рабочий док `tmp/seo-tasks-<дата>.md` → работа (protected SEO elements → через seo-reviewer) → `UPDATE ... status='done', resolution, done_at WHERE id=… AND status='accepted'`.
+- biome.json: override `useSemanticElements` off для MetricsOverview.tsx (SVG-глиф с role="button" — в recharts-графике настоящего `<button>` не бывает).
+
+`bun run build`, `tsc --noEmit`, biome по изменённым файлам — зелёные (ChatPanel-ошибки предсуществующие). Не запушено (ждёт OK).
