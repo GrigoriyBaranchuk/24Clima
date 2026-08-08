@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
+import DiagnosticoDirectAnswer from "@/components/DiagnosticoDirectAnswer";
 import Footer from "@/components/Footer";
 import AuthorBio from "@/components/AuthorBio";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
@@ -119,6 +120,8 @@ export default function DiagnosticoPage() {
             </p>
           </div>
         </section>
+
+        <DiagnosticoDirectAnswer locale="es" />
 
         {/* Quick Nav */}
         <section className="bg-white border-b">

@@ -214,7 +214,12 @@
       "faq4Q": "¿El precio es por equipo o por visita?",
       "faq4A": "El precio es por equipo. Si tienes varios equipos, aplican descuentos por cantidad; puedes usar la calculadora en la página para ver el total.",
       "faq5Q": "¿Dan garantía en el servicio?",
-      "faq5A": "Sí. Respaldamos nuestro trabajo y puedes contactarnos si surge cualquier problema tras la limpieza."
+      "faq5A": "Sí. Respaldamos nuestro trabajo y puedes contactarnos si surge cualquier problema tras la limpieza.",
+      "faq6Q": "¿Cuánto cuesta la limpieza de un aire acondicionado en Panamá?",
+      "faq6A": "$29.99 por split (hasta 24.000 BTU) al limpiar 2 o más unidades; una sola unidad cuesta $35. Casete desde $60 y sistema central desde $50. El precio incluye desmontaje, lavado del evaporador con espuma antibacterial, limpieza del drenaje y garantía de 60 días.",
+      "faq7Q": "¿La limpieza profunda es lo mismo que el mantenimiento?",
+      "faq7A": "No. La limpieza profunda desmonta el equipo y lava el evaporador, la turbina y el drenaje — se recomienda 1–2 veces al año. El mantenimiento preventivo es una revisión trimestral desde $50: filtros, presión de gas, electricidad y lubricación. Lo ideal es combinar ambos.",
+      "priceFrom": "desde $29.99"
     },
     "maintenance": {
       "shortTitle": "Mantenimiento",
@@ -233,7 +238,12 @@
       "faq4Q": "¿Puedo contratar un plan de mantenimiento?",
       "faq4A": "Sí. Ofrecemos planes periódicos para hogares y negocios; escríbenos por WhatsApp para una cotización a tu medida.",
       "faq5Q": "¿El mantenimiento evita la necesidad de reparaciones?",
-      "faq5A": "En la mayoría de los casos sí. Un mantenimiento regular detecta problemas a tiempo y reduce el riesgo de averías costosas."
+      "faq5A": "En la mayoría de los casos sí. Un mantenimiento regular detecta problemas a tiempo y reduce el riesgo de averías costosas.",
+      "faq6Q": "¿Cuánto cuesta el mantenimiento de un aire acondicionado en Panamá?",
+      "faq6A": "$50 por visita para un split residencial y $80 para un casete. El plan anual de 4 visitas trimestrales mantiene el precio de $50 por visita e incluye limpieza de filtros, revisión de gas, inspección eléctrica y lubricación, con garantía de 60 días.",
+      "faq7Q": "¿Cuál es la diferencia entre mantenimiento y limpieza profunda?",
+      "faq7A": "El mantenimiento es una revisión preventiva trimestral: filtros, presión de gas, electricidad y lubricación. La limpieza profunda, desde $29.99 por unidad, desmonta el equipo y lava el evaporador y la turbina con espuma antibacterial. Si el equipo huele o enfría poco, conviene empezar por la limpieza.",
+      "priceFrom": "desde $50"
     },
     "repair": {
       "shortTitle": "Reparación",
@@ -258,7 +268,7 @@
       "shortTitle": "Instalación",
       "title": "Instalación de Aire Acondicionado en Panamá",
       "description": "Instalación profesional de aires acondicionados en Panamá. Incluye cableado, soportes, prueba de funcionamiento y limpieza del área. Técnicos certificados.",
-      "priceFrom": "desde $120",
+      "priceFrom": "desde $200",
       "benefit1": "Instalación garantizada",
       "benefit2": "Todas las marcas",
       "benefit3": "Asesoría personalizada",
@@ -272,7 +282,11 @@
       "faq4Q": "¿Puedo comprar el equipo yo y solo contratar la instalación?",
       "faq4A": "Sí. Muchos clientes compran el equipo y nos contratan solo para la instalación; solo asegúrate de que el equipo sea adecuado para el espacio.",
       "faq5Q": "¿En qué zonas instalan?",
-      "faq5A": "Ciudad de Panamá, Costa del Este, Punta Pacífica, Albrook, Clayton, Panamá Pacífico y zonas aledañas."
+      "faq5A": "Ciudad de Panamá, Costa del Este, Punta Pacífica, Albrook, Clayton, Panamá Pacífico y zonas aledañas.",
+      "faq6Q": "¿Cuánto cuesta instalar un aire acondicionado en Panamá?",
+      "faq6A": "La instalación back-to-back de un split de 9.000 a 24.000 BTU cuesta $200 e incluye soporte exterior, bases de goma, conexión a una toma eléctrica existente y materiales estándar. Extras: acometida desde el tablero +$50, tubería adicional +$20/m. Instalaciones con canalización o multi-split se cotizan gratis. Garantía de 90 días.",
+      "faq7Q": "¿Por qué algunas instalaciones se anuncian desde $65?",
+      "faq7A": "Las ofertas de $65–140 en Panamá suelen cubrir solo la mano de obra básica: soportes, materiales y acometida eléctrica se cobran aparte. Nuestro precio de $200 es cerrado, incluye materiales estándar, vacío del sistema con bomba profesional y garantía de 90 días por escrito."
     },
     "gasRecharge": {
       "shortTitle": "Carga de gas",
@@ -291,7 +305,8 @@
       "faq4Q": "¿Cuánto dura una carga de gas?",
       "faq4A": "Si no hay fuga, una carga puede durar años. Si el nivel baja pronto, suele indicar una fuga que debe repararse.",
       "faq5Q": "¿Dan garantía en la carga?",
-      "faq5A": "Sí. Respaldamos el servicio de carga; si hay una fuga no detectada, la revisamos sin costo adicional en el período de garantía."
+      "faq5A": "Sí. Respaldamos el servicio de carga; si hay una fuga no detectada, la revisamos sin costo adicional en el período de garantía.",
+      "priceFrom": "desde $120"
     },
     "emergency": {
       "shortTitle": "Emergencia",
