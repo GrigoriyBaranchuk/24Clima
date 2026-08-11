@@ -19,10 +19,11 @@ export const GCR_MERCHANT_ID = 5828751614;
 export const GCR_DELIVERY_COUNTRY = "PA";
 
 /**
- * Ожидаемый срок доставки в днях. Google присылает опрос после этой даты, поэтому
- * заниженное значение даёт опрос до получения товара. Уточнить под реальный SLA.
+ * Ожидаемый срок доставки в днях: по Панама-Сити и окрестностям максимум 2 дня.
+ * Google присылает опрос после этой даты, поэтому заниженное значение даёт опрос
+ * до получения товара. Пересмотреть, если появится доставка в другие провинции.
  */
-export const GCR_DELIVERY_ESTIMATE_DAYS = 5;
+export const GCR_DELIVERY_ESTIMATE_DAYS = 2;
 
 export type GcrOptInHandoff = {
   email: string;
