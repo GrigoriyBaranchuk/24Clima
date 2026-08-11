@@ -7,9 +7,13 @@ const SCRIPT_SRC =
   "https://www.gstatic.com/shopping/merchant/merchantwidget.js";
 
 /**
- * Отступ снизу на мобильных. Внизу экрана висит BottomNav (fixed, ~96px, под неё
- * у main стоит pb-24), а правила Google требуют не перекрывать виджет контентом.
+ * Отступы снизу. Правила Google требуют не перекрывать виджет контентом, а слева
+ * внизу уже заняты обе позиции:
+ * - на десктопе `GoogleReviewsBadge` (рейтинг Google Business Profile) стоит
+ *   `bottom-6 left-6` и занимает ~68px по высоте вместе с отступом;
+ * - на мобильных вместо него внизу висит BottomNav (~96px, под неё у main стоит pb-24).
  */
+const BOTTOM_MARGIN = 96;
 const MOBILE_BOTTOM_MARGIN = 104;
 
 type MerchantWidgetWindow = Window & {
@@ -30,7 +34,8 @@ type MerchantWidgetWindow = Window & {
  * и merchant_id не принимает: привязка идёт по проверенному в Merchant Center
  * домену, поэтому на localhost и превью-доменах он не отрисуется.
  *
- * Ставим слева внизу: справа внизу уже висит WhatsApp-кнопка (fixed bottom-6 right-6).
+ * Ставим слева внизу: справа внизу висит WhatsApp-кнопка (fixed bottom-6 right-6).
+ * Слева виджет встаёт над бейджем Google Business Profile — см. отступы выше.
  */
 export function GoogleMerchantWidget() {
   useEffect(() => {
@@ -39,6 +44,7 @@ export function GoogleMerchantWidget() {
     const start = () => {
       w.merchantwidget?.start({
         position: "LEFT_BOTTOM",
+        bottomMargin: BOTTOM_MARGIN,
         mobileBottomMargin: MOBILE_BOTTOM_MARGIN,
       });
     };
