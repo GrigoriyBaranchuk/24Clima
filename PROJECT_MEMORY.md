@@ -404,3 +404,24 @@ GSC (02.07) флагал страницы статей (`/consejos-y-guias/aire-
 Процесс: план каждого пункта — через codex consult (ключевое: деревья (es)/[locale] ДУБЛИРУЮТСЯ, править оба; limpieza уже имеет CleaningPackages+Calculator — вторую таблицу не ставить; единый источник цен против drift) и seo-reviewer (approve; id 10 — flag-with-conditions, условия выполнены). Проверки: build, tsc+eslint, грep статик-HTML (.next/server/app) и SSR через `next start` (limpieza и /servicios — динамические, НЕ prerendered — так было и до правок).
 
 **Грабли:** guard worktree-изоляции блокирует компаунд-команды и редиректы в Bash — обходить выносом в python-скрипты в `$CLAUDE_JOB_DIR/tmp`. Supabase MCP не видит проект сайта `qgvfnpafbzzgnryoxnoj` (другой аккаунт) — ходить по REST с service-role из `.env.local`.
+
+## Сессия 2026-08-10 — Система памяти: LLM Wiki в репозитории + Memory Compiler на хуках
+
+Ветка `worktree-feat-llm-wiki-memory`. Поставлены две системы памяти, обе — реализации паттерна Karpathy «LLM Wiki», но с разным сырьём. Подробности и правила — на wiki-странице `memory/wiki/concepts/memory-architecture.md`.
+
+**Часть A — LLM Wiki проекта (`memory/`):**
+- `memory/CLAUDE.md` — схема: структура, YAML-frontmatter страниц (`type/title/updated/sources/related/status`), соглашения о ссылках, операции ingest/query/lint, правило обращения с противоречиями (тихая перезапись запрещена, блок «Противоречие» + `status: contested`), критерии «дописать vs создать страницу».
+- `memory/raw/` — неизменяемые внешние источники (выгрузки GSC/DataForSEO, SERP, ревью, письма). Файлы репозитория туда не копируются.
+- `memory/wiki/` — 12 страниц засеяны ингестом `PROJECT_MEMORY.md` + `CLAUDE.md`: `entities/{24clima,ryhor-baranchuk}`, `concepts/{seo-monitoring-system,protected-seo-elements,i18n-dual-route-tree,service-pricing,mobile-app-like,design-system-package,agent-workflow,memory-architecture}`, `sources/project-memory`, `synthesis/gotchas` (сводка 12 граблей), плюс `index.md` и `log.md`. Ссылка из сессии 2026-06-27 на `memory/wiki/concepts/seo-monitoring-system.md` теперь ведёт на существующую страницу.
+- Скилл `/wiki` (`.claude/skills/wiki/SKILL.md`) — процедуры ingest/query/lint; в `.gitignore` добавлено negation, как для `seo-tasks`.
+- В корневой `CLAUDE.md` добавлен раздел «Память проекта»: задачу начинать с `memory/wiki/index.md`, перед работой смотреть `gotchas.md`.
+- Проверка: все внутренние ссылки резолвятся, сирот нет, у всех страниц есть frontmatter с `sources`.
+
+**Часть B — Memory Compiler (`coleam00/claude-memory-compiler`):**
+- Склонирован в `~/Projects/claude-memory-compiler`, поставлен `uv` (brew, 0.12.3) + `uv sync` (31 пакет, claude-agent-sdk 0.1.56, Python 3.14 подтянут самим uv).
+- **Хуки в `.claude/settings.json` были прописаны раньше, но не работали** — пути указывали на чужой `/Users/user/Projects/claude-memory-compiler`. Переведены на `$HOME`.
+- В команды добавлен префикс `export PATH="/opt/homebrew/bin:$PATH"` — без него `uv` может не найтись в окружении хука, а провал хука тихий (только `scripts/flush.log`).
+- Проверено: SessionStart отдаёт валидный JSON даже с урезанным PATH; SessionEnd парсит stdin и корректно логирует SKIP на несуществующем транскрипте. Полный проход с вызовом LLM не гонялся (стоит денег на фейковом транскрипте) — отработает при завершении реальной сессии.
+- `daily/` и `knowledge/` в репозитории компилятора под `.gitignore`: личное знание в клон не коммитится, но и бэкапа гитом у него нет.
+
+**Попутно:** локальный `SUPABASE_SERVICE_ROLE_KEY` в `.env.local` оказался пустым (13 символов вместе с кавычками) — прочитать `seo_gsc_daily` по REST не вышло, 401. Реальные значения тянуть через `vercel env pull`.

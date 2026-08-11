@@ -26,10 +26,22 @@ Owner: Ryhor Baranchuk (ryhor@24clima.com, +507 6828-2120).
 в globals.css/tailwind.config — только в пакете, затем новый тег и bump
 зависимости в обоих проектах (workflow — в README пакета).
 
+## Память проекта
+
+Два слоя, роли разные:
+
+- `memory/wiki/` — **LLM Wiki**: сжатое актуальное знание «как устроено и почему».
+  НАЧИНАЙ ЗАДАЧУ С `memory/wiki/index.md`, дальше открывай релевантные страницы.
+  Правила ведения — `memory/CLAUDE.md`. Операции — скилл `/wiki` (ingest/query/lint).
+- `PROJECT_MEMORY.md` — хронологический журнал сессий «что делали и когда».
+
+После значимой работы обновляй оба: страницы вики (знание) + запись в журнал (история).
+
 ## Важные файлы для AI
 
 - `DESIGN.md` — бренд-бук мобильной версии (Apple-style). ЧИТАЙ ПЕРЕД ДИЗАЙН-ИЗМЕНЕНИЯМИ.
 - `PROJECT_MEMORY.md` — история проекта, что делали, что работает. ОБНОВЛЯЙ ПОСЛЕ РАБОТЫ.
+- `memory/wiki/synthesis/gotchas.md` — грабли проекта. ПРОСМОТРИ ПЕРЕД РАБОТОЙ.
 - `docs/design-references/apple-DESIGN-reference.md` — референс Apple Design System
 - `docs/claude-seo-README.md` — документация SEO-скилла claude-seo
 - `.cursor/rules/` — правила для Cursor AI

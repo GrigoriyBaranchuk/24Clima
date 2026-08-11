@@ -1,0 +1,84 @@
+---
+type: concept
+title: Архитектура памяти проекта — два слоя
+updated: 2026-08-10
+sources: [PROJECT_MEMORY.md, memory/CLAUDE.md, ~/Projects/claude-memory-compiler/AGENTS.md, https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f]
+related: [concepts/agent-workflow, sources/project-memory, synthesis/gotchas]
+status: current
+---
+
+## Суть
+
+Память проекта устроена из двух независимых систем, обе — реализации
+паттерна Karpathy «LLM Wiki», но с разным **сырьём**:
+
+| | Сырьё | Где живёт | Кто наполняет |
+|---|---|---|---|
+| **LLM Wiki проекта** | документы репозитория, выгрузки, ревью, результаты работы | `memory/` в этом репозитории | агент по команде `/wiki ingest` |
+| **Memory Compiler** | транскрипты диалогов с Claude Code | `~/Projects/claude-memory-compiler` | хуки, автоматически |
+
+Первая отвечает «как устроен 24clima и почему», вторая — «что я вообще
+обсуждал и решал в терминале, по всем проектам».
+
+## Слой 1 — вики проекта (`memory/`)
+
+Структура и правила — в `memory/CLAUDE.md`. Операции — скилл `/wiki`
+(ingest / query / lint). Знание лежит в гите вместе с кодом, ревьюится
+в PR и живёт ровно столько же, сколько репозиторий.
+
+Точка входа для агента: `memory/wiki/index.md`.
+
+## Слой 2 — Memory Compiler (хуки)
+
+Репозиторий `coleam00/claude-memory-compiler`, склонирован в
+`~/Projects/claude-memory-compiler`, зависимости через `uv sync`
+(Python ставит сам uv, отдельный Python 3.12+ не нужен).
+
+Цикл:
+
+```
+диалог → SessionEnd / PreCompact → flush.py (Claude Agent SDK)
+       → daily/YYYY-MM-DD.md → compile.py → knowledge/{concepts,connections,qa}
+       → SessionStart впрыскивает индекс в следующую сессию
+```
+
+- Хуки прописаны в `.claude/settings.json` этого репозитория. Пути — через
+  `$HOME`, а не абсолютные: в исходном конфиге стояли чужие
+  `/Users/user/Projects/...` и хуки молча не работали.
+- Команда начинается с `export PATH="/opt/homebrew/bin:$PATH"` — иначе
+  `uv` может не найтись в окружении хука, и провал будет тихим
+  (виден только в `scripts/flush.log`).
+- `PreCompact` нужен вместе с `SessionEnd`: длинная сессия успевает
+  несколько раз автосжаться, и без него промежуточный контекст теряется.
+- Рекурсия исключена переменной `CLAUDE_INVOKED_BY` — flush сам запускает
+  Claude Code, и без guard хуки бы зациклились.
+- Компиляция дня запускается сама после 18:00 локального времени, если
+  дневной лог менялся. Крон не нужен. Константа `TIMEZONE` в
+  `scripts/config.py` — мёртвая, время берётся системное.
+- `daily/` и `knowledge/` в том репозитории под `.gitignore` — в клон
+  публичного репо личное знание не уедет, **но и бэкапа гитом нет**.
+
+Ручные команды (из каталога компилятора):
+`uv run python scripts/compile.py`, `scripts/query.py "вопрос"`,
+`scripts/lint.py --structural-only`.
+
+## Стоимость
+
+Работает на подписке Claude, отдельный API-ключ не нужен.
+Порядок величин по документации: flush ~$0.02–0.05 за сессию,
+компиляция дневного лога $0.45–0.65, структурный lint бесплатно.
+
+## Как не запутаться
+
+- Факт про **код и решения 24clima** → вики проекта (`/wiki ingest`).
+- Хронология сессии → `PROJECT_MEMORY.md`.
+- Что происходило в диалогах вообще → накапливается само, читать через
+  `scripts/query.py`.
+
+Дублировать одно в другое не нужно: у слоёв разный радиус — вики
+привязана к репозиторию, компилятор общий для всех проектов на машине.
+
+## Связи
+
+- [Как работают AI-агенты](agent-workflow.md)
+- [PROJECT_MEMORY.md](../sources/project-memory.md)
