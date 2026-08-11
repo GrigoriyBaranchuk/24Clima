@@ -41,7 +41,7 @@ async function writeRun(
     window_start?: string | null;
     window_end?: string | null;
     error?: string | null;
-  }
+  },
 ) {
   try {
     await supabase.from("seo_sync_runs").insert({
@@ -71,10 +71,10 @@ async function syncGsc(
   supabase: SupabaseClient,
   token: string,
   start: string,
-  end: string
+  end: string,
 ): Promise<SourceResult> {
   const endpoint = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(
-    GSC_SITE_URL as string
+    GSC_SITE_URL as string,
   )}/searchAnalytics/query`;
   const rowLimit = 25000;
   let startRow = 0;
@@ -101,7 +101,12 @@ async function syncGsc(
         }),
       });
     } catch (e) {
-      return { source: "gsc", status: "error", rows: total, error: `fetch: ${String(e)}` };
+      return {
+        source: "gsc",
+        status: "error",
+        rows: total,
+        error: `fetch: ${String(e)}`,
+      };
     }
     if (!res.ok) {
       const body = await res.text().catch(() => "");
@@ -113,7 +118,13 @@ async function syncGsc(
       };
     }
     const data = (await res.json().catch(() => null)) as {
-      rows?: { keys: string[]; clicks: number; impressions: number; ctr: number; position: number }[];
+      rows?: {
+        keys: string[];
+        clicks: number;
+        impressions: number;
+        ctr: number;
+        position: number;
+      }[];
     } | null;
     const rows = data?.rows ?? [];
     if (rows.length === 0) break;
@@ -129,7 +140,10 @@ async function syncGsc(
     }));
     const { error } = await supabase
       .from("seo_gsc_daily")
-      .upsert(mapped, { onConflict: "date,page,query", ignoreDuplicates: false });
+      .upsert(mapped, {
+        onConflict: "date,page,query",
+        ignoreDuplicates: false,
+      });
     if (error) partial = true;
     else total += mapped.length;
 
@@ -141,20 +155,106 @@ async function syncGsc(
 }
 
 // ---------------------------------------------------------------------------
+// GSC totals — same Search Analytics endpoint, dimensions=["date"] only.
+// Grouping by query (above) makes Google drop anonymized queries, so those
+// rows undercount the site by ~6x. This date-only request returns the same
+// numbers as the GSC UI and feeds the dashboard's KPI cards and charts.
+// One row per day — a single request covers any window, no pagination.
+// ---------------------------------------------------------------------------
+async function syncGscTotals(
+  supabase: SupabaseClient,
+  token: string,
+  start: string,
+  end: string,
+): Promise<SourceResult> {
+  const endpoint = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(
+    GSC_SITE_URL as string,
+  )}/searchAnalytics/query`;
+  let res: Response;
+  try {
+    res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        startDate: start,
+        endDate: end,
+        dimensions: ["date"],
+        dataState: "final",
+        rowLimit: 1000,
+      }),
+    });
+  } catch (e) {
+    return {
+      source: "gsc_totals",
+      status: "error",
+      rows: 0,
+      error: `fetch: ${String(e)}`,
+    };
+  }
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    return {
+      source: "gsc_totals",
+      status: "error",
+      rows: 0,
+      error: `HTTP ${res.status}: ${body.slice(0, 300)}`,
+    };
+  }
+  const data = (await res.json().catch(() => null)) as {
+    rows?: {
+      keys: string[];
+      clicks: number;
+      impressions: number;
+      ctr: number;
+      position: number;
+    }[];
+  } | null;
+  const rows = data?.rows ?? [];
+  if (rows.length === 0) return { source: "gsc_totals", status: "ok", rows: 0 };
+
+  const now = new Date().toISOString();
+  const mapped = rows.map((r) => ({
+    date: r.keys[0],
+    clicks: Math.round(r.clicks ?? 0),
+    impressions: Math.round(r.impressions ?? 0),
+    ctr: r.ctr ?? 0,
+    position: r.position ?? 0,
+    updated_at: now,
+  }));
+  const { error } = await supabase
+    .from("seo_gsc_totals")
+    .upsert(mapped, { onConflict: "date", ignoreDuplicates: false });
+  if (error)
+    return {
+      source: "gsc_totals",
+      status: "error",
+      rows: 0,
+      error: error.message,
+    };
+  return { source: "gsc_totals", status: "ok", rows: mapped.length };
+}
+
+// ---------------------------------------------------------------------------
 // GA4 — organic daily metrics via Data API runReport.
 // ---------------------------------------------------------------------------
 async function syncGa4(
   supabase: SupabaseClient,
   token: string,
   start: string,
-  end: string
+  end: string,
 ): Promise<SourceResult> {
   const endpoint = `https://analyticsdata.googleapis.com/v1beta/properties/${GA4_PROPERTY_ID}:runReport`;
   let res: Response;
   try {
     res = await fetch(endpoint, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         dateRanges: [{ startDate: start, endDate: end }],
         dimensions: [{ name: "date" }, { name: "sessionDefaultChannelGroup" }],
@@ -174,14 +274,27 @@ async function syncGa4(
       }),
     });
   } catch (e) {
-    return { source: "ga4", status: "error", rows: 0, error: `fetch: ${String(e)}` };
+    return {
+      source: "ga4",
+      status: "error",
+      rows: 0,
+      error: `fetch: ${String(e)}`,
+    };
   }
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    return { source: "ga4", status: "error", rows: 0, error: `HTTP ${res.status}: ${body.slice(0, 300)}` };
+    return {
+      source: "ga4",
+      status: "error",
+      rows: 0,
+      error: `HTTP ${res.status}: ${body.slice(0, 300)}`,
+    };
   }
   const data = (await res.json().catch(() => null)) as {
-    rows?: { dimensionValues: { value: string }[]; metricValues: { value: string }[] }[];
+    rows?: {
+      dimensionValues: { value: string }[];
+      metricValues: { value: string }[];
+    }[];
   } | null;
   const rows = data?.rows ?? [];
   if (rows.length === 0) return { source: "ga4", status: "ok", rows: 0 };
@@ -206,7 +319,8 @@ async function syncGa4(
   const { error } = await supabase
     .from("seo_ga4_daily")
     .upsert(mapped, { onConflict: "date,channel", ignoreDuplicates: false });
-  if (error) return { source: "ga4", status: "partial", rows: 0, error: error.message };
+  if (error)
+    return { source: "ga4", status: "partial", rows: 0, error: error.message };
   return { source: "ga4", status: "ok", rows: mapped.length };
 }
 
@@ -216,7 +330,12 @@ async function syncGa4(
 /** Both form factors: desktop and mobile can fail completely different audits. */
 const PSI_STRATEGIES = ["mobile", "desktop"] as const;
 /** All four categories come back in a single request — no extra round trips. */
-const PSI_CATEGORIES = ["performance", "accessibility", "best-practices", "seo"] as const;
+const PSI_CATEGORIES = [
+  "performance",
+  "accessibility",
+  "best-practices",
+  "seo",
+] as const;
 /**
  * PSI answers in ~10s and this route also runs GSC and GA4 before it. Serially,
  * the 11 monitored URLs never finished inside the function timeout — the tail of
@@ -231,10 +350,13 @@ async function fetchPsiTarget(
   strategy: (typeof PSI_STRATEGIES)[number],
   date: string,
 ): Promise<{ cwv: CwvRow[]; audits: AuditRow[] } | null> {
-  const endpoint = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
+  const endpoint = new URL(
+    "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
+  );
   endpoint.searchParams.set("url", url);
   endpoint.searchParams.set("strategy", strategy);
-  for (const category of PSI_CATEGORIES) endpoint.searchParams.append("category", category);
+  for (const category of PSI_CATEGORIES)
+    endpoint.searchParams.append("category", category);
   if (PAGESPEED_API_KEY) endpoint.searchParams.set("key", PAGESPEED_API_KEY);
 
   let res: Response;
@@ -316,7 +438,8 @@ function failedAudits(
     for (const ref of cat?.auditRefs ?? []) {
       if (byAuditId.has(ref.id)) continue;
       const audit = lab.audits?.[ref.id];
-      if (!audit || typeof audit.score !== "number" || audit.score >= 0.9) continue;
+      if (!audit || typeof audit.score !== "number" || audit.score >= 0.9)
+        continue;
       byAuditId.set(ref.id, {
         date,
         url,
@@ -332,7 +455,10 @@ function failedAudits(
   return [...byAuditId.values()];
 }
 
-async function syncPsi(supabase: SupabaseClient, date: string): Promise<SourceResult> {
+async function syncPsi(
+  supabase: SupabaseClient,
+  date: string,
+): Promise<SourceResult> {
   const targets = monitoredUrls().flatMap((url) =>
     PSI_STRATEGIES.map((strategy) => ({ url, strategy })),
   );
@@ -342,7 +468,10 @@ async function syncPsi(supabase: SupabaseClient, date: string): Promise<SourceRe
   for (let i = 0; i < targets.length; i += PSI_CONCURRENCY) {
     const batch = targets.slice(i, i + PSI_CONCURRENCY);
     const results = await Promise.all(
-      batch.map(async (t) => ({ target: t, data: await fetchPsiTarget(t.url, t.strategy, date) })),
+      batch.map(async (t) => ({
+        target: t,
+        data: await fetchPsiTarget(t.url, t.strategy, date),
+      })),
     );
 
     for (const { target, data } of results) {
@@ -353,7 +482,10 @@ async function syncPsi(supabase: SupabaseClient, date: string): Promise<SourceRe
       if (data.cwv.length) {
         const { error } = await supabase
           .from("seo_cwv_snapshots")
-          .upsert(data.cwv, { onConflict: "date,url,strategy,source", ignoreDuplicates: false });
+          .upsert(data.cwv, {
+            onConflict: "date,url,strategy,source",
+            ignoreDuplicates: false,
+          });
         if (error) partial = true;
         else total += data.cwv.length;
       }
@@ -367,7 +499,9 @@ async function syncPsi(supabase: SupabaseClient, date: string): Promise<SourceRe
         .eq("strategy", target.strategy);
       if (delError) partial = true;
       if (data.audits.length) {
-        const { error } = await supabase.from("seo_psi_audits").insert(data.audits);
+        const { error } = await supabase
+          .from("seo_psi_audits")
+          .insert(data.audits);
         if (error) partial = true;
       }
     }
@@ -403,10 +537,18 @@ type AuditRow = {
 
 type PsiResponse = {
   lighthouseResult?: {
-    categories?: Record<string, { score?: number; auditRefs?: { id: string }[] } | undefined>;
+    categories?: Record<
+      string,
+      { score?: number; auditRefs?: { id: string }[] } | undefined
+    >;
     audits?: Record<
       string,
-      { numericValue?: number; score?: number | null; title?: string; displayValue?: string }
+      {
+        numericValue?: number;
+        score?: number | null;
+        title?: string;
+        displayValue?: string;
+      }
     >;
   };
   loadingExperience?: {
@@ -423,12 +565,17 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    return NextResponse.json({ error: "Supabase service role not configured" }, { status: 503 });
+    return NextResponse.json(
+      { error: "Supabase service role not configured" },
+      { status: 503 },
+    );
   }
   if (!GOOGLE_SA_KEY_BASE64 || !GSC_SITE_URL || !GA4_PROPERTY_ID) {
     return NextResponse.json(
-      { error: "Missing GOOGLE_SA_KEY_BASE64 / GSC_SITE_URL / GA4_PROPERTY_ID" },
-      { status: 503 }
+      {
+        error: "Missing GOOGLE_SA_KEY_BASE64 / GSC_SITE_URL / GA4_PROPERTY_ID",
+      },
+      { status: 503 },
     );
   }
 
@@ -436,15 +583,24 @@ export async function GET(req: NextRequest) {
   let saEmail: string;
   let saKey: string;
   try {
-    const sa = JSON.parse(Buffer.from(GOOGLE_SA_KEY_BASE64, "base64").toString("utf8"));
+    const sa = JSON.parse(
+      Buffer.from(GOOGLE_SA_KEY_BASE64, "base64").toString("utf8"),
+    );
     saEmail = sa.client_email;
     saKey = sa.private_key;
     if (!saEmail || !saKey) throw new Error("missing client_email/private_key");
   } catch {
-    return NextResponse.json({ error: "GOOGLE_SA_KEY_BASE64 is not valid base64 SA JSON" }, { status: 503 });
+    return NextResponse.json(
+      { error: "GOOGLE_SA_KEY_BASE64 is not valid base64 SA JSON" },
+      { status: 503 },
+    );
   }
 
-  const jwt = new JWT({ email: saEmail, key: saKey, scopes: [GSC_SCOPE, GA4_SCOPE] });
+  const jwt = new JWT({
+    email: saEmail,
+    key: saKey,
+    scopes: [GSC_SCOPE, GA4_SCOPE],
+  });
   let token: string;
   try {
     const t = await jwt.getAccessToken();
@@ -452,8 +608,11 @@ export async function GET(req: NextRequest) {
     token = t.token;
   } catch (e) {
     return NextResponse.json(
-      { error: "Service account auth failed", details: String(e).slice(0, 200) },
-      { status: 502 }
+      {
+        error: "Service account auth failed",
+        details: String(e).slice(0, 200),
+      },
+      { status: 502 },
     );
   }
 
@@ -465,14 +624,22 @@ export async function GET(req: NextRequest) {
     const checks: Record<string, string> = {};
     const gscPing = await fetch(
       `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(GSC_SITE_URL)}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    ).catch((e) => ({ ok: false, status: 0, statusText: String(e) }) as Response);
-    checks.gsc = gscPing.ok ? "ok" : `fail ${gscPing.status} — is ${saEmail} a GSC user?`;
+      { headers: { Authorization: `Bearer ${token}` } },
+    ).catch(
+      (e) => ({ ok: false, status: 0, statusText: String(e) }) as Response,
+    );
+    checks.gsc = gscPing.ok
+      ? "ok"
+      : `fail ${gscPing.status} — is ${saEmail} a GSC user?`;
     const ga4Ping = await fetch(
       `https://analyticsdata.googleapis.com/v1beta/properties/${GA4_PROPERTY_ID}/metadata`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    ).catch((e) => ({ ok: false, status: 0, statusText: String(e) }) as Response);
-    checks.ga4 = ga4Ping.ok ? "ok" : `fail ${ga4Ping.status} — is ${saEmail} a GA4 Viewer? property numeric?`;
+      { headers: { Authorization: `Bearer ${token}` } },
+    ).catch(
+      (e) => ({ ok: false, status: 0, statusText: String(e) }) as Response,
+    );
+    checks.ga4 = ga4Ping.ok
+      ? "ok"
+      : `fail ${ga4Ping.status} — is ${saEmail} a GA4 Viewer? property numeric?`;
     return NextResponse.json({ ok: true, preflight: checks, sa: saEmail });
   }
 
@@ -488,20 +655,57 @@ export async function GET(req: NextRequest) {
 
   const results: SourceResult[] = [];
 
+  // Totals first: they are the dashboard's source of truth, so a failure in the
+  // heavier query+page ingestion below must not affect them.
+  const gscTotals = await syncGscTotals(supabase, token, startStr, endStr);
+  results.push(gscTotals);
+  await writeRun(supabase, {
+    source: "gsc_totals",
+    status: gscTotals.status,
+    rows_written: gscTotals.rows,
+    window_start: startStr,
+    window_end: endStr,
+    error: gscTotals.error,
+  });
+
   const gsc = await syncGsc(supabase, token, startStr, endStr);
   results.push(gsc);
-  await writeRun(supabase, { source: "gsc", status: gsc.status, rows_written: gsc.rows, window_start: startStr, window_end: endStr, error: gsc.error });
+  await writeRun(supabase, {
+    source: "gsc",
+    status: gsc.status,
+    rows_written: gsc.rows,
+    window_start: startStr,
+    window_end: endStr,
+    error: gsc.error,
+  });
 
   const ga4 = await syncGa4(supabase, token, startStr, endStr);
   results.push(ga4);
-  await writeRun(supabase, { source: "ga4", status: ga4.status, rows_written: ga4.rows, window_start: startStr, window_end: endStr, error: ga4.error });
+  await writeRun(supabase, {
+    source: "ga4",
+    status: ga4.status,
+    rows_written: ga4.rows,
+    window_start: startStr,
+    window_end: endStr,
+    error: ga4.error,
+  });
 
   const psi = await syncPsi(supabase, psiDate);
   results.push(psi);
-  await writeRun(supabase, { source: "psi", status: psi.status, rows_written: psi.rows, window_start: psiDate, window_end: psiDate, error: psi.error });
+  await writeRun(supabase, {
+    source: "psi",
+    status: psi.status,
+    rows_written: psi.rows,
+    window_start: psiDate,
+    window_end: psiDate,
+    error: psi.error,
+  });
 
   const anyError = results.some((r) => r.status === "error");
-  return NextResponse.json({ ok: !anyError, window: { start: startStr, end: endStr }, results }, {
-    status: anyError ? 207 : 200,
-  });
+  return NextResponse.json(
+    { ok: !anyError, window: { start: startStr, end: endStr }, results },
+    {
+      status: anyError ? 207 : 200,
+    },
+  );
 }
