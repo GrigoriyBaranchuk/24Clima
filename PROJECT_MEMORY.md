@@ -404,3 +404,50 @@ GSC (02.07) флагал страницы статей (`/consejos-y-guias/aire-
 Процесс: план каждого пункта — через codex consult (ключевое: деревья (es)/[locale] ДУБЛИРУЮТСЯ, править оба; limpieza уже имеет CleaningPackages+Calculator — вторую таблицу не ставить; единый источник цен против drift) и seo-reviewer (approve; id 10 — flag-with-conditions, условия выполнены). Проверки: build, tsc+eslint, грep статик-HTML (.next/server/app) и SSR через `next start` (limpieza и /servicios — динамические, НЕ prerendered — так было и до правок).
 
 **Грабли:** guard worktree-изоляции блокирует компаунд-команды и редиректы в Bash — обходить выносом в python-скрипты в `$CLAUDE_JOB_DIR/tmp`. Supabase MCP не видит проект сайта `qgvfnpafbzzgnryoxnoj` (другой аккаунт) — ходить по REST с service-role из `.env.local`.
+
+## Сессия 2026-08-10 — Google Отзывы клиентов: opt-in, витринный виджет, /privacidad
+
+Подключение магазина к программе «Google Отзывы клиентов» (Google Customer Reviews).
+Merchant Center: merchant_id `5828751614`, аккаунт `ryhor@24clima.com`. Ветка
+`feat/google-customer-reviews` (3 коммита, **запушена**, PR ещё не открыт).
+
+Изучены все 6 разделов правил программы. Ассортимент HVAC/R под ограничения не
+попадает; критичные для нас пункты — запрет любых стимулов за отзывы и обязательная
+политика конфиденциальности с описанием сторонних cookie и opt-out.
+
+Сделано:
+- **`src/features/tienda/lib/gcr.ts`** — merchant_id, страна `PA`,
+  `GCR_DELIVERY_ESTIMATE_DAYS = 2` (реальный SLA по Панама-Сити и окрестностям;
+  Google шлёт опрос ПОСЛЕ этой даты). Передача email и даты доставки с чекаута на
+  страницу заказа через sessionStorage: бэкенд `/v1/orders/{ref}` отдаёт только
+  order_number/status/total, email там нет. Следствие: opt-in показывается только
+  сразу после оформления, по прямой ссылке на заказ — нет. Если бэкенд научится
+  отдавать email и дату — костыль убрать.
+- **`GoogleCustomerReviewsOptIn.tsx`** на странице подтверждения. `platform.js`
+  вставляется вручную в `useEffect`, НЕ через next/script: скрипт зовёт
+  `window.renderOptIn` по своему onload, колбэк обязан существовать раньше тега,
+  а порядок нескольких next/script не гарантирован.
+- **`CheckoutForm.tsx`** — email стал обязательным (`required` + `*`), без него
+  запрос согласия отправить нечем.
+- **`GoogleMerchantWidget.tsx`** в `TiendaShell` — витринный виджет. ВАЖНО: старый
+  `gapi.ratingbadge` Google отменил, теперь `merchantwidget.js`, который merchant_id
+  НЕ принимает — привязка по подтверждённому в Merchant Center домену. На localhost
+  и превью-доменах виджет не отрисуется, это не баг. Позиция LEFT_BOTTOM с отступом
+  96px (мобильные 104px): справа внизу WhatsApp-кнопка, слева внизу `GoogleReviewsBadge`
+  (`bottom-6 left-6`), а правила требуют не перекрывать виджет контентом.
+- **`/privacidad`** на es/en/ru (`src/components/PrivacyPolicy.tsx` + два роута,
+  namespace `privacy` в messages, 37 ключей). Ссылка в футере рядом с копирайтом,
+  запись в sitemap (priority 0.3). Тексты составлены по фактическому поведению кода
+  (GA4, Meta Pixel, Yandex Metrica, ссылки на opt-out каждого; карты не обрабатываем —
+  в чекауте только оплата при получении и перевод). **Юридической вычитки НЕ было.**
+
+`tsc --noEmit`, `next lint`, `next build` (92 страницы) — зелёные.
+
+Осталось: юридическая вычитка политики; PR → merge в main → автодеплой; проверка
+виджета и opt-in только на боевом домене; в Merchant Center подтвердить домен и
+включить программу.
+
+**Грабли:** `npm ci` в этом репо не работает — `package-lock.json` рассинхронизирован
+с package.json (Vercel и так ставит через `bun install`, см. vercel.json). node не
+всегда в PATH (`/opt/homebrew/bin/node`). В git-worktree нет node_modules — для
+проверок симлинкать из основного чекаута.
