@@ -708,7 +708,11 @@
       "bankTransfer": "Transferencia bancaria",
       "confirmOrder": "Confirmar pedido",
       "processing": "Procesando…",
-      "emptyCart": "No hay ítems en el carrito. Añade productos antes de continuar."
+      "emptyCart": "No hay ítems en el carrito. Añade productos antes de continuar.",
+      "emailHint": "Opcional. Si lo indicas, podrás recibir la encuesta de Google sobre tu compra.",
+      "phoneHint": "Nos comunicaremos contigo por WhatsApp.",
+      "phoneCountryLabel": "Código de país",
+      "phoneInvalid": "Introduce un número de teléfono válido para el país seleccionado."
     },
     "order": {
       "status": "Estado",

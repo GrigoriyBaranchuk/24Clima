@@ -708,7 +708,11 @@
       "bankTransfer": "Bank transfer",
       "confirmOrder": "Confirm order",
       "processing": "Processing…",
-      "emptyCart": "No items in cart. Add products before continuing."
+      "emptyCart": "No items in cart. Add products before continuing.",
+      "emailHint": "Optional. If you provide it, you can receive the Google survey about your purchase.",
+      "phoneHint": "We will contact you via WhatsApp.",
+      "phoneCountryLabel": "Country code",
+      "phoneInvalid": "Enter a valid phone number for the selected country."
     },
     "order": {
       "status": "Status",
