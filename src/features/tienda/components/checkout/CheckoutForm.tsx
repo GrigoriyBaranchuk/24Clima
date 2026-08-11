@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { api, type CheckoutPreview } from "../../lib/api-client";
+import { estimatedDeliveryDate, saveOptInHandoff } from "../../lib/gcr";
 
 export function CheckoutForm() {
   const t = useTranslations("tienda.checkout");
@@ -22,8 +23,10 @@ export function CheckoutForm() {
     setError(null);
     setSubmitting(true);
     const form = e.currentTarget;
+    // Обязателен: без него не отправить запрос согласия «Google Отзывы клиентов».
+    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
     const shipping = {
-      guest_email: (form.elements.namedItem("email") as HTMLInputElement)?.value || undefined,
+      guest_email: email || undefined,
       guest_phone: (form.elements.namedItem("phone") as HTMLInputElement)?.value || undefined,
       guest_name: (form.elements.namedItem("name") as HTMLInputElement)?.value || undefined,
       shipping_address: (form.elements.namedItem("address") as HTMLInputElement)?.value,
@@ -33,6 +36,9 @@ export function CheckoutForm() {
     };
     try {
       const res = await api.createOrder(shipping, undefined, undefined, undefined);
+      if (email) {
+        saveOptInHandoff(res.order_number, { email, estimatedDeliveryDate: estimatedDeliveryDate() });
+      }
       router.push(`/tienda/order/${res.order_number}?token=${res.public_token}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error");
@@ -59,8 +65,8 @@ export function CheckoutForm() {
         <input id="name" name="name" type="text" className="mt-1 w-full rounded border border-input bg-background px-3 py-2" />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-foreground">{t("email")}</label>
-        <input id="email" name="email" type="email" className="mt-1 w-full rounded border border-input bg-background px-3 py-2" />
+        <label htmlFor="email" className="block text-sm font-medium text-foreground">{t("email")} *</label>
+        <input id="email" name="email" type="email" required className="mt-1 w-full rounded border border-input bg-background px-3 py-2" />
       </div>
       <div>
         <label htmlFor="phone" className="block text-sm font-medium text-foreground">{t("phone")}</label>
