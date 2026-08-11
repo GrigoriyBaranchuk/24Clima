@@ -447,7 +447,12 @@ Merchant Center: merchant_id `5828751614`, аккаунт `ryhor@24clima.com`. �
 виджета и opt-in только на боевом домене; в Merchant Center подтвердить домен и
 включить программу.
 
-**Грабли:** `npm ci` в этом репо не работает — `package-lock.json` рассинхронизирован
-с package.json (Vercel и так ставит через `bun install`, см. vercel.json). node не
-всегда в PATH (`/opt/homebrew/bin/node`). В git-worktree нет node_modules — для
-проверок симлинкать из основного чекаута.
+**Грабли:** проект ставится ТОЛЬКО через `bun` (`bun@1.3.14`, зафиксирован в
+`packageManager`). Протухший `package-lock.json` удалён из репо и добавлен в
+.gitignore вместе с yarn/pnpm-локами: он был рассинхронизирован с package.json и
+провоцировал сборку npm-ом с версиями, отличными от прода. Учти: поле
+`packageManager` npm НЕ соблюдает (проверено) — это декларация, а не защита.
+node и bun живут в `/opt/homebrew/bin`, но не всегда в PATH у агента —
+`export PATH="/opt/homebrew/bin:$PATH"`. В свежем git-worktree нет node_modules:
+ставить `bun install` (симлинк на node_modules основного чекаута тоже работает,
+но это костыль).
