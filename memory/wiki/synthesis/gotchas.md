@@ -33,6 +33,10 @@ status: current
 | 16 | `gh pr merge --delete-branch` падает из-за worktree | `fatal: 'main' is already used by worktree...` выглядит как «мерж не удался», но PR уже MERGED | мержить без `--delete-branch`, ветку удалять отдельно; при ошибке проверить `gh pr view N --json state` — не перемерживать |
 | 17 | Сквош-мерж прячет ветки от `git branch --merged` | смерженные через squash-PR ветки выглядят живыми, копятся десятками | проверять `git cherry main branch` и diff содержимого, а не только флаг merged (чистка 2026-08-11: 18 таких веток) |
 | 18 | Мёртвый лок `git worktree` | worktree помечен locked, хотя Claude-сессия давно умерла | pid из причины лока → `ps -p <pid>`; если мёртв: `git worktree unlock && git worktree remove` |
+| 19 | Виджет `merchantwidget.js` не принимает merchant_id | значка рейтинга нет на localhost и превью-доменах — выглядит как сломанная интеграция | привязка по подтверждённому в Merchant Center домену; проверять только на боевом `24clima.com` (старый `gapi.ratingbadge` отменён) — [Google Отзывы клиентов](../concepts/google-customer-reviews.md) |
+| 20 | Проект ставится ТОЛЬКО через `bun` | npm собирает с версиями, отличными от прода | `bun@1.3.14` зафиксирован в `packageManager`, но npm это поле **не соблюдает** (проверено); протухший `package-lock.json` удалён и в .gitignore; в свежем worktree нет `node_modules` — `bun install` |
+| 21 | `node`/`bun` не всегда в PATH у агента | команда «не найдена» в хуке или субагенте, провал тихий | `export PATH="/opt/homebrew/bin:$PATH"` — [архитектура памяти](../concepts/memory-architecture.md) |
+| 22 | Пустой `.git/index.lock` от умершего процесса | `git pull` падает «Another git process seems to be running», хотя ни одного git-процесса нет | `ps aux \| grep git` → если пусто и лок нулевого размера/старый, удалить `rm -f .git/index.lock` (случай 2026-08-11: лок от 08.08) |
 
 ## Связи
 

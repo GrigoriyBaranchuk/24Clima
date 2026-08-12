@@ -4,7 +4,7 @@
 прочитай их, и только потом лезь в код. Правила ведения — в
 [`memory/CLAUDE.md`](../CLAUDE.md).
 
-Обновлено: 2026-08-11 · страниц: 13
+Обновлено: 2026-08-11 · страниц: 16
 
 ## Сущности
 
@@ -25,7 +25,10 @@
 | [Дизайн-система @24clima/design](concepts/design-system-package.md) | токены в отдельном пакете, workflow обновления, `GH_PAT` |
 | [Как работают AI-агенты](concepts/agent-workflow.md) | план → codex → seo-reviewer → проверки → OK на push |
 | [Сегменты клиентов «hvac»](concepts/hvac-customer-segments.md) | expats / B2B / администрадоры PH / not-fit specialty / event-аренда + Panamá Oeste |
-| [Архитектура памяти](concepts/memory-architecture.md) | два слоя: вики репозитория и Memory Compiler на хуках |
+| [Архитектура памяти](concepts/memory-architecture.md) | три слоя и политика: канонична только repo-память, локальная — кэш |
+| [Магазин /tienda](concepts/tienda-shop.md) | магазин внутри сайта, редирект со `shop.24clima.com` (пока 302), свой бэкенд |
+| [Google Отзывы клиентов](concepts/google-customer-reviews.md) | merchant_id, opt-in, витринный виджет, `/privacidad`, что осталось до запуска |
+| [Supabase-проекты](concepts/supabase-projects.md) | два проекта, проект сайта не виден через MCP, как ходить по REST |
 
 ## Источники
 
@@ -37,14 +40,16 @@
 
 | Страница | О чём |
 |---|---|
-| [Грабли проекта](synthesis/gotchas.md) | 18 ошибок, которые уже стоили времени — просмотреть перед работой |
+| [Грабли проекта](synthesis/gotchas.md) | 22 ошибки, которые уже стоили времени — просмотреть перед работой |
 
 ## Пробелы
 
 Темы, которых в вики пока нет — кандидаты на ingest:
 
 - `DESIGN.md` — бренд-бук мобильной версии (не заингещен).
-- Магазин shop.24clima.com и его связь с сайтом.
+- Бэкенд магазина (репозиторий `24clima-shop`): устройство API `/v1/**`,
+  где он хостится, что умеет отдавать по заказу. Витрина описана
+  ([магазин /tienda](concepts/tienda-shop.md)), бэкенд — нет.
 - Калькулятор: модель ценообразования `calculator-pricing.ts`.
 - Блог `/consejos-y-guias`: структура, авторство, что и зачем пишется.
 - Живые данные GSC/GA4 — как только появится доступ к цифрам.

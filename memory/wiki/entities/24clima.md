@@ -1,9 +1,9 @@
 ---
 type: entity
 title: 24clima (WOW Soluciones Panama)
-updated: 2026-08-10
-sources: [PROJECT_MEMORY.md, CLAUDE.md, src/lib/business-data.ts]
-related: [concepts/service-pricing, concepts/seo-monitoring-system, entities/ryhor-baranchuk]
+updated: 2026-08-11
+sources: [PROJECT_MEMORY.md, CLAUDE.md, src/lib/business-data.ts, src/middleware.ts]
+related: [concepts/service-pricing, concepts/seo-monitoring-system, entities/ryhor-baranchuk, concepts/tienda-shop, concepts/google-customer-reviews]
 status: current
 ---
 
@@ -37,8 +37,17 @@ Panama, бренд и домен — 24clima. Сайт: https://24clima.com.
   `src/lib/business-data.ts`, JSON-LD `HVACBusiness` в `layout.tsx`,
   on-page копия на `areas-de-servicio`. Рассинхрон ловил seo-reviewer
   [PROJECT_MEMORY.md, 2026-06-06].
-- **Смежный проект:** магазин shop.24clima.com (репозиторий
-  `24clima-shop`), делит дизайн-систему с сайтом.
+- **Магазин** живёт внутри этого же сайта — `24clima.com/tienda`
+  (`src/features/tienda/**`), делит с ним дизайн-систему. Старый домен
+  `shop.24clima.com` оставлен под редирект; отдельный репозиторий
+  `24clima-shop` — история этого магазина и его собственный Supabase-проект
+  (см. [магазин /tienda](../concepts/tienda-shop.md)).
+
+  > **Противоречие (2026-08-11):** раньше здесь было «смежный проект —
+  > магазин shop.24clima.com» [PROJECT_MEMORY.md, 2026-08-10]. Фактически
+  > магазин переехал в `/tienda` основного сайта, а хост `shop.24clima.com`
+  > редиректится middleware [проверено в `src/middleware.ts`, 2026-08-11].
+  > Актуально: магазин — часть сайта; поддомен только источник редиректа.
 
 ## Грабли
 
@@ -51,3 +60,5 @@ Panama, бренд и домен — 24clima. Сайт: https://24clima.com.
 - [Ryhor Baranchuk](ryhor-baranchuk.md) — владелец, лицо E-E-A-T.
 - [Цены на услуги](../concepts/service-pricing.md)
 - [Система SEO-мониторинга](../concepts/seo-monitoring-system.md)
+- [Магазин /tienda](../concepts/tienda-shop.md)
+- [Google Отзывы клиентов](../concepts/google-customer-reviews.md)
