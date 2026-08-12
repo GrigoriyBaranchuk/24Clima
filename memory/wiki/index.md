@@ -4,7 +4,7 @@
 прочитай их, и только потом лезь в код. Правила ведения — в
 [`memory/CLAUDE.md`](../CLAUDE.md).
 
-Обновлено: 2026-08-10 · страниц: 12
+Обновлено: 2026-08-11 · страниц: 13
 
 ## Сущности
 
@@ -24,6 +24,7 @@
 | [Мобильная версия app-like](concepts/mobile-app-like.md) | решения редизайна и performance overhaul |
 | [Дизайн-система @24clima/design](concepts/design-system-package.md) | токены в отдельном пакете, workflow обновления, `GH_PAT` |
 | [Как работают AI-агенты](concepts/agent-workflow.md) | план → codex → seo-reviewer → проверки → OK на push |
+| [Сегменты клиентов «hvac»](concepts/hvac-customer-segments.md) | expats / B2B / администрадоры PH / not-fit specialty / event-аренда + Panamá Oeste |
 | [Архитектура памяти](concepts/memory-architecture.md) | два слоя: вики репозитория и Memory Compiler на хуках |
 
 ## Источники
@@ -36,7 +37,7 @@
 
 | Страница | О чём |
 |---|---|
-| [Грабли проекта](synthesis/gotchas.md) | 12 ошибок, которые уже стоили времени — просмотреть перед работой |
+| [Грабли проекта](synthesis/gotchas.md) | 18 ошибок, которые уже стоили времени — просмотреть перед работой |
 
 ## Пробелы
 

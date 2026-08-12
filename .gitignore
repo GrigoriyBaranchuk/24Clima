@@ -77,3 +77,6 @@ __pycache__/
 .cursor/prompts/
 .gstack/
 supabase/.temp/
+
+# черновики итогов сессий — локальная стадия, в вики только через /wiki ingest
+memory/inbox/
