@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { api } from "../lib/api-client";
 import { TiendaShell } from "../components/TiendaShell";
+import { GoogleCustomerReviewsOptIn } from "../components/GoogleCustomerReviewsOptIn";
 import { BASE } from "../lib/tienda-url";
 
 /**
@@ -43,6 +44,7 @@ export async function TiendaOrderPage({
         <p className="mt-2 text-muted-foreground">{t("status")}: <strong className="text-foreground">{order.status}</strong></p>
         <p className="mt-2 text-lg font-semibold text-primary">${order.total}</p>
       </div>
+      <GoogleCustomerReviewsOptIn orderId={order.order_number} />
     </TiendaShell>
   );
 }
