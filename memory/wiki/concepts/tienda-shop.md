@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Магазин /tienda — переезд с shop.24clima.com
-updated: 2026-08-11
+updated: 2026-08-12
 sources: [PROJECT_MEMORY.md, src/middleware.ts, src/features/tienda/lib/api-client.ts, локальная память Claude (машина 2)]
 related: [entities/24clima, concepts/google-customer-reviews, concepts/supabase-projects, concepts/i18n-dual-route-tree]
 status: current
@@ -37,6 +37,13 @@ status: current
   same-origin rewrite, адрес — `NEXT_PUBLIC_API_URL` в браузере и
   `API_PROXY_TARGET` на сервере. Supabase-проект у магазина тоже отдельный
   (см. [Supabase-проекты](supabase-projects.md)).
+- **Контент каталога — markdown.** Бэкенд отдаёт `description` и ответы FAQ
+  с `##`/`**` (AI-генерация). Видимый рендер — `react-markdown` + `remark-gfm`
+  в `ProductPageContent` (заголовки понижены до h3; отзывы покупателей —
+  намеренно plain text). Машинные поверхности (Product/FAQPage JSON-LD,
+  merchant-feed) обязаны получать чистый текст — общий хелпер
+  `src/lib/markdown-plain-text.ts`. Новое поле каталога с текстом → прогонять
+  через тот же хелпер [PROJECT_MEMORY.md, 2026-08-12, PR #31].
 - **Чекаут:** телефон обязателен и выбирается с кодом страны
   (`src/features/tienda/lib/phone-countries.ts`), email — **необязательный**.
   Оплата — при получении и переводом; карты не обрабатываются
