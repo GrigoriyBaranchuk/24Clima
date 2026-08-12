@@ -56,6 +56,8 @@ __pycache__/
 .claude/skills/*
 !.claude/skills/seo-tasks/
 !.claude/skills/seo-tasks/**
+!.claude/skills/wiki/
+!.claude/skills/wiki/**
 .claude/worktrees/
 
 # рабочие документы /seo-tasks (temp-промты)
