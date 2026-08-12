@@ -631,3 +631,18 @@ PR #31 (код) и PR #32 (память) смержены в main, рабочи�
 **Состояние на конец сессии:** `main` — единственная ветка на origin;
 дерево чистое. Открытые пункты — в «Осталось» выше: Rich Results Test
 страницы товара + правка `json-ld-catalog.md` в скилле `24clima-seo-guide`.
+
+**Дозакрытие открытых пунктов (та же сессия, 2026-08-12).**
+1. Rich Results Test по странице товара VM122C31 на проде: **5 элементов без
+   ошибок** (Product, Merchant listing, BreadcrumbList, LocalBusiness,
+   Organization). «2 незначительные проблемы» у Product — отсутствие
+   НЕобязательных `aggregateRating`/`review`, что намеренно (политика после
+   инцидента 2026-07: рейтинг не синтезируем). `description` в распарсенной
+   Google схеме — чистый текст. FAQPage в списке rich-типов не показывается —
+   ожидаемо (тип выведен Google из rich results, схема остаётся для AEO).
+2. `json-ld-catalog.md` скилла `24clima-seo-guide` обновлён (PR #34):
+   секция Product+Offer (tienda) с правилом plain-text через
+   `markdown-plain-text.ts`; устаревшие «Product не используем» и отсылка
+   к рейтингу на HVACBusiness убраны.
+
+Открытых пунктов по этой задаче не осталось.
