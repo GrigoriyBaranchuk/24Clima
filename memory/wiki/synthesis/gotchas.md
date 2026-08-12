@@ -1,7 +1,7 @@
 ---
 type: synthesis
 title: Грабли проекта — сводка
-updated: 2026-08-10
+updated: 2026-08-11
 sources: [PROJECT_MEMORY.md]
 related: [concepts/design-system-package, concepts/i18n-dual-route-tree, concepts/seo-monitoring-system, concepts/agent-workflow]
 status: current
@@ -27,6 +27,12 @@ status: current
 | 10 | Пропущенный ключ перевода | рантайм `MISSING_MESSAGE` | [i18n](../concepts/i18n-dual-route-tree.md) |
 | 11 | Часть страниц не пререндерится | grep по `.next/server/app` ничего не находит — проверять через `next start` | [процесс агентов](../concepts/agent-workflow.md) |
 | 12 | Лаг GSC ~2 дня | свежие даты выглядят как «провал трафика» | [SEO-мониторинг](../concepts/seo-monitoring-system.md) |
+| 13 | Node 25 подсовывает пустой стаб `globalThis.localStorage` | dev/start отдаёт 500 на каждый запрос, `TypeError: localStorage.getItem is not a function`, стек врёт про `_document.tsx` | НЕ удалять `scripts/strip-localstorage-stub.js` и `NODE_OPTIONS="--require ..."` в scripts package.json; Vercel (Node 20/22) не затронут |
+| 14 | async Server Component внутри `"use client"` (React #482) | страница падает в глобальный error boundary; в dev: «Footer is an async Client Component» | `Footer` — async Server Component, из клиентских страниц его не рендерить напрямую; чинится server-shell (инцидент 2026-06-28, админка) |
+| 15 | Анимация входа recharts | скриншот графика через 1–4 с после загрузки — оси без линий, выглядит как баг | второй скриншот через 5–8 с; невидимость линий проверять поиском цветов в бандле, не глазами |
+| 16 | `gh pr merge --delete-branch` падает из-за worktree | `fatal: 'main' is already used by worktree...` выглядит как «мерж не удался», но PR уже MERGED | мержить без `--delete-branch`, ветку удалять отдельно; при ошибке проверить `gh pr view N --json state` — не перемерживать |
+| 17 | Сквош-мерж прячет ветки от `git branch --merged` | смерженные через squash-PR ветки выглядят живыми, копятся десятками | проверять `git cherry main branch` и diff содержимого, а не только флаг merged (чистка 2026-08-11: 18 таких веток) |
+| 18 | Мёртвый лок `git worktree` | worktree помечен locked, хотя Claude-сессия давно умерла | pid из причины лока → `ps -p <pid>`; если мёртв: `git worktree unlock && git worktree remove` |
 
 ## Связи
 

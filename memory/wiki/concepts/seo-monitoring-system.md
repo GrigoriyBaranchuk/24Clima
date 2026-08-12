@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Система SEO/GEO/AI-мониторинга и админ-дашборд
-updated: 2026-08-10
+updated: 2026-08-11
 sources: [PROJECT_MEMORY.md, docs/seo-monitoring.md, supabase/migrations/004_seo_monitoring.sql]
 related: [entities/24clima, concepts/service-pricing, synthesis/gotchas, concepts/protected-seo-elements]
 status: current
@@ -68,9 +68,15 @@ auth (`ADMIN_EMAILS`), `admin/layout.tsx` ставит noindex, в sitemap не
   [PROJECT_MEMORY.md, 2026-08-07]. При этом в локальном `.env.local`
   `SUPABASE_SERVICE_ROLE_KEY` может быть пустым — реальные значения в
   Vercel (`vercel env pull`) [проверено 2026-08-10].
-- Миграция `006` на момент записи **не применена к проду**: Management
-  API заблокирован политикой, применять через SQL editor или
-  `mcp apply_migration` после явного OK.
+- Миграция `006` применена к проду 2026-08-07 (устаревшее «не применена»
+  снято 2026-08-11). Management API заблокирован политикой — миграции
+  применять через SQL editor или `mcp apply_migration` после явного OK.
+- **Тоталы кликов/показов были занижены в ~6 раз** (диагноз 2026-08-08):
+  агрегация по `seo_gsc_daily` (срез date×page×query) теряет запросы,
+  скрытые GSC из page-level выгрузки. Фикс — PR #25 (смержен 2026-08-11):
+  таблица `seo_gsc_totals` (миграция `007_gsc_totals.sql`), сбор тоталов
+  отдельным запросом без dimensions, backfill 16 мес
+  (`scripts/backfill-gsc-totals.mjs`), сверка с GSC UI сходится <1%.
 - Данные появляются не сразу: эффект правок под AI Overview смотреть
   через 3–4 недели.
 
