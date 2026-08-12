@@ -22,6 +22,7 @@
 import { api } from "@/features/tienda/lib/api-client";
 import type { ProductDetail } from "@/features/tienda/lib/api-client";
 import { tiendaProductUrl } from "@/features/tienda/lib/tienda-url";
+import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
 export const runtime = "nodejs";
 export const revalidate = 3600;
@@ -40,19 +41,9 @@ function escapeXml(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
-/**
- * Plain-text description for the feed: strip HTML tags and the markdown emphasis
- * markers the catalog stores (**bold**, *italic*, leading #), collapse
- * whitespace, and cap length. Google rejects HTML in g:description.
- */
+/** Plain-text description for the feed, capped — Google rejects HTML in g:description. */
 function toPlainText(input: string): string {
-  return input
-    .replace(/<[^>]+>/g, " ")
-    .replace(/[*_`]+/g, "")
-    .replace(/^#+\s*/gm, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, MAX_DESCRIPTION);
+  return markdownToPlainText(input).slice(0, MAX_DESCRIPTION);
 }
 
 /** Ordered image URLs for a product: images[] sorted by sort_order, else image_url. */

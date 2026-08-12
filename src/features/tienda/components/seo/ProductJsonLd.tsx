@@ -1,5 +1,6 @@
 import type { ProductDetail } from "../../lib/api-client";
 import { tiendaProductUrl, tiendaCategoryUrl, tiendaHomeUrl } from "../../lib/tienda-url";
+import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
 type Props = {
   product: ProductDetail;
@@ -21,6 +22,10 @@ function serialize(data: unknown): string {
 export function ProductJsonLd({ product, locale, homeLabel }: Props) {
   const url = tiendaProductUrl(locale, product.slug);
   const images = (product.images ?? []).map((im) => im.url).filter(Boolean);
+  // Catalog descriptions arrive as markdown; schema.org description is plain Text.
+  const plainDescription = markdownToPlainText(
+    product.description ?? product.short_description ?? "",
+  );
   const availability =
     product.price != null
       ? "https://schema.org/InStock"
@@ -34,9 +39,7 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
     mpn: product.sku,
     url,
     ...(images.length ? { image: images } : {}),
-    ...(product.description || product.short_description
-      ? { description: product.description ?? product.short_description }
-      : {}),
+    ...(plainDescription ? { description: plainDescription } : {}),
     ...(product.brand
       ? { brand: { "@type": "Brand", name: product.brand.name } }
       : {}),
@@ -161,7 +164,7 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
           mainEntity: faq.map((f) => ({
             "@type": "Question",
             name: f.q,
-            acceptedAnswer: { "@type": "Answer", text: f.a },
+            acceptedAnswer: { "@type": "Answer", text: markdownToPlainText(f.a) },
           })),
         }
       : null;
