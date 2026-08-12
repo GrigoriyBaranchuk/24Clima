@@ -3,7 +3,7 @@ type: concept
 title: Система SEO/GEO/AI-мониторинга и админ-дашборд
 updated: 2026-08-11
 sources: [PROJECT_MEMORY.md, docs/seo-monitoring.md, supabase/migrations/004_seo_monitoring.sql]
-related: [entities/24clima, concepts/service-pricing, synthesis/gotchas, concepts/protected-seo-elements]
+related: [entities/24clima, concepts/service-pricing, synthesis/gotchas, concepts/protected-seo-elements, concepts/supabase-projects]
 status: current
 ---
 
@@ -67,7 +67,10 @@ auth (`ADMIN_EMAILS`), `admin/layout.tsx` ставит noindex, в sitemap не
   другом аккаунте. Ходить по REST с service-role из `.env.local`
   [PROJECT_MEMORY.md, 2026-08-07]. При этом в локальном `.env.local`
   `SUPABASE_SERVICE_ROLE_KEY` может быть пустым — реальные значения в
-  Vercel (`vercel env pull`) [проверено 2026-08-10].
+  Vercel (`vercel env pull`) [проверено 2026-08-10]. Подробности и второй
+  проект (магазина) — [Supabase-проекты](supabase-projects.md); там же факт,
+  что таблицы `admins` в базе сайта нет и админ-доступ держится на
+  `ADMIN_EMAILS`.
 - Миграция `006` применена к проду 2026-08-07 (устаревшее «не применена»
   снято 2026-08-11). Management API заблокирован политикой — миграции
   применять через SQL editor или `mcp apply_migration` после явного OK.
@@ -83,5 +86,6 @@ auth (`ADMIN_EMAILS`), `admin/layout.tsx` ставит noindex, в sitemap не
 ## Связи
 
 - [Защищённые SEO-элементы](protected-seo-elements.md)
+- [Supabase-проекты](supabase-projects.md) — где лежат таблицы `seo_*` и как в них ходить
 - [Цены на услуги](service-pricing.md) — рекомендации id 9/10 меняли именно их
 - [Грабли проекта](../synthesis/gotchas.md)
