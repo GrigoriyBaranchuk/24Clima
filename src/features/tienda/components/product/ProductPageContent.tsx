@@ -2,11 +2,29 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Star, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
 import { ReviewForm } from "./ReviewForm";
 import type { ProductDetail } from "../../lib/api-client";
 import { WhatsAppCta } from "@24clima/design/components";
+
+/* Catalog descriptions/FAQ arrive as markdown. Headings are demoted to h3 so the
+   section's own h2 stays the only h2; review texts stay plain (user-generated). */
+const MARKDOWN_HEADINGS = { h1: "h3", h2: "h3" } as const;
+const PROSE_COLORS =
+  "prose prose-sm max-w-none prose-p:text-muted-foreground prose-li:text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary";
+
+function ProductMarkdown({ text, className }: { text: string; className?: string }) {
+  return (
+    <div className={`${PROSE_COLORS} ${className ?? ""}`}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={MARKDOWN_HEADINGS}>
+        {text}
+      </ReactMarkdown>
+    </div>
+  );
+}
 
 type Props = {
   product: ProductDetail;
@@ -199,7 +217,7 @@ export function ProductPageContent(props: Props) {
       {product.description && (
         <section className="mt-12 border-t border-border pt-8">
           <h2 className="text-lg font-semibold text-foreground">{descriptionLabel}</h2>
-          <p className="mt-4 whitespace-pre-wrap text-muted-foreground">{product.description}</p>
+          <ProductMarkdown text={product.description} className="mt-4" />
         </section>
       )}
 
@@ -213,7 +231,7 @@ export function ProductPageContent(props: Props) {
                 className="rounded-lg border border-border bg-card px-4 py-3"
               >
                 <summary className="cursor-pointer font-medium text-foreground">{f.q}</summary>
-                <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{f.a}</p>
+                <ProductMarkdown text={f.a} className="mt-2 prose-p:my-1 prose-ul:my-2 prose-ol:my-2" />
               </details>
             ))}
           </div>
