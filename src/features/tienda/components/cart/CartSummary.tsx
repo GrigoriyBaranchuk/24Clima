@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
 import { api, type Cart, type CartItem } from "../../lib/api-client";
+import { publishCartCount } from "../../lib/cart-count";
 import { useAuth } from "../../hooks/useAuth";
 import { WhatsAppCta } from "@24clima/design/components";
 
@@ -35,15 +36,19 @@ export function CartSummary({ addProductId }: Props) {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const addDoneRef = useRef(false);
 
+  // Publishes the item count (localStorage + "cart-updated" event) so the
+  // header badge stays in sync — this is the only place that fetches the cart.
   const refetchCart = (cartId?: string | null) =>
-    api.getCart(cartId ?? undefined, undefined).then(setCart).catch(() => setCart(null));
-
-  const notifyCart = () => {
-    if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-updated"));
-  };
+    api
+      .getCart(cartId ?? undefined, undefined)
+      .then((c) => {
+        setCart(c);
+        publishCartCount(c.items.reduce((sum, i) => sum + i.quantity, 0));
+      })
+      .catch(() => setCart(null));
 
   useEffect(() => {
-    const onAuthChanged = () => refetchCart().then(notifyCart);
+    const onAuthChanged = () => refetchCart();
     window.addEventListener("auth-changed", onAuthChanged);
     return () => window.removeEventListener("auth-changed", onAuthChanged);
   }, []);
@@ -56,7 +61,6 @@ export function CartSummary({ addProductId }: Props) {
       api
         .addCartItem(addProductId, 1)
         .then((res) => refetchCart(res.cart_id))
-        .then(notifyCart)
         .then(() => router.replace("/tienda/cart", { scroll: false }))
         .catch(() => !cancelled && setCart(null))
         .finally(() => {
@@ -65,7 +69,6 @@ export function CartSummary({ addProductId }: Props) {
         });
     } else if (!addProductId) {
       refetchCart()
-        .then(notifyCart)
         .finally(() => {
           if (!cancelled) setLoading(false);
         });
@@ -84,7 +87,6 @@ export function CartSummary({ addProductId }: Props) {
     try {
       await api.updateCartItem(item.id, newQty);
       await refetchCart();
-      notifyCart();
     } finally {
       setUpdatingId(null);
     }
@@ -95,7 +97,6 @@ export function CartSummary({ addProductId }: Props) {
     try {
       await api.updateCartItem(item.id, 0);
       await refetchCart();
-      notifyCart();
     } finally {
       setUpdatingId(null);
     }

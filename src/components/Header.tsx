@@ -1,6 +1,7 @@
 "use client";
 
 import { metaPixelEvent } from "@/components/MetaPixel";
+import TiendaCartLink from "@/features/tienda/components/TiendaCartLink";
 import { Link, usePathname } from "@/i18n/routing";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
 import {
@@ -34,7 +35,9 @@ const NavLink: LinkComponentType = ({ href, className, children, onClick }) => (
   </Link>
 );
 
-export default function Header() {
+// showCartLink: passed by TiendaShell so the cart entry point renders only on
+// /tienda pages; marketing pages keep the header unchanged.
+export default function Header({ showCartLink = false }: { showCartLink?: boolean }) {
   const t = useTranslations("common");
   const tWhatsapp = useTranslations("whatsappMessages");
   const pathname = usePathname();
@@ -200,6 +203,7 @@ export default function Header() {
   // ===== DESKTOP ACTIONS SLOT =====
   const actions = (
     <>
+      {showCartLink && <TiendaCartLink variant="desktop" />}
       <LanguageSwitcher isScrolled={isScrolled} />
       <a
         href={`tel:+50768282120`}
@@ -221,6 +225,9 @@ export default function Header() {
   // ===== MOBILE MENU SLOT =====
   const mobileMenu = (
     <>
+      {showCartLink && (
+        <TiendaCartLink variant="mobile" isScrolled={isScrolled} />
+      )}
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
         <SheetTrigger asChild>
           <button

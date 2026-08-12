@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
 import { api, type CheckoutPreview } from "../../lib/api-client";
+import { publishCartCount } from "../../lib/cart-count";
 import { estimatedDeliveryDate, saveOptInHandoff } from "../../lib/gcr";
 import { PHONE_COUNTRIES, DEFAULT_PHONE_COUNTRY } from "../../lib/phone-countries";
 
@@ -53,6 +54,7 @@ export function CheckoutForm() {
     };
     try {
       const res = await api.createOrder(shipping, undefined, undefined, undefined);
+      publishCartCount(0);
       if (email) {
         saveOptInHandoff(res.order_number, { email, estimatedDeliveryDate: estimatedDeliveryDate() });
       }

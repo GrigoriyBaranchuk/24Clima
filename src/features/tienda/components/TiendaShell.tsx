@@ -13,7 +13,7 @@ import { GoogleMerchantWidget } from "./GoogleMerchantWidget";
 export function TiendaShell({ children }: { children: ReactNode }) {
   return (
     <>
-      <Header />
+      <Header showCartLink />
       <main id="main-content" className="flex-1 pt-20 pb-24 lg:pb-0">
         {children}
       </main>
