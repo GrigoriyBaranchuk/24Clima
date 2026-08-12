@@ -2,6 +2,18 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-12] ingest | иконка корзины в шапке магазина (PR #36)
+
+Затронуто: `concepts/tienda-shop` (факт «вход в корзину — иконка в шапке
+через проп showCartLink»; новая грабля «GET /v1/cart/items создаёт корзину
+гостю → бейдж не ходит в API, счётчик зеркалится в localStorage»).
+
+Примечание: дизайн-решение прогнано через codex (проп вместо
+pathname-детекта; бейдж только слушает cart-updated; BottomNav не трогать),
+seo-reviewer дал approve без условий. Рекомендация seo-reviewer на будущее:
+следить в GSC за индексацией закрытого в robots `/tienda/cart` — при
+появлении в SERP переходить на crawl-allow + noindex.
+
 ## [2026-08-12] ingest | фикс markdown в описании товара (PR #31)
 
 Затронуто: `concepts/tienda-shop` (новый факт «контент каталога — markdown»:
