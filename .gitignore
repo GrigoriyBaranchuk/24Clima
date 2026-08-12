@@ -74,3 +74,4 @@ __pycache__/
 .cursor/debug-*.log
 .cursor/prompts/
 .gstack/
+supabase/.temp/
