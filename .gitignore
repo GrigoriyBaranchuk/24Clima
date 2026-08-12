@@ -2,6 +2,11 @@
 
 # dependencies
 /node_modules
+# проект собирается через bun (см. packageManager и vercel.json installCommand);
+# lock-файлы других менеджеров держим вне репозитория, чтобы версии не разъезжались
+/package-lock.json
+/yarn.lock
+/pnpm-lock.yaml
 /.pnp
 .pnp.*
 .yarn/*
@@ -71,3 +76,4 @@ __pycache__/
 .cursor/debug-*.log
 .cursor/prompts/
 .gstack/
+supabase/.temp/

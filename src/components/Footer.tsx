@@ -54,6 +54,13 @@ export default async function Footer() {
           <p className="text-gray-400 text-[12px] lg:text-base">
             © {currentYear} 24clima. {t("copyright")}
           </p>
+          <Link
+            href="/privacidad"
+            scroll={false}
+            className="text-gray-400 text-[12px] lg:text-base hover:text-white transition-colors"
+          >
+            {t("privacyPolicy")}
+          </Link>
         </div>
       }
     >

@@ -58,9 +58,12 @@ function renderBody(a: SeoAggregate): string {
 
   // GSC
   out.push("## 🔎 Google Search Console (datos propios)");
+  out.push(`- Semana hasta ${a.windows.anchor} (datos GSC llegan con ~2 días de retraso)`);
   out.push(`- Clics: **${a.gsc.clicksCurr}** ${arrow(a.gsc.clicksCurr, a.gsc.clicksPrev)} (${pct(a.gsc.clicksCurr, a.gsc.clicksPrev)} vs semana previa)`);
   out.push(`- Impresiones: **${a.gsc.imprCurr}** ${arrow(a.gsc.imprCurr, a.gsc.imprPrev)} (${pct(a.gsc.imprCurr, a.gsc.imprPrev)})`);
   if (a.gsc.topQueries.length) {
+    out.push("");
+    out.push("_Solo consultas visibles: Google oculta las anónimas, por eso la tabla no suma los totales de arriba._");
     out.push("");
     out.push("| Query | Clics | Δ | Posición media |");
     out.push("|---|---|---|---|");

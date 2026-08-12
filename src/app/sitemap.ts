@@ -84,6 +84,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
+  // Política de privacidad — все локали. Индексируемая и слинкована из футера,
+  // но конверсионной ценности не несёт, отсюда низкий приоритет.
+  for (const locale of locales) {
+    entries.push({
+      url: localeUrl(locale, "/privacidad/"),
+      lastModified: now,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+      alternates: { languages: langAlternates("/privacidad/") },
+    });
+  }
+
   // Areas de servicio — все локали
   for (const locale of locales) {
     entries.push({

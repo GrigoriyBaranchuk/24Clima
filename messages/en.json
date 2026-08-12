@@ -708,7 +708,11 @@
       "bankTransfer": "Bank transfer",
       "confirmOrder": "Confirm order",
       "processing": "Processing…",
-      "emptyCart": "No items in cart. Add products before continuing."
+      "emptyCart": "No items in cart. Add products before continuing.",
+      "emailHint": "Optional. If you provide it, you can receive the Google survey about your purchase.",
+      "phoneHint": "We will contact you via WhatsApp.",
+      "phoneCountryLabel": "Country code",
+      "phoneInvalid": "Enter a valid phone number for the selected country."
     },
     "order": {
       "status": "Status",
@@ -741,5 +745,44 @@
       "intro": "Minimal panel. Protect with auth in production.",
       "orders": "Orders"
     }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "metaDescription": "How 24clima collects, uses and protects your personal data: cookies, analytics, Google Customer Reviews and your rights.",
+    "updated": "Last updated: August 10, 2026",
+    "intro": "This policy explains what personal data 24clima (WOW Soluciones Panamá) collects when you visit 24clima.com or buy from our shop, how we use it and what control you have over it.",
+    "dataTitle": "What data we collect",
+    "dataIntro": "We only collect the data needed to handle your enquiry or your order:",
+    "dataOrder": "Order data: name, email address, phone number, delivery address and delivery notes.",
+    "dataContact": "Contact details you send us via WhatsApp, by phone or through the forms on the site.",
+    "dataTechnical": "Technical data: IP address, browser and device type, pages visited and cookie identifiers.",
+    "cookiesTitle": "Cookies and third-party services",
+    "cookiesIntro": "The site uses first-party cookies, which are necessary for the cart and your session, and third-party cookies for analytics and advertising. The third parties that may set cookies are:",
+    "cookiesGa": "Google Analytics 4 — audience and on-site behaviour measurement.",
+    "cookiesMeta": "Meta Pixel (Facebook and Instagram) — conversion measurement and advertising.",
+    "cookiesYandex": "Yandex Metrica — site usage analytics.",
+    "cookiesGcr": "Google Customer Reviews — post-purchase satisfaction survey.",
+    "cookiesNote": "These providers may use cookies and similar technologies to show you personalised ads on other sites, including ads based on your visits to 24clima.com.",
+    "optOutTitle": "How to disable third-party cookies",
+    "optOutIntro": "You can turn off personalised advertising and analytics at any time:",
+    "optOutGoogleAds": "Google Ads Settings",
+    "optOutGa": "Google Analytics Opt-out Browser Add-on",
+    "optOutMeta": "Meta Ad Preferences",
+    "optOutYandex": "Yandex Metrica opt-out",
+    "optOutBrowser": "You can also block or delete cookies in your browser settings. If you block them, some features such as the cart may stop working.",
+    "gcrTitle": "Google Customer Reviews programme",
+    "gcrText": "After a purchase we offer you the option to take part in a Google Customer Reviews survey. Participation is voluntary: only if you accept do we share your email address, order number, delivery country and estimated delivery date with Google, so that Google can send you the survey. We never offer discounts, gifts or any other compensation in exchange for a review, and we never ask for the review to be positive.",
+    "sharingTitle": "Who we share your data with",
+    "sharingText": "We do not sell your personal data. We share it only with providers that help us operate: the analytics and advertising services mentioned above and the carriers needed to deliver your order. In the shop we accept cash on delivery and bank transfer, so we do not process or store credit card data.",
+    "securityTitle": "Security",
+    "securityText": "The whole site runs over an encrypted HTTPS connection. Your order data is transmitted securely and only the people handling your order have access to it.",
+    "retentionTitle": "How long we keep your data",
+    "retentionText": "We keep order data for as long as it is needed to fulfil delivery, warranty and the legal and accounting obligations applicable in Panama. Analytics data is kept according to each provider's own retention periods.",
+    "rightsTitle": "Your rights",
+    "rightsText": "You can request access to, correction of or deletion of your personal data, as well as withdraw your consent, by writing to us at ryhor@24clima.com. We will reply within a reasonable time.",
+    "contactTitle": "Contact",
+    "contactText": "24clima (WOW Soluciones Panamá), Panama City, Panama. Email: ryhor@24clima.com. WhatsApp and phone: +507 6828-2120.",
+    "changesTitle": "Changes to this policy",
+    "changesText": "We may update this policy. The current version will always be published on this page together with its update date."
   }
 }
