@@ -2,6 +2,19 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-12] ingest | фикс markdown в описании товара (PR #31)
+
+Затронуто: `concepts/tienda-shop` (новый факт «контент каталога — markdown»:
+видимый рендер через react-markdown, машинные поверхности — через
+`src/lib/markdown-plain-text.ts`).
+
+Примечание: находка codex — сырой markdown уходил не только в UI, но и в
+Product/FAQPage JSON-LD; seo-reviewer одобрил чистку строк (структура схем
+не тронута) и отклонил подмену description на meta_description. Попутный
+пробел: в скилле `24clima-seo-guide` `json-ld-catalog.md` до сих пор
+утверждает «Product не используем» — устарело, tienda эмитит Product/Offer;
+кандидат на правку.
+
 ## [2026-08-12] ingest | закрытие сессии машины 2 — гигиена веток
 
 Затронуто: `concepts/agent-workflow` (новый раздел «Гигиена веток и

@@ -597,3 +597,28 @@ origin и обе локальные, снят worktree `feat-llm-wiki-memory`. �
 
 **Состояние на конец сессии:** `main` = единственная ветка локально и на
 origin, worktree только основной чекаут, дерево чистое.
+
+## Сессия 2026-08-12 — Фикс сырого markdown в описании товара (/tienda)
+
+**Проблема (скриншот владельца):** на странице товара в «Descripción» видны
+литеральные `## Para tu hogar` и `**...**` — каталог отдаёт описания и FAQ
+как markdown, а `ProductPageContent` выводил их plain text.
+
+**Фикс (PR #31, merge `8549792`, план ревьюился codex по просьбе user):**
+- `ProductPageContent`: описание и FAQ — через `react-markdown` + `remark-gfm`
+  (уже были в зависимостях); стили `prose` на токенах, цвета через
+  `prose-p:`/`prose-li:` (цвет на обёртке typography перебивает — замечание
+  codex); заголовки понижены до h3; отзывы покупателей — намеренно plain text.
+- Находка codex вне исходного плана: тот же сырой markdown уходил в
+  Product JSON-LD `description` и `FAQPage.acceptedAnswer.text`. Добавлен общий
+  хелпер `src/lib/markdown-plain-text.ts` (снимает `**`/`#`/ссылки/теги),
+  merchant-feed переведён на него. seo-reviewer: **approve** (меняются только
+  строки, структура схем не тронута; вариант `meta_description` отклонён —
+  полное описание ценнее для AEO и консистентно с merchant-feed).
+
+**Проверено:** `tsc` + `bun run build` чистые; на Vercel-превью curl'ом —
+видимый HTML без сырого markdown (`<h3>`, `<strong>`), JSON-LD чистый.
+
+**Осталось:** 1) Rich Results Test страницы товара с FAQ на проде (требование
+seo-reviewer). 2) Обновить `json-ld-catalog.md` скилла `24clima-seo-guide`:
+«Product не используем» устарело — tienda эмитит Product/Offer/AggregateRating.
