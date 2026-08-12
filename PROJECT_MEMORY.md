@@ -622,3 +622,12 @@ origin, worktree только основной чекаут, дерево чис
 **Осталось:** 1) Rich Results Test страницы товара с FAQ на проде (требование
 seo-reviewer). 2) Обновить `json-ld-catalog.md` скилла `24clima-seo-guide`:
 «Product не используем» устарело — tienda эмитит Product/Offer/AggregateRating.
+
+**Закрытие сессии 2026-08-12.** Прод проверен после деплоя: на
+`24clima.com/tienda/product/...vm122c31/` видимый HTML без сырого markdown
+(`<h3>`/`<strong>` на месте), Product и FAQPage JSON-LD — чистый текст.
+PR #31 (код) и PR #32 (память) смержены в main, рабочие ветки удалены.
+
+**Состояние на конец сессии:** `main` — единственная ветка на origin;
+дерево чистое. Открытые пункты — в «Осталось» выше: Rich Results Test
+страницы товара + правка `json-ld-catalog.md` в скилле `24clima-seo-guide`.
