@@ -126,9 +126,24 @@ Don't add breadcrumbs to homepage or to top-level category pages with no hierarc
 
 Lists the served neighborhoods. Useful for AI Overviews answering *"which areas of Panama does 24clima serve."*
 
-## What's NOT on the site (and why we're not adding it)
+### `Product` + `Offer` — `/tienda/product/[slug]` (added 2026-08, tienda migration)
 
-- **`Product`** — we sell services, not products. Don't switch to it for ratings; the rating already lives on `HVACBusiness`.
+Emitted by `src/features/tienda/components/seo/ProductJsonLd.tsx` — the shop
+sells physical products, so `Product` IS on the site since tienda moved to
+`24clima.com/tienda`. Per product page:
+
+- `Product` (name, sku/mpn, images, brand) + `Offer` (price USD, availability
+  from price presence, `shippingDetails`, `hasMerchantReturnPolicy`, warranty).
+- `aggregateRating`/`review` ONLY when the backend actually reports reviews —
+  never a synthesized default (see the 2026-07 self-serving incident below;
+  the old site-wide rating on `HVACBusiness` was removed then).
+- `BreadcrumbList` and, when the product has FAQ, `FAQPage`.
+- **Text fields must be plain text**: catalog descriptions/FAQ arrive as
+  markdown (`##`, `**`); `description` and `acceptedAnswer.text` go through
+  `src/lib/markdown-plain-text.ts` (same helper as the Merchant feed). Any new
+  catalog text field added to schema must use it too (PR #31, 2026-08-12).
+
+## What's NOT on the site (and why we're not adding it)
 - **`Review` (individual)** — only the aggregate is exposed. Self-serving review policy makes individual on-site reviews ineligible for snippets anyway.
 - **`SpecialAnnouncement`** — deprecated July 2025 per Google's structured data appearance docs.
 - **`VideoObject`** — no video hero on the site. If a video lands on a page, add this then.
