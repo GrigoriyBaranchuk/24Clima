@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Как в проекте работают AI-агенты
-updated: 2026-08-10
+updated: 2026-08-12
 sources: [PROJECT_MEMORY.md, CLAUDE.md, .claude/skills, .agents/skills/24clima-seo-guide]
 related: [concepts/protected-seo-elements, concepts/seo-monitoring-system, synthesis/gotchas]
 status: current
@@ -30,6 +30,30 @@ status: current
   динамические и не пререндерятся.
 - Предсуществующие ошибки линтера **не чинятся заодно** — чтобы не
   хоронить диff (biome на `MetricsOverview.tsx`, ChatPanel).
+
+## Гигиена веток и worktree
+
+Ветки в проекте копятся: часть PR мержится сквошем, и `git branch --merged`
+их не видит (грабли №17). Рабочий порядок — **проверять содержимое, а не
+флаг**. Рецепт, отработанный на чистке 2026-08-12 (15 веток):
+
+```
+base=$(git merge-base origin/main origin/$B)
+files=$(git diff --name-only $base origin/$B)     # что ветка трогала
+git diff --stat origin/main origin/$B -- $files   # пусто ⇒ содержимое уже в main
+```
+
+- Пустой `files` ⇒ ветка ничего не вносит поверх базы (предок main).
+- Пустой второй diff ⇒ по её же файлам main совпадает с веткой — сквош-мерж,
+  удалять через `git branch -D` (обычный `-d` откажет, и это не сигнал беды).
+- Непустой diff ⇒ **не удалять вслепую**: посмотреть, что за файл, и поднять
+  номер PR (`gh pr list --state merged --json number,headRefName`). Типичный
+  случай — ветка смержена, а main позже переписал тот же файл: тогда diff
+  показывает не потерянную работу, а отставание ветки.
+- Порядок удаления: сначала снять worktree (`git worktree remove` + `prune`),
+  потом локальные ветки, потом `git push origin --delete`. Ветку собственного
+  PR удалять сразу после мержа — иначе чистка порождает новый мусор.
+- Массовый `gh pr merge --delete-branch` не использовать (грабли №16).
 
 ## Инструменты
 
