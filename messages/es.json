@@ -22,7 +22,17 @@
     "navPh": "Para PH",
     "solutions": "Soluciones",
     "events": "Eventos",
-    "shop": "Tienda"
+    "shop": "Tienda",
+    "allServices": "Todos los servicios",
+    "commonProblems": "Problemas comunes",
+    "serviceNav": {
+      "cleaning": "Limpieza",
+      "maintenance": "Mantenimiento",
+      "repair": "Reparación",
+      "installation": "Instalación",
+      "gasRecharge": "Carga de gas",
+      "emergency": "Emergencia 24/7"
+    }
   },
   "homeCta": {
     "nosotrosTitle": "¿Por qué elegirnos?",
