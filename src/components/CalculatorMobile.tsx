@@ -35,10 +35,7 @@ export default function CalculatorMobile() {
   const increment = () => quantity < 99 && setQuantity(quantity + 1);
 
   return (
-    <section
-      id="calculadora"
-      className="py-1.5 bg-[#0d1b2a]"
-    >
+    <section className="py-1.5 bg-[#0d1b2a]">
       <div className="container mx-auto px-4">
         <div className="w-full max-w-2xl mx-auto">
           <div className="bg-[#162a3e] rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
