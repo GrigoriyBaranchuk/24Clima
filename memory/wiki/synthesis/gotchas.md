@@ -1,7 +1,7 @@
 ---
 type: synthesis
 title: Грабли проекта — сводка
-updated: 2026-08-11
+updated: 2026-08-12
 sources: [PROJECT_MEMORY.md]
 related: [concepts/design-system-package, concepts/i18n-dual-route-tree, concepts/seo-monitoring-system, concepts/agent-workflow]
 status: current
@@ -37,6 +37,7 @@ status: current
 | 20 | Проект ставится ТОЛЬКО через `bun` | npm собирает с версиями, отличными от прода | `bun@1.3.14` зафиксирован в `packageManager`, но npm это поле **не соблюдает** (проверено); протухший `package-lock.json` удалён и в .gitignore; в свежем worktree нет `node_modules` — `bun install` |
 | 21 | `node`/`bun` не всегда в PATH у агента | команда «не найдена» в хуке или субагенте, провал тихий | `export PATH="/opt/homebrew/bin:$PATH"` — [архитектура памяти](../concepts/memory-architecture.md) |
 | 22 | Пустой `.git/index.lock` от умершего процесса | `git pull` падает «Another git process seems to be running», хотя ни одного git-процесса нет | `ps aux \| grep git` → если пусто и лок нулевого размера/старый, удалить `rm -f .git/index.lock` (случай 2026-08-11: лок от 08.08) |
+| 23 | Протокол сессии пропущен, потому что задача «выглядит как обсуждение» | агент сразу берётся за задачу: анализ идёт по устаревшему коду (вторая машина уже меняла файлы), todo-список не выведен; пробел всплывает только вопросом пользователя | шаги 1–2 протокола (`git fetch --prune && git pull` + todo-список) — безусловные, выполняются ДО самой задачи в начале КАЖДОЙ сессии; тип задачи (обсуждение, read-only, фоновый джоб) значения не имеет (случай 2026-08-12) |
 
 ## Связи
 
