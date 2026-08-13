@@ -692,3 +692,43 @@ PR #31 (код) и PR #32 (память) смержены в main, рабочи�
    к рейтингу на HVACBusiness убраны.
 
 Открытых пунктов по этой задаче не осталось.
+
+## Сессия 2026-08-12 (ночь) — Редизайн шапки desktop: дропдаун Servicios, телефон-иконка, кнопка Tienda
+
+**Проблема (от владельца, по скриншоту главной):** шапка перегружена (8 пунктов
+навигации + дропдаун + язык + телефон + WhatsApp), телефон выглядит инородно
+(номер переносится на 3 строки), магазин никак не выделен.
+
+**Процесс:** обсуждение вариантов с Codex (consult, сессия сохранена в
+`.context/codex-session-id`) → владелец утвердил связку **1A+2A+3A** и дал ok
+на десктопные правки (вне рамок мобильного редизайна) → план реализации прошёл
+два ревью: **seo-reviewer — approve** (паттерн дропдауна = расширение
+SEO-одобренного Soluciones; прямые ссылки на money-pages site-wide — плюс
+перелинковки) и **Codex plan review** (15 замечаний, учтены ключевые).
+
+**Что сделано (`src/components/Header.tsx`, `messages/{es,en,ru}.json`):**
+1. **1A:** desktop-навигация 8→3 (Consejos, Nosotros, Contacto) + сгруппированный
+   дропдаун «Servicios»: 6 ссылок `/servicios/<slug>` (короткие ярлыки из новых
+   ключей `common.serviceNav.*`) + «Todos los servicios»; группа Problemas
+   (`/problemas`, `/diagnostico`); группа Soluciones (PH, eventos — прежний
+   дропдаун влит сюда). Ссылки всегда в DOM, opacity+transform 150ms,
+   reduced-motion off, `invisible` держит скрытые ссылки вне tab order.
+2. **2A:** телефон — круглая кнопка-иконка `tel:` с aria-label/title
+   «Llámanos: +507 6828-2120»; номер остаётся в футере и /contacto (NAP ок).
+3. **3A:** «Tienda» — из навигации в actions-зону, secondary outline-кнопка
+   с иконкой сумки; видна и на /tienda (правка Codex: корзина ≠ магазин,
+   `TiendaCartLink` → `/tienda/cart` остаётся отдельной иконкой-состоянием).
+   WhatsApp — единственный зелёный CTA.
+4. Мобильное sheet-меню: якоря `/#servicios`, `/#problemas` заменены хабами
+   `/servicios`, `/problemas`; Inicio и Tienda сохранены.
+
+Проверки: `biome check` чисто, `npm run build` прошёл.
+
+**Состояние:** код в **PR #41 (draft)** — ветка `worktree-header-redesign-1a2a3a`,
+**ждёт явного ok владельца на мерж**. Vercel preview из PR — место для
+визуальной проверки.
+
+**Осталось:** 1) ok владельца + мерж PR #41; 2) после мержа — `/wiki ingest`
+(страница про структуру шапки/навигации); 3) визуальная проверка preview
+(desktop + mobile); 4) кандидат в следующую итерацию — активные состояния
+навигации (подсветка «Servicios» на `/servicios/*`, замечание Codex №14).
