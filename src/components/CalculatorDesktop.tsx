@@ -72,10 +72,7 @@ export default function CalculatorDesktop() {
   const increment = () => quantity < 99 && setQuantity(quantity + 1);
 
   return (
-    <section
-      id="calculadora"
-      className="py-20 bg-gradient-to-br from-[#1e3a5f] to-[#0d2240]"
-    >
+    <section className="py-20 bg-gradient-to-br from-[#1e3a5f] to-[#0d2240]">
       <div className="container mx-auto px-8">
         <div className="w-full max-w-2xl mx-auto">
           {/* Header */}
