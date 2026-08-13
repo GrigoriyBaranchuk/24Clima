@@ -43,6 +43,9 @@ status: current
   выбор — в серверном оркестраторе `Calculator.tsx`. Гибрид: на
   мобильном UA только Mobile, на десктопном оба + CSS-переключатель по
   `lg:` (иначе на десктопном UA с узким окном показывался десктопный).
+  Якорный `id="calculadora"` (+ `scroll-mt-20` под fixed-шапку 80px) —
+  ТОЛЬКО на всегда видимой обёртке оркестратора, не в вариантах: два id
+  в DOM ломали якорь на десктопе (грабли №24, PR #40, 2026-08-13).
 - `next.config.js`: avif+webp, `minimumCacheTTL` 60 дней, `compress`,
   без `poweredByHeader` и prod source maps.
 - GA и Yandex Metrika отложены до первого взаимодействия или 3s idle;
