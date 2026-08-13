@@ -741,3 +741,12 @@ SEO-одобренного Soluciones; прямые ссылки на money-page
 выполнен: новая страница `concepts/header-navigation.md`, уточнение в
 `mobile-app-like.md`, запись в `log.md`. Из пунктов выше открытым остаётся
 только №4 (активные состояния навигации).
+
+**Прод проверен (2026-08-13).** Vercel-деплой `f7e0b29` в Production —
+success; в HTML живой главной 24clima.com подтверждены: tel-иконка с
+`aria-label="Llámanos: +507 6828-2120"`, ссылки дропдауна
+(`/servicios/limpieza`…`/servicios/emergencia`, `/problemas`, `/diagnostico`,
+оба solutions-лендинга) и кнопка `/tienda`. Память сессии домержена в main
+(PR #42 журнал, PR #43 wiki ingest); рабочие ветки удалены, на origin одна
+main. Сессия закрыта; переходящий пункт — активные состояния навигации
+(Codex №14).
