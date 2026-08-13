@@ -22,7 +22,17 @@
     "navPh": "Для PH",
     "solutions": "Решения",
     "events": "Мероприятия",
-    "shop": "Магазин"
+    "shop": "Магазин",
+    "allServices": "Все услуги",
+    "commonProblems": "Частые проблемы",
+    "serviceNav": {
+      "cleaning": "Чистка",
+      "maintenance": "Обслуживание",
+      "repair": "Ремонт",
+      "installation": "Установка",
+      "gasRecharge": "Заправка газом",
+      "emergency": "Аварийный 24/7"
+    }
   },
   "homeCta": {
     "nosotrosTitle": "Почему мы?",

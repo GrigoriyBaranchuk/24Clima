@@ -2,30 +2,29 @@
 
 import { metaPixelEvent } from "@/components/MetaPixel";
 import TiendaCartLink from "@/features/tienda/components/TiendaCartLink";
-import { Link, usePathname } from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
+import { SERVICE_SLUGS, SLUG_TO_TRANSLATION_KEY } from "@/lib/services";
 import {
   HeaderNavLink,
   HeaderShell,
-  WhatsAppCta,
   type LinkComponentType,
+  WhatsAppCta,
 } from "@24clima/design/components";
-import { Building2, ChevronDown, Home, Menu, Phone, Tent } from "lucide-react";
+import {
+  Building2,
+  ChevronDown,
+  Home,
+  Menu,
+  Phone,
+  ShoppingBag,
+  Tent,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
-
-const HEADER_OFFSET_PX = 80; // h-20
-
-function scrollToSection(id: string) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const top =
-    el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET_PX;
-  window.scrollTo({ top, behavior: "smooth" });
-}
 
 // Localized nav link that bakes in scroll={false}, exposed through the
 // package's LinkComponent contract (href/className/children/onClick).
@@ -37,32 +36,49 @@ const NavLink: LinkComponentType = ({ href, className, children, onClick }) => (
 
 // showCartLink: passed by TiendaShell so the cart entry point renders only on
 // /tienda pages; marketing pages keep the header unchanged.
-export default function Header({ showCartLink = false }: { showCartLink?: boolean }) {
+export default function Header({
+  showCartLink = false,
+}: { showCartLink?: boolean }) {
   const t = useTranslations("common");
   const tWhatsapp = useTranslations("whatsappMessages");
-  const pathname = usePathname();
   // The shell owns the scrolled BACKGROUND. We keep a local listener only for
   // per-slot FOREGROUND colours that must stay legible on both mobile
   // backgrounds (brand-navy-dark unscrolled → white scrolled): the mobile
   // wordmark, the burger, and the language badge.
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [solOpen, setSolOpen] = useState(false);
-  const navigation = [
-    { name: t("home"), href: "/", isAnchor: false, external: false },
-    { name: t("tips"), href: "/consejos-y-guias", isAnchor: false, external: false },
-    { name: t("services"), href: "/#servicios", isAnchor: true, external: false },
-    { name: t("problems"), href: "/#problemas", isAnchor: true, external: false },
-    { name: t("about"), href: "/nosotros", isAnchor: false, external: false },
-    {
-      name: t("shop"),
-      href: "/tienda",
-      isAnchor: false,
-      external: false,
-    },
-    { name: t("contact"), href: "/contacto", isAnchor: false, external: false },
+  const [servicesOpen, setServicesOpen] = useState(false);
+
+  // Desktop keeps only destination pages; everything service-shaped lives in
+  // the grouped "Servicios" dropdown. "Inicio" is dropped (logo = home) and
+  // "Tienda" moves to the actions slot as a distinct shop entry point.
+  const desktopNav = [
+    { name: t("tips"), href: "/consejos-y-guias" },
+    { name: t("about"), href: "/nosotros" },
+    { name: t("contact"), href: "/contacto" },
   ];
-  // Niche segment landings, grouped under the "Soluciones" dropdown.
+  // Mobile sheet keeps the fuller list (incl. Inicio and Tienda) but links to
+  // the real hub pages instead of homepage anchors.
+  const mobileNav = [
+    { name: t("home"), href: "/" },
+    { name: t("tips"), href: "/consejos-y-guias" },
+    { name: t("services"), href: "/servicios" },
+    { name: t("problems"), href: "/problemas" },
+    { name: t("about"), href: "/nosotros" },
+    { name: t("shop"), href: "/tienda" },
+    { name: t("contact"), href: "/contacto" },
+  ];
+  // Money pages, one per service slug — short nav labels, not the long SEO
+  // page titles from services.<key>.title.
+  const serviceLinks = SERVICE_SLUGS.map((slug) => ({
+    name: t(`serviceNav.${SLUG_TO_TRANSLATION_KEY[slug]}`),
+    href: `/servicios/${slug}`,
+  }));
+  const problemLinks = [
+    { name: t("commonProblems"), href: "/problemas" },
+    { name: t("diagnosis"), href: "/diagnostico" },
+  ];
+  // Niche segment landings (Para PH, eventos).
   const solutions = [
     {
       name: t("navPh"),
@@ -76,21 +92,6 @@ export default function Header({ showCartLink = false }: { showCartLink?: boolea
     },
   ];
 
-  const isHomePage = pathname === "/" || pathname === "";
-
-  const handleNavClick = (
-    item: (typeof navigation)[0],
-    e: React.MouseEvent,
-  ) => {
-    if (!item.isAnchor) return;
-    const id = item.href.split("#")[1];
-    if (!id) return;
-    if (isHomePage) {
-      e.preventDefault();
-      scrollToSection(id);
-    }
-  };
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -99,6 +100,11 @@ export default function Header({ showCartLink = false }: { showCartLink?: boolea
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const dropdownLinkClass =
+    "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-brand-green-dark/10 hover:text-brand-green-dark";
+  const dropdownGroupTitleClass =
+    "px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400";
 
   // ===== LOGO SLOT =====
   // HeaderShell renders this node in BOTH rows; each treatment is toggled by
@@ -134,83 +140,128 @@ export default function Header({ showCartLink = false }: { showCartLink?: boolea
   // ===== DESKTOP NAV SLOT =====
   const nav = (
     <>
-      {navigation.map((item) => (
-        <HeaderNavLink
-          key={item.name}
-          href={item.href}
-          LinkComponent={NavLink}
-          onClick={(e) => handleNavClick(item, e)}
-        >
-          {item.name}
-        </HeaderNavLink>
-      ))}
-      {/* "Soluciones" dropdown — niche segment landings (Para PH, eventos).
-        Stays app-side (interactive). Links are ALWAYS in the DOM (only
-        visually toggled) so they stay crawlable; SEO-reviewed. Motion uses
-        opacity+transform only, 150ms, off under reduced-motion. */}
+      {/* "Servicios" grouped dropdown — service pages, problem/diagnóstico
+        hubs, and niche segment landings. Stays app-side (interactive). Links
+        are ALWAYS in the DOM (only visually toggled) so they stay crawlable;
+        SEO-reviewed. Motion uses opacity+transform only, 150ms, off under
+        reduced-motion. `invisible` keeps hidden links out of the tab order. */}
       <div
         className="relative"
-        onMouseEnter={() => setSolOpen(true)}
-        onMouseLeave={() => setSolOpen(false)}
-        onFocus={() => setSolOpen(true)}
+        onMouseEnter={() => setServicesOpen(true)}
+        onMouseLeave={() => setServicesOpen(false)}
+        onFocus={() => setServicesOpen(true)}
         onBlur={(e) => {
           if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-            setSolOpen(false);
+            setServicesOpen(false);
           }
         }}
       >
         <button
           type="button"
           aria-haspopup="menu"
-          aria-expanded={solOpen}
+          aria-expanded={servicesOpen}
           className="inline-flex items-center gap-1 text-base font-medium text-gray-700 transition-colors hover:text-brand-green-dark"
         >
-          {t("solutions")}
+          {t("services")}
           <ChevronDown
             className={`w-4 h-4 transition-transform duration-150 motion-reduce:transition-none ${
-              solOpen ? "rotate-180" : ""
+              servicesOpen ? "rotate-180" : ""
             }`}
           />
         </button>
         <div
           role="menu"
-          aria-label={t("solutions")}
-          className={`absolute right-0 top-full pt-2 w-60 transition-[opacity,transform] duration-150 motion-reduce:transition-none ${
-            solOpen
+          aria-label={t("services")}
+          className={`absolute left-0 top-full pt-2 w-[34rem] transition-[opacity,transform] duration-150 motion-reduce:transition-none ${
+            servicesOpen
               ? "opacity-100 visible translate-y-0"
               : "opacity-0 invisible -translate-y-1 pointer-events-none"
           }`}
         >
-          <div className="rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl">
-            {solutions.map(({ name, href, Icon }) => (
+          <div className="grid grid-cols-2 gap-x-2 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl">
+            <div>
+              <span className={dropdownGroupTitleClass}>{t("services")}</span>
+              {serviceLinks.map(({ name, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  role="menuitem"
+                  scroll={false}
+                  className={dropdownLinkClass}
+                >
+                  {name}
+                </Link>
+              ))}
               <Link
-                key={href}
-                href={href}
+                href="/servicios"
                 role="menuitem"
                 scroll={false}
-                className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-brand-green-dark/10 hover:text-brand-green-dark"
+                className={`${dropdownLinkClass} text-brand-green-dark`}
               >
-                <Icon className="w-4 h-4 text-brand-green-dark" />
-                {name}
+                {t("allServices")}
               </Link>
-            ))}
+            </div>
+            <div>
+              <span className={dropdownGroupTitleClass}>{t("problems")}</span>
+              {problemLinks.map(({ name, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  role="menuitem"
+                  scroll={false}
+                  className={dropdownLinkClass}
+                >
+                  {name}
+                </Link>
+              ))}
+              <span className={dropdownGroupTitleClass}>{t("solutions")}</span>
+              {solutions.map(({ name, href, Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  role="menuitem"
+                  scroll={false}
+                  className={dropdownLinkClass}
+                >
+                  <Icon className="w-4 h-4 text-brand-green-dark" />
+                  {name}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
+      {desktopNav.map((item) => (
+        <HeaderNavLink key={item.name} href={item.href} LinkComponent={NavLink}>
+          {item.name}
+        </HeaderNavLink>
+      ))}
     </>
   );
 
   // ===== DESKTOP ACTIONS SLOT =====
+  // Priority order: WhatsApp is the ONLY green (dominant) action; Tienda is a
+  // neutral secondary button; phone is a quiet icon-only tel: link (full
+  // number stays visible in the footer and /contacto).
   const actions = (
     <>
-      {showCartLink && <TiendaCartLink variant="desktop" />}
       <LanguageSwitcher isScrolled={isScrolled} />
+      <Link
+        href="/tienda"
+        scroll={false}
+        className="inline-flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:border-brand-green-dark hover:text-brand-green-dark"
+      >
+        <ShoppingBag className="w-4 h-4" />
+        {t("shop")}
+      </Link>
+      {showCartLink && <TiendaCartLink variant="desktop" />}
       <a
-        href={`tel:+50768282120`}
-        className="flex items-center gap-2 text-base font-medium text-gray-700 transition-colors hover:text-brand-green-dark"
+        href="tel:+50768282120"
+        aria-label={`${t("callNow")}: ${WHATSAPP_DISPLAY}`}
+        title={`${t("callNow")}: ${WHATSAPP_DISPLAY}`}
+        className="flex w-9 h-9 items-center justify-center rounded-full border border-gray-200 text-gray-600 transition-colors hover:border-brand-green-dark/40 hover:text-brand-green-dark"
       >
         <Phone className="w-4 h-4" />
-        <span>{WHATSAPP_DISPLAY}</span>
       </a>
       <WhatsAppCta
         href={getWhatsAppLink(tWhatsapp("general"))}
@@ -245,15 +296,12 @@ export default function Header({ showCartLink = false }: { showCartLink?: boolea
         <SheetContent side="right" className="w-[85%] max-w-sm p-0">
           <SheetTitle className="sr-only">Menú</SheetTitle>
           <nav className="flex h-full flex-col gap-0.5 overflow-y-auto p-4 pt-14">
-            {navigation.map((item) => (
+            {mobileNav.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 scroll={false}
-                onClick={(e) => {
-                  handleNavClick(item, e);
-                  setMenuOpen(false);
-                }}
+                onClick={() => setMenuOpen(false)}
                 className="rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
               >
                 {item.name}

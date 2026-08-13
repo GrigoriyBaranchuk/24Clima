@@ -22,7 +22,17 @@
     "navPh": "For PH",
     "solutions": "Solutions",
     "events": "Events",
-    "shop": "Shop"
+    "shop": "Shop",
+    "allServices": "All services",
+    "commonProblems": "Common problems",
+    "serviceNav": {
+      "cleaning": "Cleaning",
+      "maintenance": "Maintenance",
+      "repair": "Repair",
+      "installation": "Installation",
+      "gasRecharge": "Gas recharge",
+      "emergency": "24/7 Emergency"
+    }
   },
   "homeCta": {
     "nosotrosTitle": "Why choose us?",
