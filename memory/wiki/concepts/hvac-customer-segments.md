@@ -3,7 +3,7 @@ type: concept
 title: Сегменты клиентов «hvac» (Панама)
 updated: 2026-08-11
 sources: [research 2026-05-29 (4 параллельных агента: AmCham, JTIA, PanamaCompra, expat-форумы, Encuentra24, data-center-map, Rodelag), PROJECT_MEMORY.md]
-related: [entities/24clima, concepts/service-pricing, concepts/protected-seo-elements]
+related: [entities/24clima, concepts/service-pricing, concepts/protected-seo-elements, concepts/passive-cooling-service, concepts/panama-electricity-market, concepts/panama-advertising-law]
 status: current
 ---
 
@@ -67,3 +67,6 @@ aliados»), не обещать температуру в открытых пр�
 
 - [24clima](../entities/24clima.md)
 - [Цены на услуги](../concepts/service-pricing.md)
+- [Услуга пассивного охлаждения](passive-cooling-service.md) — B2B-сегмент как основа нового направления
+- [Рынок электроэнергии Панамы](panama-electricity-market.md) — тарифы и счета, к которым апеллируют сегменты
+- [Право: реклама и энергоуслуги](panama-advertising-law.md) — JTIA и ограничения на заявления о выгодах

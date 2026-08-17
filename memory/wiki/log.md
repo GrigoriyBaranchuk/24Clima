@@ -2,6 +2,29 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-17] ingest | исследование рынка пассивного охлаждения в Панаме
+
+Затронуто: `entities/tropiclima.md` (новая), `concepts/passive-cooling-service.md`
+(новая — решения владельца, спрос, конкуренты, экономика, план),
+`concepts/panama-electricity-market.md` (новая — тарифы BTS, FET, агрегаты
+ASEP за май 2026, структура спроса), `concepts/panama-advertising-law.md`
+(новая — Ley 45/ACODECO, Ley 69/аккредитация, правила формулировок),
+`sources/2026-08-15-panama-passive-cooling-research.md` (новая),
+`raw/dataforseo/2026-08-15-panama-passive-cooling-keywords.csv` (новый
+источник, 273 строки), `synthesis/gotchas.md` (грабли №26 и №27),
+`entities/24clima.md`, `concepts/hvac-customer-segments.md`,
+`concepts/protected-seo-elements.md` (обратные ссылки), `index.md`
+(+5 страниц, счётчик 22, счёт граблей 27, два новых пробела).
+
+Примечание: read-only исследование по запросу владельца, кода не касалось.
+Найденная связка: требование **JTIA** из Ley 69 для энергоуслуг — то же
+ведомство, что `JTIA idoneidad` в B2B-сегменте (research 2026-05-29), где
+вопрос «есть ли у владельца idoneidad» до сих пор открыт; теперь оба
+пробела сведены в `index.md`. Гипотезы (экономия 8–15 %, доля
+кондиционирования 40 %) помечены как гипотезы на всех страницах — не
+цитировать как факт. Отчёт-артефакт:
+`https://claude.ai/code/artifact/6078d9e9-8515-47c7-9255-4d90abb49de6`.
+
 ## [2026-08-13] ingest | редизайн шапки desktop (PR #41)
 
 Затронуто: `concepts/header-navigation.md` (новая страница — структура шапки,
