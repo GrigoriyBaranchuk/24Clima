@@ -3,7 +3,7 @@ type: entity
 title: 24clima (WOW Soluciones Panama)
 updated: 2026-08-11
 sources: [PROJECT_MEMORY.md, CLAUDE.md, src/lib/business-data.ts, src/middleware.ts]
-related: [concepts/service-pricing, concepts/seo-monitoring-system, entities/ryhor-baranchuk, concepts/tienda-shop, concepts/google-customer-reviews]
+related: [concepts/service-pricing, concepts/seo-monitoring-system, entities/ryhor-baranchuk, concepts/tienda-shop, concepts/google-customer-reviews, concepts/passive-cooling-service]
 status: current
 ---
 
@@ -62,3 +62,4 @@ Panama, бренд и домен — 24clima. Сайт: https://24clima.com.
 - [Система SEO-мониторинга](../concepts/seo-monitoring-system.md)
 - [Магазин /tienda](../concepts/tienda-shop.md)
 - [Google Отзывы клиентов](../concepts/google-customer-reviews.md)
+- [Услуга пассивного охлаждения](../concepts/passive-cooling-service.md) — проектируемое направление (решение не принято)

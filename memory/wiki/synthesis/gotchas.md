@@ -1,9 +1,9 @@
 ---
 type: synthesis
 title: Грабли проекта — сводка
-updated: 2026-08-12
-sources: [PROJECT_MEMORY.md]
-related: [concepts/design-system-package, concepts/i18n-dual-route-tree, concepts/seo-monitoring-system, concepts/agent-workflow]
+updated: 2026-08-17
+sources: [PROJECT_MEMORY.md, wiki/sources/2026-08-15-panama-passive-cooling-research]
+related: [concepts/design-system-package, concepts/i18n-dual-route-tree, concepts/seo-monitoring-system, concepts/agent-workflow, concepts/panama-advertising-law]
 status: current
 ---
 
@@ -40,7 +40,10 @@ status: current
 | 23 | Протокол сессии пропущен, потому что задача «выглядит как обсуждение» | агент сразу берётся за задачу: анализ идёт по устаревшему коду (вторая машина уже меняла файлы), todo-список не выведен; пробел всплывает только вопросом пользователя | шаги 1–2 протокола (`git fetch --prune && git pull` + todo-список) — безусловные, выполняются ДО самой задачи в начале КАЖДОЙ сессии; тип задачи (обсуждение, read-only, фоновый джоб) значения не имеет (случай 2026-08-12) |
 | 24 | Dual-render паттерн (mobile+desktop оба в DOM на десктопном UA) дублирует `id` | якорь `#calculadora` целился в первый матч — мобильную секцию, скрытую `lg:hidden` (display:none); клик по «Cotizar ahora» — тихий no-op на десктопе (баг жил на проде до 2026-08-13, PR #40) | якорные `id` вешать ТОЛЬКО на всегда видимую обёртку в оркестраторе (`Calculator.tsx`), не внутри вариантов; `scroll-mt-20` = высота fixed-шапки (80px) — [mobile-app-like](../concepts/mobile-app-like.md) |
 | 25 | Chrome замораживает smooth scroll в скрытой вкладке (`visibilityState: hidden`) | автоматизированный QA-клик по якорю «застревает» на полпути — выглядит как сломанный скролл, хотя код верен; таймеры тоже затроттлены (~1 тик/с) | перед выводом «скролл не работает» проверить `document.visibilityState`; для проверки якоря использовать instant `scrollIntoView` или проверять DOM (1 видимый id), а не smooth-анимацию (случай 2026-08-13) |
+| 26 | Числа об экономии в копи = обязательство по Ley 45 | «снизим счёт на 30 %» или «экономия $50/мес» без привязки к объекту — это `publicidad engañosa`: ACODECO наложила 615 штрафов на $574 600, пожаловаться может конкурент через онлайн-форму | любое число только с досье (расчёт, замеры до/после, методика) либо ссылкой на чужой официальный источник (SNE: 1 °C = 5–10 %); энергоаудиты как услуга требуют аккредитации MICI + JTIA по Ley 69 — [право Панамы](../concepts/panama-advertising-law.md) |
+| 27 | Внешние источники не читаются штатными инструментами | WebFetch отдаёт 403 на сайтах, режущих не-браузерный UA (случай `tropiclima.com`, 2026-08-14); внутренние страницы — 307 без `-L`; официальные PDF Панамы бывают зашифрованы (`/Encrypt` у Ley 45 на acodeco.gob.pa) и текст не извлекается | `curl -sSL -A "Mozilla/5.0 ..."`; для PDF проверять `/Encrypt` перед попытками распарсить, при шифровании искать текст в других публикациях и **честно помечать**, что первоисточник не сверялся |
 
 ## Связи
 
 - [Процесс работы агентов](../concepts/agent-workflow.md)
+- [Право: реклама и энергоуслуги](../concepts/panama-advertising-law.md) — грабля №26 целиком оттуда

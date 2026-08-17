@@ -3,7 +3,7 @@ type: concept
 title: Защищённые SEO-элементы
 updated: 2026-08-10
 sources: [PROJECT_MEMORY.md, .agents/skills/24clima-seo-guide/references/protected-elements.md]
-related: [entities/24clima, concepts/seo-monitoring-system, concepts/i18n-dual-route-tree]
+related: [entities/24clima, concepts/seo-monitoring-system, concepts/i18n-dual-route-tree, concepts/panama-advertising-law]
 status: current
 ---
 
@@ -59,3 +59,4 @@ flag-with-conditions (условия обязательны к закрытию)
 
 - [Система SEO-мониторинга](seo-monitoring-system.md)
 - [Двойное дерево роутов es / [locale]](i18n-dual-route-tree.md) — правки нужно вносить в оба
+- [Право: реклама и энергоуслуги](panama-advertising-law.md) — панамские ограничения на числа и обещания в копи (другой слой, чем Google)

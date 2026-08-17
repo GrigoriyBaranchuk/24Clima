@@ -1,0 +1,274 @@
+block,keyword,volume,cpc,competition
+exact_es,ventilacion de techo,10,,LOW
+exact_es,ventilacion del techo,0,,
+exact_es,ventilacion de atico,0,,
+exact_es,ventilacion de entretecho,0,,
+exact_es,extractor eolico,20,,LOW
+exact_es,turbina de ventilacion,10,,LOW
+exact_es,turbina eolica de techo,0,,
+exact_es,respiradero de techo,70,,LOW
+exact_es,ventilacion natural,10,,LOW
+exact_es,ventilacion natural en casas,10,,LOW
+exact_es,casa fresca sin aire acondicionado,10,,
+exact_es,como enfriar mi casa sin aire acondicionado,10,,LOW
+exact_es,como refrescar la casa,10,,LOW
+exact_es,bajar el recibo de luz,10,,LOW
+exact_es,como bajar el recibo de luz,10,,LOW
+exact_es,como bajar el consumo de luz,10,,LOW
+exact_es,reducir consumo de energia,20,,LOW
+exact_es,reducir el consumo electrico,10,,
+exact_es,ahorro de energia en el hogar,10,,LOW
+exact_es,como ahorrar energia en casa,10,,LOW
+exact_es,eficiencia energetica,140,,LOW
+exact_es,eficiencia energetica panama,10,,LOW
+exact_es,aislamiento termico panama,0,,
+exact_es,aislante termico para techo panama,10,0.61,LOW
+exact_es,fachada ventilada,10,,LOW
+exact_es,fachada ventilada panama,0,,
+exact_es,sistema de fachada ventilada,10,,
+exact_es,barrera radiante,10,,
+exact_es,aislante reflectivo,10,,LOW
+exact_es,foil aislante para techo,0,,
+exact_es,mi casa es muy caliente,10,,
+exact_es,calor en techo de zinc,0,,
+exact_es,cuanto consume un aire acondicionado,20,,LOW
+exact_es,consumo de aire acondicionado por hora,10,,
+exact_es,precio kwh panama,20,,LOW
+exact_es,tarifa electrica panama,20,,LOW
+exact_es,subsidio electrico panama,10,,LOW
+exact_es,ensa panama,18100,0.76,LOW
+exact_es,naturgy panama,9900,0.19,LOW
+exact_es,aire acondicionado que consume menos,0,,
+exact_es,casa fresca,10,,LOW
+exact_es,confort termico,10,,LOW
+exact_es,calor en casa,10,,
+exact_es,ventilacion para casas calientes,0,,
+exact_en,attic ventilation,10,,
+exact_en,roof ventilation,10,,LOW
+exact_en,how to cool a house without air conditioning,10,,LOW
+exact_en,reduce electric bill,10,0.08,LOW
+exact_en,lower electric bill,10,0.06,LOW
+exact_en,radiant barrier,10,,
+exact_en,reflective insulation,10,,
+exact_en,ventilated facade,10,,
+exact_en,rainscreen facade,0,,
+exact_en,attic fan,10,0.05,LOW
+exact_en,ridge vent,10,,LOW
+exact_en,roof turbine vent,10,,
+exact_en,whirlybird vent,10,,LOW
+exact_en,insulation panama,0,,
+exact_en,electricity cost panama,0,,
+exact_en,how to keep house cool in panama,0,,
+exact_en,energy efficiency panama,0,,
+exact_en,solar panels panama,40,0.53,MEDIUM
+exact_en,air conditioning panama,0,,
+exact_en,panama electric bill,0,,
+seasonality,aislante termico,320,0.29,08/25=260 09/25=260 10/25=390 11/25=210 12/25=210 01/26=260 02/26=260 03/26=320 04/26=480 05/26=480 06/26=390 07/26=390
+seasonality,aislante termico para techo,260,0.55,08/25=210 09/25=170 10/25=170 11/25=170 12/25=140 01/26=210 02/26=170 03/26=390 04/26=480 05/26=480 06/26=320 07/26=480
+seasonality,aire acondicionado inverter,590,0.15,08/25=480 09/25=320 10/25=320 11/25=390 12/25=390 01/26=480 02/26=390 03/26=720 04/26=880 05/26=1300 06/26=720 07/26=880
+seasonality,paneles solares,880,0.56,08/25=880 09/25=880 10/25=1000 11/25=720 12/25=480 01/26=480 02/26=480 03/26=880 04/26=880 05/26=880 06/26=880 07/26=1000
+seasonality,extractor de aire,390,0.14,08/25=390 09/25=320 10/25=320 11/25=320 12/25=210 01/26=320 02/26=320 03/26=480 04/26=480 05/26=590 06/26=480 07/26=720
+seasonality,instalacion de aire acondicionado,210,1.75,08/25=210 09/25=170 10/25=260 11/25=210 12/25=260 01/26=210 02/26=170 03/26=320 04/26=260 05/26=320 06/26=210 07/26=210
+seasonality,ensa panama,18100,0.76,08/25=18100 09/25=14800 10/25=14800 11/25=14800 12/25=14800 01/26=18100 02/26=14800 03/26=18100 04/26=18100 05/26=22200 06/26=18100 07/26=18100
+seasonality,recibo de luz,390,,08/25=390 09/25=390 10/25=390 11/25=320 12/25=390 01/26=390 02/26=320 03/26=480 04/26=390 05/26=390 06/26=480 07/26=480
+seasonality,ahorrar energia,140,,08/25=170 09/25=70 10/25=140 11/25=90 12/25=30 01/26=10 02/26=10 03/26=40 04/26=260 05/26=170 06/26=260 07/26=320
+expansion_top200,paneles solares,880,0.56,LOW
+expansion_top200,panel solar,880,0.78,LOW
+expansion_top200,panel solares,880,0.78,LOW
+expansion_top200,aire acondicionado inverter,590,0.15,MEDIUM
+expansion_top200,aire acond inverter,590,0.15,MEDIUM
+expansion_top200,factura de ensa por número de cédula,480,0.06,LOW
+expansion_top200,extractor de aire,390,0.14,LOW
+expansion_top200,recibo de luz,390,,LOW
+expansion_top200,consultar recibo de luz naturgy,390,,LOW
+expansion_top200,aislante termico,320,0.29,LOW
+expansion_top200,aislante termico para techo,260,0.55,LOW
+expansion_top200,instalacion de aire acondicionado,210,1.75,MEDIUM
+expansion_top200,instalacion de aire acondicionados,210,1.75,MEDIUM
+expansion_top200,aire acondicionado con panel solar,210,0.22,LOW
+expansion_top200,aire acondicionado 12000 btu,170,0.25,MEDIUM
+expansion_top200,extractor de baño,170,0.55,LOW
+expansion_top200,extractores de baño,170,0.55,LOW
+expansion_top200,edemet edechi factura,170,,LOW
+expansion_top200,facturacion ensa,170,,LOW
+expansion_top200,aire acondicionado inverter 12000 btu,140,0.22,MEDIUM
+expansion_top200,ahorrar energia,140,,LOW
+expansion_top200,ahorrar la energia,140,,LOW
+expansion_top200,ahorre energia,140,,LOW
+expansion_top200,aire acondicionado solar,140,0.19,LOW
+expansion_top200,batería para panel solar,140,0.45,LOW
+expansion_top200,aire inverter,110,0.17,LOW
+expansion_top200,aires acondicionados lg,110,0.51,LOW
+expansion_top200,aire inverter 12000 btu,110,0.33,MEDIUM
+expansion_top200,aire 12000 btu inverter,110,0.33,MEDIUM
+expansion_top200,recibo de luz naturgy,110,,LOW
+expansion_top200,paneles solares para casa,110,0.47,LOW
+expansion_top200,paneles solares precio,110,0.43,LOW
+expansion_top200,panel solar para casa,110,0.47,LOW
+expansion_top200,panel solar precio,110,0.43,LOW
+expansion_top200,precio panel solar,110,0.43,LOW
+expansion_top200,panel solar para una casa,110,0.47,LOW
+expansion_top200,paneles solares para la casa,110,0.47,LOW
+expansion_top200,aire acondicionado 9000 btu,90,0.29,MEDIUM
+expansion_top200,hisense aire,90,0.11,LOW
+expansion_top200,extractor de aire acondicionado,90,0.8,LOW
+expansion_top200,factura de naturgy,90,,LOW
+expansion_top200,ahorro de ener,90,0.03,LOW
+expansion_top200,panel solar para aire acondicionado,90,0.62,LOW
+expansion_top200,bifaciales,90,,LOW
+expansion_top200,precio aire acondicionado,70,0.07,LOW
+expansion_top200,aire acondicionado barato,70,0.18,LOW
+expansion_top200,aire acondicionado 18000 btu,70,0.27,MEDIUM
+expansion_top200,precio de aire acondicionado,70,0.02,LOW
+expansion_top200,aire acondicionado portátil inverter,70,0.22,LOW
+expansion_top200,aire acondicionado inverter 9000 btu,70,0.29,MEDIUM
+expansion_top200,aire acondicionado de 24000 btu,70,0.19,MEDIUM
+expansion_top200,aire acondicionado de 12000 btu,70,0.17,MEDIUM
+expansion_top200,aire de 24000 btu,70,0.17,MEDIUM
+expansion_top200,aire acondicionado hisense 12000 btu,70,0.15,LOW
+expansion_top200,aire acondicionado de 9000 btu precio,70,0.33,LOW
+expansion_top200,aires acondicionados portatiles inverter,70,0.22,LOW
+expansion_top200,extractores de aire,70,1.05,LOW
+expansion_top200,extractor para baño,70,0.03,LOW
+expansion_top200,aislante para techo,70,0.85,LOW
+expansion_top200,aislante de calor para techos,70,0.23,LOW
+expansion_top200,extractor de aires,70,1.05,LOW
+expansion_top200,extractoresdeaire,70,1.05,LOW
+expansion_top200,ahorro de energia,70,,LOW
+expansion_top200,ahorrar agua y energia,70,,LOW
+expansion_top200,ahorro de la energia,70,,LOW
+expansion_top200,instalacion de paneles solares,70,0.54,LOW
+expansion_top200,energía solar fotovoltaica,70,,LOW
+expansion_top200,aire acondicionado con instalación,50,1.32,MEDIUM
+expansion_top200,instalacion aire acondicionado,50,1.32,MEDIUM
+expansion_top200,oferta aire acondicionado,50,0.14,MEDIUM
+expansion_top200,aire acondicionado 24000 btu,50,0.24,MEDIUM
+expansion_top200,precio aire acondicionado portatil,50,0.17,LOW
+expansion_top200,aire acondicionado de 18000 btu,50,0.2,MEDIUM
+expansion_top200,aire acondicionado de 9000 btu,50,0.18,MEDIUM
+expansion_top200,aire acondicionado panasonic inverter,50,0.27,MEDIUM
+expansion_top200,aire de 18000 btu,50,0.36,MEDIUM
+expansion_top200,aire portatil precio,50,0.27,LOW
+expansion_top200,aires acondicionados de 36000 btu,50,0.31,MEDIUM
+expansion_top200,aires de 18000 btu,50,0.36,MEDIUM
+expansion_top200,aislamiento termico,50,0.38,LOW
+expansion_top200,extractor de aire industrial,50,1.06,LOW
+expansion_top200,extractor de aire para baño,50,0.12,LOW
+expansion_top200,extractor de calor,50,0.48,LOW
+expansion_top200,aislante de calor,50,0.71,LOW
+expansion_top200,extractor de aire techo,50,0.43,LOW
+expansion_top200,extractor de calor para techos,50,0.24,LOW
+expansion_top200,medidor de consumo electrico,50,0.5,LOW
+expansion_top200,factura de la luz,50,,LOW
+expansion_top200,factura de luz,50,,LOW
+expansion_top200,factura de luz naturgy,50,,LOW
+expansion_top200,naturgy recibo de luz,50,,LOW
+expansion_top200,plantas solares,50,,LOW
+expansion_top200,papel ahumado para ventanas de casas,50,1.04,LOW
+expansion_top200,minisplit inverter,40,0.23,LOW
+expansion_top200,dual inverter lg,40,0.4,MEDIUM
+expansion_top200,aire portatil inverter,40,0.12,LOW
+expansion_top200,aire de ventana inverter,40,0.19,LOW
+expansion_top200,aires acondicionados 110v,40,0.31,LOW
+expansion_top200,aire acondicionado cuanto cuesta,40,0.04,LOW
+expansion_top200,aire panasonic inverter,40,0.04,MEDIUM
+expansion_top200,lg inverter dual,40,0.4,MEDIUM
+expansion_top200,cuantos watts consume un aire acondicionado,40,,LOW
+expansion_top200,aires acondicionados 36000 btu,40,0.29,MEDIUM
+expansion_top200,aires portatiles inverter,40,0.12,LOW
+expansion_top200,aire inverter portatil,40,0.12,LOW
+expansion_top200,dual lg inverter,40,0.4,MEDIUM
+expansion_top200,aire acondicionado sankey 12000 btu inverter,40,0.17,LOW
+expansion_top200,aire inverter panasonic,40,0.04,MEDIUM
+expansion_top200,aire sankey 12000 btu,40,0.03,LOW
+expansion_top200,aires panasonic inverter,40,0.04,MEDIUM
+expansion_top200,cuanto consume un aire acondicionado de 12000 btu,40,,LOW
+expansion_top200,cuanto w consume un aire acondicionado,40,,LOW
+expansion_top200,cuanto watt consume un aire acondicionado,40,,LOW
+expansion_top200,inverter dual lg,40,0.4,MEDIUM
+expansion_top200,extractor de pared,40,,LOW
+expansion_top200,ver recibo de luz,40,,LOW
+expansion_top200,paneles solares portatiles,40,0.31,LOW
+expansion_top200,fachada alucobond,40,,LOW
+expansion_top200,aire acondicionado split inverter,30,0.19,LOW
+expansion_top200,aire central para casa,30,0.71,LOW
+expansion_top200,aire acondicionado inverter 18000 btu,30,0.31,LOW
+expansion_top200,aire acondicionado lg inverter,30,0.9,MEDIUM
+expansion_top200,ofertas de aire acondicionado,30,0.22,MEDIUM
+expansion_top200,digital inverter samsung,30,,LOW
+expansion_top200,aire acondicionado de ventana inverter,30,0.09,LOW
+expansion_top200,aires centrales para casa,30,0.71,LOW
+expansion_top200,aire 18000 btu,30,0.34,MEDIUM
+expansion_top200,aire 24000 btu,30,0.31,MEDIUM
+expansion_top200,aire inverter 9000 btu,30,0.26,MEDIUM
+expansion_top200,aire acondicionado lg inverter 12000 btu,30,0.27,MEDIUM
+expansion_top200,aire de ventana precio,30,0.33,LOW
+expansion_top200,aire acondicionado inverter lg 12000 btu,30,0.27,MEDIUM
+expansion_top200,aire acondicionado 12btu,30,0.85,MEDIUM
+expansion_top200,aire acondicionado sankey 18000 btu inverter,30,0.2,LOW
+expansion_top200,aire acondicionado sankey 24000 btu inverter,30,0.14,LOW
+expansion_top200,aire acondicionado sankey inverter 12000 btu,30,0.24,LOW
+expansion_top200,aires 18000 btu,30,0.34,MEDIUM
+expansion_top200,aires convencionales,30,1.09,LOW
+expansion_top200,samsung inverter digital,30,,LOW
+expansion_top200,extractor de humedad,30,0.17,LOW
+expansion_top200,aislante fibra de vidrio,30,0.16,LOW
+expansion_top200,aislante de techo,30,0.68,LOW
+expansion_top200,extractor de aire de pared,30,0.09,LOW
+expansion_top200,ahorro energetico,30,,LOW
+expansion_top200,consultar recibo de luz,30,,LOW
+expansion_top200,ahorro energetica,30,,LOW
+expansion_top200,ahorros energeticos,30,,LOW
+expansion_top200,corpoelec oficina virtual,30,,LOW
+expansion_top200,edemet factura,30,,LOW
+expansion_top200,precio de paneles solares,30,1.67,MEDIUM
+expansion_top200,paneles solares casa,30,0.43,LOW
+expansion_top200,microinversores solares,30,0.43,LOW
+expansion_top200,panel solar pequeño,30,0.39,LOW
+expansion_top200,techo panel sandwich,30,0.62,LOW
+expansion_top200,panel solar en casa,30,0.43,LOW
+expansion_top200,casa con panel solar,30,0.43,LOW
+expansion_top200,nevera con panel solar,30,0.61,LOW
+expansion_top200,windfree samsung,20,0.56,LOW
+expansion_top200,aire acondicionado samsung inverter,20,0.6,MEDIUM
+expansion_top200,aire acondicionado inverter 24000 btu,20,0.25,HIGH
+expansion_top200,instalación de aire acondicionado precio,20,1.06,MEDIUM
+expansion_top200,artcool lg,20,1.54,MEDIUM
+expansion_top200,aire split inverter,20,0.15,LOW
+expansion_top200,mantenimiento de aire acondicionado precio,20,0.77,MEDIUM
+expansion_top200,aire lg dual inverter,20,1.49,LOW
+expansion_top200,ofertas de aires acondicionados inverter,20,0.12,MEDIUM
+expansion_top200,aire acondicionado tcl inverter,20,0.17,LOW
+expansion_top200,aire acondicionado 24 btu,20,0.61,MEDIUM
+expansion_top200,aire acondicionado hisense inverter,20,0.31,MEDIUM
+expansion_top200,cuanto consume un aire acondicionado,20,,LOW
+expansion_top200,mejores aires acondicionados inverter,20,0.56,LOW
+expansion_top200,aire acondicionado de 36000 btu precio,20,0.05,MEDIUM
+expansion_top200,aire 9000 btu inverter,20,0.45,LOW
+expansion_top200,aire acondicionado de 18000 btu inverter,20,0.15,MEDIUM
+expansion_top200,aire acondicionado 12 btu inverter,20,0.52,MEDIUM
+expansion_top200,instalacion de aire,20,1.01,MEDIUM
+expansion_top200,lg dual inverter 12 000 btu,20,0.78,MEDIUM
+expansion_top200,la casa del aire acondicionado,20,,LOW
+expansion_top200,tcl aire acondicionado inverter,20,0.18,LOW
+expansion_top200,aires acondicionados inverter sankey,20,0.15,LOW
+expansion_top200,aires acondicionados con wifi,20,0.66,MEDIUM
+expansion_top200,panasonic inverter 12000 btu,20,0.33,MEDIUM
+expansion_top200,aire acondicionado de 9000 btu inverter,20,0.22,MEDIUM
+expansion_top200,aire acondicionado panasonic inverter 12000 btu,20,0.47,MEDIUM
+expansion_top200,aire acondicionado hisense 18000 btu,20,0.11,LOW
+expansion_top200,instalación de aires acondicionados precio,20,1.06,MEDIUM
+expansion_top200,ventilador de aire frio precio,20,,LOW
+expansion_top200,aires lg dual inverter,20,1.49,LOW
+expansion_top200,aire acondicionado de 24000 btu inverter precio,20,0.08,MEDIUM
+expansion_top200,aire acondicionado hisense 24000 btu,20,0.65,LOW
+expansion_top200,aire acondicionado daikin 12000 btu,20,,LOW
+expansion_top200,aire acondicionado inverter rca,20,,LOW
+expansion_top200,aire acondicionado mystic inverter,20,0.15,LOW
+expansion_top200,aire acondicionado nisato inverter,20,0.15,LOW
+expansion_top200,aire acondicionado premier 12000 btu precio,20,0.04,LOW
+expansion_top200,aire acondicionado sankey 12000 btu precio,20,,LOW
+expansion_top200,aire acondicionado sankey 9000 btu,20,,LOW
+expansion_top200,aire de 12000 btu inverter,20,0.13,MEDIUM
+expansion_top200,aire de 36000 btu inverter,20,0.18,MEDIUM
+expansion_top200,aire de 9000 btu inverter,20,0.25,LOW
