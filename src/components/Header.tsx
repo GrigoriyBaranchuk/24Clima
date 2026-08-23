@@ -2,15 +2,10 @@
 
 import { metaPixelEvent } from "@/components/MetaPixel";
 import TiendaCartLink from "@/features/tienda/components/TiendaCartLink";
-import { Link } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
 import { SERVICE_SLUGS, SLUG_TO_TRANSLATION_KEY } from "@/lib/services";
-import {
-  HeaderNavLink,
-  HeaderShell,
-  type LinkComponentType,
-  WhatsAppCta,
-} from "@24clima/design/components";
+import { HeaderShell, WhatsAppCta } from "@24clima/design/components";
 import {
   Building2,
   ChevronDown,
@@ -26,13 +21,80 @@ import { useEffect, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 
-// Localized nav link that bakes in scroll={false}, exposed through the
-// package's LinkComponent contract (href/className/children/onClick).
-const NavLink: LinkComponentType = ({ href, className, children, onClick }) => (
-  <Link href={href} scroll={false} className={className} onClick={onClick}>
-    {children}
-  </Link>
-);
+// Class PAIRS, not a base + an override. `text-gray-700` and
+// `text-brand-green-dark` are the same Tailwind utility, so appending the
+// active colour would leave the winner to stylesheet order, not to the order
+// inside the class attribute. Each surface therefore ships a full inactive
+// string and a full active string, and NavItem picks one.
+const navLinkClass =
+  "text-base font-medium text-gray-700 transition-colors hover:text-brand-green-dark";
+const navLinkActiveClass =
+  "text-base font-semibold text-brand-green-dark transition-colors";
+const dropdownLinkClass =
+  "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-brand-green-dark/10 hover:text-brand-green-dark";
+const dropdownLinkActiveClass =
+  "flex items-center gap-2.5 rounded-xl bg-brand-green-dark/10 px-3 py-2 text-sm font-semibold text-brand-green-dark transition-colors";
+const allServicesClass =
+  "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-brand-green-dark transition-colors hover:bg-brand-green-dark/10";
+const dropdownGroupTitleClass =
+  "px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400";
+const sheetLinkClass =
+  "rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100";
+const sheetLinkActiveClass =
+  "rounded-xl bg-gray-100 px-3 py-3 text-base font-semibold text-brand-green-dark transition-colors";
+const sheetIconLinkClass =
+  "flex items-center gap-2.5 rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100";
+const sheetIconLinkActiveClass =
+  "flex items-center gap-2.5 rounded-xl bg-gray-100 px-3 py-3 text-base font-semibold text-brand-green-dark transition-colors";
+const tiendaClass =
+  "inline-flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:border-brand-green-dark hover:text-brand-green-dark";
+const tiendaActiveClass =
+  "inline-flex items-center gap-2 rounded-full border border-brand-green-dark px-4 py-2 text-sm font-semibold text-brand-green-dark transition-colors";
+
+// One active-aware link for EVERY nav surface: desktop nav, dropdown, mobile
+// sheet, Tienda button. Deliberately replaces the package's HeaderNavLink
+// here: its contract (href/className/children/onClick) cannot carry
+// aria-current, and it appends className instead of swapping it. The desktop
+// look is kept byte-identical to the package's NAV_CLASS above — if the
+// package ever grows an `active` prop, fold this back into it.
+// Defined at module scope, NOT inside Header: a component re-created on every
+// render would remount the whole nav on each scroll tick.
+function NavItem({
+  href,
+  active,
+  exact,
+  className,
+  activeClassName,
+  role,
+  onClick,
+  children,
+}: {
+  href: string;
+  /** Current page OR one of its ancestors — drives the highlight. */
+  active: boolean;
+  /** Exactly the current page — only this earns aria-current="page". */
+  exact: boolean;
+  className: string;
+  activeClassName: string;
+  role?: "menuitem";
+  onClick?: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      scroll={false}
+      role={role}
+      onClick={onClick}
+      // "page" is reserved for the exact page; an ancestor section link gets
+      // the generic "true" (ARIA has no "section" token).
+      aria-current={exact ? "page" : active ? "true" : undefined}
+      className={active ? activeClassName : className}
+    >
+      {children}
+    </Link>
+  );
+}
 
 // showCartLink: passed by TiendaShell so the cart entry point renders only on
 // /tienda pages; marketing pages keep the header unchanged.
@@ -92,6 +154,41 @@ export default function Header({
     },
   ];
 
+  // Production URLs all carry a trailing slash (next.config `trailingSlash:
+  // true`), so usePathname yields "/nosotros/", not "/nosotros". next-intl
+  // already strips the locale prefix ("/en/nosotros/" -> "/nosotros/"); the
+  // trailing slash is ours to normalize.
+  const rawPathname = usePathname();
+  const pathname =
+    rawPathname !== "/" && rawPathname.endsWith("/")
+      ? rawPathname.slice(0, -1)
+      : rawPathname;
+
+  // Exact page — the only match that earns aria-current="page". Used for the
+  // dropdown leaves, where "/servicios" must NOT light up on
+  // "/servicios/limpieza" (that page has its own entry).
+  const isCurrentPage = (href: string) => pathname === href;
+  // Section match: the page itself or anything under it, so a blog post keeps
+  // "Consejos" lit. "/" is exact-only, otherwise it would match everything.
+  // The blog admin is excluded on purpose: it is a private dashboard, not the
+  // public guides section the nav item points at.
+  const isSection = (href: string) => {
+    if (href === "/") return pathname === "/";
+    if (
+      href === "/consejos-y-guias" &&
+      pathname.startsWith("/consejos-y-guias/admin")
+    ) {
+      return false;
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+  // The trigger is a <button>, so it carries no aria-current — it lights up
+  // when ANY page reachable from the dropdown is open.
+  const servicesActive =
+    isSection("/servicios") ||
+    problemLinks.some(({ href }) => isSection(href)) ||
+    solutions.some(({ href }) => isSection(href));
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -100,11 +197,6 @@ export default function Header({
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const dropdownLinkClass =
-    "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-brand-green-dark/10 hover:text-brand-green-dark";
-  const dropdownGroupTitleClass =
-    "px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400";
 
   // ===== LOGO SLOT =====
   // HeaderShell renders this node in BOTH rows; each treatment is toggled by
@@ -160,7 +252,11 @@ export default function Header({
           type="button"
           aria-haspopup="menu"
           aria-expanded={servicesOpen}
-          className="inline-flex items-center gap-1 text-base font-medium text-gray-700 transition-colors hover:text-brand-green-dark"
+          className={
+            servicesActive
+              ? "inline-flex items-center gap-1 text-base font-semibold text-brand-green-dark transition-colors"
+              : "inline-flex items-center gap-1 text-base font-medium text-gray-700 transition-colors hover:text-brand-green-dark"
+          }
         >
           {t("services")}
           <ChevronDown
@@ -182,59 +278,74 @@ export default function Header({
             <div>
               <span className={dropdownGroupTitleClass}>{t("services")}</span>
               {serviceLinks.map(({ name, href }) => (
-                <Link
+                <NavItem
                   key={href}
                   href={href}
+                  active={isCurrentPage(href)}
+                  exact={isCurrentPage(href)}
                   role="menuitem"
-                  scroll={false}
                   className={dropdownLinkClass}
+                  activeClassName={dropdownLinkActiveClass}
                 >
                   {name}
-                </Link>
+                </NavItem>
               ))}
-              <Link
+              <NavItem
                 href="/servicios"
+                active={isCurrentPage("/servicios")}
+                exact={isCurrentPage("/servicios")}
                 role="menuitem"
-                scroll={false}
-                className={`${dropdownLinkClass} text-brand-green-dark`}
+                className={allServicesClass}
+                activeClassName={dropdownLinkActiveClass}
               >
                 {t("allServices")}
-              </Link>
+              </NavItem>
             </div>
             <div>
               <span className={dropdownGroupTitleClass}>{t("problems")}</span>
               {problemLinks.map(({ name, href }) => (
-                <Link
+                <NavItem
                   key={href}
                   href={href}
+                  active={isCurrentPage(href)}
+                  exact={isCurrentPage(href)}
                   role="menuitem"
-                  scroll={false}
                   className={dropdownLinkClass}
+                  activeClassName={dropdownLinkActiveClass}
                 >
                   {name}
-                </Link>
+                </NavItem>
               ))}
               <span className={dropdownGroupTitleClass}>{t("solutions")}</span>
               {solutions.map(({ name, href, Icon }) => (
-                <Link
+                <NavItem
                   key={href}
                   href={href}
+                  active={isCurrentPage(href)}
+                  exact={isCurrentPage(href)}
                   role="menuitem"
-                  scroll={false}
                   className={dropdownLinkClass}
+                  activeClassName={dropdownLinkActiveClass}
                 >
                   <Icon className="w-4 h-4 text-brand-green-dark" />
                   {name}
-                </Link>
+                </NavItem>
               ))}
             </div>
           </div>
         </div>
       </div>
       {desktopNav.map((item) => (
-        <HeaderNavLink key={item.name} href={item.href} LinkComponent={NavLink}>
+        <NavItem
+          key={item.name}
+          href={item.href}
+          active={isSection(item.href)}
+          exact={isCurrentPage(item.href)}
+          className={navLinkClass}
+          activeClassName={navLinkActiveClass}
+        >
           {item.name}
-        </HeaderNavLink>
+        </NavItem>
       ))}
     </>
   );
@@ -246,14 +357,16 @@ export default function Header({
   const actions = (
     <>
       <LanguageSwitcher isScrolled={isScrolled} />
-      <Link
+      <NavItem
         href="/tienda"
-        scroll={false}
-        className="inline-flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:border-brand-green-dark hover:text-brand-green-dark"
+        active={isSection("/tienda")}
+        exact={isCurrentPage("/tienda")}
+        className={tiendaClass}
+        activeClassName={tiendaActiveClass}
       >
         <ShoppingBag className="w-4 h-4" />
         {t("shop")}
-      </Link>
+      </NavItem>
       {showCartLink && <TiendaCartLink variant="desktop" />}
       <a
         href="tel:+50768282120"
@@ -297,31 +410,35 @@ export default function Header({
           <SheetTitle className="sr-only">Menú</SheetTitle>
           <nav className="flex h-full flex-col gap-0.5 overflow-y-auto p-4 pt-14">
             {mobileNav.map((item) => (
-              <Link
+              <NavItem
                 key={item.name}
                 href={item.href}
-                scroll={false}
+                active={isSection(item.href)}
+                exact={isCurrentPage(item.href)}
                 onClick={() => setMenuOpen(false)}
-                className="rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
+                className={sheetLinkClass}
+                activeClassName={sheetLinkActiveClass}
               >
                 {item.name}
-              </Link>
+              </NavItem>
             ))}
             <div className="my-2 h-px bg-gray-200" />
             <span className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
               {t("solutions")}
             </span>
             {solutions.map(({ name, href, Icon }) => (
-              <Link
+              <NavItem
                 key={href}
                 href={href}
-                scroll={false}
+                active={isSection(href)}
+                exact={isCurrentPage(href)}
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2.5 rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100"
+                className={sheetIconLinkClass}
+                activeClassName={sheetIconLinkActiveClass}
               >
                 <Icon className="w-5 h-5 text-brand-green-dark" />
                 {name}
-              </Link>
+              </NavItem>
             ))}
           </nav>
         </SheetContent>

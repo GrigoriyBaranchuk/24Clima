@@ -4,7 +4,7 @@
 прочитай их, и только потом лезь в код. Правила ведения — в
 [`memory/CLAUDE.md`](../CLAUDE.md).
 
-Обновлено: 2026-08-17 · страниц: 22
+Обновлено: 2026-08-22 · страниц: 22
 
 ## Сущности
 
@@ -23,7 +23,7 @@
 | [Двойное дерево роутов (es)/[locale]](concepts/i18n-dual-route-tree.md) | почему правку надо вносить дважды |
 | [Цены на услуги](concepts/service-pricing.md) | единый источник цен, что где показывается, ориентиры рынка |
 | [Мобильная версия app-like](concepts/mobile-app-like.md) | решения редизайна и performance overhaul |
-| [Шапка и навигация](concepts/header-navigation.md) | структура после редизайна 2026-08-13, инварианты (WhatsApp — единственный зелёный, корзина ≠ магазин, crawlable-дропдаун) |
+| [Шапка и навигация](concepts/header-navigation.md) | структура после редизайна 2026-08-13, активные состояния 2026-08-22, инварианты (WhatsApp — единственный зелёный, корзина ≠ магазин, crawlable-дропдаун) |
 | [Дизайн-система @24clima/design](concepts/design-system-package.md) | токены в отдельном пакете, workflow обновления, `GH_PAT` |
 | [Как работают AI-агенты](concepts/agent-workflow.md) | план → codex → seo-reviewer → проверки → OK на push |
 | [Сегменты клиентов «hvac»](concepts/hvac-customer-segments.md) | expats / B2B / администрадоры PH / not-fit specialty / event-аренда + Panamá Oeste |
@@ -46,7 +46,7 @@
 
 | Страница | О чём |
 |---|---|
-| [Грабли проекта](synthesis/gotchas.md) | 27 ошибок, которые уже стоили времени — просмотреть перед работой |
+| [Грабли проекта](synthesis/gotchas.md) | 30 ошибок, которые уже стоили времени — просмотреть перед работой |
 
 ## Пробелы
 
