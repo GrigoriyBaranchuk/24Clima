@@ -1,0 +1,46 @@
+keyword,volume,cpc,intent,block
+cielo raso,1900,0.19,informational,gypsum
+gypsum,1600,0.23,informational,gypsum
+cielo raso de gypsum,480,0.21,informational,gypsum
+drywall,320,0.21,,gypsum
+pasta de gypsum,320,0.28,informational/transactional,gypsum
+armaflex,320,0.38,,products
+cielo raso pvc cochez,260,0.32,transactional,gypsum
+cielo raso pvc precio panamá,170,0.41,commercial,gypsum
+fan coil,170,1.65,transactional,ducted
+cielorraso,170,0.20,,gypsum
+gypsum para paredes,170,0.22,transactional,gypsum
+cielo raso panamá,110,0.16,informational,gypsum
+cielo raso de foam,110,0.19,transactional,gypsum
+láminas de gypsum precio panamá,110,0.09,commercial,gypsum
+ductos de aire acondicionado,90,1.12-2.85,transactional,ducted
+aire acondicionado piso techo,90,0.48,,ducted
+difusores de aire acondicionado,70,1.05,,products
+aire acondicionado central,50,0.67,,ducted
+paredes de gypsum,50,0.01,,gypsum
+cielo raso de gypsum 2x2,50,0.39,transactional,gypsum
+rejillas de aire acondicionado,40,,,products
+fan coil aire acondicionado,40,,transactional,ducted
+aire acondicionado tipo cassette,40,,,ducted
+ducto para extractor de cocina,40,,transactional,ducted
+gypsum para exteriores,40,0.31,transactional,gypsum
+cielo raso de gypsum precio,30,0.24,transactional,gypsum
+diseños de cielo raso,30,0.78,,gypsum
+cielo raso moderno,30,0.58,,gypsum
+tablaroca,30,,,gypsum
+paredes de gypsum para interiores,30,,transactional,gypsum
+base para condensador,20,,,products
+cable blindado,20,,,products
+ducto flexible,20,,,products
+ducto flexible para aire acondicionado,20,,transactional,products
+ductos de aire acondicionado panamá,20,0.92,commercial,ducted
+rejilla de retorno,20,,,products
+empresas de aire acondicionado en panamá,20,0.93,,ducted
+aire acondicionado por ductos,10,,,ducted
+instalación aire acondicionado central,10,,,ducted
+aire acondicionado oculto,10,,,ducted
+difusor lineal,10,,,products
+difusor redondo,10,,,products
+instalación de gypsum,10,,,gypsum
+diseño de aire acondicionado,10,,,ducted
+diseño de interiores panamá,10,,,gypsum
