@@ -69,6 +69,7 @@ status: current
 
 ## Связи
 
+- [EuroCalidad](eurocalidad.md) — второй сайт того же юрлица SUNNY RAMPAGE, INC.; партнёр по новым услугам
 - [Услуга пассивного охлаждения](../concepts/passive-cooling-service.md)
 - [Право: реклама и энергоуслуги](../concepts/panama-advertising-law.md)
 - [24clima](24clima.md)

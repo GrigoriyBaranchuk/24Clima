@@ -2,6 +2,20 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-23] ingest | исследование новых услуг (ducted + gypsum + VIP Aire + B2B)
+
+Затронуто: новые `sources/2026-08-23-panama-new-services-research`,
+`concepts/new-services-ducted-gypsum`, `concepts/panama-contractor-licensing`,
+`entities/vip-aire`, `entities/eurocalidad`; обратные ссылки в
+`entities/tropiclima`, `entities/24clima`, `concepts/service-pricing`,
+`concepts/tienda-shop`, `concepts/hvac-customer-segments`,
+`concepts/panama-advertising-law`; `index.md` (+5 страниц, закрыт пробел
+JTIA idoneidad, добавлены пробелы RAV и tax_amount).
+
+Сырьё: 7 отчётов в `raw/research/` + CSV в `raw/dataforseo/`. Решения
+владельца и ревью Codex (сессия 01a02fda) — в концепт-странице; полная
+стратегия v2 — в `inbox/` (локально, не коммитится).
+
 ## [2026-08-23] ingest | новые задачи владельца по шапке
 
 Затронуто: `concepts/header-navigation` (раздел «Запрошено владельцем»),

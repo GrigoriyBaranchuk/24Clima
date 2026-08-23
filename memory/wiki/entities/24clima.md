@@ -57,6 +57,7 @@ Panama, бренд и домен — 24clima. Сайт: https://24clima.com.
 
 ## Связи
 
+- [Новые услуги 2026-08](../concepts/new-services-ducted-gypsum.md) · [лицензирование](../concepts/panama-contractor-licensing.md)
 - [Ryhor Baranchuk](ryhor-baranchuk.md) — владелец, лицо E-E-A-T.
 - [Цены на услуги](../concepts/service-pricing.md)
 - [Система SEO-мониторинга](../concepts/seo-monitoring-system.md)
