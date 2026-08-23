@@ -2,7 +2,7 @@
 
 > Air conditioning (HVAC) service company in Panama City and Panamá Oeste. Installation, maintenance, deep cleaning, repair and refrigerant recharge, plus temporary AC rental for events. Available 24/7. Quotes and bookings go through WhatsApp: +507 6828-2120.
 
-Site content is written in Spanish (default, no URL prefix). English and Russian translations of the same pages live under `/en/` and `/ru/`. Prices range from $29.99 to $600. Founded 2024. Instagram: https://www.instagram.com/24clima
+Site content is written in Spanish (default, no URL prefix). English and Russian translations of the same pages live under `/en/` and `/ru/`. Prices range from $29.99 for a single AC cleaning to $20,000 for a full concealed ducted system in an apartment. Founded 2024. Instagram: https://www.instagram.com/24clima
 
 ## Services
 
@@ -12,6 +12,8 @@ Site content is written in Spanish (default, no URL prefix). English and Russian
 - [Installation](https://24clima.com/servicios/instalacion/): installation of new split, multi-split and window units.
 - [Refrigerant recharge](https://24clima.com/servicios/carga-de-gas/): gas top-up and leak detection.
 - [24/7 emergency service](https://24clima.com/servicios/emergencia/): same-day and after-hours callouts.
+- [Gypsum ceilings and walls](https://24clima.com/servicios/gypsum/): drywall ceilings and partitions ready to paint, LED coves, MR board for wet areas (from $35/m²).
+- [Concealed ceiling air conditioning](https://24clima.com/servicios/aire-acondicionado-oculto/): turnkey ducted system — fan coil, ducts, linear diffusers and the gypsum ceiling around it, one contractor (from $6,000).
 
 ## For businesses and property managers
 

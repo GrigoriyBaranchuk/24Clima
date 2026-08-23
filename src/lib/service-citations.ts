@@ -7,7 +7,9 @@
  * de búsqueda generativos (ChatGPT, Perplexity, Google AI Overview, Claude).
  *
  * Reglas:
- * 1. Solo fuentes oficiales verificables: EPA, DOE, ENERGY STAR, ASHRAE, OSHA.
+ * 1. Solo fuentes oficiales verificables: EPA, DOE, ENERGY STAR, ASHRAE, OSHA
+ *    y, para obra seca (gypsum), los organismos normativos del sector:
+ *    ASTM International y la Gypsum Association.
  * 2. URLs apuntan a páginas oficiales estables (no a PDFs internos ni noticias).
  * 3. Las afirmaciones (claim) son conservadoras y reflejan hechos ampliamente
  *    documentados por la fuente citada.
@@ -185,6 +187,47 @@ export const SERVICE_CITATIONS: Record<ServiceSlug, Citation[]> = {
           "Addressing sudden AC failures promptly reduces the risk of compressor damage and extended downtime.",
         ru:
           "Быстрое устранение внезапных поломок кондиционера снижает риск повреждения компрессора и длительных простоев.",
+      },
+    },
+  ],
+
+  gypsum: [
+    {
+      source: "ASTM C840 — Application and Finishing of Gypsum Board",
+      url: "https://www.astm.org/standards/c840",
+      claim: {
+        es: "La norma ASTM C840 fija cómo se instalan y acaban las láminas de gypsum: separación de la estructura, fijación, encintado y capas de pasta — es la referencia que evita fisuras y juntas visibles.",
+        en: "ASTM C840 sets out how gypsum board is installed and finished: framing spacing, fastening, taping and compound coats — the reference that prevents cracks and visible joints.",
+        ru: "Стандарт ASTM C840 определяет монтаж и отделку гипсокартона: шаг каркаса, крепёж, проклейку швов и слои шпаклёвки — именно он защищает от трещин и заметных стыков.",
+      },
+    },
+    {
+      source: "Gypsum Association — GA-216",
+      url: "https://gypsum.org/",
+      claim: {
+        es: "La Gypsum Association recomienda en su documento GA-216 usar lámina resistente a la humedad en áreas húmedas como baños y cocinas, y lámina tipo X donde se requiera resistencia al fuego.",
+        en: "In its GA-216 document, the Gypsum Association recommends moisture-resistant board in wet areas such as bathrooms and kitchens, and Type X board where fire resistance is required.",
+        ru: "В документе GA-216 Gypsum Association рекомендует влагостойкий лист во влажных зонах — санузлах и кухнях — и лист типа X там, где нужна огнестойкость.",
+      },
+    },
+  ],
+  "aire-acondicionado-oculto": [
+    {
+      source: "ASHRAE 62.1 — Ventilation for Acceptable Indoor Air Quality",
+      url: "https://www.ashrae.org/technical-resources/bookstore/standards-62-1-62-2",
+      claim: {
+        es: "La norma ASHRAE 62.1 establece los caudales mínimos de ventilación y el acceso para limpieza de los componentes del sistema — por eso un equipo escondido en el cielo raso necesita puertas de acceso previstas de antemano.",
+        en: "ASHRAE Standard 62.1 sets minimum ventilation rates and requires access for cleaning system components — which is why equipment concealed above a ceiling needs access doors allowed for in advance.",
+        ru: "Стандарт ASHRAE 62.1 задаёт минимальные расходы приточного воздуха и требует доступа для очистки узлов системы — поэтому спрятанному над потолком оборудованию нужны заранее предусмотренные лючки.",
+      },
+    },
+    {
+      source: "ENERGY STAR — Heating & Cooling",
+      url: "https://www.energystar.gov/saveathome/heating-cooling",
+      claim: {
+        es: "ENERGY STAR señala que los ductos mal sellados o sin aislamiento pierden una parte importante del aire acondicionado antes de que llegue a la habitación; sellarlos y aislarlos es clave para que el sistema rinda lo que promete.",
+        en: "ENERGY STAR notes that poorly sealed or uninsulated ducts lose a significant share of conditioned air before it reaches the room; sealing and insulating them is key to getting the rated performance.",
+        ru: "ENERGY STAR отмечает, что негерметичные и неизолированные воздуховоды теряют заметную долю охлаждённого воздуха, не доводя его до комнаты; герметизация и изоляция — ключ к паспортной эффективности.",
       },
     },
   ],

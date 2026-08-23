@@ -16,6 +16,16 @@ const SERVICE_EMOJI: Record<string, string> = {
   installation: "❄️",
   gasRecharge: "🌡️",
   emergency: "⚡",
+  gypsum: "🧱",
+  hiddenAc: "🌀",
+};
+
+/**
+ * Servicios cuyo precio es por unidad y no por trabajo: el badge debe leerse
+ * «desde $35/m²» y no «desde $35.00».
+ */
+const PRICE_UNIT: Record<string, string> = {
+  gypsum: "/m²",
 };
 
 const tagline: Record<SupportedLocale, string> = {
@@ -71,7 +81,12 @@ export default async function OgImage({
 
   const title = meta?.title[locale] || meta?.title.en || service;
   const shortTitle = title.split(" |")[0].split(" from")[0].split(" от")[0];
-  const price = pricing ? `from $${pricing.minPrice.toFixed(2)}` : "";
+  const unit = PRICE_UNIT[translationKey];
+  const price = pricing
+    ? unit
+      ? `from $${pricing.minPrice}${unit}`
+      : `from $${pricing.minPrice.toFixed(2)}`
+    : "";
 
   return new ImageResponse(
     (

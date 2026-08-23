@@ -31,7 +31,9 @@
       "repair": "Reparación",
       "installation": "Instalación",
       "gasRecharge": "Carga de gas",
-      "emergency": "Emergencia 24/7"
+      "emergency": "Emergencia 24/7",
+      "gypsum": "Gypsum",
+      "hiddenAc": "A/C oculto"
     }
   },
   "homeCta": {
@@ -336,6 +338,50 @@
       "faq4A": "El servicio de emergencia tiene un costo adicional por la disponibilidad inmediata; te damos la cotización al contactarnos.",
       "faq5Q": "¿Qué zonas cubren en emergencias?",
       "faq5A": "Ciudad de Panamá, Costa del Este, Punta Pacífica, Albrook, Clayton, Panamá Pacífico y alrededores."
+    },
+    "gypsum": {
+      "shortTitle": "Gypsum",
+      "title": "Cielo Raso y Paredes de Gypsum en Panamá",
+      "description": "Instalación de cielo raso y paredes de gypsum en Ciudad de Panamá y Panamá Oeste: estructura, láminas, cinta, pasta y lijado, listo para pintar. Desde $35/m². Garantía 365 días.",
+      "benefit1": "Listo para pintar: cinta, pasta y lijado incluidos",
+      "benefit2": "Cajones con luz LED desde $25/ml",
+      "benefit3": "Lámina MR para baños y cocinas",
+      "benefit4": "Una sola cuadrilla para cielo raso y aire acondicionado",
+      "faq1Q": "¿Qué incluye el precio de $35/m²?",
+      "faq1A": "Incluye la estructura metálica, la lámina estándar de 1/2″, los tornillos, el encintado de juntas, la pasta y el lijado: usted recibe el cielo raso listo para pintar. El precio aplica desde 20 m², con altura hasta 3 m y sin demolición del cielo raso existente. La pintura, la lámina MR o firecode y los cajones con luz LED se cotizan aparte.",
+      "faq2Q": "¿Gypsum o PVC: cuál conviene en Panamá?",
+      "faq2A": "El PVC se lava fácil y aguanta la humedad, por eso funciona bien en baños pequeños y lavanderías, pero se ve como panel y no admite niveles ni cajones de luz. El gypsum queda como una superficie lisa y continua, permite cajones LED, niveles y nichos, y se repara con pasta. En sala, cuartos y oficinas casi siempre conviene gypsum; donde cae agua directa, lámina MR o PVC.",
+      "faq3Q": "¿Se puede poner gypsum en baños?",
+      "faq3A": "Sí, con lámina MR resistente a la humedad (la verde). La usamos en baños, cocinas y lavanderías, siempre con ventilación o extractor funcionando. Donde el agua cae directamente sobre la superficie, dentro de la ducha, no va gypsum de ningún tipo.",
+      "faq4Q": "¿Cuánto tarda un cielo raso de 50 m²?",
+      "faq4A": "Entre 2 y 3 días de trabajo, más el tiempo de secado de la pasta entre manos. Con mucha humedad el secado tarda un poco más. Le entregamos el área limpia y lista para que entre el pintor.",
+      "faq5Q": "¿Hacen cajones para luz LED y niveles?",
+      "faq5A": "Sí. Los cajones perimetrales con espacio para la tira LED cuestan desde $25 por metro lineal. Los niveles, nichos para televisor y molduras se cotizan según el ambiente, y la visita para medir es gratis.",
+      "faq6Q": "¿Puedo esconder el aire acondicionado en el cielo raso?",
+      "faq6A": "Sí: es nuestro servicio de aire acondicionado oculto. El fan coil y los ductos van sobre el cielo raso y abajo solo se ven difusores lineales. Lo instalamos completo, con el gypsum incluido, desde $6 000.",
+      "priceFrom": "desde $35/m²"
+    },
+    "hiddenAc": {
+      "shortTitle": "A/C oculto",
+      "title": "Aire Acondicionado Oculto en Cielo Raso — Sistema de Ductos Llave en Mano",
+      "description": "Fan coil, ductos, difusores lineales y cielo raso de gypsum con un solo contratista y un solo contrato. El aire acondicionado que no se ve. Desde $6 000, cotización gratis en Ciudad de Panamá.",
+      "benefit1": "Un solo contratista: clima y cielo raso",
+      "benefit2": "Difusores lineales casi invisibles",
+      "benefit3": "Puertas de acceso ocultas para mantenimiento",
+      "benefit4": "Garantía 365 días sobre la instalación",
+      "faq1Q": "¿Cuánto cuesta esconder el aire acondicionado?",
+      "faq1A": "Desde $6 000 para una zona de hasta 40 m². Un apartamento completo de 100 a 150 m² va entre $9 000 y $20 000. El monto depende de los metros cuadrados, del tonelaje que pide el espacio y de la cantidad de puntos de aire. La visita y la cotización son gratis, y el precio queda cerrado antes de empezar.",
+      "faq2Q": "¿Cuánto baja el cielo raso?",
+      "faq2A": "Lo normal es entre 25 y 35 cm en la franja por donde pasan los ductos; el resto del ambiente puede quedar más alto. Lo medimos en la visita y le decimos exactamente cuánto pierde antes de que decida.",
+      "faq3Q": "¿Cómo se le da mantenimiento si no se ve?",
+      "faq3A": "Dejamos puertas de acceso discretas en el cielo raso, justo debajo del fan coil, del filtro y del drenaje. Se abren sin romper nada y por ahí hacemos la limpieza y el mantenimiento igual que en un equipo a la vista.",
+      "faq4Q": "¿Sirve para un apartamento ya terminado?",
+      "faq4A": "Sí, siempre que haya altura libre suficiente y una ruta para los ductos y el drenaje. En la visita revisamos la altura, la salida hacia la condensadora y por dónde va el desagüe; si no es viable se lo decimos de una vez, sin cobrarle.",
+      "faq5Q": "¿Qué pasa con el drenaje y la condensación?",
+      "faq5A": "Es el punto crítico de un equipo escondido: montamos el drenaje con pendiente real, aislamos los ductos para que no sude el cielo raso y, cuando no hay pendiente natural, instalamos bomba de condensado. Eso es lo que evita manchas de humedad en el gypsum.",
+      "faq6Q": "¿Incluye el cielo raso de gypsum?",
+      "faq6A": "Sí. El precio cubre el cielo raso de gypsum alrededor del sistema: estructura, lámina, cinta, pasta y lijado listo para pintar. Una sola cuadrilla instala el clima y cierra el cielo raso, con una sola garantía de 365 días.",
+      "priceFrom": "desde $6 000"
     }
   },
   "problems": {

@@ -57,6 +57,42 @@ const INTENT_NOTES: Partial<Record<ServiceSlug, IntentNote>> = {
       ru: "Подробнее о чистке",
     },
   },
+  gypsum: {
+    title: {
+      es: "¿Solo el cielo raso o también esconder el aire acondicionado?",
+      en: "Just the ceiling, or hide the air conditioning too?",
+      ru: "Только потолок или ещё и спрятать кондиционер?",
+    },
+    text: {
+      es: "El cielo raso de gypsum (desde $35/m²) cubre estructura, lámina, cinta, pasta y lijado listo para pintar: es la opción cuando el aire acondicionado ya está resuelto o va a la vista. Si además quiere que el equipo desaparezca, lo correcto es decidirlo antes de cerrar el cielo raso: el sistema de ductos con fan coil, difusores lineales y el gypsum alrededor va desde $6 000 y lo hace la misma cuadrilla, en un solo contrato.",
+      en: "A gypsum ceiling (from $35/m²) covers framing, board, tape, compound and sanding ready to paint: that's the option when the air conditioning is already sorted or stays visible. If you also want the unit to disappear, decide it before the ceiling is closed: the ducted system with fan coil, linear diffusers and the gypsum around it starts at $6,000 and is done by the same crew, under one contract.",
+      ru: "Потолок из гипсокартона (от $35/м²) — это каркас, лист, лента, шпаклёвка и шлифовка под покраску: вариант, когда с кондиционером уже всё решено или он остаётся на виду. Если хочется, чтобы техника исчезла, решать это надо до закрытия потолка: канальная система с фанкойлом, линейными диффузорами и гипсокартоном вокруг стоит от $6 000 и делается той же бригадой по одному договору.",
+    },
+    linkHref: "/servicios/aire-acondicionado-oculto",
+    linkLabel: {
+      es: "Ver aire acondicionado oculto",
+      en: "See concealed air conditioning",
+      ru: "Подробнее о скрытом кондиционере",
+    },
+  },
+  "aire-acondicionado-oculto": {
+    title: {
+      es: "¿Sistema de ductos o solo cielo raso de gypsum?",
+      en: "Ducted system or just a gypsum ceiling?",
+      ru: "Канальная система или только потолок из гипсокартона?",
+    },
+    text: {
+      es: "El aire acondicionado oculto (desde $6 000) incluye fan coil, ductos, difusores lineales, drenaje, puertas de acceso y el cielo raso de gypsum que lo envuelve: se contrata cuando quiere que el equipo no se vea. Si su aire acondicionado ya está instalado y lo único que busca es una superficie lisa, cajones con luz LED o niveles, entonces lo que necesita es la instalación de gypsum sola, desde $35/m².",
+      en: "Concealed air conditioning (from $6,000) includes the fan coil, ducts, linear diffusers, drainage, access doors and the gypsum ceiling around it: you book it when you want the equipment out of sight. If your AC is already installed and all you want is a smooth surface, LED coves or stepped levels, then plain gypsum installation is what you need, from $35/m².",
+      ru: "Скрытый кондиционер (от $6 000) — это фанкойл, воздуховоды, линейные диффузоры, дренаж, лючки доступа и гипсокартонный потолок вокруг: заказывают, когда технику не должно быть видно. Если кондиционер уже стоит и нужна только ровная поверхность, короба под LED или уровни — вам подойдёт отдельный монтаж гипсокартона, от $35/м².",
+    },
+    linkHref: "/servicios/gypsum",
+    linkLabel: {
+      es: "Ver instalación de gypsum",
+      en: "See gypsum installation",
+      ru: "Подробнее о гипсокартоне",
+    },
+  },
 };
 
 /** Bloque estático de desambiguación de intención (server component). */

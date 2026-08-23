@@ -88,4 +88,29 @@ export const SERVICE_SEO_META: Record<string, ServiceMeta> = {
       ru: "Кондиционер не работает СЕЙЧАС? Техник за <2ч, 24/7/365. Вся Панама-Сити. Сертифицированный мастер HVAC. WhatsApp.",
     },
   },
+
+  gypsum: {
+    title: {
+      es: "Cielo Raso de Gypsum en Panamá desde $35/m² | 24clima",
+      en: "Gypsum Ceilings in Panama from $35/m² | 24clima",
+      ru: "Потолки из гипсокартона в Панаме от $35/м² | 24clima",
+    },
+    description: {
+      es: "Instalación de cielo raso y paredes de gypsum listo para pintar desde $35/m². Cajones LED, lámina MR. Garantía 365 días. Ciudad de Panamá y Panamá Oeste.",
+      en: "Gypsum ceilings and walls installed ready to paint from $35/m². LED coves, MR board. 365-day warranty. Panama City and Panamá Oeste.",
+      ru: "Монтаж гипсокартонных потолков и стен под покраску от $35/м². Короба под LED, влагостойкий лист MR. Гарантия 365 дней. Панама-Сити и Panamá Oeste.",
+    },
+  },
+  hiddenAc: {
+    title: {
+      es: "Aire Acondicionado Oculto en Panamá desde $6 000 | 24clima",
+      en: "Concealed Ceiling AC in Panama from $6,000 | 24clima",
+      ru: "Скрытый кондиционер в Панаме от $6 000 | 24clima",
+    },
+    description: {
+      es: "Sistema de ductos con fan coil, difusores lineales y cielo raso de gypsum, todo con un solo contratista, desde $6 000. Cotización gratis. Garantía 365 días.",
+      en: "Ducted system with fan coil, linear diffusers and gypsum ceiling, all from one contractor, from $6,000. Free quote. 365-day warranty. Panama City.",
+      ru: "Канальная система: фанкойл, линейные диффузоры и гипсокартонный потолок у одного подрядчика, от $6 000. Расчёт бесплатно. Гарантия 365 дней.",
+    },
+  },
 };
