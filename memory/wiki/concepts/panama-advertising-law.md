@@ -83,6 +83,7 @@ status: current
 
 ## Связи
 
+- [EuroCalidad](../entities/eurocalidad.md) — видео из Германии только с подписью «obra en Alemania»; [новые услуги](new-services-ducted-gypsum.md) — запрет превосходных степеней в карточках
 - [Рынок электроэнергии Панамы](panama-electricity-market.md)
 - [Услуга пассивного охлаждения](passive-cooling-service.md)
 - [Сегменты клиентов «hvac»](hvac-customer-segments.md)

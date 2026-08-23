@@ -78,6 +78,7 @@ status: current
 
 ## Связи
 
+- [VIP Aire](../entities/vip-aire.md) — поставщик новой категории компонентов; цена = прайс × 1,35 × 1,07; проверить двойной ITBMS в бэкенде
 - [Google Отзывы клиентов](google-customer-reviews.md)
 - [Supabase-проекты](supabase-projects.md)
 - [24clima](../entities/24clima.md)

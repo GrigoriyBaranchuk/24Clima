@@ -65,6 +65,7 @@ aliados»), не обещать температуру в открытых пр�
 
 ## Связи
 
+- [Лицензирование подрядчика](panama-contractor-licensing.md) — закрывает вопрос JTIA idoneidad; [новые услуги](new-services-ducted-gypsum.md) — порядок входа в сегменты
 - [24clima](../entities/24clima.md)
 - [Цены на услуги](../concepts/service-pricing.md)
 - [Услуга пассивного охлаждения](passive-cooling-service.md) — B2B-сегмент как основа нового направления
