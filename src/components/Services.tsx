@@ -45,7 +45,7 @@ export default async function Services() {
     "from-[#7BC043] to-[#0F9D58]", // green — instalación
     "from-[#4A90D9] to-[#357ABD]", // blue — limpieza
     "from-[#6e6e73] to-[#48484a]", // gray — gypsum
-    "from-[#2a4f7a] to-[#1e3a5f]", // navy — A/C oculto
+    "from-[#2a4f7a] to-[#1e3a5f]", // navy — A/C ductos
   ];
 
   // Only first 4 services shown on mobile
