@@ -3,7 +3,7 @@ type: concept
 title: Как в проекте работают AI-агенты
 updated: 2026-08-12
 sources: [PROJECT_MEMORY.md, CLAUDE.md, .claude/skills, .agents/skills/24clima-seo-guide]
-related: [concepts/protected-seo-elements, concepts/seo-monitoring-system, synthesis/gotchas]
+related: [concepts/protected-seo-elements, concepts/seo-monitoring-system, synthesis/gotchas, concepts/vercel-deploy-and-errors]
 status: current
 ---
 
@@ -79,3 +79,4 @@ git diff --stat origin/main origin/$B -- $files   # пусто ⇒ содерж�
 - [Защищённые SEO-элементы](protected-seo-elements.md)
 - [Система SEO-мониторинга](seo-monitoring-system.md)
 - [Грабли проекта](../synthesis/gotchas.md)
+- [Деплой на Vercel и ошибки на клиенте](vercel-deploy-and-errors.md) — настройки проекта агент менять не может, только владелец
