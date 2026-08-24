@@ -1056,3 +1056,7 @@ oculto. Стратегия v2 — `memory/inbox/2026-08-23-strategy-draft.md` (�
   из вкладки старше окна (два деплоя подряд 23:51/23:58 накануне).
   Если «Algo salió mal» повторится — владелец присылает `Ref: digest`.
 - PR #50 смержен по «ok» владельца, прод задеплоен.
+
+**Wiki (закрытие сессии).** Новая `concepts/vercel-deploy-and-errors`
+(проект Vercel, Skew Protection и её пределы, error boundary, где смотреть
+ошибки); грабли №31; индекс, лог. Поправка про Skew Protection — PR #52.

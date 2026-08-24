@@ -2,6 +2,16 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-23] ingest | инцидент «Something went wrong» → error boundary + skew (PR #50)
+
+Затронуто: новая `concepts/vercel-deploy-and-errors`; `synthesis/gotchas`
+(№31, связи); обратная ссылка в `concepts/agent-workflow`; `index.md`
+(+1 концепт, счётчик грабель 31).
+Примечание: Skew Protection была включена ДО инцидента (первичная запись
+«включить» исправлена в PR #52); причина — вкладка старше 12-часового окна
+после двух деплоев подряд. Факты о проекте Vercel сняты с API (GET) —
+PATCH настроек из сессии агента блокируется политикой.
+
 ## [2026-08-23] ingest | исследование новых услуг (ducted + gypsum + VIP Aire + B2B)
 
 Затронуто: новые `sources/2026-08-23-panama-new-services-research`,
