@@ -1,8 +1,8 @@
 ---
 type: concept
 title: Новые услуги — гипсокартон, скрытый климат (ductos) под ключ, магазин VIP Aire, сметы B2B
-updated: 2026-08-23
-sources: [sources/2026-08-23-panama-new-services-research.md, решения владельца в сессии 2026-08-23, ревью Codex 01a02fda и 01a03017, ~/Downloads/VIP_AIRE (прайсы), PR #51 (commit 802076b)]
+updated: 2026-08-24
+sources: [sources/2026-08-23-panama-new-services-research.md, решения владельца 2026-08-23/24, ревью Codex 01a02fda, 01a03017, 01a03212 (naming), 01a033db (план галереи), ~/Downloads/VIP_AIRE (прайсы), PR #51 (802076b, 4fc82fe, 6d088c1)]
 related: [sources/2026-08-23-panama-new-services-research, entities/vip-aire, entities/eurocalidad, concepts/panama-contractor-licensing, concepts/service-pricing, concepts/tienda-shop, concepts/hvac-customer-segments, concepts/passive-cooling-service, concepts/panama-advertising-law]
 status: current
 ---
@@ -60,7 +60,7 @@ status: current
 
 | | `gypsum` (ключ `gypsum`) | `aire-acondicionado-oculto` (ключ `hiddenAc`) |
 |---|---|---|
-| Hero | «desde $35/m²», иконка `Layers`, фото `gypsum-opt.webp` (slot2-03) | «desde $6 000», иконка `AirVent`, фото `aire-oculto-opt.webp` (slot-01) |
+| Hero | «desde $35/m²», иконка `Layers`, фото `gypsum-opt.webp` (slot2-03) | «desde $6 000», иконка `AirVent`, фото `ductos-opt.webp` (slot-01) |
 | Таблица цен | liso $35/m²; cajón LED $25/ml; paredes, niveles — cotización; сноска-условия (≥20 m², высота ≤3 м, без демонтажа, MR/firecode — доплата) | visita gratis; 1 зона до ~40 m² desde $6 000; apartamento 100–150 m² $9 000–20 000; cielo raso incluido |
 | `SERVICE_PRICING` | 35–65, warrantyDays 365, `priceUnitCode: "MTK"` | 6 000–20 000, warrantyDays 365 |
 | JSON-LD | `Offer.priceSpecification` = `UnitPriceSpecification` с `unitCode: "MTK"` (цена за м²) | обычный `Offer` с диапазоном |
@@ -81,6 +81,40 @@ seo-reviewer flag-with-conditions → условия выполнены; кат�
 Отложено: галерея фото (20 фото VIP Aire лежат в `raw/photos/vipaire-2026-08-23/`,
 компонента галереи нет — новый UI без отдельного решения не вводим); футер;
 старые цитаты ENERGY STAR (`saveathome/…`) отдают 404 — отдельная задача.
+
+## Переименование услуги (2026-08-24)
+
+Владелец усомнился в «aire acondicionado oculto» как имени → консультация
+Codex (01a03212). Хотел «fan coil» (170/мес), но SERP по fan coil — сплошь
+магазины блоков (товарный интент); «central» размыт. Решение (принято
+владельцем): **slug `aire-acondicionado-por-ductos`** — только по «ductos»
+в выдаче есть подрядчики (ISASA, Infoguia, Global Cool «Ductería»).
+H1 «Aire Acondicionado por Ductos en Panamá — Fan Coil Oculto Llave en
+Mano», меню/карточки «A/C ductos», serviceType «Instalación de aire
+acondicionado por ductos» (появилась localized-мапа SERVICE_TYPE для всех
+8 услуг — раньше serviceType дублировал H1). Ключ переводов `hiddenAc`
+ОСТАЛСЯ (каскад не оправдан). +2 FAQ (aire central? / qué es fan coil?),
+`ServiceFAQ.FAQ_KEYS` расширен до 8. «Oculto» — дифференциатор в
+подзаголовке/FAQ, не SEO-цель. Редиректов нет — старый слаг в прод не
+выходил. TODO: статья-хаб «¿Qué es un fan coil?» под 170/мес с CTA на услугу.
+
+## Галерея и видео (2026-08-24, коммит 6d088c1)
+
+- `ServiceGallery.tsx` — server component, CSS scroll-snap лента → grid на
+  lg (паттерн BlogPromo), по 4 webp на услугу (9–71 KB, 4:3, lazy, sizes),
+  ниже фолда. h2 «Así se ve el resultado», подпись «Fotos: proyectos
+  realizados con los componentes que instalamos (VIP Aire, Panamá)» — БЕЗ
+  «наших работ» (Ley 45). Фото: gypsum — redondo-03 (до/после), slot-04,
+  slot-03, slot2-04; ductos — slot-02, slot2-01, slot2-06 (монтаж), puerta-02.
+- `LiteYouTube.tsx` — фасад: превью i.ytimg.com, iframe youtube-nocookie
+  ТОЛЬКО по клику; только на gypsum; видео `wHiH9qb3hf0` «Techos Climáticos
+  con Luz y Sonido» (EUROCALIDAD), подпись «Obra en Alemania — video del
+  socio de control de calidad».
+- CSP `frame-src` + youtube-nocookie, remotePatterns + i.ytimg.com — две
+  точечные строки next.config.js (исключение из «не трогать», через seo-reviewer).
+- seo-reviewer: approve; условия закрыты (hreflang 4×200; критерий
+  VideoObject — только для primary/hero-видео — записан в json-ld-catalog.md
+  вместе с паттернами ServiceGallery/LiteYouTube).
 
 ## Что дальше на сайте
 

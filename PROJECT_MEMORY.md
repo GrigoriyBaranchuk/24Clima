@@ -1038,6 +1038,26 @@ Opus прогнал `biome format` по 146 чужим файлам — отка
 локали. Владелец дал «ok for preview deploy» → push + PR #51, Vercel-превью
 собрано; **мерж в main — только по отдельному ok**.
 
+**Часть 3 (2026-08-24) — переименование + галереи + видео (PR #51, +4 коммита).**
+Владелец: «oculto» — не то имя; хотел «fan coil». Codex (01a03212): fan coil
+в Панаме = товарный интент (SERP — магазины), «central» размыт; главный
+термин — «aire acondicionado por ductos» (в выдаче по ductos — подрядчики).
+Владелец принял. `4fc82fe`: slug → `aire-acondicionado-por-ductos`, H1
+«…por Ductos en Panamá — Fan Coil Oculto Llave en Mano», меню/карточки
+«A/C ductos», serviceType-мапа для всех 8 услуг, +2 FAQ (всего 8, FAQ_KEYS
+расширен), ключ hiddenAc остался; блокеры Codex-ревью плана (01a033db)
+закрыты (module-level SERVICE_PRICING-чтения, хардкод в ServiceIntentNote,
+sizes у галереи, CSP только frame-src). `6d088c1`: ServiceGallery
+(scroll-snap лента, по 4 webp 9–71 KB, lazy, ниже фолда, честная подпись
+про VIP Aire) на обеих услугах + LiteYouTube-фасад на gypsum (видео
+EUROCALIDAD «Techos Climáticos», iframe только по клику, подпись «Obra en
+Alemania»), CSP + youtube-nocookie, remotePatterns + i.ytimg.com.
+`4bf7efc` shortTitle, `2b981e3` каталог JSON-LD (критерий VideoObject:
+только primary/hero-видео + паттерны). seo-reviewer approve, условия
+закрыты (hreflang нового слага 4×200 локально). Фото-галерея: gypsum —
+redondo-03/slot-04/slot-03/slot2-04, ductos — slot-02/slot2-01/slot2-06/
+puerta-02. TODO из решения: статья-хаб «¿Qué es un fan coil?» (170/мес).
+
 **Осталось / TODO**
 - Мерж PR #51 после просмотра превью владельцем.
 - Оформить идóneo: контракт на 2 года + регистрация компании в JTIA + PIRE.

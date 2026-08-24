@@ -2,6 +2,19 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-24] ingest | переименование ductos + галереи + видео (PR #51, 4 коммита)
+
+Затронуто: `concepts/new-services-ducted-gypsum` (разделы «Переименование»
+и «Галерея и видео»), `concepts/header-navigation` (слаг в дропдауне),
+`concepts/service-pricing` (слаг в таблице), `index.md`.
+
+Суть: slug `aire-acondicionado-oculto` → `aire-acondicionado-por-ductos`
+(Codex 01a03212: fan coil = товарный интент, ductos = подрядный; владелец
+принял), меню «A/C ductos», +2 FAQ; ServiceGallery (scroll-snap, 4+4 webp)
+и LiteYouTube-фасад (wHiH9qb3hf0, «Obra en Alemania») + точечная CSP-правка.
+seo-reviewer approve, условия закрыты. Коммиты 4fc82fe, 6d088c1, 4bf7efc,
+2b981e3.
+
 ## [2026-08-23] ingest | страницы услуг gypsum + aire-acondicionado-oculto (PR #51)
 
 Затронуто: `concepts/new-services-ducted-gypsum` (раздел «Реализовано на

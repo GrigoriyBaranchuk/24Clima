@@ -59,7 +59,7 @@ $20 000 один знак ничего не сегментирует, остав
 | `/servicios/limpieza` | **не** таблица — там уже `CleaningPackages` + `Calculator` |
 | `/servicios/carga-de-gas` | цена в hero + таблица |
 | `/servicios/gypsum` | цена в hero **за m²** («desde $35/m²») + таблица с условиями «desde» в сноске |
-| `/servicios/aire-acondicionado-oculto` | «desde $6 000» в hero + таблица (visita gratis, зона, квартира) |
+| `/servicios/aire-acondicionado-por-ductos` | «desde $6 000» в hero + таблица (visita gratis, зона, квартира) |
 | `/servicios` (хаб) | `ServicesAnswerBlock` — все 8 услуг с ценами одной фразой (под AI Overview) |
 | `/areas-de-servicio` | `AreasPricingNote` |
 

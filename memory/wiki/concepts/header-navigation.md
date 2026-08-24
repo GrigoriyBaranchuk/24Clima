@@ -19,7 +19,7 @@ status: current
 - Лого (ссылка на главную; пункта «Inicio» нет — лого достаточно).
 - Дропдаун **«Servicios»** — сгруппированный, три блока:
   1. Servicios: **8** ссылок `/servicios/<slug>` (с 2026-08-23, PR #51 —
-     добавлены `gypsum` и `aire-acondicionado-oculto`) с короткими ярлыками
+     добавлены `gypsum` и `aire-acondicionado-por-ductos` (до 2026-08-24 — `aire-acondicionado-oculto`, переименован по ревью Codex до выхода в прод)) с короткими ярлыками
      из `common.serviceNav.*` + «Todos los servicios» → `/servicios`. Блок
      занимает две колонки (`col-span-2`, внутри `grid-cols-2`), панель
      расширена до `w-[38rem]` при общей сетке `grid-cols-3` — иначе 9
