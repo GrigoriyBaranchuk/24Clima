@@ -103,14 +103,64 @@ export const SERVICE_SEO_META: Record<string, ServiceMeta> = {
   },
   hiddenAc: {
     title: {
-      es: "Aire Acondicionado Oculto en Panamá desde $6 000 | 24clima",
-      en: "Concealed Ceiling AC in Panama from $6,000 | 24clima",
-      ru: "Скрытый кондиционер в Панаме от $6 000 | 24clima",
+      es: "Aire Acondicionado por Ductos en Panamá desde $6 000 | 24clima",
+      en: "Ducted Air Conditioning in Panama from $6,000 | 24clima",
+      ru: "Канальный кондиционер в Панаме от $6 000 | 24clima",
     },
     description: {
       es: "Sistema de ductos con fan coil, difusores lineales y cielo raso de gypsum, todo con un solo contratista, desde $6 000. Cotización gratis. Garantía 365 días.",
       en: "Ducted system with fan coil, linear diffusers and gypsum ceiling, all from one contractor, from $6,000. Free quote. 365-day warranty. Panama City.",
       ru: "Канальная система: фанкойл, линейные диффузоры и гипсокартонный потолок у одного подрядчика, от $6 000. Расчёт бесплатно. Гарантия 365 дней.",
     },
+  },
+};
+
+/**
+ * serviceType para el JSON-LD `Service` de cada página de servicio.
+ *
+ * Antes se reutilizaba el H1 (`services.<key>.title`), que es copia de venta
+ * y no una categoría de servicio. Aquí va la categoría corta y localizada,
+ * que es lo que espera schema.org. Clave: translation key, igual que arriba.
+ */
+export const SERVICE_TYPE: Record<string, { es: string; en: string; ru: string }> = {
+  cleaning: {
+    es: "Limpieza profunda de aire acondicionado",
+    en: "Air conditioner deep cleaning",
+    ru: "Глубокая чистка кондиционера",
+  },
+  maintenance: {
+    es: "Mantenimiento preventivo de aire acondicionado",
+    en: "Air conditioner preventive maintenance",
+    ru: "Профилактическое обслуживание кондиционера",
+  },
+  repair: {
+    es: "Reparación de aire acondicionado",
+    en: "Air conditioner repair",
+    ru: "Ремонт кондиционера",
+  },
+  installation: {
+    es: "Instalación de aire acondicionado",
+    en: "Air conditioner installation",
+    ru: "Установка кондиционера",
+  },
+  gasRecharge: {
+    es: "Carga de gas refrigerante",
+    en: "Refrigerant gas recharge",
+    ru: "Заправка хладагентом",
+  },
+  emergency: {
+    es: "Servicio de emergencia de aire acondicionado 24/7",
+    en: "24/7 air conditioning emergency service",
+    ru: "Аварийный выезд по кондиционерам 24/7",
+  },
+  gypsum: {
+    es: "Instalación de cielo raso de gypsum",
+    en: "Gypsum ceiling installation",
+    ru: "Монтаж гипсокартонного потолка",
+  },
+  hiddenAc: {
+    es: "Instalación de aire acondicionado por ductos",
+    en: "Ducted air conditioning installation",
+    ru: "Монтаж канального кондиционера",
   },
 };

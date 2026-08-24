@@ -23,7 +23,7 @@ export default async function Services() {
     { icon: Wind, slug: "instalacion", translationKey: "installation" },
     { icon: Droplets, slug: "limpieza", translationKey: "cleaning" },
     { icon: Layers, slug: "gypsum", translationKey: "gypsum" },
-    { icon: AirVent, slug: "aire-acondicionado-oculto", translationKey: "hiddenAc" },
+    { icon: AirVent, slug: "aire-acondicionado-por-ductos", translationKey: "hiddenAc" },
     { icon: Settings, slug: "mantenimiento", translationKey: "maintenance" },
     { icon: Wrench, slug: "reparacion", translationKey: "repair" },
     { icon: Thermometer, slug: "carga-de-gas", translationKey: "gasRecharge" },

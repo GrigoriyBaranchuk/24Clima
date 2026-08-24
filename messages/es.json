@@ -33,7 +33,7 @@
       "gasRecharge": "Carga de gas",
       "emergency": "Emergencia 24/7",
       "gypsum": "Gypsum",
-      "hiddenAc": "A/C oculto"
+      "hiddenAc": "A/C ductos"
     }
   },
   "homeCta": {
@@ -363,8 +363,8 @@
     },
     "hiddenAc": {
       "shortTitle": "A/C oculto",
-      "title": "Aire Acondicionado Oculto en Cielo Raso — Sistema de Ductos Llave en Mano",
-      "description": "Fan coil, ductos, difusores lineales y cielo raso de gypsum con un solo contratista y un solo contrato. El aire acondicionado que no se ve. Desde $6 000, cotización gratis en Ciudad de Panamá.",
+      "title": "Aire Acondicionado por Ductos en Panamá — Fan Coil Oculto Llave en Mano",
+      "description": "Fan coil, ductos, difusores lineales y cielo raso de gypsum con un solo contratista y un solo contrato — también conocido como aire acondicionado central por ductos. El aire acondicionado que no se ve. Desde $6 000, cotización gratis en Ciudad de Panamá.",
       "benefit1": "Un solo contratista: clima y cielo raso",
       "benefit2": "Difusores lineales casi invisibles",
       "benefit3": "Puertas de acceso ocultas para mantenimiento",
@@ -381,6 +381,10 @@
       "faq5A": "Es el punto crítico de un equipo escondido: montamos el drenaje con pendiente real, aislamos los ductos para que no sude el cielo raso y, cuando no hay pendiente natural, instalamos bomba de condensado. Eso es lo que evita manchas de humedad en el gypsum.",
       "faq6Q": "¿Incluye el cielo raso de gypsum?",
       "faq6A": "Sí. El precio cubre el cielo raso de gypsum alrededor del sistema: estructura, lámina, cinta, pasta y lijado listo para pintar. Una sola cuadrilla instala el clima y cierra el cielo raso, con una sola garantía de 365 días.",
+      "faq7Q": "¿Es lo mismo que aire acondicionado central?",
+      "faq7A": "En Panamá se le llama así. Lo que instalamos es un sistema por ductos: un fan coil oculto sobre el cielo raso reparte el aire frío por ductos hasta difusores lineales en cada ambiente. Es el mismo principio del aire central de una casa grande, aplicado a un apartamento o una oficina, y se lo entregamos llave en mano con el cielo raso de gypsum ya cerrado.",
+      "faq8Q": "¿Qué es un fan coil?",
+      "faq8A": "Es la unidad interior del sistema: un equipo alargado con ventilador y serpentín que se esconde sobre el cielo raso, en un clóset técnico o en la franja por donde pasan los ductos. Desde el ambiente no se ve nada: solo los difusores lineales por donde sale el aire y la puerta de acceso por la que se limpia. La condensadora va afuera, igual que en cualquier split.",
       "priceFrom": "desde $6 000"
     }
   },

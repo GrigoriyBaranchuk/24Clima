@@ -13,7 +13,7 @@ Site content is written in Spanish (default, no URL prefix). English and Russian
 - [Refrigerant recharge](https://24clima.com/servicios/carga-de-gas/): gas top-up and leak detection.
 - [24/7 emergency service](https://24clima.com/servicios/emergencia/): same-day and after-hours callouts.
 - [Gypsum ceilings and walls](https://24clima.com/servicios/gypsum/): drywall ceilings and partitions ready to paint, LED coves, MR board for wet areas (from $35/m²).
-- [Concealed ceiling air conditioning](https://24clima.com/servicios/aire-acondicionado-oculto/): turnkey ducted system — fan coil, ducts, linear diffusers and the gypsum ceiling around it, one contractor (from $6,000).
+- [Ducted air conditioning (concealed fan coil)](https://24clima.com/servicios/aire-acondicionado-por-ductos/): turnkey ducted system — fan coil, ducts, linear diffusers and the gypsum ceiling around it, one contractor (from $6,000).
 
 ## For businesses and property managers
 

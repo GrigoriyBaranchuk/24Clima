@@ -68,14 +68,14 @@ const INTENT_NOTES: Partial<Record<ServiceSlug, IntentNote>> = {
       en: "A gypsum ceiling (from $35/m²) covers framing, board, tape, compound and sanding ready to paint: that's the option when the air conditioning is already sorted or stays visible. If you also want the unit to disappear, decide it before the ceiling is closed: the ducted system with fan coil, linear diffusers and the gypsum around it starts at $6,000 and is done by the same crew, under one contract.",
       ru: "Потолок из гипсокартона (от $35/м²) — это каркас, лист, лента, шпаклёвка и шлифовка под покраску: вариант, когда с кондиционером уже всё решено или он остаётся на виду. Если хочется, чтобы техника исчезла, решать это надо до закрытия потолка: канальная система с фанкойлом, линейными диффузорами и гипсокартоном вокруг стоит от $6 000 и делается той же бригадой по одному договору.",
     },
-    linkHref: "/servicios/aire-acondicionado-oculto",
+    linkHref: "/servicios/aire-acondicionado-por-ductos",
     linkLabel: {
-      es: "Ver aire acondicionado oculto",
-      en: "See concealed air conditioning",
-      ru: "Подробнее о скрытом кондиционере",
+      es: "Ver aire acondicionado por ductos",
+      en: "See ducted air conditioning",
+      ru: "Подробнее о канальном кондиционере",
     },
   },
-  "aire-acondicionado-oculto": {
+  "aire-acondicionado-por-ductos": {
     title: {
       es: "¿Sistema de ductos o solo cielo raso de gypsum?",
       en: "Ducted system or just a gypsum ceiling?",

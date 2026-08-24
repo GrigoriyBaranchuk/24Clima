@@ -4,8 +4,8 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-/** faq1–faq5 existen en todos los servicios; faq6/faq7 son opcionales (t.has). */
-const FAQ_KEYS = [1, 2, 3, 4, 5, 6, 7] as const;
+/** faq1–faq5 existen en todos los servicios; faq6–faq8 son opcionales (t.has). */
+const FAQ_KEYS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
 type ServiceFAQProps = {
   translationKey: string;

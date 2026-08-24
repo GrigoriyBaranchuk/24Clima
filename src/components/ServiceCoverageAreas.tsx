@@ -17,7 +17,7 @@ const TARGET_SERVICES: ServiceSlug[] = [
   "limpieza",
   "carga-de-gas",
   "gypsum",
-  "aire-acondicionado-oculto",
+  "aire-acondicionado-por-ductos",
 ];
 
 const TITLE: Record<SupportedLocale, string> = {

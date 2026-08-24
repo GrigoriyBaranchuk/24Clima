@@ -211,7 +211,7 @@ export const SERVICE_CITATIONS: Record<ServiceSlug, Citation[]> = {
       },
     },
   ],
-  "aire-acondicionado-oculto": [
+  "aire-acondicionado-por-ductos": [
     {
       source: "ASHRAE 62.1 — Ventilation for Acceptable Indoor Air Quality",
       url: "https://www.ashrae.org/technical-resources/bookstore/standards-62-1-62-2",

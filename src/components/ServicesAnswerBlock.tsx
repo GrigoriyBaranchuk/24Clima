@@ -7,7 +7,7 @@ type Props = {
 };
 
 const p = SERVICE_PRICING;
-const hiddenAcFrom = formatPrice(p["aire-acondicionado-oculto"].minPrice);
+const hiddenAcFrom = formatPrice(p["aire-acondicionado-por-ductos"].minPrice);
 
 const TITLE: Record<SupportedLocale, string> = {
   es: "Servicio de aire acondicionado en Panamá: precios y tiempos",

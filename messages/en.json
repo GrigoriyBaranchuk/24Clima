@@ -33,7 +33,7 @@
       "gasRecharge": "Gas recharge",
       "emergency": "24/7 Emergency",
       "gypsum": "Gypsum",
-      "hiddenAc": "Concealed AC"
+      "hiddenAc": "Ducted AC"
     }
   },
   "homeCta": {
@@ -363,8 +363,8 @@
     },
     "hiddenAc": {
       "shortTitle": "Concealed AC",
-      "title": "Concealed Ceiling Air Conditioning — Turnkey Ducted System",
-      "description": "Fan coil, ducts, linear diffusers and gypsum ceiling from a single contractor under a single contract. Air conditioning you don't see. From $6,000, free quote in Panama City.",
+      "title": "Ducted Air Conditioning in Panama — Concealed Fan Coil, Turnkey",
+      "description": "Fan coil, ducts, linear diffusers and gypsum ceiling from a single contractor under a single contract — also known as central ducted air conditioning. Air conditioning you don't see. From $6,000, free quote in Panama City.",
       "benefit1": "A single contractor: cooling and ceiling",
       "benefit2": "Nearly invisible linear diffusers",
       "benefit3": "Concealed access doors for servicing",
@@ -381,6 +381,10 @@
       "faq5A": "That is the critical point of concealed equipment: we set the drain with a real slope, insulate the ducts so the ceiling doesn't sweat and, where there is no natural fall, fit a condensate pump. That is what keeps damp stains off the gypsum.",
       "faq6Q": "Is the gypsum ceiling included?",
       "faq6A": "Yes. The price covers the gypsum ceiling around the system: framing, board, tape, compound and sanding ready to paint. One crew installs the cooling and closes the ceiling, under one 365-day warranty.",
+      "faq7Q": "Is it the same as central air conditioning?",
+      "faq7A": "In Panama that is what people call it. What we install is a ducted system: a fan coil hidden above the ceiling pushes cold air through ducts to linear diffusers in every room. It is the same principle as the central air of a large house, applied to an apartment or an office, and we hand it over turnkey with the gypsum ceiling already closed.",
+      "faq8Q": "What is a fan coil?",
+      "faq8A": "It is the indoor unit of the system: a long box with a blower and a coil that hides above the ceiling, in a service closet or inside the strip the ducts run through. From the room you see nothing of it — only the linear diffusers the air comes out of and the access door we clean it through. The condenser goes outside, just like on any split.",
       "priceFrom": "from $6,000"
     }
   },

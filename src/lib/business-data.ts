@@ -129,7 +129,7 @@ export const SERVICE_PRICING: Record<ServiceSlug, ServicePricing> = {
     priceUnitText: "m²",
     note: "Precio por m² de cielo raso liso listo para pintar: estructura, lámina, cinta, pasta y lijado. Condiciones del precio desde: área mínima 20 m², altura hasta 3 m, sin demolición y con lámina estándar. Cajón con luz LED desde $25 por metro lineal. Lámina MR o firecode, paredes y acabados con niveles se cotizan aparte.",
   },
-  "aire-acondicionado-oculto": {
+  "aire-acondicionado-por-ductos": {
     minPrice: 6000,
     maxPrice: 20000,
     currency: "USD",
@@ -396,7 +396,7 @@ export const SERVICE_PRICING_TABLES: Partial<Record<ServiceSlug, ServicePricingT
       ru: "Цена от $35/м² действует от 20 м², при высоте до 3 м, без демонтажа существующего потолка и со стандартным листом 1/2″. Влагостойкий лист MR (санузлы и кухни) и огнестойкий 5/8″ — с доплатой. Гарантия 365 дней на швы и каркас.",
     },
   },
-  "aire-acondicionado-oculto": {
+  "aire-acondicionado-por-ductos": {
     rows: [
       {
         concept: {

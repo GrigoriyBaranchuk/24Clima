@@ -247,7 +247,7 @@ export const SERVICE_STATS: Record<ServiceSlug, ServiceStat[]> = {
       source: "Datos 24clima",
     },
   ],
-  "aire-acondicionado-oculto": [
+  "aire-acondicionado-por-ductos": [
     {
       value: "1 contrato",
       label: {

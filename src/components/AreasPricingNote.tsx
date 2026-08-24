@@ -8,7 +8,7 @@ type Props = {
 };
 
 const p = SERVICE_PRICING;
-const hiddenAcFrom = formatPrice(p["aire-acondicionado-oculto"].minPrice);
+const hiddenAcFrom = formatPrice(p["aire-acondicionado-por-ductos"].minPrice);
 
 /**
  * Цены одинаковы во всех зонах + время прибытия по ключевым районам.

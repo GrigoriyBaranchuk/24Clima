@@ -47,7 +47,7 @@ const SERVICES: ServiceItem[] = [
     gradient: "from-[#6e6e73] to-[#48484a]",
   },
   {
-    slug: "aire-acondicionado-oculto",
+    slug: "aire-acondicionado-por-ductos",
     translationKey: "hiddenAc",
     icon: AirVent,
     gradient: "from-[#2a4f7a] to-[#1e3a5f]",

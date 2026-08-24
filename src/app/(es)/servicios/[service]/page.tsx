@@ -28,7 +28,7 @@ import type { ServiceSlug } from "@/lib/services";
 import { BUSINESS_DATA, SERVICE_PRICING, warrantyDurationISO } from "@/lib/business-data";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { SERVICE_SEO_META } from "@/lib/service-seo-meta";
+import { SERVICE_SEO_META, SERVICE_TYPE } from "@/lib/service-seo-meta";
 
 const translationKeys = ["cleaning", "maintenance", "repair", "installation", "gasRecharge", "emergency", "gypsum", "hiddenAc"] as const;
 type TranslationKey = (typeof translationKeys)[number];
@@ -52,7 +52,7 @@ const serviceImages: Record<TranslationKey, string> = {
   gasRecharge: "/uploads/refill-opt.webp",
   emergency: "/uploads/page1-opt.webp",
   gypsum: "/uploads/gypsum-opt.webp",
-  hiddenAc: "/uploads/aire-oculto-opt.webp",
+  hiddenAc: "/uploads/ductos-opt.webp",
 };
 
 function getSeoKey(translationKey: string): string {
@@ -160,7 +160,7 @@ export default async function ServicePage({
       telephone: BUSINESS_DATA.telephone,
     },
     areaServed: BUSINESS_DATA.areaServed.map((city) => ({ "@type": "City", name: city })),
-    serviceType: title,
+    serviceType: SERVICE_TYPE[translationKey]?.es ?? title,
     hoursAvailable: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

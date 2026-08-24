@@ -563,7 +563,7 @@ export const SERVICE_CONTENT: Record<ServiceSlug, ServiceContent> = {
     ],
   },
 
-  "aire-acondicionado-oculto": {
+  "aire-acondicionado-por-ductos": {
     intro: {
       es: "Un split colgado en la pared enfría bien, pero se ve. Cuando el acabado importa — una sala, un penthouse, una recepción — la alternativa es el sistema de ductos: un fan coil escondido sobre el cielo raso y difusores lineales de pocos centímetros por donde sale el aire. Desde el piso no se ve un equipo, se ve una línea. En 24clima instalamos ese sistema llave en mano en Ciudad de Panamá: fan coil, ductos aislados, difusores, drenaje, puertas de acceso para el mantenimiento y el cielo raso de gypsum que lo envuelve, todo con una sola cuadrilla y un solo contrato desde $6 000. La visita y la cotización son gratis, y la instalación lleva garantía de 365 días.",
       en: "A wall-mounted split cools well, but you see it. When the finish matters — a living room, a penthouse, a reception area — the alternative is a ducted system: a fan coil hidden above the ceiling and slim linear diffusers where the air comes out. From the floor you don't see a unit, you see a line. At 24clima we install that system turnkey in Panama City: fan coil, insulated ducts, diffusers, drainage, access doors for servicing and the gypsum ceiling that wraps around it — one crew, one contract, from $6,000. The visit and the quote are free, and the installation carries a 365-day warranty.",

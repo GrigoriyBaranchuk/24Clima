@@ -30,7 +30,7 @@ import type { ServiceSlug } from "@/lib/services";
 import { BUSINESS_DATA, SERVICE_PRICING, warrantyDurationISO } from "@/lib/business-data";
 import { buildBreadcrumbJsonLd, localePath, getLabels } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { SERVICE_SEO_META } from "@/lib/service-seo-meta";
+import { SERVICE_SEO_META, SERVICE_TYPE } from "@/lib/service-seo-meta";
 
 const translationKeys = ["cleaning", "maintenance", "repair", "installation", "gasRecharge", "emergency", "gypsum", "hiddenAc"] as const;
 type TranslationKey = (typeof translationKeys)[number];
@@ -54,7 +54,7 @@ const serviceImages: Record<TranslationKey, string> = {
   gasRecharge: "/uploads/refill-opt.webp",
   emergency: "/uploads/page1-opt.webp",
   gypsum: "/uploads/gypsum-opt.webp",
-  hiddenAc: "/uploads/aire-oculto-opt.webp",
+  hiddenAc: "/uploads/ductos-opt.webp",
 };
 
 function getSeoKey(translationKey: string): string {
@@ -182,6 +182,10 @@ export default async function ServicePage({ params }: Props) {
   const prefix = getLocalePrefix(locale as Locale);
   const canonicalUrl = `${base}${prefix}/servicios/${service}/`;
   const pricing = SERVICE_PRICING[service as ServiceSlug];
+  const jsonLdLocale = (locale === "en" || locale === "ru" ? locale : "es") as
+    | "es"
+    | "en"
+    | "ru";
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -197,7 +201,7 @@ export default async function ServicePage({ params }: Props) {
       telephone: BUSINESS_DATA.telephone,
     },
     areaServed: BUSINESS_DATA.areaServed.map((city) => ({ "@type": "City", name: city })),
-    serviceType: title,
+    serviceType: SERVICE_TYPE[translationKey]?.[jsonLdLocale] ?? title,
     hoursAvailable: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

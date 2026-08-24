@@ -11,7 +11,7 @@ export const SERVICE_SLUGS = [
   "carga-de-gas",
   "emergencia",
   "gypsum",
-  "aire-acondicionado-oculto",
+  "aire-acondicionado-por-ductos",
 ] as const;
 
 export type ServiceSlug = (typeof SERVICE_SLUGS)[number];
@@ -25,7 +25,7 @@ export const SLUG_TO_TRANSLATION_KEY: Record<ServiceSlug, string> = {
   "carga-de-gas": "gasRecharge",
   emergencia: "emergency",
   gypsum: "gypsum",
-  "aire-acondicionado-oculto": "hiddenAc",
+  "aire-acondicionado-por-ductos": "hiddenAc",
 };
 
 export function getTranslationKey(slug: string): string | undefined {
