@@ -148,7 +148,30 @@ sells physical products, so `Product` IS on the site since tienda moved to
 ## What's NOT on the site (and why we're not adding it)
 - **`Review` (individual)** — only the aggregate is exposed. Self-serving review policy makes individual on-site reviews ineligible for snippets anyway.
 - **`SpecialAnnouncement`** — deprecated July 2025 per Google's structured data appearance docs.
-- **`VideoObject`** — no video hero on the site. If a video lands on a page, add this then.
+- **`VideoObject`** — criterion: add it only when the video is the *primary* content of the page (video hero / the page exists because of the video). For a supporting facade video — not the hero, not the LCP element, page is not about the video — we do **not** add it: no rich result to win, and the markup would overstate what the page is.
+  Precedent: `LiteYouTube` on `/servicios/gypsum/` (2026-08-24) — partner's job-site video sitting below the photo gallery, no `VideoObject` (seo-reviewer verdict: approve).
+
+## Media patterns on the site (deliberately carry no JSON-LD)
+
+Added 2026-08-24 with the service galleries. Both are plain HTML/CSS with no
+schema attached — recorded here so the next JSON-LD pass doesn't "fix" that.
+
+- **`ServiceGallery`** (`src/components/ServiceGallery.tsx`) — lazy photo strip
+  below the fold on `/servicios/gypsum/` and
+  `/servicios/aire-acondicionado-por-ductos/`. CSS scroll-snap on mobile →
+  4-column grid at `lg`, no JS carousel, no autoscroll, no lightbox. Every frame
+  is `next/image` with explicit `width`/`height`, `loading="lazy"` and
+  `sizes="(max-width: 640px) 75vw, (max-width: 1024px) 45vw, 25vw"` — without
+  `sizes` the browser fetches each thumbnail as if it were 100vw. Alt text comes
+  from the `serviceGallery` namespace in messages (es/en/ru). No `ImageObject`:
+  the photos are supporting evidence, not the subject of the page.
+- **`LiteYouTube`** (`src/components/LiteYouTube.tsx`) — facade embed. Before the
+  click there is only an `i.ytimg.com` thumbnail (through `next/image`) plus a
+  play button with `aria-label`; the `youtube-nocookie` iframe mounts on click,
+  so zero YouTube JS and zero cookies on load. CSP was widened by exactly one
+  token — `frame-src 'self' https://www.youtube-nocookie.com` — plus an
+  `i.ytimg.com` entry in `images.remotePatterns` (`next.config.js`). Captions
+  must name whose job site the video shows (Ley 45 — don't imply it's ours).
 
 ## Adding a new schema type
 
