@@ -1,8 +1,8 @@
 ---
 type: concept
 title: Цены на услуги и их отображение
-updated: 2026-08-10
-sources: [PROJECT_MEMORY.md, src/lib/business-data.ts, src/lib/calculator-pricing.ts]
+updated: 2026-08-23
+sources: [PROJECT_MEMORY.md, src/lib/business-data.ts, src/lib/calculator-pricing.ts, PR #51 (2026-08-23)]
 related: [entities/24clima, concepts/seo-monitoring-system, concepts/protected-seo-elements]
 status: current
 ---
@@ -33,6 +33,20 @@ status: current
   в `AreasPricingNote` на `/areas-de-servicio` (плюс recarga $120 и
   WhatsApp CTA).
 
+## Цена за единицу (с 2026-08-23)
+
+`SERVICE_PRICING[slug]` получил необязательные `priceUnitCode` /
+`priceUnitText`. Если задан `priceUnitCode` (gypsum: `"MTK"` = м²),
+`Offer.priceSpecification` в JSON-LD Service собирается как
+`UnitPriceSpecification` с `unitCode`, а хелпер `formatPrice()` дописывает
+«/m²» в hero, OG-картинке (`PRICE_UNIT` в `opengraph-image.tsx`) и
+answer-блоках. Без `priceUnitCode` — прежний `Offer` с `price`/`priceRange`.
+Rich Results Test принимает без ошибок (проверено 2026-08-23).
+
+Корневой `HVACBusiness.priceRange` — `"$"` (было `"$$"`): при чеках от $25 до
+$20 000 один знак ничего не сегментирует, оставлен нижний ярус
+(ревью Codex 01a03017). Меняется только в `src/lib/business-data.ts`.
+
 > **Инцидент:** hero instalación показывал $120 вместо $200 — ключ был
 > спутан с carga-de-gas. Починено в commit `159a241`. При правках цен
 > перепроверять соответствие ключ ↔ услуга.
@@ -44,7 +58,9 @@ status: current
 | `/servicios/instalacion`, `/servicios/mantenimiento` | `ServicePricingTable` |
 | `/servicios/limpieza` | **не** таблица — там уже `CleaningPackages` + `Calculator` |
 | `/servicios/carga-de-gas` | цена в hero + таблица |
-| `/servicios` (хаб) | `ServicesAnswerBlock` — все 6 услуг с ценами одной фразой (под AI Overview) |
+| `/servicios/gypsum` | цена в hero **за m²** («desde $35/m²») + таблица с условиями «desde» в сноске |
+| `/servicios/aire-acondicionado-oculto` | «desde $6 000» в hero + таблица (visita gratis, зона, квартира) |
+| `/servicios` (хаб) | `ServicesAnswerBlock` — все 8 услуг с ценами одной фразой (под AI Overview) |
 | `/areas-de-servicio` | `AreasPricingNote` |
 
 `ServiceIntentNote` связывает limpieza ↔ mantenimiento: Google даёт по

@@ -1019,11 +1019,33 @@ oculto. Стратегия v2 — `memory/inbox/2026-08-23-strategy-draft.md` (�
 индекс: закрыт пробел «JTIA idoneidad», добавлены «RAV не разобран» и
 «tax_amount в бэкенде».
 
+**Часть 2 (вечер) — страницы услуг, PR #51 (commit 802076b).** План
+`memory/inbox/2026-08-23-plan-service-pages.md` → ревью Codex (01a03017):
+P1 «цена в JSON-LD без цены на странице» — владелец выбрал видимую цену
+oculto desde $6 000 (диапазон $6 000–20 000); «proyecto» убран из копи;
+корневой `priceRange` → «$»; новые услуги — в первой четвёрке главной.
+Opus реализовал (27 файлов кода + 2 webp + 20 raw-фото VIP Aire из Notion):
+`gypsum` и `aire-acondicionado-oculto` в `SERVICE_SLUGS`, все slug/ключевые
+таблицы, es/en/ru, оба дерева роутов, OG-картинки, `UnitPriceSpecification`
+(`unitCode: MTK`) для цены за м², `formatPrice()`, дропдаун шапки в 3 колонки
+(`w-[38rem]`, услуги `col-span-2`), llms.txt, data-ai-summary. Проверки:
+lint/build чисто; 6 URL — title/canonical/4 hreflang/5 JSON-LD; sitemap +6;
+дропдаун 9 crawlable ссылок; запрещённые слова 0; seo-reviewer
+flag-with-conditions → RRT «3 элемента без ошибок» + каталог JSON-LD в
+скилле пополнен. Визуально проверено в Chrome (localhost:3100). Грабли:
+Opus прогнал `biome format` по 146 чужим файлам — откатили (№31); локальный
+`next start` отдаёт hero-картинкам naturalWidth 0 и у старых услуг — артефакт
+локали. Владелец дал «ok for preview deploy» → push + PR #51, Vercel-превью
+собрано; **мерж в main — только по отдельному ok**.
+
 **Осталось / TODO**
+- Мерж PR #51 после просмотра превью владельцем.
 - Оформить идóneo: контракт на 2 года + регистрация компании в JTIA + PIRE.
-- Код (план → Codex → Opus → seo-reviewer → ok на push): две страницы услуг
-  в обоих деревьях роутов, навигация, sitemap, JSON-LD Service; 5 статей,
-  первая — «¿Cuánto cuesta un cielo raso de gypsum en Panamá?».
+- Контент: 5 статей, первая — «¿Cuánto cuesta un cielo raso de gypsum en
+  Panamá?»; галерея фото работ на страницах услуг (нужно решение по
+  компоненту через seo-reviewer); ссылки в футере.
+- Починить 404 в старых цитатах ENERGY STAR (limpieza/mantenimiento/instalacion,
+  `energystar.gov/saveathome/...`).
 - Магазин: запросить у VIP Aire SKU-лист и цены на диффузоры/решётки/базы/
   кабель; подтвердить прайс Isodec 2023; проверить `tax_amount` в бэкенде;
   скачать 66 фото из Notion; волна 1 — медь, базы, решётки.

@@ -2,6 +2,18 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-23] ingest | страницы услуг gypsum + aire-acondicionado-oculto (PR #51)
+
+Затронуто: `concepts/new-services-ducted-gypsum` (раздел «Реализовано на
+сайте», цена oculto стала видимой — desde $6 000), `concepts/service-pricing`
+(цена за единицу `UnitPriceSpecification`/MTK, `priceRange` → «$»),
+`concepts/header-navigation` (8 услуг в дропдауне, две колонки),
+`synthesis/gotchas` (№31 biome format по всему репо), `index.md`.
+
+Источник: commit 802076b (Opus по плану `inbox/2026-08-23-plan-service-pages.md`,
+ревью Codex 01a03017, seo-reviewer flag-with-conditions → выполнено, RRT без
+ошибок). Фото VIP Aire — `raw/photos/vipaire-2026-08-23/`.
+
 ## [2026-08-23] ingest | исследование новых услуг (ducted + gypsum + VIP Aire + B2B)
 
 Затронуто: новые `sources/2026-08-23-panama-new-services-research`,

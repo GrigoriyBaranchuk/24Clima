@@ -18,8 +18,13 @@ status: current
 
 - Лого (ссылка на главную; пункта «Inicio» нет — лого достаточно).
 - Дропдаун **«Servicios»** — сгруппированный, три блока:
-  1. Servicios: 6 ссылок `/servicios/<slug>` с короткими ярлыками из
-     `common.serviceNav.*` + «Todos los servicios» → `/servicios`;
+  1. Servicios: **8** ссылок `/servicios/<slug>` (с 2026-08-23, PR #51 —
+     добавлены `gypsum` и `aire-acondicionado-oculto`) с короткими ярлыками
+     из `common.serviceNav.*` + «Todos los servicios» → `/servicios`. Блок
+     занимает две колонки (`col-span-2`, внутри `grid-cols-2`), панель
+     расширена до `w-[38rem]` при общей сетке `grid-cols-3` — иначе 9
+     ссылок столбиком делали дропдаун выше экрана ноутбука. Порядок
+     ссылок = `SERVICE_SLUGS`, все — обычные `<a href>` (crawlable);
   2. Problemas: «Problemas comunes» → `/problemas`, «Diagnóstico AC» → `/diagnostico`;
   3. Soluciones: Para PH, Eventos (прежний отдельный дропдаун влит сюда).
 - Пункты: Consejos y Guías, Nosotros, Contacto.
