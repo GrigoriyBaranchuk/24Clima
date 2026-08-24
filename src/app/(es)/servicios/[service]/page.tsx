@@ -10,6 +10,7 @@ import ServiceFAQ from "@/components/ServiceFAQ";
 import ServiceCitations from "@/components/ServiceCitations";
 import ServiceStatsBar from "@/components/ServiceStatsBar";
 import ServiceExpandedContent from "@/components/ServiceExpandedContent";
+import ServiceGallery from "@/components/ServiceGallery";
 import ServicePricingTable from "@/components/ServicePricingTable";
 import ServiceCoverageAreas from "@/components/ServiceCoverageAreas";
 import ServiceIntentNote from "@/components/ServiceIntentNote";
@@ -297,6 +298,7 @@ export default async function ServicePage({
             </div>
           </section>
         )}
+        <ServiceGallery service={service} />
         <ServiceExpandedContent service={service} locale="es" />
         <section className="py-16 bg-gradient-to-r from-[#1e3a5f] to-[#0d2240]">
           <div className="container mx-auto px-4 lg:px-8 text-center">

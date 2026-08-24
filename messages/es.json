@@ -388,6 +388,21 @@
       "priceFrom": "desde $6 000"
     }
   },
+  "serviceGallery": {
+    "title": "Así se ve el resultado",
+    "caption": "Fotos: proyectos realizados con los componentes que instalamos (VIP Aire, Panamá)",
+    "videoTitle": "Cielo raso con difusores lineales, luz y sonido",
+    "videoCaption": "Obra en Alemania — video del socio de control de calidad",
+    "videoPlay": "Reproducir el video",
+    "gypsum1": "Pasillo de oficina antes y después: cielo raso de gypsum con luz lineal y difusores redondos",
+    "gypsum2": "Cielo raso de gypsum a dos niveles con cajón de luz y difusor lineal oculto",
+    "gypsum3": "Sala con cielo raso de gypsum liso, spots empotrados y difusor lineal casi invisible",
+    "gypsum4": "Hall con cielo raso de gypsum, spots empotrados y difusor lineal a lo largo del mueble",
+    "ductos1": "Sala y comedor de un apartamento donde el aire acondicionado por ductos no se ve",
+    "ductos2": "Cocina y sala con difusores lineales de aire acondicionado por ductos en el cielo raso",
+    "ductos3": "Montaje del sistema por ductos: estructura del cielo raso y difusor lineal antes de cerrar",
+    "ductos4": "Puerta de acceso oculta en el cielo raso junto a un difusor redondo de aire acondicionado"
+  },
   "problems": {
     "badge": "Problemas comunes",
     "title": "¿Tu Aire Acondicionado Tiene Problemas?",

@@ -60,6 +60,8 @@ const nextConfig = {
       { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/**" },
       // Shop product images hosted on S3.
       { protocol: "https", hostname: "**.amazonaws.com", pathname: "/**" },
+      // YouTube thumbnails for the LiteYouTube facade (no iframe until click).
+      { protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" },
     ],
   },
   // Proxy shop API requests to the FastAPI backend. Mirrors apps/shop-web.
@@ -88,7 +90,9 @@ const nextConfig = {
               `script-src ${scriptSrc}`,
               "img-src 'self' data: https: blob:",
               "style-src 'self' 'unsafe-inline'",
-              "frame-src 'self'",
+              // youtube-nocookie: fachada LiteYouTube — el iframe solo se monta
+              // tras el clic del usuario (ningún JS de YouTube antes de eso).
+              "frame-src 'self' https://www.youtube-nocookie.com",
               // mc.yandex.com: tag.js served from mc.yandex.ru calls the .com
               // host for /watch. Without it CSP blocks the request and every
               // page load logs console errors (Best Practices 92 in Lighthouse).

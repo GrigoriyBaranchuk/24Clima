@@ -11,6 +11,7 @@ import ServiceFAQ from "@/components/ServiceFAQ";
 import ServiceCitations from "@/components/ServiceCitations";
 import ServiceStatsBar from "@/components/ServiceStatsBar";
 import ServiceExpandedContent from "@/components/ServiceExpandedContent";
+import ServiceGallery from "@/components/ServiceGallery";
 import ServicePricingTable from "@/components/ServicePricingTable";
 import ServiceCoverageAreas from "@/components/ServiceCoverageAreas";
 import ServiceIntentNote from "@/components/ServiceIntentNote";
@@ -393,6 +394,8 @@ export default async function ServicePage({ params }: Props) {
             </div>
           </section>
         )}
+
+        <ServiceGallery service={service as ServiceSlug} />
 
         <ServiceExpandedContent
           service={service as ServiceSlug}

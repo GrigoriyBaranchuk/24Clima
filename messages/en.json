@@ -388,6 +388,21 @@
       "priceFrom": "from $6,000"
     }
   },
+  "serviceGallery": {
+    "title": "What the result looks like",
+    "caption": "Photos: completed projects built with the components we install (VIP Aire, Panama)",
+    "videoTitle": "Ceiling with linear diffusers, light and sound",
+    "videoCaption": "Job site in Germany — video from the quality-control partner",
+    "videoPlay": "Play the video",
+    "gypsum1": "Office corridor before and after: gypsum ceiling with linear lighting and round diffusers",
+    "gypsum2": "Two-level gypsum ceiling with a light cove and a concealed linear diffuser",
+    "gypsum3": "Living room with a smooth gypsum ceiling, recessed spots and an almost invisible linear diffuser",
+    "gypsum4": "Hallway with a gypsum ceiling, recessed spots and a linear diffuser running along the cabinet",
+    "ductos1": "Living and dining area of an apartment where the ducted air conditioning stays out of sight",
+    "ductos2": "Kitchen and living room with linear ducted air conditioning diffusers in the ceiling",
+    "ductos3": "Ducted system going in: ceiling framing and the linear diffuser before the ceiling is closed",
+    "ductos4": "Concealed access door in the ceiling next to a round air conditioning diffuser"
+  },
   "problems": {
     "badge": "Common problems",
     "title": "Is Your Air Conditioning Having Problems?",
