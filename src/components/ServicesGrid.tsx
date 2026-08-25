@@ -1,8 +1,10 @@
 import { Link } from "@/i18n/routing";
 import type { ServiceSlug } from "@/lib/services";
 import {
+  AirVent,
   ChevronRight,
   Droplets,
+  Layers,
   Settings,
   Thermometer,
   Wind,
@@ -24,12 +26,31 @@ type ServiceItem = {
   gradient: string;
 };
 
+/** Same order as the home page service list (src/components/Services.tsx). */
 const SERVICES: ServiceItem[] = [
+  {
+    slug: "instalacion",
+    translationKey: "installation",
+    icon: Wind,
+    gradient: "from-[#185FA5] to-[#103E6E]",
+  },
   {
     slug: "limpieza",
     translationKey: "cleaning",
     icon: Droplets,
     gradient: "from-[#4A90D9] to-[#357ABD]",
+  },
+  {
+    slug: "gypsum",
+    translationKey: "gypsum",
+    icon: Layers,
+    gradient: "from-[#6e6e73] to-[#48484a]",
+  },
+  {
+    slug: "aire-acondicionado-por-ductos",
+    translationKey: "hiddenAc",
+    icon: AirVent,
+    gradient: "from-[#2a4f7a] to-[#1e3a5f]",
   },
   {
     slug: "mantenimiento",
@@ -42,12 +63,6 @@ const SERVICES: ServiceItem[] = [
     translationKey: "repair",
     icon: Wrench,
     gradient: "from-[#F5A623] to-[#E8961E]",
-  },
-  {
-    slug: "instalacion",
-    translationKey: "installation",
-    icon: Wind,
-    gradient: "from-[#185FA5] to-[#103E6E]",
   },
   {
     slug: "carga-de-gas",

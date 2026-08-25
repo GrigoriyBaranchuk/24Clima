@@ -10,6 +10,7 @@ import ServiceFAQ from "@/components/ServiceFAQ";
 import ServiceCitations from "@/components/ServiceCitations";
 import ServiceStatsBar from "@/components/ServiceStatsBar";
 import ServiceExpandedContent from "@/components/ServiceExpandedContent";
+import ServiceGallery from "@/components/ServiceGallery";
 import ServicePricingTable from "@/components/ServicePricingTable";
 import ServiceCoverageAreas from "@/components/ServiceCoverageAreas";
 import ServiceIntentNote from "@/components/ServiceIntentNote";
@@ -20,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, ArrowLeft } from "lucide-react";
-import { Wrench, Wind, Thermometer, Droplets, Settings, Zap } from "lucide-react";
+import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, Layers, AirVent } from "lucide-react";
 import { getServiceKeywords } from "@/lib/seo-keywords";
 import { Link } from "@/i18n/routing";
 import { SERVICE_SLUGS, getTranslationKey, isServiceSlug } from "@/lib/services";
@@ -28,9 +29,9 @@ import type { ServiceSlug } from "@/lib/services";
 import { BUSINESS_DATA, SERVICE_PRICING, warrantyDurationISO } from "@/lib/business-data";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { SERVICE_SEO_META } from "@/lib/service-seo-meta";
+import { SERVICE_SEO_META, SERVICE_TYPE } from "@/lib/service-seo-meta";
 
-const translationKeys = ["cleaning", "maintenance", "repair", "installation", "gasRecharge", "emergency"] as const;
+const translationKeys = ["cleaning", "maintenance", "repair", "installation", "gasRecharge", "emergency", "gypsum", "hiddenAc"] as const;
 type TranslationKey = (typeof translationKeys)[number];
 
 const serviceIcons: Record<TranslationKey, React.ComponentType<{ className?: string }>> = {
@@ -40,6 +41,8 @@ const serviceIcons: Record<TranslationKey, React.ComponentType<{ className?: str
   installation: Wind,
   gasRecharge: Thermometer,
   emergency: Zap,
+  gypsum: Layers,
+  hiddenAc: AirVent,
 };
 
 const serviceImages: Record<TranslationKey, string> = {
@@ -49,6 +52,8 @@ const serviceImages: Record<TranslationKey, string> = {
   installation: "/uploads/install-opt.webp",
   gasRecharge: "/uploads/refill-opt.webp",
   emergency: "/uploads/page1-opt.webp",
+  gypsum: "/uploads/gypsum-opt.webp",
+  hiddenAc: "/uploads/ductos-opt.webp",
 };
 
 function getSeoKey(translationKey: string): string {
@@ -156,7 +161,7 @@ export default async function ServicePage({
       telephone: BUSINESS_DATA.telephone,
     },
     areaServed: BUSINESS_DATA.areaServed.map((city) => ({ "@type": "City", name: city })),
-    serviceType: title,
+    serviceType: SERVICE_TYPE[translationKey]?.es ?? title,
     hoursAvailable: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -167,10 +172,15 @@ export default async function ServicePage({
       "@type": "Offer",
       priceCurrency: pricing.currency,
       priceSpecification: {
-        "@type": "PriceSpecification",
+        // Precio por unidad (gypsum: por m²) → UnitPriceSpecification, para que
+        // el monto no se lea como precio total del trabajo.
+        "@type": pricing.priceUnitCode ? "UnitPriceSpecification" : "PriceSpecification",
         minPrice: pricing.minPrice,
         maxPrice: pricing.maxPrice,
         priceCurrency: pricing.currency,
+        ...(pricing.priceUnitCode
+          ? { unitCode: pricing.priceUnitCode, unitText: pricing.priceUnitText }
+          : {}),
       },
       availability: "https://schema.org/InStock",
       validFrom: "2026-01-01",
@@ -231,10 +241,12 @@ export default async function ServicePage({
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">{title}</h1>
                 <p className="text-lg text-white/90 mb-8 leading-relaxed">{description}</p>
-                {["installation", "cleaning", "maintenance", "gasRecharge"].includes(translationKey) && (
+                {["installation", "cleaning", "maintenance", "gasRecharge", "gypsum", "hiddenAc"].includes(translationKey) && (
                   <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
                     {t(`${translationKey}.priceFrom`)}
-                    <span className="text-white/80 text-base font-normal ml-1">USD</span>
+                    {!pricing.priceUnitText && (
+                      <span className="text-white/80 text-base font-normal ml-1">USD</span>
+                    )}
                   </p>
                 )}
                 <p className="text-base text-white/80 mb-6">{tCommon("geoLine")}</p>
@@ -286,6 +298,7 @@ export default async function ServicePage({
             </div>
           </section>
         )}
+        <ServiceGallery service={service} />
         <ServiceExpandedContent service={service} locale="es" />
         <section className="py-16 bg-gradient-to-r from-[#1e3a5f] to-[#0d2240]">
           <div className="container mx-auto px-4 lg:px-8 text-center">

@@ -215,6 +215,54 @@ export const SERVICE_KEYWORDS: Record<
       "круглосуточный выезд",
     ],
   },
+  gypsum: {
+    es: [
+      "cielo raso de gypsum Panamá",
+      "cielo raso gypsum",
+      "instalación de gypsum",
+      "paredes de gypsum",
+      "cielo raso moderno",
+      "estilos de cielo raso",
+      "drywall Panamá",
+      "cielo raso con luz LED",
+    ],
+    en: [
+      "gypsum ceiling Panama",
+      "drywall installation Panama City",
+      "gypsum walls Panama",
+      "LED cove ceiling Panama",
+    ],
+    ru: [
+      "гипсокартонный потолок Панама",
+      "монтаж гипсокартона Панама-Сити",
+      "потолок с LED-подсветкой Панама",
+    ],
+  },
+  hiddenAc: {
+    es: [
+      "aire acondicionado por ductos",
+      "aire acondicionado por ductos Panamá",
+      "ductos de aire acondicionado Panamá",
+      "aire acondicionado central Panamá",
+      "aire acondicionado oculto",
+      "fan coil Panamá",
+      "difusor lineal",
+      "aire acondicionado en cielo raso",
+    ],
+    en: [
+      "ducted air conditioning Panama",
+      "ducted air conditioning Panama City",
+      "concealed air conditioning Panama",
+      "fan coil installation Panama",
+      "linear diffuser air conditioning",
+    ],
+    ru: [
+      "канальный кондиционер Панама",
+      "канальный кондиционер Панама-Сити",
+      "скрытый кондиционер Панама",
+      "фанкойл и воздуховоды Панама",
+    ],
+  },
 };
 
 export function getHomeKeywords(locale: Locale): string[] {

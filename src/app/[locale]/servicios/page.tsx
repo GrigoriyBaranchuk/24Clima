@@ -18,9 +18,9 @@ const titles: Record<string, string> = {
 };
 
 const descriptions: Record<string, string> = {
-  es: "Limpieza, mantenimiento, reparación, instalación, carga de gas y emergencias 24/7 de aire acondicionado en Ciudad de Panamá. Técnicos certificados.",
-  en: "Cleaning, maintenance, repair, installation, gas recharge and 24/7 emergency air conditioning service in Panama City. Certified technicians.",
-  ru: "Чистка, обслуживание, ремонт, установка, заправка газа и экстренная служба 24/7 кондиционеров в Панама-Сити. Сертифицированные техники.",
+  es: "Limpieza, mantenimiento, reparación, instalación, carga de gas, emergencias 24/7, cielo raso de gypsum y aire acondicionado oculto por ductos en Ciudad de Panamá.",
+  en: "Cleaning, maintenance, repair, installation, gas recharge, 24/7 emergencies, gypsum ceilings and concealed ducted air conditioning in Panama City.",
+  ru: "Чистка, обслуживание, ремонт, установка, заправка газа, аварийные выезды 24/7, гипсокартонные потолки и скрытые канальные кондиционеры в Панама-Сити.",
 };
 
 // Default locale (es) is served at /servicios — no static param needed.

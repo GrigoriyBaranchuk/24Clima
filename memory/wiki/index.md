@@ -36,7 +36,7 @@
 | [Услуга пассивного охлаждения](concepts/passive-cooling-service.md) | вентиляция кровли + вентфасады: решения владельца, спрос (его нет), конкуренты, экономика, план |
 | [Рынок электроэнергии Панамы](concepts/panama-electricity-market.md) | тарифы BTS, субсидия FET, агрегаты ASEP, структура спроса, порог $1 500/мес |
 | [Право: реклама и энергоуслуги](concepts/panama-advertising-law.md) | Ley 45 и ACODECO, Ley 69 и аккредитация MICI/JTIA, правила формулировок про экономию |
-| [Новые услуги: gypsum + clima oculto + магазин VIP Aire + сметы B2B](concepts/new-services-ducted-gypsum.md) | решения владельца 2026-08-23, цены, сегменты, план сайта, KPI, ревью Codex |
+| [Новые услуги: gypsum + clima oculto + магазин VIP Aire + сметы B2B](concepts/new-services-ducted-gypsum.md) | решения владельца 2026-08-23, цены, сегменты, **что реализовано в PR #51** (две страницы, переименование в por-ductos, галереи, видео), что дальше, KPI, ревью Codex |
 | [Лицензирование подрядчика в Панаме](concepts/panama-contractor-licensing.md) | JTIA idoneidad (кто может быть подписантом), регистрация компании, RAV, PanamaCompra, фианзы, формат котизации |
 | [Деплой на Vercel и ошибки на клиенте](concepts/vercel-deploy-and-errors.md) | id проекта, Skew Protection (12 ч) и её пределы, error boundary с авто-reload при ChunkLoadError, где смотреть runtime-ошибки |
 

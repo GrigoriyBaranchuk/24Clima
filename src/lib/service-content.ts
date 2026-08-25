@@ -472,4 +472,184 @@ export const SERVICE_CONTENT: Record<ServiceSlug, ServiceContent> = {
       },
     ],
   },
+
+  gypsum: {
+    intro: {
+      es: "En Panamá el cielo raso hace mucho más que tapar: esconde tuberías, cables y ductos, mejora la acústica y deja una superficie limpia y pareja en todo el ambiente. El gypsum (drywall) es la solución más usada en apartamentos y locales de Ciudad de Panamá porque se instala rápido, ensucia mucho menos que el concreto y admite cajones con luz LED, niveles y nichos. En 24clima instalamos cielo raso y paredes de gypsum desde $35/m², listos para pintar: estructura metálica, lámina, cinta, pasta y lijado. Usamos lámina estándar de 1/2″ y, donde hay humedad — baños y cocinas —, lámina MR resistente a la humedad. La misma cuadrilla que monta su aire acondicionado cierra el cielo raso: un solo contrato y una garantía de 365 días.",
+      en: "In Panama a ceiling does much more than cover: it hides pipes, wiring and ducts, improves acoustics and leaves one clean, even surface across the room. Gypsum board (drywall) is the most common solution in Panama City apartments and commercial units because it goes up fast, makes far less mess than concrete and takes LED coves, multiple levels and niches. At 24clima we install gypsum ceilings and walls from $35/m², ready to paint: metal framing, board, tape, joint compound and sanding. We use standard 1/2″ board and, where there is moisture — bathrooms and kitchens —, moisture-resistant MR board. The same crew that fits your air conditioning closes the ceiling: one contract and a 365-day warranty.",
+      ru: "В Панаме подвесной потолок делает гораздо больше, чем просто закрывает перекрытие: он прячет трубы, кабели и воздуховоды, улучшает акустику и даёт ровную чистую поверхность по всей комнате. Гипсокартон (drywall) — самое востребованное решение в квартирах и коммерческих помещениях Панама-Сити: монтируется быстро, даёт куда меньше грязи, чем бетон, и позволяет делать короба под LED-подсветку, уровни и ниши. В 24clima мы монтируем потолки и стены из гипсокартона от $35/м², сразу под покраску: металлический каркас, лист, лента, шпаклёвка и шлифовка. Работаем со стандартным листом 1/2″, а во влажных зонах — санузлы и кухни — с влагостойким листом MR. Та же бригада, что ставит кондиционер, закрывает потолок: один договор и гарантия 365 дней.",
+    },
+    whyUsTitle: {
+      es: "¿Por qué elegir 24clima para su cielo raso de gypsum?",
+      en: "Why choose 24clima for your gypsum ceiling?",
+      ru: "Почему стоит выбрать 24clima для потолка из гипсокартона?",
+    },
+    whyUsPoints: [
+      {
+        es: "Precio claro por metro cuadrado desde $35, con cinta, pasta y lijado incluidos: usted recibe una superficie lista para pintar, no una estructura a medio terminar.",
+        en: "A clear price per square meter from $35, with tape, joint compound and sanding included: you get a surface ready to paint, not a half-finished frame.",
+        ru: "Понятная цена за квадратный метр от $35, лента, шпаклёвка и шлифовка включены: вы получаете поверхность под покраску, а не наполовину собранный каркас.",
+      },
+      {
+        es: "Cajones perimetrales con luz LED desde $25 por metro lineal, niveles y nichos: acabados que cambian por completo una sala sin tocar la estructura del edificio.",
+        en: "Perimeter LED coves from $25 per linear meter, stepped levels and niches: finishes that transform a living room without touching the building structure.",
+        ru: "Периметральные короба под LED-ленту от $25 за погонный метр, уровни и ниши: отделка, которая полностью меняет комнату, не затрагивая конструкцию здания.",
+      },
+      {
+        es: "Lámina MR resistente a la humedad para baños y cocinas, y lámina firecode de 5/8″ cuando el reglamento del edificio la exige.",
+        en: "Moisture-resistant MR board for bathrooms and kitchens, and 5/8″ firecode board when the building rules require it.",
+        ru: "Влагостойкий лист MR для санузлов и кухонь и огнестойкий firecode 5/8″, если этого требуют правила здания.",
+      },
+      {
+        es: "Una sola cuadrilla para el cielo raso y el aire acondicionado: un contrato, una garantía de 365 días sobre juntas y estructura, y nadie a quien echarle la culpa.",
+        en: "One crew for both ceiling and air conditioning: one contract, one 365-day warranty on joints and framing, and nobody to pass the blame to.",
+        ru: "Одна бригада на потолок и кондиционер: один договор, одна гарантия 365 дней на швы и каркас — и некому перекладывать ответственность.",
+      },
+    ],
+    howTitle: {
+      es: "¿Cómo instalamos el cielo raso de gypsum?",
+      en: "How do we install a gypsum ceiling?",
+      ru: "Как мы монтируем потолок из гипсокартона?",
+    },
+    howSteps: [
+      {
+        title: {
+          es: "Visita y medición",
+          en: "Visit and measurement",
+          ru: "Выезд и замер",
+        },
+        text: {
+          es: "Medimos el área, revisamos la altura libre y qué hay que esconder arriba (tuberías, cables, ductos). Con eso entregamos un precio cerrado por m², sin sorpresas.",
+          en: "We measure the area, check the free height and what has to be hidden above (pipes, wiring, ducts). With that we give you a fixed price per m², no surprises.",
+          ru: "Замеряем площадь, проверяем свободную высоту и то, что нужно спрятать наверху (трубы, кабели, воздуховоды). На этом основании даём фиксированную цену за м² без сюрпризов.",
+        },
+      },
+      {
+        title: {
+          es: "Estructura metálica",
+          en: "Metal framing",
+          ru: "Металлический каркас",
+        },
+        text: {
+          es: "Montamos perfiles y colgantes nivelados con láser. Una estructura bien nivelada es lo que evita que aparezcan ondas y fisuras seis meses después.",
+          en: "We set profiles and hangers levelled with a laser. A properly levelled frame is what keeps waves and cracks from showing up six months later.",
+          ru: "Ставим профиль и подвесы с лазерной нивелировкой. Именно ровный каркас не даёт волнам и трещинам появиться через полгода.",
+        },
+      },
+      {
+        title: {
+          es: "Láminas y juntas",
+          en: "Boards and joints",
+          ru: "Листы и швы",
+        },
+        text: {
+          es: "Atornillamos la lámina (estándar, MR en zonas húmedas o firecode donde se exija) y encintamos todas las juntas y esquinas con cinta y perfil de esquinero.",
+          en: "We screw on the board (standard, MR in wet areas, or firecode where required) and tape every joint and corner with tape and corner bead.",
+          ru: "Прикручиваем лист (стандартный, MR во влажных зонах или firecode, где требуется) и проклеиваем все швы и углы лентой с угловым профилем.",
+        },
+      },
+      {
+        title: {
+          es: "Pasta, lijado y entrega",
+          en: "Compound, sanding and handover",
+          ru: "Шпаклёвка, шлифовка и сдача",
+        },
+        text: {
+          es: "Aplicamos pasta en varias manos, lijamos hasta dejar la superficie lista para pintar y limpiamos el área. Entregamos con garantía de 365 días.",
+          en: "We apply several coats of compound, sand until the surface is ready to paint and clean the area. Handover comes with a 365-day warranty.",
+          ru: "Наносим шпаклёвку в несколько слоёв, шлифуем до состояния под покраску и убираем за собой. Сдаём с гарантией 365 дней.",
+        },
+      },
+    ],
+  },
+
+  "aire-acondicionado-por-ductos": {
+    intro: {
+      es: "Un split colgado en la pared enfría bien, pero se ve. Cuando el acabado importa — una sala, un penthouse, una recepción — la alternativa es el sistema de ductos: un fan coil escondido sobre el cielo raso y difusores lineales de pocos centímetros por donde sale el aire. Desde el piso no se ve un equipo, se ve una línea. En 24clima instalamos ese sistema llave en mano en Ciudad de Panamá: fan coil, ductos aislados, difusores, drenaje, puertas de acceso para el mantenimiento y el cielo raso de gypsum que lo envuelve, todo con una sola cuadrilla y un solo contrato desde $6 000. La visita y la cotización son gratis, y la instalación lleva garantía de 365 días.",
+      en: "A wall-mounted split cools well, but you see it. When the finish matters — a living room, a penthouse, a reception area — the alternative is a ducted system: a fan coil hidden above the ceiling and slim linear diffusers where the air comes out. From the floor you don't see a unit, you see a line. At 24clima we install that system turnkey in Panama City: fan coil, insulated ducts, diffusers, drainage, access doors for servicing and the gypsum ceiling that wraps around it — one crew, one contract, from $6,000. The visit and the quote are free, and the installation carries a 365-day warranty.",
+      ru: "Настенный сплит охлаждает хорошо, но его видно. Когда важна отделка — гостиная, пентхаус, зона ресепшена — есть альтернатива: канальная система. Фанкойл прячется над потолком, а воздух выходит через узкие линейные диффузоры. Снизу видно не блок, а линию. В 24clima мы делаем такую систему под ключ в Панама-Сити: фанкойл, изолированные воздуховоды, диффузоры, дренаж, лючки доступа для обслуживания и гипсокартонный потолок вокруг — одна бригада, один договор, от $6 000. Выезд и расчёт бесплатны, на монтаж — гарантия 365 дней.",
+    },
+    whyUsTitle: {
+      es: "¿Por qué contratar el clima oculto con 24clima?",
+      en: "Why have 24clima do your concealed AC?",
+      ru: "Почему скрытый климат стоит доверить 24clima?",
+    },
+    whyUsPoints: [
+      {
+        es: "Un solo contratista para el clima y el cielo raso. Nadie le dirá que el problema «es del otro»: la instalación y el acabado los firma la misma empresa.",
+        en: "One contractor for both the cooling system and the ceiling. Nobody will tell you the problem belongs to the other trade: the same company signs off on the install and the finish.",
+        ru: "Один подрядчик на климат и потолок. Никто не скажет, что «это к другим»: и монтаж, и отделку подписывает одна компания.",
+      },
+      {
+        es: "Difusores lineales casi invisibles, alineados con el cielo raso. El aire llega parejo a todo el ambiente y el equipo desaparece de la vista.",
+        en: "Nearly invisible linear diffusers, flush with the ceiling. Air reaches the whole room evenly and the equipment disappears from view.",
+        ru: "Практически незаметные линейные диффузоры вровень с потолком. Воздух распределяется равномерно, а техника исчезает из виду.",
+      },
+      {
+        es: "Puertas de acceso ocultas en el cielo raso, previstas desde el primer día para poder limpiar el fan coil y revisar el drenaje sin romper nada.",
+        en: "Concealed access doors in the ceiling, allowed for from day one so the fan coil can be cleaned and the drain checked without breaking anything.",
+        ru: "Скрытые лючки доступа в потолке, предусмотренные с самого начала: фанкойл можно чистить, а дренаж проверять, ничего не ломая.",
+      },
+      {
+        es: "Garantía de 365 días sobre la instalación completa y precio cerrado antes de empezar: $6 000 – $20 000 según m², tonelaje y puntos de aire.",
+        en: "A 365-day warranty on the complete installation and a fixed price before we start: $6,000 – $20,000 depending on area, tonnage and air outlets.",
+        ru: "Гарантия 365 дней на весь монтаж и фиксированная цена до старта: $6 000 – $20 000 в зависимости от площади, мощности и числа точек подачи.",
+      },
+    ],
+    howTitle: {
+      es: "¿Cómo se instala un aire acondicionado oculto?",
+      en: "How is a concealed air conditioner installed?",
+      ru: "Как устанавливают скрытый кондиционер?",
+    },
+    howSteps: [
+      {
+        title: {
+          es: "Visita y cotización gratis",
+          en: "Free visit and quote",
+          ru: "Бесплатный выезд и расчёт",
+        },
+        text: {
+          es: "Vamos a su espacio, medimos, confirmamos el tonelaje y decidimos con usted dónde van los difusores y cuánto baja el cielo raso. La cotización es cerrada y sin compromiso.",
+          en: "We come to your space, measure, confirm the tonnage and agree with you where the diffusers go and how far the ceiling drops. The quote is fixed and with no obligation.",
+          ru: "Приезжаем на объект, замеряем, подтверждаем мощность и вместе решаем, где будут диффузоры и насколько опустится потолок. Расчёт фиксированный и ни к чему не обязывает.",
+        },
+      },
+      {
+        title: {
+          es: "Fan coil y ductos",
+          en: "Fan coil and ducts",
+          ru: "Фанкойл и воздуховоды",
+        },
+        text: {
+          es: "Colgamos el fan coil con soportes antivibración, tendemos los ductos aislados y la tubería de cobre hasta la condensadora, y resolvemos el drenaje con pendiente real.",
+          en: "We hang the fan coil on anti-vibration mounts, run the insulated ducts and the copper line to the condenser, and set the drain with a real slope.",
+          ru: "Подвешиваем фанкойл на виброгасящих креплениях, прокладываем изолированные воздуховоды и медную трассу до наружного блока, делаем дренаж с реальным уклоном.",
+        },
+      },
+      {
+        title: {
+          es: "Difusores y puertas de acceso",
+          en: "Diffusers and access doors",
+          ru: "Диффузоры и лючки доступа",
+        },
+        text: {
+          es: "Colocamos los difusores lineales y la rejilla de retorno, y dejamos puertas de acceso discretas justo donde harán falta para el mantenimiento.",
+          en: "We fit the linear diffusers and the return grille, and leave discreet access doors exactly where servicing will need them.",
+          ru: "Ставим линейные диффузоры и решётку возврата и оставляем незаметные лючки ровно там, где они понадобятся при обслуживании.",
+        },
+      },
+      {
+        title: {
+          es: "Cielo raso, pasta y entrega",
+          en: "Ceiling, compound and handover",
+          ru: "Потолок, шпаклёвка и сдача",
+        },
+        text: {
+          es: "Cerramos con cielo raso de gypsum, encintamos, aplicamos pasta y lijamos hasta dejarlo listo para pintar. Probamos el equipo frente a usted y entregamos con garantía de 365 días.",
+          en: "We close it up with a gypsum ceiling, tape, apply compound and sand it ready to paint. We test the system with you present and hand over with a 365-day warranty.",
+          ru: "Закрываем гипсокартонным потолком, проклеиваем швы, шпаклюем и шлифуем под покраску. Проверяем систему при вас и сдаём с гарантией 365 дней.",
+        },
+      },
+    ],
+  },
 };

@@ -209,4 +209,79 @@ export const SERVICE_STATS: Record<ServiceSlug, ServiceStat[]> = {
       source: "Datos 24clima",
     },
   ],
+
+  gypsum: [
+    {
+      value: "$35/m²",
+      label: {
+        es: "Cielo raso liso listo para pintar",
+        en: "Smooth ceiling ready to paint",
+        ru: "Ровный потолок под покраску",
+      },
+      source: "Datos 24clima",
+    },
+    {
+      value: "365 días",
+      label: {
+        es: "Garantía sobre juntas y estructura",
+        en: "Warranty on joints and framing",
+        ru: "Гарантия на швы и каркас",
+      },
+    },
+    {
+      value: "1/2″",
+      label: {
+        es: "Lámina estándar; firecode de 5/8″ a pedido",
+        en: "Standard board; 5/8″ firecode on request",
+        ru: "Стандартный лист; firecode 5/8″ по запросу",
+      },
+      source: "ASTM C840",
+    },
+    {
+      value: "20 m²",
+      label: {
+        es: "Área mínima para el precio desde",
+        en: "Minimum area for the starting price",
+        ru: "Минимальная площадь для цены «от»",
+      },
+      source: "Datos 24clima",
+    },
+  ],
+  "aire-acondicionado-por-ductos": [
+    {
+      value: "1 contrato",
+      label: {
+        es: "Clima y cielo raso con un solo contratista",
+        en: "Cooling and ceiling with a single contractor",
+        ru: "Климат и потолок у одного подрядчика",
+      },
+      source: "Datos 24clima",
+    },
+    {
+      value: "25–35 cm",
+      label: {
+        es: "Descuelgue típico del cielo raso",
+        en: "Typical ceiling drop",
+        ru: "Типичное понижение потолка",
+      },
+      source: "Datos 24clima",
+    },
+    {
+      value: "365 días",
+      label: {
+        es: "Garantía sobre la instalación completa",
+        en: "Warranty on the complete installation",
+        ru: "Гарантия на весь монтаж",
+      },
+    },
+    {
+      value: "Gratis",
+      label: {
+        es: "Visita técnica y cotización",
+        en: "Site visit and quote",
+        ru: "Выезд на объект и расчёт",
+      },
+      source: "Datos 24clima",
+    },
+  ],
 };

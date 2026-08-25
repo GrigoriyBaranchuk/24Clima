@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://24clima.com"),
   title: "Servicios de Aire Acondicionado en Panamá | 24clima",
   description:
-    "Limpieza, mantenimiento, reparación, instalación, carga de gas y emergencias 24/7 de aire acondicionado en Ciudad de Panamá. Técnicos certificados.",
+    "Limpieza, mantenimiento, reparación, instalación, carga de gas, emergencias 24/7, cielo raso de gypsum y aire acondicionado oculto por ductos en Ciudad de Panamá.",
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     siteName: "24clima",
     title: "Servicios de Aire Acondicionado en Panamá | 24clima",
     description:
-      "Limpieza, mantenimiento, reparación, instalación, carga de gas y emergencias 24/7 de aire acondicionado en Ciudad de Panamá. Técnicos certificados.",
+      "Limpieza, mantenimiento, reparación, instalación, carga de gas, emergencias 24/7, cielo raso de gypsum y aire acondicionado oculto por ductos en Ciudad de Panamá.",
   },
   alternates: {
     canonical: "https://24clima.com/servicios/",

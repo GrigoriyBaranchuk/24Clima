@@ -268,28 +268,33 @@ export default function Header({
         <div
           role="menu"
           aria-label={t("services")}
-          className={`absolute left-0 top-full pt-2 w-[34rem] transition-[opacity,transform] duration-150 motion-reduce:transition-none ${
+          className={`absolute left-0 top-full pt-2 w-[38rem] transition-[opacity,transform] duration-150 motion-reduce:transition-none ${
             servicesOpen
               ? "opacity-100 visible translate-y-0"
               : "opacity-0 invisible -translate-y-1 pointer-events-none"
           }`}
         >
-          <div className="grid grid-cols-2 gap-x-2 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl">
-            <div>
+          <div className="grid grid-cols-3 gap-x-2 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl">
+            {/* Eight service links no longer fit one column, so they run across
+                two sub-columns. The crawlable pattern is untouched: every link
+                stays in the DOM, hidden only visually. */}
+            <div className="col-span-2">
               <span className={dropdownGroupTitleClass}>{t("services")}</span>
-              {serviceLinks.map(({ name, href }) => (
-                <NavItem
-                  key={href}
-                  href={href}
-                  active={isCurrentPage(href)}
-                  exact={isCurrentPage(href)}
-                  role="menuitem"
-                  className={dropdownLinkClass}
-                  activeClassName={dropdownLinkActiveClass}
-                >
-                  {name}
-                </NavItem>
-              ))}
+              <div className="grid grid-cols-2 gap-x-2">
+                {serviceLinks.map(({ name, href }) => (
+                  <NavItem
+                    key={href}
+                    href={href}
+                    active={isCurrentPage(href)}
+                    exact={isCurrentPage(href)}
+                    role="menuitem"
+                    className={dropdownLinkClass}
+                    activeClassName={dropdownLinkActiveClass}
+                  >
+                    {name}
+                  </NavItem>
+                ))}
+              </div>
               <NavItem
                 href="/servicios"
                 active={isCurrentPage("/servicios")}

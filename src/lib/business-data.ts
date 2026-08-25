@@ -16,7 +16,7 @@ export const BUSINESS_DATA = {
   whatsapp: "https://wa.me/50768282120",
   email: "info@24clima.com",
   founded: "2024",
-  priceRange: "$29.99 - $600",
+  priceRange: "$$",
   address: {
     addressLocality: "Ciudad de Panamá",
     addressRegion: "Panamá",
@@ -63,6 +63,14 @@ export interface ServicePricing {
   warrantyDays: number;
   /** Nota libre en español para schema.org description / FAQ. */
   note?: string;
+  /**
+   * Unidad del precio cuando no es «por servicio» (UN/CEFACT, ej. "MTK" = m²).
+   * Si está presente, el JSON-LD emite UnitPriceSpecification en lugar de
+   * PriceSpecification — así el precio por m² no se lee como precio total.
+   */
+  priceUnitCode?: string;
+  /** Etiqueta legible de la unidad: "m²". */
+  priceUnitText?: string;
 }
 
 /**
@@ -112,7 +120,31 @@ export const SERVICE_PRICING: Record<ServiceSlug, ServicePricing> = {
     warrantyDays: 60,
     note: "Tarifa fija de $40 por llamada de urgencia 24/7. El costo del trabajo realizado (reparación/carga/limpieza) se factura aparte según tarifa estándar. La garantía hereda del tipo de trabajo efectuado.",
   },
+  gypsum: {
+    minPrice: 35,
+    maxPrice: 65,
+    currency: "USD",
+    warrantyDays: 365,
+    priceUnitCode: "MTK",
+    priceUnitText: "m²",
+    note: "Precio por m² de cielo raso liso listo para pintar: estructura, lámina, cinta, pasta y lijado. Condiciones del precio desde: área mínima 20 m², altura hasta 3 m, sin demolición y con lámina estándar. Cajón con luz LED desde $25 por metro lineal. Lámina MR o firecode, paredes y acabados con niveles se cotizan aparte.",
+  },
+  "aire-acondicionado-por-ductos": {
+    minPrice: 6000,
+    maxPrice: 20000,
+    currency: "USD",
+    warrantyDays: 365,
+    note: "Instalación completa llave en mano: fan coil, ductos, difusores lineales, puertas de acceso y cielo raso de gypsum. Precio según m², tonelaje y puntos de aire. Visita y cotización gratis.",
+  },
 } as const;
+
+/**
+ * Helper: separador de miles usado en la copia visible del sitio.
+ * Ej: 6000 → "6 000" (espacio duro, para que el monto no se parta de línea).
+ */
+export function formatPrice(amount: number): string {
+  return amount.toLocaleString("en-US").replace(/,/g, "\u00a0");
+}
 
 /**
  * Helper: ISO 8601 duration string for warrantyDays (schema.org QuantitativeValue).
@@ -289,6 +321,144 @@ export const SERVICE_PRICING_TABLES: Partial<Record<ServiceSlug, ServicePricingT
       es: "Garantía de 60 días. No recargamos sin encontrar y reparar primero la causa de la pérdida de gas — recargar con fuga es tirar el dinero.",
       en: "60-day warranty. We don't recharge without first finding and repairing the cause of the gas loss — recharging with a leak is throwing money away.",
       ru: "Гарантия 60 дней. Не заправляем, пока не найдена и не устранена причина утечки — заправка с утечкой означает выброшенные деньги.",
+    },
+  },
+  gypsum: {
+    rows: [
+      {
+        concept: {
+          es: "Cielo raso de gypsum liso, listo para pintar",
+          en: "Smooth gypsum ceiling, ready to paint",
+          ru: "Ровный гипсокартонный потолок под покраску",
+        },
+        price: { es: "desde $35/m²", en: "from $35/m²", ru: "от $35/м²" },
+        detail: {
+          es: "Estructura metálica, lámina, cinta, pasta y lijado incluidos",
+          en: "Metal framing, board, tape, joint compound, and sanding included",
+          ru: "Металлический каркас, лист, лента, шпаклёвка и шлифовка включены",
+        },
+      },
+      {
+        concept: {
+          es: "Cajón perimetral con luz LED",
+          en: "Perimeter cove with LED strip",
+          ru: "Периметральный короб под LED-ленту",
+        },
+        price: {
+          es: "desde $25/ml",
+          en: "from $25 per linear meter",
+          ru: "от $25/пог. м",
+        },
+        detail: {
+          es: "Por metro lineal de cajón, con espacio para la tira LED",
+          en: "Per linear meter of cove, with a channel for the LED strip",
+          ru: "За погонный метр короба, с нишей под LED-ленту",
+        },
+      },
+      {
+        concept: {
+          es: "Paredes y divisiones de gypsum",
+          en: "Gypsum walls and partitions",
+          ru: "Стены и перегородки из гипсокартона",
+        },
+        price: {
+          es: "cotización gratis",
+          en: "free quote",
+          ru: "бесплатный расчёт",
+        },
+        detail: {
+          es: "Según metraje, altura y tipo de lámina (estándar, MR o firecode)",
+          en: "Based on area, height, and board type (standard, MR, or firecode)",
+          ru: "По площади, высоте и типу листа (стандарт, MR или firecode)",
+        },
+      },
+      {
+        concept: {
+          es: "Niveles, nichos y acabados especiales",
+          en: "Multi-level ceilings, niches, and special finishes",
+          ru: "Многоуровневые потолки, ниши и особые решения",
+        },
+        price: {
+          es: "cotización gratis",
+          en: "free quote",
+          ru: "бесплатный расчёт",
+        },
+        detail: {
+          es: "Medimos en sitio y entregamos el precio cerrado antes de empezar",
+          en: "We measure on site and give you a fixed price before starting",
+          ru: "Замер на объекте и фиксированная цена до начала работ",
+        },
+      },
+    ],
+    footnote: {
+      es: "El precio desde $35/m² aplica a partir de 20 m², con altura hasta 3 m, sin demolición del cielo raso existente y con lámina estándar de 1/2″. La lámina MR (baños y cocinas) y la firecode de 5/8″ tienen recargo. Garantía de 365 días sobre juntas y estructura.",
+      en: "The $35/m² starting price applies from 20 m² up, with ceiling height up to 3 m, no demolition of the existing ceiling, and standard 1/2″ board. MR board (bathrooms and kitchens) and 5/8″ firecode carry a surcharge. 365-day warranty on joints and framing.",
+      ru: "Цена от $35/м² действует от 20 м², при высоте до 3 м, без демонтажа существующего потолка и со стандартным листом 1/2″. Влагостойкий лист MR (санузлы и кухни) и огнестойкий 5/8″ — с доплатой. Гарантия 365 дней на швы и каркас.",
+    },
+  },
+  "aire-acondicionado-por-ductos": {
+    rows: [
+      {
+        concept: {
+          es: "Visita técnica y cotización",
+          en: "Site visit and quote",
+          ru: "Выезд на объект и расчёт",
+        },
+        price: { es: "gratis", en: "free", ru: "бесплатно" },
+        detail: {
+          es: "Medimos el espacio y confirmamos el tonelaje y los puntos de aire, sin compromiso",
+          en: "We measure the space and confirm tonnage and air outlets, no obligation",
+          ru: "Замеряем помещение и подтверждаем мощность и число точек, без обязательств",
+        },
+      },
+      {
+        concept: {
+          es: "Apartamento, una zona (hasta 40 m²)",
+          en: "Apartment, one zone (up to 40 m²)",
+          ru: "Квартира, одна зона (до 40 м²)",
+        },
+        price: { es: "desde $6 000", en: "from $6,000", ru: "от $6 000" },
+        detail: {
+          es: "Fan coil, ductos, difusores lineales, drenaje y puertas de acceso",
+          en: "Fan coil, ducts, linear diffusers, drainage, and access doors",
+          ru: "Фанкойл, воздуховоды, линейные диффузоры, дренаж и лючки доступа",
+        },
+      },
+      {
+        concept: {
+          es: "Apartamento completo (100–150 m²)",
+          en: "Full apartment (100–150 m²)",
+          ru: "Квартира целиком (100–150 м²)",
+        },
+        price: {
+          es: "$9 000 – $20 000",
+          en: "$9,000 – $20,000",
+          ru: "$9 000 – $20 000",
+        },
+        detail: {
+          es: "El monto depende del tonelaje, la cantidad de puntos de aire y el metraje de cielo raso",
+          en: "The amount depends on tonnage, number of air outlets, and ceiling area",
+          ru: "Сумма зависит от мощности, числа точек подачи и площади потолка",
+        },
+      },
+      {
+        concept: {
+          es: "Cielo raso de gypsum alrededor del sistema",
+          en: "Gypsum ceiling around the system",
+          ru: "Гипсокартонный потолок вокруг системы",
+        },
+        price: { es: "incluido", en: "included", ru: "включено" },
+        detail: {
+          es: "Una sola cuadrilla y un solo contrato para el clima y el cielo raso",
+          en: "One crew and one contract for both the cooling system and the ceiling",
+          ru: "Одна бригада и один договор на климат и потолок",
+        },
+      },
+    ],
+    footnote: {
+      es: "Rango real de obras entregadas en Ciudad de Panamá: $6 000 – $20 000 por vivienda. El precio final depende de los m², el tonelaje y la cantidad de puntos de aire; la visita y la cotización son gratis. Garantía de 365 días sobre la instalación.",
+      en: "Real range of jobs delivered in Panama City: $6,000 – $20,000 per home. The final price depends on square meters, tonnage, and the number of air outlets; the visit and quote are free. 365-day warranty on the installation.",
+      ru: "Реальный диапазон сданных объектов в Панама-Сити: $6 000 – $20 000 за квартиру. Итоговая цена зависит от площади, мощности и числа точек подачи; выезд и расчёт бесплатны. Гарантия 365 дней на монтаж.",
     },
   },
 };

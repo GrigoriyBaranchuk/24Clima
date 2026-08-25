@@ -130,3 +130,6 @@ Common requests and the right response:
 - [Review snippet](https://developers.google.com/search/docs/appearance/structured-data/review-snippet)
 - [Structured data policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)
 - [Spam policies](https://developers.google.com/search/docs/essentials/spam-policies)
+
+
+> Note (2026-08-23): `priceRange` uses tier notation `"$$"` — a literal range became misleading once service prices span $29.99–$20,000.

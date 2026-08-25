@@ -74,7 +74,7 @@ export default function RootLayout({
                 opens: "00:00",
                 closes: "23:59",
               },
-              priceRange: "$29.99 - $600",
+              priceRange: "$$",
               foundingDate: "2024",
               numberOfEmployees: {
                 "@type": "QuantitativeValue",

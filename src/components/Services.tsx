@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, ArrowRight, Building2 } from "lucide-react";
+import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, Layers, AirVent, ArrowRight, Building2 } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/constants";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import RevealOnDesktop from "@/components/RevealOnDesktop";
@@ -15,11 +15,17 @@ export default async function Services() {
   const tWhatsapp = await getTranslations("whatsappMessages");
   const tPropertyManagement = await getTranslations("propertyManagement");
 
+  // Order matters twice over: the desktop grid reads top-left to bottom-right,
+  // and the mobile home page only shows the first four (slice below). The two
+  // new services sit in slots 3 and 4 so they are visible on mobile without a
+  // tap (owner's decision, 2026-08-23).
   const serviceList: { icon: typeof Droplets; slug: ServiceSlug; translationKey: string }[] = [
+    { icon: Wind, slug: "instalacion", translationKey: "installation" },
     { icon: Droplets, slug: "limpieza", translationKey: "cleaning" },
+    { icon: Layers, slug: "gypsum", translationKey: "gypsum" },
+    { icon: AirVent, slug: "aire-acondicionado-por-ductos", translationKey: "hiddenAc" },
     { icon: Settings, slug: "mantenimiento", translationKey: "maintenance" },
     { icon: Wrench, slug: "reparacion", translationKey: "repair" },
-    { icon: Wind, slug: "instalacion", translationKey: "installation" },
     { icon: Thermometer, slug: "carga-de-gas", translationKey: "gasRecharge" },
     { icon: Zap, slug: "emergencia", translationKey: "emergency" },
   ];
@@ -33,12 +39,13 @@ export default async function Services() {
     benefits: [t(`${translationKey}.benefit1`), t(`${translationKey}.benefit2`), t(`${translationKey}.benefit3`), t(`${translationKey}.benefit4`)],
   }));
 
-  // Unique icon colors for mobile (matching mockup)
+  // Unique icon colors for mobile — one per card, in the same order as
+  // serviceList above (only the first four are rendered on mobile).
   const mobileIconColors = [
     "from-[#7BC043] to-[#0F9D58]", // green — instalación
     "from-[#4A90D9] to-[#357ABD]", // blue — limpieza
-    "from-[#F5A623] to-[#E8961E]", // orange — reparación
-    "from-[#E55B8C] to-[#D14577]", // pink — diagnóstico
+    "from-[#6e6e73] to-[#48484a]", // gray — gypsum
+    "from-[#2a4f7a] to-[#1e3a5f]", // navy — A/C ductos
   ];
 
   // Only first 4 services shown on mobile
@@ -83,10 +90,10 @@ export default async function Services() {
           ))}
         </div>
 
-        {/* Desktop Grid — staggered reveal, max 6 cards × 70ms = 350ms total (within 400ms budget) */}
+        {/* Desktop Grid — staggered reveal, 8 cards × 50ms = 400ms total (at the 400ms budget) */}
         <div className="hidden lg:grid lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <RevealOnDesktop key={index} delay={index * 70} className="h-full">
+            <RevealOnDesktop key={index} delay={index * 50} className="h-full">
             <Card
               className="card-hover border-0 shadow-lg bg-white overflow-hidden group h-full"
             >
