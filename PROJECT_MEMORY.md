@@ -1033,7 +1033,7 @@ lint/build чисто; 6 URL — title/canonical/4 hreflang/5 JSON-LD; sitemap +
 дропдаун 9 crawlable ссылок; запрещённые слова 0; seo-reviewer
 flag-with-conditions → RRT «3 элемента без ошибок» + каталог JSON-LD в
 скилле пополнен. Визуально проверено в Chrome (localhost:3100). Грабли:
-Opus прогнал `biome format` по 146 чужим файлам — откатили (№31); локальный
+Opus прогнал `biome format` по 146 чужим файлам — откатили (грабля №32; №31 занят skew-инцидентом); локальный
 `next start` отдаёт hero-картинкам naturalWidth 0 и у старых услуг — артефакт
 локали. Владелец дал «ok for preview deploy» → push + PR #51, Vercel-превью
 собрано; **мерж в main — только по отдельному ok**.
@@ -1074,3 +1074,31 @@ puerta-02. TODO из решения: статья-хаб «¿Qué es un fan coil
 - Политика гарантии и «кто платит при вскрытии потолка» — до первого клиента.
 - GBP: категории, фото, отзывы. Póliza RC. LTR для техников.
 - EXPO CAPAC 24–27.09.2026 — посетителем.
+
+## Сессия 2026-08-23 (вечер) — «Something went wrong» после деплоя → error boundary + Skew Protection
+
+**Симптом.** Владелец открыл 24clima.com и увидел «Something went wrong / Try again»
+(наш `src/app/error.tsx`); перезагрузка вылечила. В Vercel runtime-логах
+серверных ошибок нет (единственная группа — `Failed to find Server Action "x"`,
+это бот-сканер). Прод передеплоился в 13:41 (PR #49) — классический
+**version skew**: старый HTML/JS в браузере запрашивает чанки нового билда.
+
+**Сделано (PR #50, ветка `worktree-error-boundary-skew-reload`, draft):**
+- `src/lib/skew-error.ts` — распознавание skew-ошибок (ChunkLoadError,
+  failed dynamic import, CSS chunk…), один авто-reload за 60 с (sessionStorage
+  с TTL, защита от цикла). Голый `Failed to fetch` НЕ ловим — это оффлайн.
+- `src/app/error.tsx` — при skew молча перезагружает; иначе испанский экран
+  «Algo salió mal» + «Recargar la página» (hard reload) + «Intentar de nuevo»
+  (reset) + `error.digest`; `console.error`; инлайн-стили (CSS мог не прийти).
+- `src/app/global-error.tsx` — ошибки корневого layout (error.tsx их не ловит).
+- План прошёл Codex; tsc/Biome/`next build` чисто.
+
+**Осталось / TODO**
+- ~~Включить Skew Protection~~ — уже была включена (12 ч); ошибка пришла
+  из вкладки старше окна (два деплоя подряд 23:51/23:58 накануне).
+  Если «Algo salió mal» повторится — владелец присылает `Ref: digest`.
+- PR #50 смержен по «ok» владельца, прод задеплоен.
+
+**Wiki (закрытие сессии).** Новая `concepts/vercel-deploy-and-errors`
+(проект Vercel, Skew Protection и её пределы, error boundary, где смотреть
+ошибки); грабли №31; индекс, лог. Поправка про Skew Protection — PR #52.

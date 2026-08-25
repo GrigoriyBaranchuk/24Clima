@@ -21,11 +21,21 @@ seo-reviewer approve, условия закрыты. Коммиты 4fc82fe, 6d0
 сайте», цена oculto стала видимой — desde $6 000), `concepts/service-pricing`
 (цена за единицу `UnitPriceSpecification`/MTK, `priceRange` → «$»),
 `concepts/header-navigation` (8 услуг в дропдауне, две колонки),
-`synthesis/gotchas` (№31 biome format по всему репо), `index.md`.
+`synthesis/gotchas` (biome format по всему репо — теперь №32, №31 занят skew), `index.md`.
 
 Источник: commit 802076b (Opus по плану `inbox/2026-08-23-plan-service-pages.md`,
 ревью Codex 01a03017, seo-reviewer flag-with-conditions → выполнено, RRT без
 ошибок). Фото VIP Aire — `raw/photos/vipaire-2026-08-23/`.
+
+## [2026-08-23] ingest | инцидент «Something went wrong» → error boundary + skew (PR #50)
+
+Затронуто: новая `concepts/vercel-deploy-and-errors`; `synthesis/gotchas`
+(№31, связи); обратная ссылка в `concepts/agent-workflow`; `index.md`
+(+1 концепт, счётчик грабель 31).
+Примечание: Skew Protection была включена ДО инцидента (первичная запись
+«включить» исправлена в PR #52); причина — вкладка старше 12-часового окна
+после двух деплоев подряд. Факты о проекте Vercel сняты с API (GET) —
+PATCH настроек из сессии агента блокируется политикой.
 
 ## [2026-08-23] ingest | исследование новых услуг (ducted + gypsum + VIP Aire + B2B)
 
