@@ -177,7 +177,6 @@ export default async function ArticlePage({
               <div className="p-8 lg:p-12">
                 <Link
                   href="/consejos-y-guias"
-                  scroll={false}
                   className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />

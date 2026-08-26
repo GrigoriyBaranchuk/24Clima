@@ -51,7 +51,6 @@ export default function TiendaCartLink({ variant, isScrolled = false }: Props) {
     return (
       <Link
         href="/tienda/cart"
-        scroll={false}
         aria-label={label}
         className={`relative w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
           isScrolled ? "bg-gray-100 text-gray-600" : "bg-white/10 text-white/70"
@@ -66,7 +65,6 @@ export default function TiendaCartLink({ variant, isScrolled = false }: Props) {
   return (
     <Link
       href="/tienda/cart"
-      scroll={false}
       aria-label={label}
       className="relative flex h-8 w-8 items-center justify-center text-gray-700 transition-colors hover:text-brand-green-dark"
     >

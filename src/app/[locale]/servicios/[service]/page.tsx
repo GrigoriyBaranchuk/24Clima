@@ -274,6 +274,8 @@ export default async function ServicePage({ params }: Props) {
               <div>
                 <Link
                   href="/#servicios"
+                  // ЯКОРЬ, не переход на страницу: scroll={false} обязателен,
+                  // иначе next/link уведёт к верху вместо секции #servicios.
                   scroll={false}
                   className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
                 >

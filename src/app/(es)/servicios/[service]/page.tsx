@@ -229,6 +229,8 @@ export default async function ServicePage({
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
+                {/* ЯКОРЬ, не переход на страницу: scroll={false} обязателен,
+                    иначе next/link уведёт к верху вместо секции #servicios. */}
                 <Link href="/#servicios" scroll={false} className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors">
                   <ArrowLeft className="w-4 h-4" />
                   {tCommon("services")}
