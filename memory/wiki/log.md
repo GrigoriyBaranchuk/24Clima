@@ -2,6 +2,19 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-26] ingest | цикл /seo-tasks (id 27, 29) + фикс скролла + фикс билда merchant-feed
+
+Затронуто: `synthesis/gotchas` (№33 scroll={false}, №34 билд-заложник ISR),
+`concepts/seo-monitoring-system` (id 27/29 закрыты; противоречие снято:
+Supabase MCP теперь видит проект сайта, но read-only),
+`concepts/vercel-deploy-and-errors` (кейс merchant-feed).
+
+Суть: id 27 закрыт диагностикой (источник был здоров), id 29 — PR #56
+(merge 0c063ad: футер-ссылки, reparacion/limpieza/instalacion) + статья
+recarga реструктурирована в Supabase (развод интентов со второй статьёй).
+Попутно: сквозной фикс scroll={false} (isHashNav) и revalidate=0 для
+merchant-feed. id 26 в accepted, гео-страницы районов — делаем.
+
 ## [2026-08-24] ingest | переименование ductos + галереи + видео (PR #51, 4 коммита)
 
 Затронуто: `concepts/new-services-ducted-gypsum` (разделы «Переименование»
