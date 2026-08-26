@@ -71,13 +71,30 @@ async function fetchCatalogApi<T>(
  */
 async function fetchCatalogCached<T>(
   path: string,
-  opts: { revalidate: number; tags?: string[] }
+  opts: { revalidate: number; tags?: string[]; timeoutMs?: number }
 ): Promise<T> {
   const url = buildUrl(path);
-  const res = await fetch(url, {
-    headers: { "Content-Type": "application/json" },
-    next: { revalidate: opts.revalidate, tags: opts.tags },
-  });
+  // Timeout via Promise.race, NOT AbortSignal: passing a signal opts the
+  // request out of Next's memoization (per fetch docs), which product pages
+  // rely on. Without a bound, a cold-started backend hangs the fetch forever —
+  // during `next build` that killed the sitemap/merchant-feed static export
+  // (60s budget) and the whole deploy, because a hanging fetch is not an
+  // error, so callers' try/catch never fired. 45s leaves room inside the
+  // per-attempt export budget for render after a cold start.
+  const timeoutMs = opts.timeoutMs ?? 45_000;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const res = await Promise.race([
+    fetch(url, {
+      headers: { "Content-Type": "application/json" },
+      next: { revalidate: opts.revalidate, tags: opts.tags },
+    }),
+    new Promise<never>((_, reject) => {
+      timer = setTimeout(
+        () => reject(new ApiError(`catalog request timed out after ${timeoutMs}ms: ${url}`, 504)),
+        timeoutMs
+      );
+    }),
+  ]).finally(() => clearTimeout(timer));
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
     const msg = Array.isArray(err.detail) ? err.detail.join(", ") : err.detail || res.statusText;
