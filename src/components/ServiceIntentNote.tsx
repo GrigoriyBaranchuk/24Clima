@@ -57,6 +57,42 @@ const INTENT_NOTES: Partial<Record<ServiceSlug, IntentNote>> = {
       ru: "Подробнее о чистке",
     },
   },
+  reparacion: {
+    title: {
+      es: "¿Reparación o recarga de gas refrigerante?",
+      en: "Repair or refrigerant gas recharge?",
+      ru: "Ремонт или заправка хладагентом?",
+    },
+    text: {
+      es: "La reparación (desde $35, diagnóstico incluido) cubre fallas eléctricas y mecánicas: capacitor, contactor, tarjeta electrónica, motor del ventilador, compresor o drenaje tapado. Pero si el equipo enciende y solo enfría poco, la causa suele ser una fuga o falta de gas refrigerante — eso se resuelve con una carga completa (desde $120) que incluye detección y reparación de la fuga. Si no puede esperar, el servicio de emergencia 24/7 tiene una tarifa fija de $40 por la llamada y el técnico llega en menos de 2 horas.",
+      en: "A repair (from $35, diagnosis included) covers electrical and mechanical faults: capacitor, contactor, electronic board, fan motor, compressor or a blocked drain. But if the unit turns on and simply cools poorly, the cause is usually a leak or a lack of refrigerant gas — that is solved with a full recharge (from $120) which includes leak detection and repair. If you can't wait, the 24/7 emergency service has a flat $40 call-out fee and the technician arrives in under 2 hours.",
+      ru: "Ремонт (от $35, диагностика включена) — это электрические и механические неисправности: конденсатор, пускатель, плата, мотор вентилятора, компрессор или забитый дренаж. Но если блок включается и просто слабо холодит, причина обычно в утечке или нехватке хладагента — это решает полная заправка (от $120) с поиском и устранением утечки. Если ждать нельзя, аварийный выезд 24/7 стоит фиксированные $40 за вызов, техник приезжает менее чем за 2 часа.",
+    },
+    linkHref: "/servicios/carga-de-gas",
+    linkLabel: {
+      es: "Ver recarga de gas refrigerante",
+      en: "See refrigerant gas recharge",
+      ru: "Подробнее о заправке хладагентом",
+    },
+  },
+  instalacion: {
+    title: {
+      es: "¿Instalación de split a la vista o sistema oculto por ductos?",
+      en: "Visible split installation or a concealed ducted system?",
+      ru: "Монтаж настенного сплита или скрытая канальная система?",
+    },
+    text: {
+      es: "La instalación de un split o minisplit a la vista (back-to-back desde $200) es la opción rápida y económica: el equipo queda montado en la pared y se hace en pocas horas, con garantía de 90 días. Si lo que quiere es que no se vea ningún equipo — solo difusores lineales en el cielo raso —, entonces hablamos de un sistema de aire acondicionado por ductos con fan coil y gypsum, desde $6 000. Conviene decidirlo antes de cerrar el cielo raso: después obliga a abrirlo de nuevo.",
+      en: "Installing a visible split or minisplit (back-to-back from $200) is the fast, economical option: the unit goes on the wall and the job takes a few hours, with a 90-day warranty. If you want no equipment in sight — only linear diffusers in the ceiling — then you need a ducted air conditioning system with fan coil and gypsum, from $6,000. Best decided before the ceiling is closed: afterwards it has to be opened again.",
+      ru: "Монтаж настенного сплита или минисплита (back-to-back от $200) — быстрый и недорогой вариант: блок вешается на стену, работа занимает несколько часов, гарантия 90 дней. Если же нужно, чтобы техники не было видно — только линейные диффузоры в потолке, — речь идёт о канальной системе с фанкойлом и гипсокартоном, от $6 000. Решать это лучше до закрытия потолка: потом его придётся вскрывать заново.",
+    },
+    linkHref: "/servicios/aire-acondicionado-por-ductos",
+    linkLabel: {
+      es: "Ver aire acondicionado por ductos",
+      en: "See ducted air conditioning",
+      ru: "Подробнее о канальном кондиционере",
+    },
+  },
   gypsum: {
     title: {
       es: "¿Solo el cielo raso o también esconder el aire acondicionado?",

@@ -26,14 +26,22 @@ export interface ServiceContent {
     title: { es: string; en: string; ru: string };
     text: { es: string; en: string; ru: string };
   }[];
+  /**
+   * Bloque opcional de lista corta (H3 + ítems) para servicios que necesitan
+   * enumerar alcance — ej. «¿Qué reparamos?». Se renderiza después de whyUs.
+   */
+  extraSection?: {
+    title: { es: string; en: string; ru: string };
+    items: { es: string; en: string; ru: string }[];
+  };
 }
 
 export const SERVICE_CONTENT: Record<ServiceSlug, ServiceContent> = {
   limpieza: {
     intro: {
-      es: "En el clima tropical de Panamá, con temperaturas que superan los 32 °C y humedad relativa del 80–90%, los filtros y serpentines de su aire acondicionado acumulan polvo, moho y bacterias mucho más rápido que en climas templados. Según la EPA (Energy Star), un filtro sucio puede aumentar el consumo eléctrico entre un 5% y un 15%. La limpieza profesional profunda no solo restaura la eficiencia original del equipo, sino que mejora la calidad del aire interior — un factor crítico para la salud, especialmente en hogares con niños o personas alérgicas. En 24clima realizamos limpiezas profundas de splits, cassettes y ductos con técnicas que van más allá de un simple lavado de filtros.",
-      en: "In Panama's tropical climate, with temperatures above 32 °C and 80–90% relative humidity, your AC filters and coils accumulate dust, mold, and bacteria much faster than in temperate climates. According to the EPA (Energy Star), a dirty filter can increase electricity consumption by 5–15%. Professional deep cleaning restores your unit's original efficiency and improves indoor air quality — critical for health, especially in homes with children or allergy sufferers. At 24clima we perform deep cleaning of splits, cassettes, and ducts using techniques that go far beyond a simple filter wash.",
-      ru: "В тропическом климате Панамы, при температуре выше 32 °C и влажности 80–90%, фильтры и теплообменники кондиционера накапливают пыль, плесень и бактерии значительно быстрее, чем в умеренном климате. По данным EPA (Energy Star), грязный фильтр увеличивает потребление электроэнергии на 5–15%. Профессиональная глубокая чистка восстанавливает исходную эффективность оборудования и улучшает качество воздуха в помещении. В 24clima мы выполняем глубокую чистку сплит-систем, кассетных блоков и воздуховодов.",
+      es: "En el clima tropical de Panamá, con temperaturas que superan los 32 °C y humedad relativa del 80–90%, los filtros y serpentines de su aire acondicionado acumulan polvo, moho y bacterias mucho más rápido que en climas templados. Según la EPA (Energy Star), un filtro sucio puede aumentar el consumo eléctrico entre un 5% y un 15%. La limpieza profesional profunda no solo restaura la eficiencia original del equipo, sino que mejora la calidad del aire interior — un factor crítico para la salud, especialmente en hogares con niños o personas alérgicas. En 24clima realizamos limpiezas profundas de splits, cassettes y ductos con técnicas que van más allá de un simple lavado de filtros. En Costa del Este y Punta Pacífica, donde predominan los condominios de altura frente al mar, el ambiente marino suma salitre al polvo habitual: el serpentín y la unidad exterior se ensucian antes que tierra adentro, así que la limpieza se necesita con más frecuencia. En esos edificios recomendamos un calendario regular de limpieza en lugar de esperar a que el equipo enfríe mal. En Ciudad de Panamá y alrededores a menudo podemos agendar para el mismo día o el siguiente, según disponibilidad.",
+      en: "In Panama's tropical climate, with temperatures above 32 °C and 80–90% relative humidity, your AC filters and coils accumulate dust, mold, and bacteria much faster than in temperate climates. According to the EPA (Energy Star), a dirty filter can increase electricity consumption by 5–15%. Professional deep cleaning restores your unit's original efficiency and improves indoor air quality — critical for health, especially in homes with children or allergy sufferers. At 24clima we perform deep cleaning of splits, cassettes, and ducts using techniques that go far beyond a simple filter wash. In Costa del Este and Punta Pacífica, where high-rise seafront condominiums dominate, the marine environment adds salt to the usual dust: the coil and the outdoor unit get dirty sooner than further inland, so cleaning is needed more often. In those buildings we recommend a regular cleaning schedule instead of waiting until the unit stops cooling properly. In Panama City and nearby areas we can often schedule same day or next day, depending on availability.",
+      ru: "В тропическом климате Панамы, при температуре выше 32 °C и влажности 80–90%, фильтры и теплообменники кондиционера накапливают пыль, плесень и бактерии значительно быстрее, чем в умеренном климате. По данным EPA (Energy Star), грязный фильтр увеличивает потребление электроэнергии на 5–15%. Профессиональная глубокая чистка восстанавливает исходную эффективность оборудования и улучшает качество воздуха в помещении. В 24clima мы выполняем глубокую чистку сплит-систем, кассетных блоков и воздуховодов. В Costa del Este и Punta Pacífica, где преобладают высотные кондоминиумы у моря, к обычной пыли добавляется морская соль: теплообменник и наружный блок загрязняются быстрее, чем в глубине города, поэтому чистка нужна чаще. Таким зданиям мы рекомендуем регулярный график чистки, а не ждать, пока кондиционер начнёт плохо холодить. В Панама-Сити и окрестностях часто можем запланировать визит на тот же или следующий день по наличию.",
     },
     whyUsTitle: {
       es: "¿Por qué elegir 24clima para la limpieza de su AC?",
@@ -249,13 +257,52 @@ export const SERVICE_CONTENT: Record<ServiceSlug, ServiceContent> = {
         },
       },
     ],
+    extraSection: {
+      title: {
+        es: "¿Qué reparamos?",
+        en: "What do we repair?",
+        ru: "Что мы ремонтируем?",
+      },
+      items: [
+        {
+          es: "Compresor que no arranca o se apaga solo",
+          en: "Compressor that won't start or shuts down on its own",
+          ru: "Компрессор не запускается или сам отключается",
+        },
+        {
+          es: "Condensador y unidad exterior (capacitor, contactor, ventilador)",
+          en: "Condenser and outdoor unit (capacitor, contactor, fan)",
+          ru: "Конденсатор и наружный блок (пусковой конденсатор, пускатель, вентилятор)",
+        },
+        {
+          es: "Tarjeta electrónica y fallas de control remoto o sensores",
+          en: "Electronic board and remote control or sensor faults",
+          ru: "Электронная плата, неисправности пульта и датчиков",
+        },
+        {
+          es: "Fugas de refrigerante en tubería, evaporador o condensador",
+          en: "Refrigerant leaks in piping, evaporator or condenser",
+          ru: "Утечки хладагента в трассе, испарителе или конденсаторе",
+        },
+        {
+          es: "Motor del ventilador y turbina de la unidad interior",
+          en: "Fan motor and indoor unit blower wheel",
+          ru: "Мотор вентилятора и турбина внутреннего блока",
+        },
+        {
+          es: "Drenaje tapado y goteo de agua dentro del ambiente",
+          en: "Blocked drain and water dripping indoors",
+          ru: "Забитый дренаж и протечки воды в помещении",
+        },
+      ],
+    },
   },
 
   instalacion: {
     intro: {
-      es: "La instalación correcta de un aire acondicionado es tan importante como la calidad del equipo mismo. Según ENERGY STAR, un AC mal dimensionado o instalado incorrectamente puede consumir entre un 25% y un 40% más de energía. En 24clima, nuestro Maestro HVAC formado en Alemania se asegura de que cada instalación cumpla con las especificaciones del fabricante, desde el cálculo de BTU hasta la correcta ubicación de las unidades interior y exterior, el tendido de tuberías de cobre y la carga precisa de refrigerante.",
-      en: "Proper AC installation is as important as the unit's quality itself. According to ENERGY STAR, a poorly sized or incorrectly installed AC can consume 25–40% more energy. At 24clima, our Germany-trained HVAC Master ensures every installation meets manufacturer specifications, from BTU calculation to proper indoor/outdoor unit placement, copper piping, and precise refrigerant charge.",
-      ru: "Правильная установка кондиционера так же важна, как и качество самого оборудования. По данным ENERGY STAR, неправильно подобранный или установленный кондиционер потребляет на 25–40% больше энергии. В 24clima мастер HVAC, обученный в Германии, обеспечивает установку по спецификациям производителя: расчёт BTU, размещение блоков, медные трубопроводы и точная заправка хладагента.",
+      es: "La instalación correcta de un aire acondicionado es tan importante como la calidad del equipo mismo. Según ENERGY STAR, un AC mal dimensionado o instalado incorrectamente puede consumir entre un 25% y un 40% más de energía. En 24clima, nuestro Maestro HVAC formado en Alemania se asegura de que cada instalación cumpla con las especificaciones del fabricante, desde el cálculo de BTU hasta la correcta ubicación de las unidades interior y exterior, el tendido de tuberías de cobre y la carga precisa de refrigerante. Instalamos splits y minisplits de pared, multi-splits y cassettes, tanto en apartamentos como en locales comerciales.",
+      en: "Proper AC installation is as important as the unit's quality itself. According to ENERGY STAR, a poorly sized or incorrectly installed AC can consume 25–40% more energy. At 24clima, our Germany-trained HVAC Master ensures every installation meets manufacturer specifications, from BTU calculation to proper indoor/outdoor unit placement, copper piping, and precise refrigerant charge. We install wall-mounted splits and minisplits, multi-splits and cassettes, in both apartments and commercial units.",
+      ru: "Правильная установка кондиционера так же важна, как и качество самого оборудования. По данным ENERGY STAR, неправильно подобранный или установленный кондиционер потребляет на 25–40% больше энергии. В 24clima мастер HVAC, обученный в Германии, обеспечивает установку по спецификациям производителя: расчёт BTU, размещение блоков, медные трубопроводы и точная заправка хладагента. Устанавливаем настенные сплиты и минисплиты, мульти-сплиты и кассетные блоки — как в квартирах, так и в коммерческих помещениях.",
     },
     whyUsTitle: {
       es: "¿Por qué elegir 24clima para la instalación?",

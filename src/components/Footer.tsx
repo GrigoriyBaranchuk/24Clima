@@ -32,11 +32,11 @@ export default async function Footer() {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    { name: t("deepCleaning"), href: "/#servicios" },
-    { name: t("preventiveMaintenance"), href: "/#servicios" },
-    { name: t("repair"), href: "/#servicios" },
-    { name: t("installation"), href: "/#servicios" },
-    { name: t("gasRecharge"), href: "/#servicios" },
+    { name: t("deepCleaning"), href: "/servicios/limpieza" },
+    { name: t("preventiveMaintenance"), href: "/servicios/mantenimiento" },
+    { name: t("repair"), href: "/servicios/reparacion" },
+    { name: t("installation"), href: "/servicios/instalacion" },
+    { name: t("gasRecharge"), href: "/servicios/carga-de-gas" },
   ];
 
   const problems = [
@@ -99,7 +99,11 @@ export default async function Footer() {
       {/* Services Column — hidden on mobile (BottomNav handles navigation) */}
       <FooterColumn heading={t("servicesTitle")} className="hidden lg:block">
         {services.map((service) => (
-          <FooterLink key={service.name} href={service.href}>
+          <FooterLink
+            key={service.name}
+            href={service.href}
+            LinkComponent={FooterNavLink}
+          >
             {service.name}
           </FooterLink>
         ))}

@@ -298,7 +298,7 @@ export default async function ServicePage({ params }: Props) {
                   {description}
                 </p>
 
-                {["installation", "cleaning", "maintenance", "gasRecharge", "gypsum", "hiddenAc"].includes(translationKey) && (
+                {["installation", "cleaning", "maintenance", "repair", "gasRecharge", "gypsum", "hiddenAc"].includes(translationKey) && (
                   <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
                     {t(`${translationKey}.priceFrom`)}
                     {!pricing.priceUnitText && (

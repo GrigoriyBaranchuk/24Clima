@@ -261,6 +261,7 @@
       "shortTitle": "Repair",
       "title": "Air Conditioner Repair Service in Panama City",
       "description": "Air conditioner repair in Panama City. Fast diagnosis, original parts and work guarantee. We service any brand and model across Panama City and surrounding areas.",
+      "priceFrom": "from $35",
       "benefit1": "Accurate diagnosis",
       "benefit2": "Original spare parts",
       "benefit3": "Certified technicians",
@@ -274,7 +275,11 @@
       "faq4Q": "Do you handle emergencies?",
       "faq4A": "Yes. We have 24/7 emergency service for critical failures in Panama City and surrounding areas.",
       "faq5Q": "What brands do you repair?",
-      "faq5A": "We service all brands: LG, Samsung, Mabe, Daikin, Carrier, York, and other split and window units."
+      "faq5A": "We service all brands: LG, Samsung, Mabe, Daikin, Carrier, York, and other split and window units.",
+      "faq6Q": "How much does it cost to repair an air conditioner in Panama?",
+      "faq6A": "Repairs run from $35 for simple cases (capacitor, contactor, sensor, blocked drain) up to about $210 for major work such as a compressor or an electronic board. The diagnosis is included when you have the repair done with us; spare parts are quoted separately. We confirm the exact price after the on-site diagnosis, before touching the unit.",
+      "faq7Q": "What warranty do you give on a repair?",
+      "faq7A": "We give a 90-day warranty on the repair performed: if the same fault comes back within that period, we return at no extra cost. Spare parts also keep the manufacturer's warranty."
     },
     "installation": {
       "shortTitle": "Installation",
@@ -296,7 +301,7 @@
       "faq5Q": "What areas do you serve?",
       "faq5A": "Panama City, Costa del Este, Punta Pacífica, Albrook, Clayton, Panama Pacifico and surrounding areas.",
       "faq6Q": "How much does it cost to install an air conditioner in Panama?",
-      "faq6A": "A back-to-back installation of a 9,000–24,000 BTU split costs $200 and includes the outdoor bracket, rubber bases, connection to an existing outlet, and standard materials. Extras: electrical feed from the breaker panel +$50, additional piping +$20/m. Ducted or multi-split installations are quoted free of charge. 90-day warranty.",
+      "faq6A": "A back-to-back installation of a 9,000–24,000 BTU split or minisplit costs $200 and includes the outdoor bracket, rubber bases, connection to an existing outlet, and standard materials. Extras: electrical feed from the breaker panel +$50, additional piping +$20/m. Ducted or multi-split installations are quoted free of charge. 90-day warranty.",
       "faq7Q": "Why are some installations advertised from $65?",
       "faq7A": "Offers of $65–140 in Panama usually cover basic labor only: brackets, materials, and electrical wiring are charged separately. Our $200 price is all-inclusive — standard materials, professional vacuum pump evacuation, and a written 90-day warranty."
     },

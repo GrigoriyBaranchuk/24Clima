@@ -16,7 +16,8 @@ type Props = {
  * Рендерит три секции, увеличивающие объём страницы до 800–1200 слов:
  *  1. Intro paragraph — зачем услуга нужна в тропическом климате Панамы
  *  2. «¿Por qué elegir 24clima?» — buyer benefits с конкретикой
- *  3. «¿Cómo funciona?» — пошаговый процесс
+ *  3. extraSection (опционально) — короткий список охвата («¿Qué reparamos?»)
+ *  4. «¿Cómo funciona?» — пошаговый процесс
  *
  * Каждая секция содержит извлекаемые факты для AI-поисковиков (GEO).
  */
@@ -58,6 +59,30 @@ export default function ServiceExpandedContent({ service, locale }: Props) {
           </ul>
         </div>
       </section>
+
+      {/* Extra list — solo servicios que enumeran alcance (ej. «¿Qué reparamos?») */}
+      {content.extraSection && (
+        <section className="py-12 md:py-16 bg-white">
+          <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
+            <h3 className="text-xl md:text-2xl font-bold text-[#1e3a5f] mb-6">
+              {content.extraSection.title[locale]}
+            </h3>
+            <ul className="space-y-3" role="list">
+              {content.extraSection.items.map((item, i) => (
+                <li key={i} className="flex gap-3">
+                  <Check
+                    className="w-5 h-5 flex-shrink-0 text-[#7BC043] mt-0.5"
+                    aria-hidden="true"
+                  />
+                  <p className="text-base text-gray-700 leading-relaxed">
+                    {item[locale]}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* How It Works */}
       <section className="py-12 md:py-16 bg-white">
