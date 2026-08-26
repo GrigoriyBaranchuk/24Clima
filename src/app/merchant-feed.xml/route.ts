@@ -10,8 +10,11 @@
  * ARE included — they are sold from the /profesional storefront.
  *
  * Caching: getSitemap()/getProductCached() use fetch `next.revalidate: 3600`, and
- * `export const revalidate = 3600` caches the rendered feed, so the route
- * refreshes at most hourly and never hammers the API per request.
+ * the Cache-Control header below (s-maxage=3600) caches the rendered feed at the
+ * CDN, so the route refreshes at most hourly and never hammers the API per
+ * request. `revalidate = 0` keeps the route OUT of build-time prerender: with
+ * route-level ISR the build had to pull the whole catalog from the shop backend
+ * and died on its cold starts (60s static-export budget, deploys failed).
  *
  * Availability: mirrors the JSON-LD logic (ProductJsonLd) — a price means in stock.
  *
@@ -25,7 +28,7 @@ import { tiendaProductUrl } from "@/features/tienda/lib/tienda-url";
 import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
 export const runtime = "nodejs";
-export const revalidate = 3600;
+export const revalidate = 0;
 
 const FEED_LOCALE = "es";
 const MAX_ADDITIONAL_IMAGES = 10;

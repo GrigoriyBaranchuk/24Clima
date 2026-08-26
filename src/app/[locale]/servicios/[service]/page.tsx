@@ -274,6 +274,8 @@ export default async function ServicePage({ params }: Props) {
               <div>
                 <Link
                   href="/#servicios"
+                  // ЯКОРЬ, не переход на страницу: scroll={false} обязателен,
+                  // иначе next/link уведёт к верху вместо секции #servicios.
                   scroll={false}
                   className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
                 >
@@ -298,7 +300,7 @@ export default async function ServicePage({ params }: Props) {
                   {description}
                 </p>
 
-                {["installation", "cleaning", "maintenance", "gasRecharge", "gypsum", "hiddenAc"].includes(translationKey) && (
+                {["installation", "cleaning", "maintenance", "repair", "gasRecharge", "gypsum", "hiddenAc"].includes(translationKey) && (
                   <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
                     {t(`${translationKey}.priceFrom`)}
                     {!pricing.priceUnitText && (

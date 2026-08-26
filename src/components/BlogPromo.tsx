@@ -71,7 +71,6 @@ export default async function BlogPromo({ locale }: BlogPromoProps) {
             <Link
               key={article.slug}
               href={`/consejos-y-guias/${article.slug}`}
-              scroll={false}
               className="group block bg-white rounded-2xl border border-gray-200 shadow-md overflow-hidden hover:shadow-xl hover:border-[#7BC043]/30 transition-all duration-300 min-w-[75vw] lg:min-w-0 snap-center"
             >
               {article.image_urls[0] ? (
@@ -105,7 +104,6 @@ export default async function BlogPromo({ locale }: BlogPromoProps) {
         <div className="text-center mt-10">
           <Link
             href="/consejos-y-guias"
-            scroll={false}
             className="inline-flex items-center justify-center rounded-xl bg-[#1e3a5f] text-white px-6 py-3 font-medium hover:bg-[#0d2240] transition-colors"
           >
             {t("title")}

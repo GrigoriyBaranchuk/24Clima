@@ -23,9 +23,9 @@ export const SERVICE_SEO_META: Record<string, ServiceMeta> = {
       ru: "Чистка кондиционера в Панаме от $29.99 | 24clima",
     },
     description: {
-      es: "Limpieza profunda profesional desde $29.99 (2+ splits). Garantía 60 días. Servicio en 1-2h. ★5.0 en Google. WhatsApp 24/7.",
-      en: "Professional deep cleaning from $29.99 (2+ splits). 60-day warranty. 1-2h service. ★5.0 on Google. WhatsApp 24/7.",
-      ru: "Глубокая чистка кондиционера от $29.99 (2+ сплита). Гарантия 60 дней. За 1-2ч. ★5.0 в Google. WhatsApp 24/7.",
+      es: "Limpieza profunda desde $29.99 (2+ splits) en Costa del Este y Ciudad de Panamá. Garantía 60 días. Servicio en 1-2h. ★5.0 en Google. WhatsApp 24/7.",
+      en: "Deep cleaning from $29.99 (2+ splits) in Costa del Este and Panama City. 60-day warranty. 1-2h service. ★5.0 on Google. WhatsApp 24/7.",
+      ru: "Глубокая чистка от $29.99 (2+ сплита) в Costa del Este и Панама-Сити. Гарантия 60 дней. За 1-2ч. ★5.0 в Google. WhatsApp 24/7.",
     },
   },
   maintenance: {
@@ -59,9 +59,9 @@ export const SERVICE_SEO_META: Record<string, ServiceMeta> = {
       ru: "Установка кондиционера Панама от $200 | 24clima",
     },
     description: {
-      es: "Instalación profesional back-to-back desde $200. Maestro HVAC formado en Alemania. Garantía 90 días. Ciudad de Panamá y alrededores.",
-      en: "Professional back-to-back installation from $200. HVAC master trained in Germany. 90-day warranty. Panama City & surroundings.",
-      ru: "Профессиональный монтаж back-to-back от $200. Мастер HVAC, обучение в Германии. Гарантия 90 дней. Панама-Сити.",
+      es: "Instalación back-to-back de splits y minisplits desde $200. Maestro HVAC formado en Alemania. Garantía 90 días. Ciudad de Panamá y alrededores.",
+      en: "Back-to-back installation of splits and minisplits from $200. HVAC master trained in Germany. 90-day warranty. Panama City & surroundings.",
+      ru: "Монтаж back-to-back сплитов и минисплитов от $200. Мастер HVAC, обучение в Германии. Гарантия 90 дней. Панама-Сити.",
     },
   },
   gasRecharge: {

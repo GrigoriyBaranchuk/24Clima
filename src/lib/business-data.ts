@@ -185,9 +185,9 @@ export const SERVICE_PRICING_TABLES: Partial<Record<ServiceSlug, ServicePricingT
     rows: [
       {
         concept: {
-          es: "Instalación back-to-back (split 9.000–24.000 BTU)",
-          en: "Back-to-back installation (split 9,000–24,000 BTU)",
-          ru: "Установка back-to-back (сплит 9 000–24 000 BTU)",
+          es: "Instalación back-to-back (split/minisplit 9.000–24.000 BTU)",
+          en: "Back-to-back installation (split/minisplit 9,000–24,000 BTU)",
+          ru: "Установка back-to-back (сплит/минисплит 9 000–24 000 BTU)",
         },
         price: "$200",
         detail: {

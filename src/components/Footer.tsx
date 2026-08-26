@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { WHATSAPP_DISPLAY, getWhatsAppLink, SOCIAL_LINKS } from "@/lib/constants";
+import { isHashNav } from "@/lib/nav";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
 import FooterSocial from "@/components/FooterSocial";
 import {
@@ -11,15 +12,21 @@ import {
   type LinkComponentType,
 } from "@24clima/design/components";
 
-// Localized footer link that bakes in scroll={false}, exposed through the
-// package's LinkComponent contract.
+// Localized footer link, exposed through the package's LinkComponent
+// contract. Якорь (/#problemas) — scroll={false}, чтобы браузер дошёл до
+// хэша; переход на страницу — дефолт next/link (скролл к верху).
 const FooterNavLink: LinkComponentType = ({
   href,
   className,
   children,
   onClick,
 }) => (
-  <Link href={href} scroll={false} className={className} onClick={onClick}>
+  <Link
+    href={href}
+    scroll={isHashNav(href) ? false : undefined}
+    className={className}
+    onClick={onClick}
+  >
     {children}
   </Link>
 );
@@ -32,11 +39,11 @@ export default async function Footer() {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    { name: t("deepCleaning"), href: "/#servicios" },
-    { name: t("preventiveMaintenance"), href: "/#servicios" },
-    { name: t("repair"), href: "/#servicios" },
-    { name: t("installation"), href: "/#servicios" },
-    { name: t("gasRecharge"), href: "/#servicios" },
+    { name: t("deepCleaning"), href: "/servicios/limpieza" },
+    { name: t("preventiveMaintenance"), href: "/servicios/mantenimiento" },
+    { name: t("repair"), href: "/servicios/reparacion" },
+    { name: t("installation"), href: "/servicios/instalacion" },
+    { name: t("gasRecharge"), href: "/servicios/carga-de-gas" },
   ];
 
   const problems = [
@@ -56,7 +63,6 @@ export default async function Footer() {
           </p>
           <Link
             href="/privacidad"
-            scroll={false}
             className="text-gray-400 text-[12px] lg:text-base hover:text-white transition-colors"
           >
             {t("privacyPolicy")}
@@ -66,7 +72,7 @@ export default async function Footer() {
     >
       {/* Brand Column — first child spans 2 cols (shell selector). */}
       <div>
-        <Link href="/" scroll={false} className="inline-block mb-6">
+        <Link href="/" className="inline-block mb-6">
           <Image
             src="/images/logo.svg"
             alt="24clima - Servicio de aire acondicionado en Panamá"
@@ -99,7 +105,11 @@ export default async function Footer() {
       {/* Services Column — hidden on mobile (BottomNav handles navigation) */}
       <FooterColumn heading={t("servicesTitle")} className="hidden lg:block">
         {services.map((service) => (
-          <FooterLink key={service.name} href={service.href}>
+          <FooterLink
+            key={service.name}
+            href={service.href}
+            LinkComponent={FooterNavLink}
+          >
             {service.name}
           </FooterLink>
         ))}
@@ -131,6 +141,9 @@ export default async function Footer() {
         <FooterLink href="/contacto" LinkComponent={FooterNavLink}>
           {tCommon("contact")}
         </FooterLink>
+        {/* Якоря /#problemas сознательно БЕЗ LinkComponent: FooterLink
+            отдаёт обычный <a>, браузер сам делает полный переход и
+            прыгает к хэшу. next/link + scroll здесь не участвуют. */}
         {problems.map((problem) => (
           <FooterLink key={problem.name} href={problem.href}>
             {problem.name}

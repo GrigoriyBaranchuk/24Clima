@@ -4,6 +4,7 @@ import { metaPixelEvent } from "@/components/MetaPixel";
 import TiendaCartLink from "@/features/tienda/components/TiendaCartLink";
 import { Link, usePathname } from "@/i18n/routing";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
+import { isHashNav } from "@/lib/nav";
 import { SERVICE_SLUGS, SLUG_TO_TRANSLATION_KEY } from "@/lib/services";
 import { HeaderShell, WhatsAppCta } from "@24clima/design/components";
 import {
@@ -83,7 +84,9 @@ function NavItem({
   return (
     <Link
       href={href}
-      scroll={false}
+      // Якорь (/#servicios) — гасим авто-скролл, чтобы браузер дошёл до
+      // хэша. Переход на страницу — дефолт next/link, т.е. скролл к верху.
+      scroll={isHashNav(href) ? false : undefined}
       role={role}
       onClick={onClick}
       // "page" is reserved for the exact page; an ancestor section link gets
@@ -203,11 +206,7 @@ export default function Header({
   // breakpoint so the mobile wordmark shows < lg and the desktop mark >= lg.
   const logo = (
     <>
-      <Link
-        href="/"
-        scroll={false}
-        className="flex lg:hidden items-center gap-2"
-      >
+      <Link href="/" className="flex lg:hidden items-center gap-2">
         <div className="w-8 h-8 bg-brand-green rounded-xl flex items-center justify-center">
           <Home className="w-4 h-4 text-white" />
         </div>
@@ -217,7 +216,7 @@ export default function Header({
           24clima
         </span>
       </Link>
-      <Link href="/" scroll={false} className="hidden lg:flex items-center">
+      <Link href="/" className="hidden lg:flex items-center">
         <Image
           src="/images/logo.svg"
           alt="24clima - Servicio de aire acondicionado en Panamá"

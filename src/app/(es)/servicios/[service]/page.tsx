@@ -229,6 +229,8 @@ export default async function ServicePage({
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
+                {/* ЯКОРЬ, не переход на страницу: scroll={false} обязателен,
+                    иначе next/link уведёт к верху вместо секции #servicios. */}
                 <Link href="/#servicios" scroll={false} className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors">
                   <ArrowLeft className="w-4 h-4" />
                   {tCommon("services")}
@@ -241,7 +243,7 @@ export default async function ServicePage({
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">{title}</h1>
                 <p className="text-lg text-white/90 mb-8 leading-relaxed">{description}</p>
-                {["installation", "cleaning", "maintenance", "gasRecharge", "gypsum", "hiddenAc"].includes(translationKey) && (
+                {["installation", "cleaning", "maintenance", "repair", "gasRecharge", "gypsum", "hiddenAc"].includes(translationKey) && (
                   <p className="text-2xl sm:text-3xl font-bold text-white mb-6">
                     {t(`${translationKey}.priceFrom`)}
                     {!pricing.priceUnitText && (

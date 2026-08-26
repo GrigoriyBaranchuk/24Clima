@@ -15,6 +15,7 @@ const TARGET_SERVICES: ServiceSlug[] = [
   "instalacion",
   "mantenimiento",
   "limpieza",
+  "reparacion",
   "carga-de-gas",
   "gypsum",
   "aire-acondicionado-por-ductos",
@@ -26,10 +27,11 @@ const TITLE: Record<SupportedLocale, string> = {
   ru: "Зоны обслуживания в Панама-Сити",
 };
 
+/** Coherente con AreasPricingNote: <2 h solo en la zona metropolitana. */
 const SUBTITLE: Record<SupportedLocale, string> = {
-  es: "Llegada en menos de 2 horas en la zona metropolitana y Panamá Oeste:",
-  en: "Arrival in under 2 hours across the metro area and Panamá Oeste:",
-  ru: "Прибытие менее чем за 2 часа по агломерации и Panamá Oeste:",
+  es: "Llegada en menos de 2 horas en la zona metropolitana; en Panamá Oeste, según la zona:",
+  en: "Arrival in under 2 hours across the metro area; in Panamá Oeste, depending on the area:",
+  ru: "Прибытие менее чем за 2 часа по агломерации; в Panamá Oeste — по зоне:",
 };
 
 const LINK_LABEL: Record<SupportedLocale, string> = {
