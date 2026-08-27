@@ -4,7 +4,7 @@
 прочитай их, и только потом лезь в код. Правила ведения — в
 [`memory/CLAUDE.md`](../CLAUDE.md).
 
-Обновлено: 2026-08-23 · страниц: 27
+Обновлено: 2026-08-27 · страниц: 29
 
 ## Сущности
 
@@ -39,6 +39,7 @@
 | [Новые услуги: gypsum + clima oculto + магазин VIP Aire + сметы B2B](concepts/new-services-ducted-gypsum.md) | решения владельца 2026-08-23, цены, сегменты, **что реализовано в PR #51** (две страницы, переименование в por-ductos, галереи, видео), что дальше, KPI, ревью Codex |
 | [Лицензирование подрядчика в Панаме](concepts/panama-contractor-licensing.md) | JTIA idoneidad (кто может быть подписантом), регистрация компании, RAV, PanamaCompra, фианзы, формат котизации |
 | [Деплой на Vercel и ошибки на клиенте](concepts/vercel-deploy-and-errors.md) | id проекта, Skew Protection (12 ч) и её пределы, error boundary с авто-reload при ChunkLoadError, где смотреть runtime-ошибки |
+| [Портативные кондиционеры](concepts/portable-ac-business.md) | кандидат-направление к $10k/мес: спрос (2 900/мес, +132% г/г), аренда — пустая ниша, налоги 8415.82 = 23%, каналы ZLC vs контейнер, грабля 120В/60Гц; решения нет |
 
 ## Источники
 
@@ -47,6 +48,7 @@
 | [PROJECT_MEMORY.md](sources/project-memory.md) | журнал сессий, разложенный по темам |
 | [Исследование рынка пассивного охлаждения](sources/2026-08-15-panama-passive-cooling-research.md) | DFS + ASEP + SERP + законы, август 2026; что в нём гипотеза, а что факт |
 | [Исследование новых услуг 2026-08-23](sources/2026-08-23-panama-new-services-research.md) | 7 сырых отчётов в raw/research (gypsum, ducted, VIP Aire, B2B, лицензии, покупатели, закупки) + DataForSEO; что факт, что гипотеза |
+| [Исследование портативных кондиционеров 2026-08-26](sources/2026-08-26-portable-ac-research.md) | 4 сырых отчёта в raw/research (DataForSEO-спрос, рынок/аренда, Русклимат/Китай, ZLC-процесс); границы факт/гипотеза |
 
 ## Синтез
 
