@@ -72,3 +72,4 @@ $20 000 один знак ничего не сегментирует, остав
 - [Новые услуги: gypsum и clima oculto](new-services-ducted-gypsum.md) — цены desde $35/m², LED-короб desde $25/ml, canalные по cotización (2026-08-23)
 - [24clima](../entities/24clima.md)
 - [Система SEO-мониторинга](seo-monitoring-system.md) — эти правки закрывали рекомендации id 9 и 10
+- [Портативные кондиционеры](portable-ac-business.md) — будущие цены продажи/аренды/подмены, если направление запустится (2026-08-26)

@@ -79,6 +79,7 @@ status: current
 ## Связи
 
 - [VIP Aire](../entities/vip-aire.md) — поставщик новой категории компонентов; цена = прайс × 1,35 × 1,07; проверить двойной ITBMS в бэкенде
+- [Портативные кондиционеры](portable-ac-business.md) — кандидат-категория магазина + лендинг аренды (разведка 2026-08-26, решения нет)
 - [Google Отзывы клиентов](google-customer-reviews.md)
 - [Supabase-проекты](supabase-projects.md)
 - [24clima](../entities/24clima.md)
