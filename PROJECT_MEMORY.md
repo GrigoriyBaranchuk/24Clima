@@ -1218,3 +1218,10 @@ PR #26 (Codex-ревью; connect timeout 10 c, command_timeout 30 c,
 statement_timeout 30000, pool_recycle 300, pool_timeout 15 — все три
 engine'а: API/worker/bot; alembic не затронут). Написал Opus-агент,
 py_compile зелёный. Ждёт «ok» на мерж. Warm-ping отменён за ненадобностью.
+
+**Закрытие (2026-08-26/27): 24clima-shop PR #26 смержен по «ok», прод проверен.**
+Render автодеплой прошёл; после деплоя: /health 200 за 0.24 c, каталог 200 за
+0.31 c, /tienda 200 за 0.55 c. Скорость для клиента: обычный визит ~0.5–1 c
+(Vercel Data Cache: товары 10 мин, категории/бренды 1 ч), при обновлении кэша
++~0.5 c на Render+Supabase; худший случай теперь ограничен таймаутами
+(10–30 c у shop-api, 45 c у сайта) вместо вечного зависания и 504.
