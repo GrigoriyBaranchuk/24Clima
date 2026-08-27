@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Деплой на Vercel и обработка ошибок на клиенте
-updated: 2026-08-23
+updated: 2026-08-26
 sources: [PROJECT_MEMORY.md, vercel.json, src/app/error.tsx, src/app/global-error.tsx, src/lib/skew-error.ts, Vercel API (проект 24-clima)]
 related: [synthesis/gotchas, concepts/agent-workflow]
 status: current
@@ -85,6 +85,21 @@ error boundary и где искать ошибки прода.
   `fetchCatalogCached` (`Promise.race`, не AbortSignal — signal отключает
   request-мемоизацию Next; PR #58, 55b754f). Идея на будущее: warm-ping
   shop-api уберёт и 45-секундные ожидания на билде (грабля №34).
+- **Та же грабля била и по живым пользователям, не только по билду:**
+  `/tienda` — `force-dynamic`, каталог фетчится на каждый запрос; при
+  холодном Render fetch висел вечно → функция упиралась в лимит 300 с →
+  504. Runtime-группа «Task timed out after 300 seconds»: 15 случаев,
+  12 пользователей за 28.06–26.08, из них шесть 504 на `/tienda/` только
+  26.08 [Vercel get_runtime_errors/get_runtime_logs, 2026-08-26]. На
+  клиенте это выглядит как экран «Algo salió mal» БЕЗ строки `Ref:`
+  (ошибка клиентской навигации, digest нет) — владелец дважды принимал
+  его за «сломался деплой», хотя это не skew (№31), а грабля №34.
+  PR #58 закрывает и runtime-путь: через 45 с fetch отклоняется, home и
+  category ловят ошибку и рендерят пустой каталог, product — error screen
+  с `Ref:` (осознанное решение: API-даун ≠ 404). Проверка после деплоя
+  PR #58: `/tienda/` отвечает 200 за ~1 с. Остаточный дискомфорт —
+  45-секундное ожидание и пустой каталог при холодном бэкенде; снимается
+  тем же warm-ping shop-api.
 
 ## Связи
 

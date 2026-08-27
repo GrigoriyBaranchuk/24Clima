@@ -2,6 +2,17 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-26] ingest | диагноз «Algo salió mal» после деплоя: 504 /tienda (runtime-вид грабли №34), не skew
+
+Затронуто: `concepts/vercel-deploy-and-errors` (runtime-504 на /tienda:
+15 случаев, 12 пользователей 28.06–26.08; признак отличия от skew — экран
+без `Ref:`), `synthesis/gotchas` (№34 дополнен runtime-последствием).
+
+Суть: скриншот владельца «после новой версии» оказался не skew №31, а
+зависанием force-dynamic `/tienda` на холодном shop-api (300 с → 504 →
+error boundary без digest). PR #58 закрыл и runtime-путь; прод проверен
+(200 за ~1 с). Источник — Vercel get_runtime_errors/get_runtime_logs.
+
 ## [2026-08-27] ingest | закрытие сессии: вторая волна билд-падений (sitemap) + таймауты api-client
 
 Затронуто: `synthesis/gotchas` (№34 — remedy дополнен), 
