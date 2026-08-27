@@ -2,6 +2,16 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-27] ingest | закрытие сессии: вторая волна билд-падений (sitemap) + таймауты api-client
+
+Затронуто: `synthesis/gotchas` (№34 — remedy дополнен), 
+`concepts/vercel-deploy-and-errors` (вторая волна: 3 прод-деплоя Error на
+sitemap; фикс PR #58 — Promise.race-таймаут 45 с, не AbortSignal).
+
+Суть: зависший fetch к холодному shop-api — не ошибка, поэтому
+graceful-degradation sitemap не срабатывал; прод стоял на старом билде,
+пока не смержили #58. Прод проверен живьём после деплоя 223e87f.
+
 ## [2026-08-26] ingest | цикл /seo-tasks (id 27, 29) + фикс скролла + фикс билда merchant-feed
 
 Затронуто: `synthesis/gotchas` (№33 scroll={false}, №34 билд-заложник ISR),

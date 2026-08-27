@@ -78,9 +78,13 @@ error boundary и где искать ошибки прода.
   а фид тянет весь каталог из shop-api — холодный старт Render рвал
   60-секундный бюджет статик-экспорта. Починено `revalidate = 0` (рендер по
   запросу; кэш — `next.revalidate` fetch'ей + `s-maxage=3600`) — a6695f2,
-  2026-08-26; `force-dynamic` не подходит (глушит Data Cache). `sitemap.ts`
-  зависит от того же бэкенда, но деградирует мягко (skip tienda-URL);
-  таймаутов у fetch'ей api-client нет — TODO (грабля №34).
+  2026-08-26; `force-dynamic` не подходит (глушит Data Cache). Вторая
+  волна (3 прод-деплоя Error, 2026-08-26): `sitemap.ts` формально
+  деградирует мягко (skip tienda-URL), но зависший fetch — не ошибка,
+  и его try/catch не срабатывал. Закрыто таймаутом 45 с в
+  `fetchCatalogCached` (`Promise.race`, не AbortSignal — signal отключает
+  request-мемоизацию Next; PR #58, 55b754f). Идея на будущее: warm-ping
+  shop-api уберёт и 45-секундные ожидания на билде (грабля №34).
 
 ## Связи
 
