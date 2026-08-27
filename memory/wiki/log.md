@@ -2,6 +2,18 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-26] ingest | корень зависаний — НЕ холодный старт Render, а мёртвые DB-соединения (Supavisor)
+
+Затронуто: `concepts/vercel-deploy-and-errors` (блок-противоречие: shop-api
+всегда был на Starter и не засыпает; причина — обрывы соединений Supavisor +
+отсутствие таймаутов в engine'ах shop-api), `synthesis/gotchas` (№34 — корень
+уточнён).
+
+Суть: метрики Render (24 ч без рестартов, память 20%) опровергли «сон»
+free-tier; supavisor-логи Supabase совпали с 504 секунда в секунду. Фикс —
+24clima-shop PR #26 (таймауты asyncpg + statement_timeout + pool_recycle,
+три engine'а; ревью Codex), ждёт «ok» владельца на мерж.
+
 ## [2026-08-26] ingest | диагноз «Algo salió mal» после деплоя: 504 /tienda (runtime-вид грабли №34), не skew
 
 Затронуто: `concepts/vercel-deploy-and-errors` (runtime-504 на /tienda:

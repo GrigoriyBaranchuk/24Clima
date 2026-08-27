@@ -1205,3 +1205,16 @@ runtime-путь — задеплоен в прод 26.08 ~23:23 UTC. Прове
 **Осталось.** Warm-ping shop-api (идея из прошлой сессии) — единственное,
 что уберёт остаточные 45-секундные ожидания при холодном бэкенде. Не в
 работе, ждёт решения владельца.
+
+**Дополнение (2026-08-26, поздний вечер): корень найден, и это не Render.**
+Обсуждали warm-ping → выяснилось: shop-api ВСЕГДА был на платном Starter
+(blueprint render.yaml), не засыпает; метрики Render — 24 ч ровной работы в
+день инцидента. Настоящий корень: Supavisor (session-пулер Supabase магазина)
+рвёт простоявшие соединения (db_termination when busy), а у engine'ов
+shop-api не было ни таймаутов, ни pool_recycle — запрос по мёртвому сокету
+висел вечно. Улика: supavisor «Terminate received from client» совпадает
+секунда в секунду с обоими 504 (14:51:39, 21:47:43 UTC). Фикс: 24clima-shop
+PR #26 (Codex-ревью; connect timeout 10 c, command_timeout 30 c,
+statement_timeout 30000, pool_recycle 300, pool_timeout 15 — все три
+engine'а: API/worker/bot; alembic не затронут). Написал Opus-агент,
+py_compile зелёный. Ждёт «ok» на мерж. Warm-ping отменён за ненадобностью.
