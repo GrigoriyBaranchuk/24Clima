@@ -41,5 +41,7 @@ status: current
 
 ## Связи
 
+- [QR-наклейка на авто](qr-car-sticker.md) — /qr живёт вне [locale], исключён из matcher.
+
 - [Защищённые SEO-элементы](protected-seo-elements.md)
 - [Грабли проекта](../synthesis/gotchas.md)

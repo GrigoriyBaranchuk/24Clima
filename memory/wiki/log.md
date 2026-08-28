@@ -2,6 +2,15 @@
 
 Append-only, новые записи сверху.
 
+## [2026-08-28] ingest | наклейка на авто + роут /qr (сессия 2026-08-27/28, PR #64)
+
+Затронуто: `concepts/qr-car-sticker` (новая), `concepts/supabase-projects`
+(qr_scans + REST-проба существования таблицы), `synthesis/gotchas` (№35 —
+vercel link --yes и проект-дубликат), обратные ссылки в
+`concepts/portable-ac-business`, `concepts/i18n-dual-route-tree`.
+Примечание: дизайн-решения наклейки (концепция B, ревью Codex) — в
+странице и в PROJECT_MEMORY.
+
 ## [2026-08-27] ingest | разведка направления «портативные кондиционеры» (сессия 2026-08-26/27)
 
 Затронуто: `concepts/portable-ac-business` (новая),

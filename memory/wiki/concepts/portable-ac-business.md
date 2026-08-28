@@ -76,6 +76,8 @@ status: current
 
 ## Связи
 
+- [QR-наклейка на авто](qr-car-sticker.md) — наклейка продаёт подменный сервис
+  («No te dejamos pasando calor»).
 - [Магазин /tienda](tienda-shop.md) — витрина для категории и лендинга аренды.
 - [Сегменты клиентов «hvac»](hvac-customer-segments.md) — event-аренда и B2B
   как каналы аренды.
