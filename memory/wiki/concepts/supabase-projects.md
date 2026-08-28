@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Supabase-проекты сайта и магазина
-updated: 2026-08-11
+updated: 2026-08-28
 sources: [PROJECT_MEMORY.md, локальная память Claude (машина 2), проверка по REST 2026-08-10]
 related: [concepts/seo-monitoring-system, concepts/tienda-shop, synthesis/gotchas]
 status: current
@@ -36,6 +36,11 @@ status: current
   `ADMIN_EMAILS` [проверено 2026-08-10]. Проверять актуальность перед тем,
   как строить что-то поверх `admins`.
 - Таблица `reviews` в базе сайта на ту же дату **пустая**.
+- **`qr_scans` создана 2026-08-28** (миграция 008, владелец применил через
+  SQL editor) — логи сканов QR-наклейки, RLS без политик. Трюк проверки
+  «существует ли таблица» без service-role: GET по REST с publishable
+  anon-ключом — `200 []` значит «есть, RLS прячет строки», ошибка
+  PGRST205 — «нет» — [QR-наклейка](qr-car-sticker.md).
 - Management API заблокирован политикой: миграции применяются через SQL
   editor или `mcp apply_migration` — и только после явного OK владельца
   (см. [SEO-мониторинг](seo-monitoring-system.md)).
