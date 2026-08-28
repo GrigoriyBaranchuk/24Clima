@@ -161,6 +161,7 @@ export const config = {
     "/(en|ru)/:path*",
     // Note: /api is explicitly excluded here (negative lookahead) so middleware
     // never runs for API paths — the 1a pass-through above is defense-in-depth.
-    "/((?!api|_next|_vercel|.*\\..*).*)",
+    // /qr тоже исключён — QR-редирект с автонаклейки, см. src/app/qr/route.ts.
+    "/((?!api|qr/?$|_next|_vercel|.*\\..*).*)",
   ],
 };
