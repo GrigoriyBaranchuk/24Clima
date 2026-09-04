@@ -735,7 +735,18 @@
     },
     "category": {
       "noProducts": "No hay productos en esta categoría.",
-      "aire-acondicionado": "Aire acondicionado"
+      "aire-acondicionado": "Aire acondicionado",
+      "mini-split": "Mini split",
+      "materiales-insumos": "Materiales e insumos",
+      "tuberia-cobre": "Tubería de cobre",
+      "refrigerantes": "Refrigerantes",
+      "herramientas": "Herramientas",
+      "bombas-vacio": "Bombas de vacío",
+      "proteccion-electrica": "Protección eléctrica",
+      "protectores-voltaje": "Protectores de voltaje",
+      "subcategories": "Subcategorías",
+      "allIn": "Todo en {name}",
+      "breadcrumbShop": "Tienda"
     },
     "product": {
       "addToCart": "Añadir al carrito",

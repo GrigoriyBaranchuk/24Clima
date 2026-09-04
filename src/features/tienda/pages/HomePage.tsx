@@ -8,6 +8,7 @@ import { ProductCard } from "../components/product/ProductCard";
 import { LocalizedTiendaLink } from "../components/LocalizedTiendaLink";
 import { TiendaShell } from "../components/TiendaShell";
 import { BASE, tiendaHomeUrl, tiendaLangAlternates } from "../lib/tienda-url";
+import { categoryLabel, type CategoryLike, type CategoryTranslator } from "../lib/category-tree";
 
 const titles: Record<string, string> = {
   es: "24Clima Shop | Aire acondicionado y climatización — Panamá",
@@ -106,6 +107,7 @@ export async function TiendaHomePage({
   const t = await getTranslations({ locale, namespace: "tienda.home" });
   const tFilters = await getTranslations({ locale, namespace: "tienda.filters" });
   const tBadge = await getTranslations({ locale, namespace: "tienda.badge" });
+  const tCategory = await getTranslations({ locale, namespace: "tienda.category" });
   const includePro = includeProParam === "1";
   const btuMin = btuMinParam != null && btuMinParam !== "" ? parseInt(btuMinParam, 10) : null;
   const btuMax = btuMaxParam != null && btuMaxParam !== "" ? parseInt(btuMaxParam, 10) : null;
@@ -126,7 +128,18 @@ export async function TiendaHomePage({
     getBrandsSafe(),
   ]);
   const sort = sortParam && /^(newest|name_asc|name_desc|price_asc|price_desc)$/.test(sortParam) ? sortParam : "newest";
-  const categoryName = category ? (categories.find((c) => c.slug === category)?.name ?? null) : null;
+  // Labels are localized here and passed down as props (repo pattern): client
+  // components never re-resolve translations for API-provided names.
+  const localizedCategories: CategoryLike[] = categories.map((c) => ({
+    id: c.id,
+    slug: c.slug,
+    name: categoryLabel(tCategory as unknown as CategoryTranslator, c),
+    parent_id: c.parent_id,
+    sort_order: c.sort_order,
+  }));
+  const categoryName = category
+    ? (localizedCategories.find((c) => c.slug === category)?.name ?? null)
+    : null;
   const brandName = brand ? (brands.find((b) => b.slug === brand)?.name ?? null) : null;
   const sortLabels: Record<string, string> = {
     newest: t("sortNewest"),
@@ -148,7 +161,7 @@ export async function TiendaHomePage({
         <section className="flex flex-col gap-8 lg:flex-row lg:gap-10">
           <div className="shrink-0 lg:w-64">
             <HomeFilters
-              categories={categories}
+              categories={localizedCategories}
               brands={brands}
               currentCategory={category ?? null}
               currentBrand={brand ?? null}

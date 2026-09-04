@@ -735,7 +735,18 @@
     },
     "category": {
       "noProducts": "No products in this category.",
-      "aire-acondicionado": "Air conditioning"
+      "aire-acondicionado": "Air conditioning",
+      "mini-split": "Mini split",
+      "materiales-insumos": "Materials & supplies",
+      "tuberia-cobre": "Copper tubing",
+      "refrigerantes": "Refrigerants",
+      "herramientas": "Tools",
+      "bombas-vacio": "Vacuum pumps",
+      "proteccion-electrica": "Electrical protection",
+      "protectores-voltaje": "Voltage protectors",
+      "subcategories": "Subcategories",
+      "allIn": "All in {name}",
+      "breadcrumbShop": "Shop"
     },
     "product": {
       "addToCart": "Add to cart",

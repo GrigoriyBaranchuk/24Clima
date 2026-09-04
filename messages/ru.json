@@ -735,7 +735,18 @@
     },
     "category": {
       "noProducts": "В этой категории пока нет товаров.",
-      "aire-acondicionado": "Кондиционеры"
+      "aire-acondicionado": "Кондиционеры",
+      "mini-split": "Сплит-системы",
+      "materiales-insumos": "Материалы и расходники",
+      "tuberia-cobre": "Медная трубка",
+      "refrigerantes": "Хладагенты",
+      "herramientas": "Инструменты",
+      "bombas-vacio": "Вакуумные насосы",
+      "proteccion-electrica": "Электрозащита",
+      "protectores-voltaje": "Защита от перепадов напряжения",
+      "subcategories": "Подкатегории",
+      "allIn": "Всё в {name}",
+      "breadcrumbShop": "Магазин"
     },
     "product": {
       "addToCart": "В корзину",
