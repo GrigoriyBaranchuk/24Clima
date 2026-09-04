@@ -1,9 +1,10 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useMemo } from "react";
 
 import { useRouter, usePathname } from "@/i18n/routing";
-import type { Category, Brand } from "../../lib/api-client";
+import type { Brand } from "../../lib/api-client";
+import { buildCategoryTree, isInSubtree, type CategoryLike } from "../../lib/category-tree";
 
 const SORT_OPTIONS = [
   { value: "newest", labelKey: "sortNewest" },
@@ -15,8 +16,11 @@ const SORT_OPTIONS = [
 
 const AIR_CONDITIONING_SLUG = "aire-acondicionado";
 
+/** Category as the server hands it over: `name` is already the localized label. */
+export type CategoryOption = CategoryLike;
+
 type Props = {
-  categories: Category[];
+  categories: CategoryOption[];
   brands: Brand[];
   currentCategory: string | null;
   currentBrand: string | null;
@@ -55,7 +59,9 @@ export function HomeFilters(props: Props) {
   } = props;
   const router = useRouter();
   const pathname = usePathname();
-  const showBtuFilter = currentCategory === AIR_CONDITIONING_SLUG;
+  // BTU makes sense for the whole air-conditioning subtree, not just its root.
+  const showBtuFilter = isInSubtree(currentCategory, AIR_CONDITIONING_SLUG, categories);
+  const categoryTree = useMemo(() => buildCategoryTree(categories), [categories]);
   // The selects keep their <h3> as the visible group heading (page outline
   // stays intact) and borrow it as accessible name via aria-labelledby; the
   // BTU fields already have real <label>s, they just weren't associated.
@@ -107,19 +113,38 @@ export function HomeFilters(props: Props) {
         >
           {labels.filterCategory}
         </h3>
-        <select
-          aria-labelledby={categoryLabelId}
-          value={currentCategory ?? ""}
-          onChange={(e) => updateParams({ category: e.target.value || null })}
-          className="w-full rounded-xl border border-input/80 bg-background/80 px-4 py-3 text-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-        >
-          <option value="">{labels.filterAll}</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.slug}>
-              {c.name}
-            </option>
+        {/* The tree is small (2 levels), so it stays fully expanded — no toggles. */}
+        <nav aria-labelledby={categoryLabelId} className="space-y-0.5">
+          <CategoryButton
+            label={labels.filterAll}
+            active={!currentCategory}
+            level="root"
+            onSelect={() => updateParams({ category: null })}
+          />
+          {categoryTree.map((root) => (
+            <div key={root.id} className="space-y-0.5">
+              <CategoryButton
+                label={root.name}
+                active={currentCategory === root.slug}
+                level="root"
+                onSelect={() => updateParams({ category: root.slug })}
+              />
+              {root.children.length > 0 && (
+                <div className="space-y-0.5 pl-4">
+                  {root.children.map((child) => (
+                    <CategoryButton
+                      key={child.id}
+                      label={child.name}
+                      active={currentCategory === child.slug}
+                      level="child"
+                      onSelect={() => updateParams({ category: child.slug })}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
-        </select>
+        </nav>
       </div>
 
       <div className="rounded-2xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
@@ -223,5 +248,32 @@ export function HomeFilters(props: Props) {
         </label>
       </div>
     </aside>
+  );
+}
+
+function CategoryButton({
+  label,
+  active,
+  level,
+  onSelect,
+}: {
+  label: string;
+  active: boolean;
+  level: "root" | "child";
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-current={active ? "true" : undefined}
+      className={[
+        "block w-full rounded-lg px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-primary/20",
+        level === "root" ? "text-sm font-medium" : "text-xs",
+        active ? "bg-primary/10 font-semibold text-primary" : "text-foreground hover:bg-muted",
+      ].join(" ")}
+    >
+      {label}
+    </button>
   );
 }
