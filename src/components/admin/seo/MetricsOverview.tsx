@@ -1,7 +1,11 @@
 "use client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import type { SeoAggregate } from "@/lib/seo-aggregate";
+import {
+  type SeoAggregate,
+  effectivePosition,
+  formatPosition,
+} from "@/lib/seo-aggregate";
 import { useMemo, useState } from "react";
 import {
   CartesianGrid,
@@ -487,24 +491,26 @@ export function MetricsOverview({
                 </thead>
                 <tbody>
                   {data.rankings.rows.slice(0, 15).map((r) => {
-                    const improved =
-                      r.position != null &&
-                      r.prevPosition != null &&
-                      r.position < r.prevPosition;
-                    const worse =
-                      r.position != null &&
-                      r.prevPosition != null &&
-                      r.position > r.prevPosition;
+                    // ">20" counts as depth+1 so 15 → >20 reads as worse and
+                    // >20 → 18 as better. No prev measurement → no colour.
+                    const curr = effectivePosition(r.position);
+                    const prev = r.prevMeasured
+                      ? effectivePosition(r.prevPosition)
+                      : null;
+                    const improved = prev != null && curr < prev;
+                    const worse = prev != null && curr > prev;
                     return (
                       <tr key={r.keyword} className="border-b last:border-0">
                         <td className="py-2 pr-4">{r.keyword}</td>
                         <td
                           className={`py-2 px-2 font-medium ${improved ? "text-green-600" : worse ? "text-red-600" : ""}`}
                         >
-                          {r.position ?? ">20"}
+                          {formatPosition(r.position)}
                         </td>
                         <td className="py-2 px-2 text-gray-500">
-                          {r.prevPosition ?? "—"}
+                          {r.prevMeasured
+                            ? formatPosition(r.prevPosition)
+                            : "—"}
                         </td>
                         <td className="py-2 px-2 text-gray-500">
                           {r.searchVolume ?? "—"}

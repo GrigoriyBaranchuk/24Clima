@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Система SEO/GEO/AI-мониторинга и админ-дашборд
-updated: 2026-08-11
+updated: 2026-09-04
 sources: [PROJECT_MEMORY.md, docs/seo-monitoring.md, supabase/migrations/004_seo_monitoring.sql]
 related: [entities/24clima, concepts/service-pricing, synthesis/gotchas, concepts/protected-seo-elements, concepts/supabase-projects]
 status: current
@@ -23,7 +23,17 @@ status: current
   (clicks, impressions, ctr, position), уникальность `(date, page, query)`.
 - `seo_sync_runs` — трекинг прогонов; отличает «0 результатов» от
   «API упал» / «никогда не запускалось». Дайджест и агент читают её
-  первой и помечают устаревшие источники.
+  первой и помечают устаревшие источники. **Порог свежести — по источнику**
+  (`STALE_DAYS_BY_SOURCE` в `seo-aggregate.ts`, PR #69): Google-источники
+  (gsc_totals/gsc/ga4/psi) 3 дня, `dfs_*` 8 дней, потому что DataForSEO
+  ходит раз в неделю (понедельник, GitHub Actions). Окно выборки прогонов
+  `RUNS_WINDOW_DAYS = max+1`; стоимость цикла = сумма последнего прогона
+  по источнику. Статус `partial` (PSI регулярно отдаёт 25/26 URL) — не отказ,
+  показывается отдельной строкой.
+- `seo_rankings` — глубина SERP 20; `our_position = null` означает
+  «измерено, сайта нет в топ-20», а не «нет замера». В рендерах: `>20`
+  для измеренного отсутствия, `—` только когда строки за ту дату нет
+  (`prevMeasured`, `formatPosition`, `effectivePosition`).
 - `seo_cwv_snapshots` — field (CrUX) и lab (Lighthouse) хранятся
   **разными строками**; сравнивать их между собой нельзя.
 - **Роуты:** `/api/sync-seo` (Google, daily; JWT service account,
@@ -71,6 +81,19 @@ auth (`ADMIN_EMAILS`), `admin/layout.tsx` ставит noindex, в sitemap не
 
 ## Грабли
 
+- **Агент ложно требовал «чинить DataForSEO» (2026-09-04, PR #69).** Три
+  недели подряд `dfs_*` помечались STALE/failed при исправном синке
+  (`seo_sync_runs`: ok × 5 недель, $0.08/цикл). Причина — единый
+  `STALE_DAYS = 3` для недельных источников + `null`-позиция прошлой недели
+  как «—». Диагноз через три независимых источника: логи workflow
+  `seo-dataforseo.yml`, таблица `seo_sync_runs`, таблица `seo_rankings`.
+  Грабля №36 в [сводке](../synthesis/gotchas.md).
+- Реальные наблюдения на 2026-09-04 (4 недели, 10.08 → 31.08): «recarga de
+  gas» 5 → 8 → 11 → 10, «precio limpieza» 15 → 19 → 17 → 22 — плавное
+  снижение по двум коммерческим ключам на фоне кликов 69 → 60 → 48.
+  «técnico 24 horas» стабильно 5. По 5 ключам («mantenimiento», «limpieza …
+  Panamá», «no enfría», «servicio», «instalación … Panamá») сайт стабильно
+  вне топ-20 — это факт, а не дыра в данных.
 - **Supabase MCP и проект сайта** `qgvfnpafbzzgnryoxnoj`:
   > **Противоречие (2026-08-26):** раньше здесь было «MCP не видит проект —
   > он в другом аккаунте» [PROJECT_MEMORY.md, 2026-08-07]. Проверено

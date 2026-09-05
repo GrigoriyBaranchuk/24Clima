@@ -14,7 +14,14 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
-import { buildSeoAggregate, pctDelta, type SeoAggregate } from "../src/lib/seo-aggregate";
+import {
+  RUNS_WINDOW_DAYS,
+  buildSeoAggregate,
+  formatPosition,
+  pctDelta,
+  type SeoAggregate,
+  staleDaysFor,
+} from "../src/lib/seo-aggregate";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -46,14 +53,23 @@ function renderBody(a: SeoAggregate): string {
     .filter((s) => s.stale)
     .map((s) =>
       s.status === null
-        ? `- ⚠️ \`${s.source}\`: sin ejecuciones en 8 días`
+        ? `- ⚠️ \`${s.source}\`: sin ejecuciones en ${RUNS_WINDOW_DAYS} días`
         : s.status === "error"
           ? `- 🔴 \`${s.source}\`: última ejecución con ERROR — ${(s.error ?? "").slice(0, 120)}`
-          : `- ⚠️ \`${s.source}\`: datos viejos (${s.ageDays}d)`
+          : `- ⚠️ \`${s.source}\`: datos viejos (${s.ageDays}d, umbral ${staleDaysFor(s.source)}d)`
+    );
+  // Partial = data landed but one call failed (PSI does this routinely). Not an
+  // outage — shown separately so it never reads as "source down".
+  const partialNotes = a.syncHealth
+    .filter((s) => !s.stale && s.status === "partial")
+    .map(
+      (s) =>
+        `- 🟠 \`${s.source}\`: última ejecución parcial${s.error ? ` — ${s.error.slice(0, 120)}` : ""}`,
     );
   out.push("## 🩺 Salud del pipeline");
   out.push(staleNotes.length ? staleNotes.join("\n") : "- ✅ Todas las fuentes al día");
-  out.push(`- 💵 Gasto DataForSEO (últimos 8d): **$${a.weeklyCost.toFixed(2)}**`);
+  if (partialNotes.length) out.push(partialNotes.join("\n"));
+  out.push(`- 💵 Gasto DataForSEO (último ciclo semanal): **$${a.weeklyCost.toFixed(2)}**`);
   out.push("");
 
   // GSC
@@ -85,7 +101,7 @@ function renderBody(a: SeoAggregate): string {
     out.push("| Keyword | Pos. actual | Pos. previa | Vol. |");
     out.push("|---|---|---|---|");
     for (const r of a.rankings.rows.slice(0, 12)) {
-      out.push(`| ${r.keyword} | ${r.position ?? ">20"} | ${r.prevPosition ?? "—"} | ${r.searchVolume ?? "—"} |`);
+      out.push(`| ${r.keyword} | ${formatPosition(r.position)} | ${r.prevMeasured ? formatPosition(r.prevPosition) : "—"} | ${r.searchVolume ?? "—"} |`);
     }
   } else {
     out.push("- _Sin datos de posiciones todavía._");

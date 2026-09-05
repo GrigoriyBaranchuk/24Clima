@@ -10,7 +10,51 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-export const STALE_DAYS = 3;
+/**
+ * SERP depth requested by /api/sync-dataforseo (rankings). `our_position` is
+ * null when the site is not within this depth — that is a measurement ("not in
+ * top-20"), NOT a missing measurement.
+ */
+export const SERP_DEPTH = 20;
+
+export const SYNC_SOURCES = [
+  "gsc_totals",
+  "gsc",
+  "ga4",
+  "psi",
+  "dfs_rankings",
+  "dfs_onpage",
+  "dfs_backlinks",
+] as const;
+export type SyncSource = (typeof SYNC_SOURCES)[number];
+
+/**
+ * Freshness threshold per source, in days. Google sources sync daily (Vercel
+ * cron), DataForSEO sources sync weekly (Mondays, GitHub Actions). A flat 3-day
+ * threshold used to flag every dfs_* source STALE from Thursday to Sunday and
+ * the agent told the owner to "fix the DataForSEO sync" that was working fine.
+ */
+export const STALE_DAYS_BY_SOURCE = {
+  gsc_totals: 3,
+  gsc: 3,
+  ga4: 3,
+  psi: 3,
+  dfs_rankings: 8,
+  dfs_onpage: 8,
+  dfs_backlinks: 8,
+} as const satisfies Record<SyncSource, number>;
+
+export function staleDaysFor(source: string): number {
+  return (STALE_DAYS_BY_SOURCE as Record<string, number>)[source] ?? 3;
+}
+
+/**
+ * seo_sync_runs is read this many days back. Must exceed every threshold above,
+ * otherwise a run older than the window is invisible and reported as "never
+ * ran" instead of "N days old".
+ */
+export const RUNS_WINDOW_DAYS =
+  Math.max(...Object.values(STALE_DAYS_BY_SOURCE)) + 1;
 
 function isoDaysAgo(n: number): string {
   const d = new Date();
@@ -23,6 +67,19 @@ function isoShift(date: string, days: number): string {
   const d = new Date(`${date}T00:00:00Z`);
   d.setUTCDate(d.getUTCDate() + days);
   return d.toISOString().slice(0, 10);
+}
+
+/** ">20" for a measured-but-absent position, the number otherwise. */
+export function formatPosition(pos: number | null): string {
+  return pos == null ? `>${SERP_DEPTH}` : String(pos);
+}
+
+/**
+ * Position for comparisons: not-in-top-N counts as depth+1 so that
+ * 15 → >20 reads as "worse" and >20 → 18 as "better".
+ */
+export function effectivePosition(pos: number | null): number {
+  return pos ?? SERP_DEPTH + 1;
 }
 
 export function pctDelta(curr: number, prev: number): number | null {
@@ -106,8 +163,12 @@ export type SeoAggregate = {
     prevDate: string | null;
     rows: {
       keyword: string;
+      /** null = not within SERP_DEPTH on the latest run. */
       position: number | null;
+      /** null = not within SERP_DEPTH on prevDate, OR not measured (see prevMeasured). */
       prevPosition: number | null;
+      /** A row for this keyword exists on prevDate. false → render "—", not ">20". */
+      prevMeasured: boolean;
       searchVolume: number | null;
       competitors: unknown[];
     }[];
@@ -159,7 +220,10 @@ export async function buildSeoAggregate(
 ): Promise<SeoAggregate> {
   const d7 = isoDaysAgo(7);
   const d14 = isoDaysAgo(14);
+  // Weekly DataForSEO tables: two Monday runs must fit even when one is late.
+  const d16 = isoDaysAgo(16);
   const d60 = isoDaysAgo(60);
+  const dRuns = isoDaysAgo(RUNS_WINDOW_DAYS);
 
   // Site-wide GSC totals (date-only rows, match the GSC UI) anchor the compare
   // windows: current = anchor-6..anchor, previous = anchor-13..anchor-7. When
@@ -180,23 +244,25 @@ export async function buildSeoAggregate(
   const { data: runs } = await supabase
     .from("seo_sync_runs")
     .select("*")
-    .gte("run_at", new Date(Date.now() - 8 * 864e5).toISOString())
+    .gte(
+      "run_at",
+      new Date(Date.now() - RUNS_WINDOW_DAYS * 864e5).toISOString(),
+    )
     .order("run_at", { ascending: false });
   const runRows = (runs ?? []) as Row[];
   // AI Overview visibility is now ingested by the rankings sync (one SERP call),
   // so there is no standalone dfs_ai run — dfs_rankings health covers it.
-  const sources = [
-    "gsc_totals",
-    "gsc",
-    "ga4",
-    "psi",
-    "dfs_rankings",
-    "dfs_onpage",
-    "dfs_backlinks",
-  ];
-  const weeklyCost = runRows.reduce((s, r) => s + (Number(r.cost) || 0), 0);
-  const syncHealth = sources.map((src) => {
-    const last = runRows.find((r) => r.source === src);
+  // Cost of one sync cycle = latest run per source. Summing the whole window
+  // would double-count DataForSEO whenever two Monday runs fit into it.
+  const latestRunBySource = new Map<string, Row>();
+  for (const r of runRows) {
+    const src = String(r.source);
+    if (!latestRunBySource.has(src)) latestRunBySource.set(src, r);
+  }
+  let weeklyCost = 0;
+  for (const r of latestRunBySource.values()) weeklyCost += Number(r.cost) || 0;
+  const syncHealth = SYNC_SOURCES.map((src) => {
+    const last = latestRunBySource.get(src);
     if (!last)
       return {
         source: src,
@@ -215,7 +281,9 @@ export async function buildSeoAggregate(
       ageDays,
       lastRunAt: String(last.run_at),
       error: last.error ? String(last.error) : null,
-      stale: last.status === "error" || ageDays > STALE_DAYS,
+      // "partial" (some rows landed, one call failed) is NOT stale: PSI returns
+      // 25/26 URLs on a routine basis. Consumers surface it via `status`.
+      stale: last.status === "error" || ageDays > staleDaysFor(src),
     };
   });
 
@@ -276,7 +344,7 @@ export async function buildSeoAggregate(
     .sort((a, b) => a.date.localeCompare(b.date));
 
   // --- Rankings ---
-  const ranks = await fetchSince(supabase, "seo_rankings", d14);
+  const ranks = await fetchSince(supabase, "seo_rankings", d16);
   const latestRankDate = ranks.reduce(
     (m, r) => (String(r.date) > m ? String(r.date) : m),
     "",
@@ -298,6 +366,7 @@ export async function buildSeoAggregate(
         position: r.our_position == null ? null : Number(r.our_position),
         prevPosition:
           prev?.our_position == null ? null : Number(prev.our_position),
+        prevMeasured: prev != null,
         searchVolume: r.search_volume == null ? null : Number(r.search_volume),
         competitors: (r.top_competitors as unknown[]) ?? [],
       };
@@ -374,7 +443,8 @@ export async function buildSeoAggregate(
     .sort((a, b) => a.score - b.score);
 
   // --- On-page ---
-  const onpage = await fetchSince(supabase, "seo_onpage_issues", d7);
+  // Weekly source: a 7-day window went empty before sync health said "stale".
+  const onpage = await fetchSince(supabase, "seo_onpage_issues", dRuns);
   const latestOpDate = onpage.reduce(
     (m, r) => (String(r.date) > m ? String(r.date) : m),
     "",
@@ -441,8 +511,11 @@ export async function buildSeoAggregate(
 export function aggregateToContext(a: SeoAggregate): string {
   const lines: string[] = [];
   const stale = a.syncHealth.filter((s) => s.stale).map((s) => s.source);
+  const partial = a.syncHealth
+    .filter((s) => !s.stale && s.status === "partial")
+    .map((s) => s.source);
   lines.push(
-    `Sync health: ${stale.length ? `STALE/failed: ${stale.join(", ")}` : "all sources fresh"}. Weekly DataForSEO cost: $${a.weeklyCost.toFixed(2)}.`,
+    `Sync health: ${stale.length ? `STALE/failed: ${stale.join(", ")}` : "all sources fresh"}.${partial.length ? ` Partial (data present, some items failed — not an outage): ${partial.join(", ")}.` : ""} Cadence: gsc/ga4/psi sync daily; dfs_* sync weekly on Mondays (a dfs_* source is fresh for up to ${STALE_DAYS_BY_SOURCE.dfs_rankings} days). DataForSEO cost of the last sync cycle: $${a.weeklyCost.toFixed(2)}.`,
   );
   lines.push(
     `GSC site-wide totals, week ending ${a.windows.anchor} vs prev week: clicks ${a.gsc.clicksCurr} (prev ${a.gsc.clicksPrev}), impressions ${a.gsc.imprCurr} (prev ${a.gsc.imprPrev}).`,
@@ -458,10 +531,12 @@ export function aggregateToContext(a: SeoAggregate): string {
       `  - "${q.query}": ${q.clicks} clicks (prev ${q.clicksPrev}), avg pos ${q.avgPosition?.toFixed(1) ?? "—"}`,
     );
   }
-  lines.push("SERP positions (DataForSEO, current vs prev week):");
+  lines.push(
+    `SERP positions (DataForSEO, weekly; latest ${a.rankings.latestDate ?? "—"} vs prev ${a.rankings.prevDate ?? "—"}; SERP depth ${SERP_DEPTH}: ">${SERP_DEPTH}" = measured but not in top-${SERP_DEPTH}, "—" = no measurement that week):`,
+  );
   for (const r of a.rankings.rows.slice(0, 12)) {
     lines.push(
-      `  - "${r.keyword}": ${r.position ?? ">20"} (prev ${r.prevPosition ?? "—"}), vol ${r.searchVolume ?? "—"}`,
+      `  - "${r.keyword}": ${formatPosition(r.position)} (prev ${r.prevMeasured ? formatPosition(r.prevPosition) : "—"}), vol ${r.searchVolume ?? "—"}`,
     );
   }
   lines.push(
