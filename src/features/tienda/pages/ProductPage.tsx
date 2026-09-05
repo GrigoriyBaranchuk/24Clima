@@ -6,6 +6,7 @@ import { ProductPageContent } from "../components/product/ProductPageContent";
 import { ProductJsonLd } from "../components/seo/ProductJsonLd";
 import { TiendaShell } from "../components/TiendaShell";
 import { BASE, tiendaProductUrl, tiendaLangAlternates } from "../lib/tienda-url";
+import { sortVariants, variantSku } from "../lib/variants";
 
 export async function generateTiendaProductMetadata(locale: string, slug: string): Promise<Metadata> {
   try {
@@ -33,7 +34,16 @@ export async function generateTiendaProductMetadata(locale: string, slug: string
   }
 }
 
-export async function TiendaProductPage({ locale, slug }: { locale: string; slug: string }) {
+export async function TiendaProductPage({
+  locale,
+  slug,
+  initialVariantId,
+}: {
+  locale: string;
+  slug: string;
+  /** Presentation the page opens on — deep link `?variant=<id>` from the route's searchParams. */
+  initialVariantId?: string | null;
+}) {
   const t = await getTranslations({ locale, namespace: "tienda.product" });
   const tBadge = await getTranslations({ locale, namespace: "tienda.badge" });
   const tCommon = await getTranslations({ locale, namespace: "tienda.common" });
@@ -49,6 +59,18 @@ export async function TiendaProductPage({ locale, slug }: { locale: string; slug
   if (!product) notFound();
   const whatsappNumber = "50768282120";
   const whatsappOrderText = t("askWhatsAppMessage", { name: product.name, sku: product.sku });
+  // One WhatsApp text per presentation — the message must name the size the customer picked.
+  const variants = sortVariants(product.variants);
+  const whatsappOrderTextByVariant = Object.fromEntries(
+    variants.map((v) => [
+      v.id,
+      t("askWhatsAppMessageVariant", {
+        name: product.name,
+        variant: v.label_es,
+        sku: variantSku(product.sku, v),
+      }),
+    ])
+  );
   // Reviews labels (only meaningful when the backend returns reviews).
   const ratingAvg = product.rating_avg;
   const ratingCount = product.rating_count ?? 0;
@@ -76,6 +98,10 @@ export async function TiendaProductPage({ locale, slug }: { locale: string; slug
         professionalLabel={tBadge("professional")}
         whatsappNumber={whatsappNumber}
         whatsappOrderText={whatsappOrderText}
+        variantsLabel={t("variantsLabel")}
+        whatsappOrderTextByVariant={whatsappOrderTextByVariant}
+        initialVariantId={initialVariantId}
+        productUrl={tiendaProductUrl(locale, slug)}
         reviewsTitle={t("reviewsTitle")}
         reviewOutOfLabel={reviewOutOfLabel}
         reviewCountLabel={reviewCountLabel}

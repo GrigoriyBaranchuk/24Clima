@@ -17,7 +17,7 @@ export default async function Page({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ add?: string }>;
+  searchParams: Promise<{ add?: string; variant?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);

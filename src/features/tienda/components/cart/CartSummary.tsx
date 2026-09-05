@@ -12,8 +12,11 @@ import { WhatsAppCta } from "@24clima/design/components";
 const WHATSAPP_NUMBER = "50768282120";
 
 function buildWhatsAppCartMessage(cart: Cart): string {
+  // product_sku is already the full variant SKU for a line with a presentation;
+  // the label is spelled out so the owner reads "Corte 15 m", not just a suffix.
   const lines = cart.items.map(
-    (i) => `• ${i.product_name} (${i.product_sku}) × ${i.quantity} — $${i.line_total}`
+    (i) =>
+      `• ${i.product_name}${i.variant_label ? ` — ${i.variant_label}` : ""} (${i.product_sku}) × ${i.quantity} — $${i.line_total}`
   );
   return [
     "Hi, I'd like to inquire about these items from my cart:",
@@ -24,9 +27,9 @@ function buildWhatsAppCartMessage(cart: Cart): string {
   ].join("\n");
 }
 
-type Props = { addProductId?: string };
+type Props = { addProductId?: string; addVariantId?: string };
 
-export function CartSummary({ addProductId }: Props) {
+export function CartSummary({ addProductId, addVariantId }: Props) {
   const t = useTranslations("tienda.cart");
   const router = useRouter();
   const { user } = useAuth();
@@ -59,7 +62,7 @@ export function CartSummary({ addProductId }: Props) {
       addDoneRef.current = true;
       setAdding(true);
       api
-        .addCartItem(addProductId, 1)
+        .addCartItem(addProductId, 1, undefined, undefined, addVariantId ?? null)
         .then((res) => refetchCart(res.cart_id))
         .then(() => router.replace("/tienda/cart", { scroll: false }))
         .catch(() => !cancelled && setCart(null))
@@ -76,7 +79,7 @@ export function CartSummary({ addProductId }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [addProductId]);
+  }, [addProductId, addVariantId]);
 
   async function updateQuantity(item: CartItem, newQty: number) {
     if (newQty < 1) {
@@ -141,6 +144,11 @@ export function CartSummary({ addProductId }: Props) {
               >
                 {item.product_name}
               </LocalizedTiendaLink>
+              {item.variant_label && (
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {t("presentation")}: {item.variant_label} · SKU {item.product_sku}
+                </p>
+              )}
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <span className="text-sm text-muted-foreground">{t("quantity")}:</span>
                 <span className="inline-flex items-center rounded border border-input bg-muted/50">

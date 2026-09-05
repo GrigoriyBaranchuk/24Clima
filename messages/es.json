@@ -769,7 +769,10 @@
       "delivery": "Pide antes del mediodía y recíbelo hoy mismo; después del mediodía, entrega al día siguiente.",
       "deliveryRegion": "Entrega gratis en la Ciudad de Panamá",
       "returns": "Devoluciones dentro de 7 días",
-      "warranty": "Garantía: {months, plural, one {# mes} other {# meses}}"
+      "warranty": "Garantía: {months, plural, one {# mes} other {# meses}}",
+      "variantsLabel": "Presentación",
+      "seePresentations": "Ver presentaciones",
+      "askWhatsAppMessageVariant": "Hola, me interesa: {name} — {variant} ({sku})"
     },
     "cart": {
       "title": "Carrito",
@@ -783,7 +786,8 @@
       "continueShopping": "Seguir comprando",
       "quantity": "Cant.",
       "remove": "Quitar",
-      "update": "Actualizar"
+      "update": "Actualizar",
+      "presentation": "Presentación"
     },
     "checkout": {
       "title": "Finalizar pedido",

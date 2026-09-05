@@ -11,8 +11,15 @@ export async function generateMetadata({
   return generateTiendaProductMetadata(locale, slug);
 }
 
-export default async function Page({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<{ variant?: string }>;
+}) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  return <TiendaProductPage locale={locale} slug={slug} />;
+  const { variant } = await searchParams;
+  return <TiendaProductPage locale={locale} slug={slug} initialVariantId={variant} />;
 }

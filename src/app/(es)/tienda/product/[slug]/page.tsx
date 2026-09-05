@@ -7,8 +7,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return generateTiendaProductMetadata("es", slug);
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ variant?: string }>;
+}) {
   setRequestLocale("es");
   const { slug } = await params;
-  return <TiendaProductPage locale="es" slug={slug} />;
+  const { variant } = await searchParams;
+  return <TiendaProductPage locale="es" slug={slug} initialVariantId={variant} />;
 }

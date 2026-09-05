@@ -108,6 +108,19 @@ async function fetchCatalogCached<T>(
 
 export type Category = { id: string; name: string; slug: string; description: string | null; image_url: string | null; sort_order: number; parent_id: string | null };
 export type Brand = { id: string; name: string; slug: string; logo_url: string | null };
+/**
+ * One purchasable presentation of a product (e.g. "Rollo 45 m" / "Corte 15 m").
+ * Full SKU of a variant = `product.sku + "-" + sku_suffix`. Products without
+ * variants come back with an empty list (or no field at all on an older backend).
+ */
+export type ProductVariant = {
+  id: string;
+  label_es: string;
+  sku_suffix: string;
+  price: string;
+  is_default: boolean;
+  sort_order: number;
+};
 export type ProductList = {
   id: string;
   sku: string;
@@ -121,6 +134,8 @@ export type ProductList = {
   brand: Brand | null;
   category: Category | null;
   btu: number | null;
+  /** Optional: an older backend does not send variants at all. */
+  variants?: ProductVariant[] | null;
 };
 export type ProductReview = {
   author: string;
@@ -159,6 +174,9 @@ export type CartItem = {
   moq: number;
   pack_size: number;
   errors: string[];
+  /** Set when the line is a specific presentation; `product_sku` is then the full variant SKU. */
+  variant_id?: string | null;
+  variant_label?: string | null;
 };
 export type Cart = { id: string; items: CartItem[]; item_count: number; subtotal: string; tax_amount: string; total: string };
 export type CheckoutPreview = {
@@ -276,13 +294,28 @@ export const api = {
     if (sessionId) h["X-Session-Id"] = sessionId;
     return fetchApi<Cart>("/v1/cart/items", { headers: h });
   },
-  addCartItem: (productId: string, quantity: number, cartId?: string | null, sessionId?: string | null) => {
+  /**
+   * Add a line to the cart. `variantId` picks a presentation; when omitted for a
+   * product that has variants the backend falls back to the default one (so old
+   * links and `?add=<id>` without a variant never add a price-less base product).
+   */
+  addCartItem: (
+    productId: string,
+    quantity: number,
+    cartId?: string | null,
+    sessionId?: string | null,
+    variantId?: string | null
+  ) => {
     const h: Record<string, string> = { "Content-Type": "application/json" };
     if (cartId) h["X-Cart-Id"] = cartId;
     if (sessionId) h["X-Session-Id"] = sessionId;
     return fetchApi<{ cart_id: string; item_id: string }>("/v1/cart/items", {
       method: "POST",
-      body: JSON.stringify({ product_id: productId, quantity }),
+      body: JSON.stringify({
+        product_id: productId,
+        quantity,
+        ...(variantId ? { variant_id: variantId } : {}),
+      }),
       headers: h,
     });
   },

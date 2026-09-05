@@ -769,7 +769,10 @@
       "delivery": "Order before noon for same-day delivery; after noon, next-day delivery.",
       "deliveryRegion": "Free delivery in Panama City",
       "returns": "7-day returns",
-      "warranty": "Warranty: {months, plural, one {# month} other {# months}}"
+      "warranty": "Warranty: {months, plural, one {# month} other {# months}}",
+      "variantsLabel": "Size",
+      "seePresentations": "See sizes",
+      "askWhatsAppMessageVariant": "Hi, I'm interested in: {name} — {variant} ({sku})"
     },
     "cart": {
       "title": "Cart",
@@ -783,7 +786,8 @@
       "continueShopping": "Continue shopping",
       "quantity": "Qty",
       "remove": "Remove",
-      "update": "Update"
+      "update": "Update",
+      "presentation": "Size"
     },
     "checkout": {
       "title": "Checkout",
