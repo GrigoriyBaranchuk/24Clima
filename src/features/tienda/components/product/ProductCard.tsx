@@ -1,17 +1,76 @@
 import Image from "next/image";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
-import type { ProductList } from "../../lib/api-client";
+import type { ProductList, ProductVariant } from "../../lib/api-client";
+import { pickDefaultVariant, sortVariants } from "../../lib/variants";
 
 type Props = {
   product: ProductList;
   btuLabel: string;
   professionalLabel: string;
   noImageLabel?: string;
+  /** "Ver presentaciones" — shown instead of the per-variant rows when there are many. */
+  seePresentationsLabel?: string;
 };
+
+/** Numeric value of a variant price string ("130.00"); NaN-safe for sorting. */
+function priceValue(v: ProductVariant): number {
+  const n = Number.parseFloat(v.price);
+  return Number.isNaN(n) ? 0 : n;
+}
+
+/**
+ * Grid price block. Up to 3 presentations are listed in full (the owner wants both
+ * prices visible, never "desde $65"); beyond that a min–max range plus a hint. The
+ * grid never switches variants — that happens on the product page.
+ */
+function VariantPrices({
+  variants,
+  seePresentationsLabel,
+}: {
+  variants: ProductVariant[];
+  seePresentationsLabel?: string;
+}) {
+  if (variants.length > 3) {
+    const sortedByPrice = [...variants].sort((a, b) => priceValue(a) - priceValue(b));
+    const min = sortedByPrice[0];
+    const max = sortedByPrice[sortedByPrice.length - 1];
+    return (
+      <div className="mt-1">
+        <p className="text-lg font-semibold text-primary">
+          ${min.price} – ${max.price}
+        </p>
+        {seePresentationsLabel && (
+          <p className="text-xs text-muted-foreground">{seePresentationsLabel}</p>
+        )}
+      </div>
+    );
+  }
+  const def = pickDefaultVariant(variants);
+  const ordered = def ? [def, ...variants.filter((v) => v.id !== def.id)] : variants;
+  return (
+    <div className="mt-1 space-y-0.5">
+      {ordered.map((v, i) => (
+        <div key={v.id} className="flex flex-wrap items-baseline gap-x-2">
+          <span className="text-xs text-muted-foreground">{v.label_es}</span>
+          <span className={`font-semibold text-primary ${i === 0 ? "text-lg" : "text-base"}`}>
+            ${v.price}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 /** Shared catalog grid card (home, category, /profesional). Shows a "Profesional"
  * badge for pro-only products (is_b2b_only). */
-export function ProductCard({ product: p, btuLabel, professionalLabel, noImageLabel = "—" }: Props) {
+export function ProductCard({
+  product: p,
+  btuLabel,
+  professionalLabel,
+  noImageLabel = "—",
+  seePresentationsLabel,
+}: Props) {
+  const variants = sortVariants(p.variants);
   return (
     <LocalizedTiendaLink
       href={`/product/${p.slug}`}
@@ -41,7 +100,11 @@ export function ProductCard({ product: p, btuLabel, professionalLabel, noImageLa
           {btuLabel}: {p.btu.toLocaleString()}
         </p>
       )}
-      {p.price != null && <p className="mt-1 text-lg font-semibold text-primary">${p.price}</p>}
+      {variants.length > 0 ? (
+        <VariantPrices variants={variants} seePresentationsLabel={seePresentationsLabel} />
+      ) : (
+        p.price != null && <p className="mt-1 text-lg font-semibold text-primary">${p.price}</p>
+      )}
     </LocalizedTiendaLink>
   );
 }

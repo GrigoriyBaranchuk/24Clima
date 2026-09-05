@@ -1,4 +1,5 @@
 import type { ProductDetail } from "../../lib/api-client";
+import { sortVariants, variantSku } from "../../lib/variants";
 import { tiendaProductUrl, tiendaCategoryUrl, tiendaHomeUrl } from "../../lib/tienda-url";
 import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
@@ -15,7 +16,8 @@ function serialize(data: unknown): string {
 }
 
 /**
- * schema.org Product + Offer + BreadcrumbList (+ FAQPage when the product has FAQ).
+ * schema.org Product (or ProductGroup + hasVariant when the product has presentations)
+ * + Offer + BreadcrumbList (+ FAQPage when the product has FAQ).
  * Server component: renders inline <script type="application/ld+json">. All URLs use
  * tiendaUrl (as-needed locale scheme, /tienda prefix, trailing slash).
  */
@@ -26,32 +28,18 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
   const plainDescription = markdownToPlainText(
     product.description ?? product.short_description ?? "",
   );
-  const availability =
-    product.price != null
-      ? "https://schema.org/InStock"
-      : "https://schema.org/OutOfStock";
-
-  const productLd: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    sku: product.sku,
-    mpn: product.sku,
-    url,
-    ...(images.length ? { image: images } : {}),
-    ...(plainDescription ? { description: plainDescription } : {}),
-    ...(product.brand
-      ? { brand: { "@type": "Brand", name: product.brand.name } }
-      : {}),
-  };
-  if (product.price != null) {
-    productLd.offers = {
+  /**
+   * One schema.org Offer for `price` at `offerUrl` — the base product, or one
+   * variant. Only ever called with a real price, so availability is InStock.
+   */
+  function buildOffer(price: string, offerUrl: string): Record<string, unknown> {
+    return {
       "@type": "Offer",
-      price: String(product.price),
+      price: String(price),
       priceCurrency: "USD",
-      availability,
+      availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
-      url,
+      url: offerUrl,
       seller: { "@type": "Organization", name: "24Clima" },
       shippingDetails: {
         "@type": "OfferShippingDetails",
@@ -102,6 +90,50 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
           }
         : {}),
     };
+  }
+
+  const variants = sortVariants(product.variants);
+  const productLd: Record<string, unknown> = variants.length
+    ? {
+        // Google Search Central: do NOT use AggregateOffer for a set of variants —
+        // a ProductGroup with hasVariant is the documented shape.
+        "@context": "https://schema.org",
+        "@type": "ProductGroup",
+        name: product.name,
+        url,
+        productGroupID: product.sku,
+        variesBy: ["https://schema.org/size"],
+        ...(images.length ? { image: images } : {}),
+        ...(plainDescription ? { description: plainDescription } : {}),
+        ...(product.brand ? { brand: { "@type": "Brand", name: product.brand.name } } : {}),
+        hasVariant: variants.map((v) => {
+          const sku = variantSku(product.sku, v);
+          const variantUrl = `${url}?variant=${v.id}`;
+          return {
+            "@type": "Product",
+            name: `${product.name} — ${v.label_es}`,
+            sku,
+            mpn: sku,
+            size: v.label_es,
+            url: variantUrl,
+            ...(images.length ? { image: images } : {}),
+            offers: buildOffer(v.price, variantUrl),
+          };
+        }),
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: product.name,
+        sku: product.sku,
+        mpn: product.sku,
+        url,
+        ...(images.length ? { image: images } : {}),
+        ...(plainDescription ? { description: plainDescription } : {}),
+        ...(product.brand ? { brand: { "@type": "Brand", name: product.brand.name } } : {}),
+      };
+  if (!variants.length && product.price != null) {
+    productLd.offers = buildOffer(String(product.price), url);
   }
 
   // Ratings/reviews: emit ONLY when the backend actually reports reviews. Never

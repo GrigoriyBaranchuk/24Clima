@@ -6,7 +6,7 @@ export function generateMetadata(): Promise<Metadata> {
   return generateTiendaCartMetadata("es");
 }
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ add?: string }> }) {
+export default async function Page({ searchParams }: { searchParams: Promise<{ add?: string; variant?: string }> }) {
   setRequestLocale("es");
   const sp = await searchParams;
   return <TiendaCartPage locale="es" searchParams={sp} />;

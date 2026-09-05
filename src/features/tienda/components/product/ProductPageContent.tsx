@@ -8,6 +8,7 @@ import { Star, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
 import { ReviewForm } from "./ReviewForm";
 import type { ProductDetail } from "../../lib/api-client";
+import { pickDefaultVariant, sortVariants, variantSku } from "../../lib/variants";
 import { WhatsAppCta } from "@24clima/design/components";
 
 /* Catalog descriptions/FAQ arrive as markdown. Headings are demoted to h3 so the
@@ -40,6 +41,14 @@ type Props = {
   professionalLabel: string;
   whatsappNumber: string;
   whatsappOrderText: string;
+  /** Label of the presentation picker ("Presentación"). */
+  variantsLabel: string;
+  /** Per-variant WhatsApp text, keyed by variant id (server-rendered, localized). */
+  whatsappOrderTextByVariant?: Record<string, string>;
+  /** Deep link `?variant=<id>`: which presentation the page opens on. */
+  initialVariantId?: string | null;
+  /** Canonical product URL — the WhatsApp text carries it with `?variant=` appended. */
+  productUrl: string;
   reviewsTitle: string;
   reviewOutOfLabel: string;
   reviewCountLabel: string;
@@ -76,6 +85,10 @@ export function ProductPageContent(props: Props) {
     professionalLabel,
     whatsappNumber,
     whatsappOrderText,
+    variantsLabel,
+    whatsappOrderTextByVariant,
+    initialVariantId,
+    productUrl,
     reviewsTitle,
     reviewOutOfLabel,
     reviewCountLabel,
@@ -83,6 +96,31 @@ export function ProductPageContent(props: Props) {
   } = props;
   const images = product.images?.length ? product.images : [];
   const [selectedIndex, setSelectedIndex] = useState(0);
+  // Presentations (variants). A product without them renders exactly as before.
+  const variants = sortVariants(product.variants);
+  const fallbackVariant = pickDefaultVariant(variants);
+  const [variantId, setVariantId] = useState<string | null>(
+    (initialVariantId && variants.some((v) => v.id === initialVariantId)
+      ? initialVariantId
+      : fallbackVariant?.id) ?? null
+  );
+  const selectedVariant = variants.find((v) => v.id === variantId) ?? fallbackVariant;
+
+  /** Switch presentation and mirror it into the URL — no navigation, shareable link. */
+  function selectVariant(id: string) {
+    setVariantId(id);
+    const url = new URL(window.location.href);
+    url.searchParams.set("variant", id);
+    window.history.replaceState(null, "", url.toString());
+  }
+
+  const displayPrice = selectedVariant ? selectedVariant.price : product.price;
+  const displaySku = selectedVariant ? variantSku(product.sku, selectedVariant) : product.sku;
+  // The message names the presentation and links to the deep link that opens on it,
+  // so the owner sees on WhatsApp exactly what the customer was looking at.
+  const whatsappText = selectedVariant
+    ? `${whatsappOrderTextByVariant?.[selectedVariant.id] ?? whatsappOrderText}\n${productUrl}?variant=${selectedVariant.id}`
+    : whatsappOrderText;
   const mainImage = images[selectedIndex];
   const faq = product.faq?.filter((f) => f.q && f.a) ?? [];
   // Reviews render ONLY when the backend supplies them — never a default/fake rating.
@@ -133,7 +171,7 @@ export function ProductPageContent(props: Props) {
         </div>
         <div>
           <div className="flex items-center gap-3">
-            <p className="text-sm text-muted-foreground">{product.sku}</p>
+            <p className="text-sm text-muted-foreground">{displaySku}</p>
             {product.is_b2b_only && (
               <span className="rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground">
                 {professionalLabel}
@@ -141,21 +179,59 @@ export function ProductPageContent(props: Props) {
             )}
           </div>
           <h1 className="mt-2 text-3xl font-bold text-foreground">{product.name}</h1>
-          {product.price != null && (
-            <p className="mt-4 text-2xl font-semibold text-primary">${product.price}</p>
+          {variants.length > 0 && (
+            <div className="mt-4">
+              <p id="variant-label" className="text-sm font-medium text-foreground">
+                {variantsLabel}
+              </p>
+              <div
+                role="radiogroup"
+                aria-labelledby="variant-label"
+                className="mt-2 flex flex-wrap gap-2"
+              >
+                {variants.map((v) => {
+                  const active = v.id === selectedVariant?.id;
+                  return (
+                    <button
+                      key={v.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      onClick={() => selectVariant(v.id)}
+                      className={`min-h-[44px] rounded-lg border px-4 py-2 text-sm transition-colors ${
+                        active
+                          ? "border-primary bg-primary/10 font-medium text-foreground"
+                          : "border-border text-muted-foreground hover:border-primary/50"
+                      }`}
+                    >
+                      {v.label_es} · ${v.price}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {displayPrice != null && (
+            <p className="mt-4 text-2xl font-semibold text-primary">${displayPrice}</p>
           )}
           {product.short_description && (
             <p className="mt-4 text-muted-foreground">{product.short_description}</p>
           )}
           <div className="mt-8 flex flex-wrap gap-4">
             <LocalizedTiendaLink
-              href={{ pathname: "/cart", query: { add: product.id } }}
+              href={{
+                pathname: "/cart",
+                query: {
+                  add: product.id,
+                  ...(selectedVariant ? { variant: selectedVariant.id } : {}),
+                },
+              }}
               className="inline-flex rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90"
             >
               {addToCartLabel}
             </LocalizedTiendaLink>
             <WhatsAppCta
-              href={"https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(whatsappOrderText)}
+              href={"https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(whatsappText)}
               size="lg"
             >
               {askWhatsAppLabel}

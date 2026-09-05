@@ -120,6 +120,7 @@ export async function TiendaCategoryPage({
   const tHome = await getTranslations({ locale, namespace: "tienda.home" });
   const tFilters = await getTranslations({ locale, namespace: "tienda.filters" });
   const tBadge = await getTranslations({ locale, namespace: "tienda.badge" });
+  const tProduct = await getTranslations({ locale, namespace: "tienda.product" });
   const [data, categories] = await Promise.all([
     getCategoryProductsSafe(
       slug,
@@ -233,6 +234,7 @@ export async function TiendaCategoryPage({
               product={p}
               btuLabel={tHome("btuLabel")}
               professionalLabel={tBadge("professional")}
+              seePresentationsLabel={tProduct("seePresentations")}
             />
           ))}
         </div>

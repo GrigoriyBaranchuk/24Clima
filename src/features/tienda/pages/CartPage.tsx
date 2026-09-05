@@ -19,15 +19,18 @@ export async function TiendaCartPage({
   searchParams,
 }: {
   locale: string;
-  searchParams: { add?: string };
+  searchParams: { add?: string; variant?: string };
 }) {
-  const { add: addProductId } = searchParams;
+  const { add: addProductId, variant: addVariantId } = searchParams;
   const t = await getTranslations({ locale, namespace: "tienda.cart" });
   return (
     <TiendaShell>
       <div className="container mx-auto px-4 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-foreground">{t("title")}</h1>
-        <CartSummary addProductId={addProductId ?? undefined} />
+        <CartSummary
+          addProductId={addProductId ?? undefined}
+          addVariantId={addVariantId ?? undefined}
+        />
       </div>
     </TiendaShell>
   );

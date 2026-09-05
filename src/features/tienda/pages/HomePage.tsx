@@ -108,6 +108,7 @@ export async function TiendaHomePage({
   const tFilters = await getTranslations({ locale, namespace: "tienda.filters" });
   const tBadge = await getTranslations({ locale, namespace: "tienda.badge" });
   const tCategory = await getTranslations({ locale, namespace: "tienda.category" });
+  const tProduct = await getTranslations({ locale, namespace: "tienda.product" });
   const includePro = includeProParam === "1";
   const btuMin = btuMinParam != null && btuMinParam !== "" ? parseInt(btuMinParam, 10) : null;
   const btuMax = btuMaxParam != null && btuMaxParam !== "" ? parseInt(btuMaxParam, 10) : null;
@@ -213,6 +214,7 @@ export async function TiendaHomePage({
                   btuLabel={t("btuLabel")}
                   professionalLabel={tBadge("professional")}
                   noImageLabel={t("noProducts")}
+                  seePresentationsLabel={tProduct("seePresentations")}
                 />
               ))}
             </div>

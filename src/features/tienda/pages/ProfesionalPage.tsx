@@ -42,6 +42,7 @@ export async function TiendaProfesionalPage({
   const t = await getTranslations({ locale, namespace: "tienda.profesional" });
   const tHome = await getTranslations({ locale, namespace: "tienda.home" });
   const tBadge = await getTranslations({ locale, namespace: "tienda.badge" });
+  const tProduct = await getTranslations({ locale, namespace: "tienda.product" });
   const data = await getProProductsSafe(sort, q, locale);
 
   return (
@@ -58,6 +59,7 @@ export async function TiendaProfesionalPage({
               product={p}
               btuLabel={tHome("btuLabel")}
               professionalLabel={tBadge("professional")}
+              seePresentationsLabel={tProduct("seePresentations")}
             />
           ))}
         </div>
