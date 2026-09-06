@@ -118,6 +118,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
+  // Servicios (список услуг) — все локали. Индексируемая страница-хаб из меню.
+  for (const locale of locales) {
+    entries.push({
+      url: localeUrl(locale, "/servicios/"),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+      alternates: { languages: langAlternates("/servicios/") },
+    });
+  }
+
+  // Problemas (частые неисправности) — все локали
+  for (const locale of locales) {
+    entries.push({
+      url: localeUrl(locale, "/problemas/"),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+      alternates: { languages: langAlternates("/problemas/") },
+    });
+  }
+
   // Tips list — все локали
   for (const locale of locales) {
     entries.push({

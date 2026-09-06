@@ -114,7 +114,7 @@
     },
     {
       "source": "/es/:path*",
-      "destination": "/:path*",
+      "destination": "/:path*/",
       "permanent": true,
       "missing": [
         {
