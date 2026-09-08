@@ -6,8 +6,10 @@
  * Spanish (es) catalog of the shop-api backend served under 24clima.com/tienda.
  *
  * Data source: the shop-api sitemap endpoint (all active slugs, including B2B) →
- * per-product detail. Only products with a price are emitted. B2B-only products
- * ARE included — they are sold from the /profesional storefront.
+ * per-product detail. B2B-only products ARE included — they are sold from the
+ * /profesional storefront. What a product turns into (one row, or one row per
+ * variant; human vs. AI-declared text; which images qualify) lives in
+ * features/tienda/lib/merchant-feed.ts, which is pure and unit-checked.
  *
  * Caching: getSitemap()/getProductCached() use fetch `next.revalidate: 3600`, and
  * the Cache-Control header below (s-maxage=3600) caches the rendered feed at the
@@ -24,102 +26,10 @@
 
 import { api } from "@/features/tienda/lib/api-client";
 import type { ProductDetail } from "@/features/tienda/lib/api-client";
-import { tiendaProductUrl } from "@/features/tienda/lib/tienda-url";
-import { markdownToPlainText } from "@/lib/markdown-plain-text";
+import { buildFeed, buildFeedItems, FEED_LOCALE } from "@/features/tienda/lib/merchant-feed";
 
 export const runtime = "nodejs";
 export const revalidate = 0;
-
-const FEED_LOCALE = "es";
-const MAX_ADDITIONAL_IMAGES = 10;
-const MAX_DESCRIPTION = 5000;
-
-/** Escape the five XML-significant characters so values can't break the markup. */
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
-
-/** Plain-text description for the feed, capped — Google rejects HTML in g:description. */
-function toPlainText(input: string): string {
-  return markdownToPlainText(input).slice(0, MAX_DESCRIPTION);
-}
-
-/** Ordered image URLs for a product: images[] sorted by sort_order, else image_url. */
-function productImages(product: ProductDetail): string[] {
-  const fromImages = (product.images ?? [])
-    .slice()
-    .sort((a, b) => a.sort_order - b.sort_order)
-    .map((im) => im.url)
-    .filter((u): u is string => Boolean(u));
-  if (fromImages.length) return fromImages;
-  return product.image_url ? [product.image_url] : [];
-}
-
-function tag(name: string, value: string): string {
-  return `<${name}>${escapeXml(value)}</${name}>`;
-}
-
-function buildItem(product: ProductDetail): string {
-  const link = tiendaProductUrl(FEED_LOCALE, product.slug);
-  const price = `${Number(product.price).toFixed(2)} USD`;
-  const rawDescription = product.description ?? product.short_description ?? "";
-  const description = toPlainText(rawDescription);
-  const images = productImages(product);
-  const [mainImage, ...restImages] = images;
-  const additionalImages = restImages.slice(0, MAX_ADDITIONAL_IMAGES);
-
-  const parts: string[] = [
-    tag("g:id", product.sku),
-    tag("g:title", product.name),
-  ];
-  if (description) parts.push(tag("g:description", description));
-  parts.push(tag("g:link", link));
-  if (mainImage) parts.push(tag("g:image_link", mainImage));
-  for (const img of additionalImages) parts.push(tag("g:additional_image_link", img));
-  parts.push(tag("g:price", price));
-  parts.push(tag("g:availability", "in_stock"));
-  parts.push(tag("g:condition", "new"));
-  if (product.brand?.name) parts.push(tag("g:brand", product.brand.name));
-  parts.push(tag("g:mpn", product.sku));
-  parts.push(
-    "<g:shipping>" +
-      tag("g:country", "PA") +
-      tag("g:service", "Entrega el mismo día (Ciudad de Panamá)") +
-      tag("g:price", "0 USD") +
-      "</g:shipping>"
-  );
-
-  return `    <item>\n${parts.map((p) => `      ${p}`).join("\n")}\n    </item>`;
-}
-
-function buildFeed(items: string[]): string {
-  const channelMeta = [
-    tag("title", "24Clima"),
-    tag("link", "https://24clima.com/tienda"),
-    tag(
-      "description",
-      "Aire acondicionado, refrigeración y herramientas HVAC/R con entrega en Panamá."
-    ),
-  ]
-    .map((p) => `    ${p}`)
-    .join("\n");
-
-  return (
-    '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">\n' +
-    "  <channel>\n" +
-    channelMeta +
-    "\n" +
-    items.join("\n") +
-    "\n  </channel>\n" +
-    "</rss>\n"
-  );
-}
 
 export async function GET(): Promise<Response> {
   let details: ProductDetail[];
@@ -147,14 +57,12 @@ export async function GET(): Promise<Response> {
     });
   }
 
-  const items = details
-    .filter((p) => p.price != null)
-    .map((p) => buildItem(p));
+  const items = details.flatMap((p) => buildFeedItems(p));
 
   // Never publish an empty feed: an empty result almost certainly means a data
   // problem, and Google would treat "0 products" as authoritative.
   if (items.length === 0) {
-    console.error("[merchant-feed] no priced products to emit — refusing empty feed");
+    console.error("[merchant-feed] no submittable products — refusing empty feed");
     return new Response("Service Unavailable", {
       status: 503,
       headers: { "Content-Type": "text/plain; charset=utf-8" },

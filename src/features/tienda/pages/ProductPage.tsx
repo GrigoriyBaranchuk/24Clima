@@ -5,18 +5,33 @@ import { api, ApiError } from "../lib/api-client";
 import { ProductPageContent } from "../components/product/ProductPageContent";
 import { ProductJsonLd } from "../components/seo/ProductJsonLd";
 import { TiendaShell } from "../components/TiendaShell";
-import { BASE, tiendaProductUrl, tiendaLangAlternates } from "../lib/tienda-url";
+import { BASE, tiendaProductUrl, tiendaLangAlternates, tiendaRobots } from "../lib/tienda-url";
 import { sortVariants, variantSku } from "../lib/variants";
+
+/**
+ * The product to render. Under `next dev` with TIENDA_MOCK_PRODUCT=1 the
+ * two-axis fixture answers for its own slug — the live catalog has no product
+ * with two axes yet, so the picker would otherwise be unreviewable. Production
+ * never reaches the import (guarded on NODE_ENV), and every other slug goes to
+ * the API as before.
+ */
+async function loadProduct(slug: string, locale: string) {
+  if (process.env.NODE_ENV !== "production" && process.env.TIENDA_MOCK_PRODUCT === "1") {
+    const { MOCK_TWO_AXIS_SLUG, mockTwoAxisProduct } = await import("../lib/dev-mock-product");
+    if (slug === MOCK_TWO_AXIS_SLUG) return mockTwoAxisProduct();
+  }
+  return api.getProductCached(slug, locale);
+}
 
 export async function generateTiendaProductMetadata(locale: string, slug: string): Promise<Metadata> {
   try {
-    const p = await api.getProductCached(slug, locale);
+    const p = await loadProduct(slug, locale);
     const mainImage = p.images?.[0]?.url;
     return {
       metadataBase: new URL(BASE),
       title: p.meta_title || p.name + " | 24Clima Shop",
       description: p.meta_description || p.short_description || p.name,
-      robots: { index: true, follow: true },
+      robots: tiendaRobots(locale),
       alternates: {
         canonical: tiendaProductUrl(locale, slug),
         languages: tiendaLangAlternates(`/product/${slug}`),
@@ -30,7 +45,7 @@ export async function generateTiendaProductMetadata(locale: string, slug: string
       },
     };
   } catch {
-    return { title: "Producto | 24Clima Shop" };
+    return { title: "Producto | 24Clima Shop", robots: tiendaRobots(locale) };
   }
 }
 
@@ -49,7 +64,7 @@ export async function TiendaProductPage({
   const tCommon = await getTranslations({ locale, namespace: "tienda.common" });
   let product;
   try {
-    product = await api.getProductCached(slug, locale);
+    product = await loadProduct(slug, locale);
   } catch (e) {
     // Only a real API 404 means "no such product". Anything else (API down, bad
     // env, 5xx) must surface as an error, not silently render as a 404 page.

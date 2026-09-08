@@ -1,5 +1,5 @@
 import type { ProductDetail } from "../../lib/api-client";
-import { sortVariants, variantSku } from "../../lib/variants";
+import { sortVariants, usableAxes, variantOptions, variantSku } from "../../lib/variants";
 import { tiendaProductUrl, tiendaCategoryUrl, tiendaHomeUrl } from "../../lib/tienda-url";
 import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
@@ -93,6 +93,12 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
   }
 
   const variants = sortVariants(product.variants);
+  // Several axes: `size` carries the diameter (the axis a shopper filters by) and
+  // every axis is repeated as an additionalProperty, so nothing is lost when a
+  // variant is identified by more than one dimension.
+  const axes = usableAxes(product.variant_axes, variants);
+  const multiAxis = axes.length >= 2;
+  const sizeAxis = axes.find((a) => a.key === "diametro") ?? axes[0];
   const productLd: Record<string, unknown> = variants.length
     ? {
         // Google Search Central: do NOT use AggregateOffer for a set of variants —
@@ -109,12 +115,24 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
         hasVariant: variants.map((v) => {
           const sku = variantSku(product.sku, v);
           const variantUrl = `${url}?variant=${v.id}`;
+          const opts = variantOptions(v);
+          const size = (multiAxis && sizeAxis ? opts[sizeAxis.key] : null) ?? v.label_es;
+          const additionalProperty = multiAxis
+            ? axes
+                .filter((a) => opts[a.key])
+                .map((a) => ({
+                  "@type": "PropertyValue",
+                  name: a.label_es,
+                  value: opts[a.key],
+                }))
+            : [];
           return {
             "@type": "Product",
             name: `${product.name} — ${v.label_es}`,
             sku,
             mpn: sku,
-            size: v.label_es,
+            size,
+            ...(additionalProperty.length ? { additionalProperty } : {}),
             url: variantUrl,
             ...(images.length ? { image: images } : {}),
             offers: buildOffer(v.price, variantUrl),

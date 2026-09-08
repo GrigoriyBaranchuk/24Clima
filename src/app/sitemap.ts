@@ -12,6 +12,7 @@ import {
   tiendaCategoryUrl,
   tiendaProductUrl,
   tiendaLangAlternates,
+  TIENDA_INDEXED_LOCALES,
 } from "@/features/tienda/lib/tienda-url";
 
 const BASE = "https://24clima.com";
@@ -188,7 +189,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Tienda returns policy — static content page, not gated behind the catalog API.
-  for (const locale of locales) {
+  // Shop URLs run over TIENDA_INDEXED_LOCALES, not `locales`: the ru shop is
+  // noindex, and submitting a noindexed URL is a GSC error ("Submitted URL marked
+  // noindex"), so it stays out of the sitemap as well as out of hreflang.
+  for (const locale of TIENDA_INDEXED_LOCALES) {
     entries.push({
       url: tiendaDevolucionesUrl(locale),
       lastModified: now,
@@ -207,7 +211,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const [tiendaCategories, tiendaProducts]: [TiendaCategory[], TiendaSitemapItem[]] =
       await Promise.all([tiendaApi.getCategoriesCached(), tiendaApi.getSitemap()]);
 
-    for (const locale of locales) {
+    for (const locale of TIENDA_INDEXED_LOCALES) {
       entries.push({
         url: tiendaHomeUrl(locale),
         lastModified: now,
@@ -226,7 +230,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     for (const c of tiendaCategories) {
       const path = `/category/${c.slug}`;
-      for (const locale of locales) {
+      for (const locale of TIENDA_INDEXED_LOCALES) {
         entries.push({
           url: tiendaCategoryUrl(locale, c.slug),
           lastModified: now,
@@ -240,7 +244,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const p of tiendaProducts) {
       const lastModified = p.updated_at ? new Date(p.updated_at) : now;
       const path = `/product/${p.slug}`;
-      for (const locale of locales) {
+      for (const locale of TIENDA_INDEXED_LOCALES) {
         entries.push({
           url: tiendaProductUrl(locale, p.slug),
           lastModified,
