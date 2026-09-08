@@ -7,7 +7,7 @@ import { ActiveFiltersBar } from "../components/home/ActiveFiltersBar";
 import { ProductCard } from "../components/product/ProductCard";
 import { LocalizedTiendaLink } from "../components/LocalizedTiendaLink";
 import { TiendaShell } from "../components/TiendaShell";
-import { BASE, tiendaHomeUrl, tiendaLangAlternates } from "../lib/tienda-url";
+import { BASE, tiendaHomeUrl, tiendaLangAlternates, tiendaRobots } from "../lib/tienda-url";
 import { categoryLabel, type CategoryLike, type CategoryTranslator } from "../lib/category-tree";
 
 const titles: Record<string, string> = {
@@ -26,7 +26,7 @@ export function generateTiendaHomeMetadata(locale: string): Metadata {
     metadataBase: new URL(BASE),
     title: titles[locale] ?? titles.es,
     description: descriptions[locale] ?? descriptions.es,
-    robots: { index: true, follow: true },
+    robots: tiendaRobots(locale),
     openGraph: {
       type: "website",
       locale: locale === "ru" ? "ru_RU" : locale === "en" ? "en_US" : "es_PA",

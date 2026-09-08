@@ -1,4 +1,4 @@
-import type { ProductVariant } from "./api-client";
+import type { ProductVariant, VariantAxis } from "./api-client";
 
 /**
  * Product presentations ("Rollo 45 m" / "Corte 15 m"): shared helpers for the grid
@@ -21,4 +21,124 @@ export function pickDefaultVariant(variants: ProductVariant[]): ProductVariant |
 /** Full SKU of a variant = base product SKU + "-" + suffix. */
 export function variantSku(baseSku: string, variant: ProductVariant): string {
   return `${baseSku}-${variant.sku_suffix}`;
+}
+
+/* ------------------------------------------------------------------ *
+ * Several axes: a product may vary by more than one dimension — e.g. 16
+ * diameters x 2 presentations for insulated copper tubing. The backend
+ * then sends `variant_axes`, and each variant carries `options` (axis key
+ * -> value). Everything below is pure and null-safe, so an older payload
+ * (no axes, no options) keeps the single-list behaviour.
+ * ------------------------------------------------------------------ */
+
+/** Current pick per axis, e.g. `{ diametro: "1/4 x 3/8", presentacion: "Rollo 45 m" }`. */
+export type VariantSelection = Record<string, string>;
+
+/** A variant's axis values, never null. */
+export function variantOptions(variant: ProductVariant): Record<string, string> {
+  return variant.options ?? {};
+}
+
+/**
+ * The axes we can actually drive the picker with: declared by the backend, with
+ * values, and present in EVERY variant's `options`. Anything less and the caller
+ * falls back to the flat list of `label_es` pills, which always works.
+ */
+export function usableAxes(
+  axes: VariantAxis[] | null | undefined,
+  variants: ProductVariant[]
+): VariantAxis[] {
+  const declared = (axes ?? []).filter((a) => a.key && a.values?.length);
+  if (declared.length === 0 || variants.length === 0) return [];
+  const complete = variants.every((v) => {
+    const opts = variantOptions(v);
+    return declared.every((a) => typeof opts[a.key] === "string" && opts[a.key] !== "");
+  });
+  return complete ? declared : [];
+}
+
+/** Axis label in the reader's language; Spanish is the source of truth and the fallback. */
+export function axisLabel(axis: VariantAxis, locale: string): string {
+  if (locale === "en") return axis.label_en || axis.label_es;
+  if (locale === "ru") return axis.label_ru || axis.label_es;
+  return axis.label_es;
+}
+
+/** The variant matching every axis value in `selection`, or null if that cell is empty. */
+export function resolveVariant(
+  variants: ProductVariant[],
+  selection: VariantSelection
+): ProductVariant | null {
+  const keys = Object.keys(selection);
+  if (keys.length === 0) return null;
+  return (
+    variants.find((v) => {
+      const opts = variantOptions(v);
+      return keys.every((k) => opts[k] === selection[k]);
+    }) ?? null
+  );
+}
+
+/** What a variant is, as a selection: its values on the declared axes. */
+export function selectionFromVariant(
+  variant: ProductVariant | null,
+  axes: VariantAxis[]
+): VariantSelection {
+  if (!variant) return {};
+  const opts = variantOptions(variant);
+  const selection: VariantSelection = {};
+  for (const a of axes) {
+    if (typeof opts[a.key] === "string") selection[a.key] = opts[a.key];
+  }
+  return selection;
+}
+
+/**
+ * Per axis, the values that still lead to a real variant given what is picked on
+ * the OTHER axes — exactly the pills that must stay clickable. Values keep the
+ * backend's order.
+ */
+export function availableValues(
+  variants: ProductVariant[],
+  axes: VariantAxis[],
+  selection: VariantSelection
+): Record<string, string[]> {
+  const result: Record<string, string[]> = {};
+  for (const axis of axes) {
+    const others = axes.filter((a) => a.key !== axis.key && selection[a.key] != null);
+    const reachable = new Set(
+      variants
+        .filter((v) => {
+          const opts = variantOptions(v);
+          return others.every((a) => opts[a.key] === selection[a.key]);
+        })
+        .map((v) => variantOptions(v)[axis.key])
+    );
+    result[axis.key] = axis.values.filter((value) => reachable.has(value));
+  }
+  return result;
+}
+
+/**
+ * Pick `value` on `axisKey` and repair the rest: an axis whose current value is
+ * no longer reachable falls back to its first available value, so the picker can
+ * never land on an empty cell. The returned selection resolves to a variant as
+ * long as any variant carries `value` on `axisKey`.
+ */
+export function reconcileSelection(
+  variants: ProductVariant[],
+  axes: VariantAxis[],
+  selection: VariantSelection,
+  axisKey: string,
+  value: string
+): VariantSelection {
+  const next: VariantSelection = { [axisKey]: value };
+  for (const axis of axes) {
+    if (axis.key === axisKey) continue;
+    const options = availableValues(variants, axes, next)[axis.key] ?? [];
+    const current = selection[axis.key];
+    const chosen = current != null && options.includes(current) ? current : options[0];
+    if (chosen != null) next[axis.key] = chosen;
+  }
+  return next;
 }

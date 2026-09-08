@@ -8,7 +8,17 @@ import { Star, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import { LocalizedTiendaLink } from "../LocalizedTiendaLink";
 import { ReviewForm } from "./ReviewForm";
 import type { ProductDetail } from "../../lib/api-client";
-import { pickDefaultVariant, sortVariants, variantSku } from "../../lib/variants";
+import {
+  availableValues,
+  axisLabel,
+  pickDefaultVariant,
+  reconcileSelection,
+  resolveVariant,
+  selectionFromVariant,
+  sortVariants,
+  usableAxes,
+  variantSku,
+} from "../../lib/variants";
 import { WhatsAppCta } from "@24clima/design/components";
 
 /* Catalog descriptions/FAQ arrive as markdown. Headings are demoted to h3 so the
@@ -106,12 +116,29 @@ export function ProductPageContent(props: Props) {
   );
   const selectedVariant = variants.find((v) => v.id === variantId) ?? fallbackVariant;
 
+  // Axes ("Diámetro" x "Presentación"). Empty unless the backend declares them and
+  // every variant carries its options — then the flat list of pills is used instead.
+  const axes = usableAxes(product.variant_axes, variants);
+  const selection = selectionFromVariant(selectedVariant, axes);
+  const enabledValues = availableValues(variants, axes, selection);
+
   /** Switch presentation and mirror it into the URL — no navigation, shareable link. */
   function selectVariant(id: string) {
     setVariantId(id);
     const url = new URL(window.location.href);
     url.searchParams.set("variant", id);
     window.history.replaceState(null, "", url.toString());
+  }
+
+  /**
+   * Pick a value on one axis. The other axes keep their value when it is still
+   * reachable and otherwise slide to their first available one, so a click always
+   * lands on a real variant.
+   */
+  function selectAxisValue(axisKey: string, value: string) {
+    const next = reconcileSelection(variants, axes, selection, axisKey, value);
+    const variant = resolveVariant(variants, next);
+    if (variant) selectVariant(variant.id);
   }
 
   const displayPrice = selectedVariant ? selectedVariant.price : product.price;
@@ -179,38 +206,82 @@ export function ProductPageContent(props: Props) {
             )}
           </div>
           <h1 className="mt-2 text-3xl font-bold text-foreground">{product.name}</h1>
-          {variants.length > 0 && (
-            <div className="mt-4">
-              <p id="variant-label" className="text-sm font-medium text-foreground">
-                {variantsLabel}
-              </p>
-              <div
-                role="radiogroup"
-                aria-labelledby="variant-label"
-                className="mt-2 flex flex-wrap gap-2"
-              >
-                {variants.map((v) => {
-                  const active = v.id === selectedVariant?.id;
-                  return (
-                    <button
-                      key={v.id}
-                      type="button"
-                      role="radio"
-                      aria-checked={active}
-                      onClick={() => selectVariant(v.id)}
-                      className={`min-h-[44px] rounded-lg border px-4 py-2 text-sm transition-colors ${
-                        active
-                          ? "border-primary bg-primary/10 font-medium text-foreground"
-                          : "border-border text-muted-foreground hover:border-primary/50"
-                      }`}
+          {axes.length >= 2
+            ? // Several axes: one pill row per axis, the price shown once below (a
+              // price on 16 diameter pills would be noise and would repeat itself).
+              axes.map((axis) => {
+                const groupId = `variant-axis-${axis.key}`;
+                const enabled = enabledValues[axis.key] ?? [];
+                return (
+                  <div key={axis.key} className="mt-4">
+                    <p id={groupId} className="text-sm font-medium text-foreground">
+                      {axisLabel(axis, locale)}
+                    </p>
+                    <div
+                      role="radiogroup"
+                      aria-labelledby={groupId}
+                      className="mt-2 flex flex-wrap gap-2"
                     >
-                      {v.label_es} · ${v.price}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+                      {axis.values.map((value) => {
+                        const active = selection[axis.key] === value;
+                        const isEnabled = enabled.includes(value);
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            role="radio"
+                            aria-checked={active}
+                            aria-disabled={!isEnabled}
+                            disabled={!isEnabled}
+                            onClick={() => selectAxisValue(axis.key, value)}
+                            className={`min-h-[44px] rounded-lg border px-4 py-2 text-sm transition-colors ${
+                              active
+                                ? "border-primary bg-primary/10 font-medium text-foreground"
+                                : isEnabled
+                                  ? "border-border text-muted-foreground hover:border-primary/50"
+                                  : "cursor-not-allowed border-border/50 text-muted-foreground/40 line-through"
+                            }`}
+                          >
+                            {value}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })
+            : variants.length > 0 && (
+                <div className="mt-4">
+                  <p id="variant-label" className="text-sm font-medium text-foreground">
+                    {variantsLabel}
+                  </p>
+                  <div
+                    role="radiogroup"
+                    aria-labelledby="variant-label"
+                    className="mt-2 flex flex-wrap gap-2"
+                  >
+                    {variants.map((v) => {
+                      const active = v.id === selectedVariant?.id;
+                      return (
+                        <button
+                          key={v.id}
+                          type="button"
+                          role="radio"
+                          aria-checked={active}
+                          onClick={() => selectVariant(v.id)}
+                          className={`min-h-[44px] rounded-lg border px-4 py-2 text-sm transition-colors ${
+                            active
+                              ? "border-primary bg-primary/10 font-medium text-foreground"
+                              : "border-border text-muted-foreground hover:border-primary/50"
+                          }`}
+                        >
+                          {v.label_es} · ${v.price}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
           {displayPrice != null && (
             <p className="mt-4 text-2xl font-semibold text-primary">${displayPrice}</p>
           )}
