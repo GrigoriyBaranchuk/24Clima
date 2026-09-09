@@ -139,6 +139,12 @@ export type VariantAxis = {
   label_en?: string | null;
   label_ru?: string | null;
   values: string[];
+  /**
+   * This axis is the product's SIZE — the one Google wants in `g:size` /
+   * schema.org `size`. Exactly one axis carries it; absent on an older backend,
+   * and then the size axis is guessed (see `sizeAxisOf` in ./variants).
+   */
+  is_size?: boolean;
 };
 /** One catalog image. `kind` tells a real product photo from a generated card/infographic. */
 export type ProductImage = {

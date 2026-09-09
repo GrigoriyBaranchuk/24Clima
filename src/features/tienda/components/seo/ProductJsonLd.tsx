@@ -1,5 +1,5 @@
 import type { ProductDetail } from "../../lib/api-client";
-import { sortVariants, usableAxes, variantOptions, variantSku } from "../../lib/variants";
+import { sizeAxisOf, sortVariants, usableAxes, variantOptions, variantSku } from "../../lib/variants";
 import { tiendaProductUrl, tiendaCategoryUrl, tiendaHomeUrl } from "../../lib/tienda-url";
 import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
@@ -93,12 +93,13 @@ export function ProductJsonLd({ product, locale, homeLabel }: Props) {
   }
 
   const variants = sortVariants(product.variants);
-  // Several axes: `size` carries the diameter (the axis a shopper filters by) and
-  // every axis is repeated as an additionalProperty, so nothing is lost when a
-  // variant is identified by more than one dimension.
+  // Several axes (two, three, any number): `size` carries the axis flagged
+  // `is_size`, and EVERY axis — the size one included — is repeated as an
+  // additionalProperty, so nothing is lost when a variant is identified by more
+  // than one dimension.
   const axes = usableAxes(product.variant_axes, variants);
   const multiAxis = axes.length >= 2;
-  const sizeAxis = axes.find((a) => a.key === "diametro") ?? axes[0];
+  const sizeAxis = sizeAxisOf(axes);
   const productLd: Record<string, unknown> = variants.length
     ? {
         // Google Search Central: do NOT use AggregateOffer for a set of variants —

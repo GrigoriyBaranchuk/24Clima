@@ -24,14 +24,15 @@ export function variantSku(baseSku: string, variant: ProductVariant): string {
 }
 
 /* ------------------------------------------------------------------ *
- * Several axes: a product may vary by more than one dimension — e.g. 16
- * diameters x 2 presentations for insulated copper tubing. The backend
- * then sends `variant_axes`, and each variant carries `options` (axis key
- * -> value). Everything below is pure and null-safe, so an older payload
- * (no axes, no options) keeps the single-list behaviour.
+ * Several axes: a product may vary by ANY number of dimensions — e.g. tube x
+ * insulation x presentation for insulated copper tubing. The backend then sends
+ * `variant_axes` (one of them flagged `is_size`), and each variant carries
+ * `options` (axis key -> value). Everything below is pure, null-safe and
+ * indifferent to how many axes there are, so an older payload (no axes, no
+ * options) keeps the single-list behaviour.
  * ------------------------------------------------------------------ */
 
-/** Current pick per axis, e.g. `{ diametro: "1/4 x 3/8", presentacion: "Rollo 45 m" }`. */
+/** Current pick per axis, e.g. `{ tubo: '1/4"', aislamiento: '3/8"', presentacion: "Rollo 45 m" }`. */
 export type VariantSelection = Record<string, string>;
 
 /** A variant's axis values, never null. */
@@ -55,6 +56,17 @@ export function usableAxes(
     return declared.every((a) => typeof opts[a.key] === "string" && opts[a.key] !== "");
   });
   return complete ? declared : [];
+}
+
+/**
+ * The axis that is the product's SIZE — `g:size` in the Merchant feed and
+ * schema.org `size` in JSON-LD. Backends since listing v2 flag it with
+ * `is_size`; the two fallbacks keep older payloads (and the copper-tubing
+ * family, whose size axis is the diameter) behaving exactly as before.
+ * Returns null only when there are no axes at all.
+ */
+export function sizeAxisOf(axes: VariantAxis[]): VariantAxis | null {
+  return axes.find((a) => a.is_size) ?? axes.find((a) => a.key === "diametro") ?? axes[0] ?? null;
 }
 
 /** Axis label in the reader's language; Spanish is the source of truth and the fallback. */
