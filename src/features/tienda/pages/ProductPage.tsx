@@ -10,15 +10,15 @@ import { sortVariants, variantSku } from "../lib/variants";
 
 /**
  * The product to render. Under `next dev` with TIENDA_MOCK_PRODUCT=1 the
- * two-axis fixture answers for its own slug — the live catalog has no product
- * with two axes yet, so the picker would otherwise be unreviewable. Production
- * never reaches the import (guarded on NODE_ENV), and every other slug goes to
- * the API as before.
+ * three-axis fixture answers for its own slug — the live catalog has no product
+ * with several axes yet, so the picker would otherwise be unreviewable.
+ * Production never reaches the import (guarded on NODE_ENV), and every other
+ * slug goes to the API as before.
  */
 async function loadProduct(slug: string, locale: string) {
   if (process.env.NODE_ENV !== "production" && process.env.TIENDA_MOCK_PRODUCT === "1") {
-    const { MOCK_TWO_AXIS_SLUG, mockTwoAxisProduct } = await import("../lib/dev-mock-product");
-    if (slug === MOCK_TWO_AXIS_SLUG) return mockTwoAxisProduct();
+    const { MOCK_MULTI_AXIS_SLUG, mockMultiAxisProduct } = await import("../lib/dev-mock-product");
+    if (slug === MOCK_MULTI_AXIS_SLUG) return mockMultiAxisProduct();
   }
   return api.getProductCached(slug, locale);
 }

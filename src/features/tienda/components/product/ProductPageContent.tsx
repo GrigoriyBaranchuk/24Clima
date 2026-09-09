@@ -116,8 +116,9 @@ export function ProductPageContent(props: Props) {
   );
   const selectedVariant = variants.find((v) => v.id === variantId) ?? fallbackVariant;
 
-  // Axes ("Diámetro" x "Presentación"). Empty unless the backend declares them and
-  // every variant carries its options — then the flat list of pills is used instead.
+  // Axes ("Tubo" x "Aislamiento" x "Presentación", or any other number of them,
+  // in the order the backend declared). Empty unless the backend declares them
+  // and every variant carries its options — then the flat list of pills is used.
   const axes = usableAxes(product.variant_axes, variants);
   const selection = selectionFromVariant(selectedVariant, axes);
   const enabledValues = availableValues(variants, axes, selection);
@@ -207,8 +208,10 @@ export function ProductPageContent(props: Props) {
           </div>
           <h1 className="mt-2 text-3xl font-bold text-foreground">{product.name}</h1>
           {axes.length >= 2
-            ? // Several axes: one pill row per axis, the price shown once below (a
-              // price on 16 diameter pills would be noise and would repeat itself).
+            ? // Several axes: one pill row per axis, in the backend's order and
+              // stacked one under another (which is also the mobile layout), with
+              // the price shown once below — a price repeated on every diameter
+              // pill would be noise.
               axes.map((axis) => {
                 const groupId = `variant-axis-${axis.key}`;
                 const enabled = enabledValues[axis.key] ?? [];

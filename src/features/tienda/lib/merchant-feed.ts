@@ -24,7 +24,7 @@
  */
 
 import type { ProductDetail, ProductImage, ProductVariant } from "./api-client";
-import { sortVariants, usableAxes, variantOptions, variantSku } from "./variants";
+import { sizeAxisOf, sortVariants, usableAxes, variantOptions, variantSku } from "./variants";
 import { tiendaProductUrl } from "./tienda-url";
 import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
@@ -152,8 +152,9 @@ export function buildFeedItems(product: ProductDetail): string[] {
   const link = tiendaProductUrl(FEED_LOCALE, product.slug);
   const description = toPlainText(product.description ?? product.short_description ?? "");
   const axes = usableAxes(product.variant_axes, variants);
-  // With several axes the diameter is the "size"; the rest become product details.
-  const sizeAxis = axes.length >= 2 ? (axes.find((a) => a.key === "diametro") ?? axes[0]) : null;
+  // With several axes (two, three, any number) the axis flagged `is_size` is the
+  // "size"; EVERY other axis becomes its own g:product_detail block.
+  const sizeAxis = axes.length >= 2 ? sizeAxisOf(axes) : null;
 
   /** Everything after the identity/title/link block: shared by both shapes. */
   function commonTags(price: string, sku: string): string[] {
@@ -180,8 +181,9 @@ export function buildFeedItems(product: ProductDetail): string[] {
       ...commonTags(variant.price, sku),
       tag("g:size", size),
     ];
-    // Secondary axes ("Presentación") have no dedicated Google attribute — they
-    // ride along as product details so the row still states what it is.
+    // Non-size axes ("Aislamiento", "Presentación", …) have no dedicated Google
+    // attribute — each rides along as its own product detail so the row still
+    // states what it is. Three axes therefore mean two g:product_detail blocks.
     if (sizeAxis) {
       for (const axis of axes) {
         if (axis.key === sizeAxis.key) continue;
