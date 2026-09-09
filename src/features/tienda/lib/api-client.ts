@@ -106,7 +106,23 @@ async function fetchCatalogCached<T>(
   return res.json() as Promise<T>;
 }
 
-export type Category = { id: string; name: string; slug: string; description: string | null; image_url: string | null; sort_order: number; parent_id: string | null };
+/**
+ * A catalog category. `google_product_category` / `google_product_category_id`
+ * are the Google taxonomy node the shop assigned to it (English path and its id);
+ * absent on an older backend. Products carry the resolved value themselves, so
+ * the feed never has to walk this tree.
+ */
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  image_url: string | null;
+  google_product_category?: string | null;
+  google_product_category_id?: number | null;
+  sort_order: number;
+  parent_id: string | null;
+};
 export type Brand = { id: string; name: string; slug: string; logo_url: string | null };
 /**
  * One purchasable presentation of a product (e.g. "Rollo 45 m" / "Corte 15 m").
@@ -181,6 +197,18 @@ export type ProductList = {
    * Absent on an older backend → treat as "human", i.e. behave exactly as before.
    */
   copy_source?: "ai" | "human" | null;
+  /**
+   * Our own category path in Spanish ("Materiales e insumos > Tubería de cobre")
+   * — free text, goes to `g:product_type`. Absent on an older backend.
+   */
+  product_type?: string | null;
+  /**
+   * The Google taxonomy node for this product: the leaf category's value, or the
+   * root's when the leaf has none. Path is the English taxonomy path, the id is
+   * the same node's number — the feed sends the id when it has one.
+   */
+  google_product_category?: string | null;
+  google_product_category_id?: number | null;
 };
 export type ProductReview = {
   author: string;
