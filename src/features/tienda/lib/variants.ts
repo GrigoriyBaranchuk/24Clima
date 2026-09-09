@@ -106,36 +106,64 @@ export function selectionFromVariant(
 }
 
 /**
- * Per axis, the values that still lead to a real variant given what is picked on
- * the OTHER axes — exactly the pills that must stay clickable. Values keep the
- * backend's order.
+ * Values of ONE axis that still lead to a real variant, given what is picked on
+ * the other axes. Values keep the backend's order. This is the strict rule:
+ * `availableValues` relaxes it for the size axis, `reconcileSelection` never does.
+ */
+function reachableValues(
+  variants: ProductVariant[],
+  axes: VariantAxis[],
+  selection: VariantSelection,
+  axis: VariantAxis
+): string[] {
+  const others = axes.filter((a) => a.key !== axis.key && selection[a.key] != null);
+  const reachable = new Set(
+    variants
+      .filter((v) => {
+        const opts = variantOptions(v);
+        return others.every((a) => opts[a.key] === selection[a.key]);
+      })
+      .map((v) => variantOptions(v)[axis.key])
+  );
+  return axis.values.filter((value) => reachable.has(value));
+}
+
+/**
+ * Per axis, the pills that must stay clickable.
+ *
+ * The size axis (`is_size` — the tube diameter) is the shopper's MAIN filter, so
+ * every value any variant carries stays clickable there whatever is picked
+ * elsewhere: a diameter is never crossed out because of an insulation or a
+ * length. Clicking one drags the other axes along instead (see
+ * `reconcileSelection`). The remaining axes grey out as before — against the
+ * picked size AND against each other.
  */
 export function availableValues(
   variants: ProductVariant[],
   axes: VariantAxis[],
   selection: VariantSelection
 ): Record<string, string[]> {
+  const sizeKey = sizeAxisOf(axes)?.key;
   const result: Record<string, string[]> = {};
   for (const axis of axes) {
-    const others = axes.filter((a) => a.key !== axis.key && selection[a.key] != null);
-    const reachable = new Set(
-      variants
-        .filter((v) => {
-          const opts = variantOptions(v);
-          return others.every((a) => opts[a.key] === selection[a.key]);
-        })
-        .map((v) => variantOptions(v)[axis.key])
-    );
-    result[axis.key] = axis.values.filter((value) => reachable.has(value));
+    // The empty selection is what makes the size axis ignore the other picks.
+    result[axis.key] = reachableValues(variants, axes, axis.key === sizeKey ? {} : selection, axis);
   }
   return result;
 }
 
 /**
- * Pick `value` on `axisKey` and repair the rest: an axis whose current value is
- * no longer reachable falls back to its first available value, so the picker can
- * never land on an empty cell. The returned selection resolves to a variant as
- * long as any variant carries `value` on `axisKey`.
+ * Pick `value` on `axisKey` and repair the rest: the clicked axis is pinned, the
+ * others are visited in the backend's order and replaced ONLY where their current
+ * value is no longer reachable, in which case they slide to their first available
+ * one. So clicking a diameter keeps the insulation and the length whenever that
+ * combination exists, and clicking anything else leaves the diameter alone as
+ * long as it still fits (the picker disables the values where it would not). The
+ * returned selection resolves to a variant as long as any variant carries `value`
+ * on `axisKey`.
+ *
+ * Note the strict `reachableValues` here: the size axis is relaxed for DISPLAY
+ * only — repairing it against the real grid is what keeps a click off an empty cell.
  */
 export function reconcileSelection(
   variants: ProductVariant[],
@@ -147,10 +175,23 @@ export function reconcileSelection(
   const next: VariantSelection = { [axisKey]: value };
   for (const axis of axes) {
     if (axis.key === axisKey) continue;
-    const options = availableValues(variants, axes, next)[axis.key] ?? [];
+    const options = reachableValues(variants, axes, next, axis);
     const current = selection[axis.key];
     const chosen = current != null && options.includes(current) ? current : options[0];
     if (chosen != null) next[axis.key] = chosen;
   }
   return next;
+}
+
+/**
+ * First variant carrying `value` on `axisKey`, in the catalog's own order — the
+ * safety net for a payload with holes, where a reconciled selection still points
+ * at a cell the backend never sent. A click must never be dead.
+ */
+export function firstVariantWith(
+  variants: ProductVariant[],
+  axisKey: string,
+  value: string
+): ProductVariant | null {
+  return variants.find((v) => variantOptions(v)[axisKey] === value) ?? null;
 }

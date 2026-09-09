@@ -32,6 +32,7 @@ import {
   usableAxes,
   variantOptions,
 } from "@/features/tienda/lib/variants";
+import type { VariantSelection } from "@/features/tienda/lib/variants";
 
 let checks = 0;
 function check(name: string, fn: () => void) {
@@ -56,28 +57,40 @@ const variants = sortVariants(product.variants);
 const axes = usableAxes(product.variant_axes, variants);
 /** '1/4"' — a thin tube: not stocked with the thickest insulation. */
 const THIN_T = MOCK_TUBOS[0];
-/** A pre-made pair: sold on the roll only, never cut. */
+/** '7/8"' — a wide tube: no 45 m roll, and never the thinnest insulation. */
+const WIDE_T = MOCK_TUBOS[5];
+/** A pre-made pair — as constrained as 7/8". */
 const PAIR_T = MOCK_TUBOS[MOCK_TUBOS.length - 1];
-/** A plain single diameter, stocked in every insulation and both presentations. */
+/** A middle diameter, stocked in every insulation and every presentation. */
 const FULL_T = MOCK_TUBOS[2];
 const THIN_A = MOCK_AISLAMIENTOS[0];
 const MID_A = MOCK_AISLAMIENTOS[1];
 const THICK_A = MOCK_AISLAMIENTOS[2];
-const [ROLL, CUT] = MOCK_PRESENTACIONES;
-/** 9 x 3 x 2 minus the cells the fixture leaves out. */
+const [ROLL45, ROLL30, CUT] = MOCK_PRESENTACIONES;
+/** 9 x 3 x 3 minus the cells the fixture leaves out. */
 const CELLS = MOCK_TUBOS.flatMap((t) =>
   MOCK_AISLAMIENTOS.flatMap((a) => MOCK_PRESENTACIONES.filter((p) => !mockCellMissing(t, a, p)))
 ).length;
 
 console.log("variants (three axes)");
 
-check("fixture is the 9 x 3 x 2 grid minus the cells that are not stocked", () => {
+check("fixture is the 9 x 3 x 3 grid minus the cells that are not stocked", () => {
   assert.equal(product.slug, MOCK_MULTI_AXIS_SLUG);
   assert.deepEqual(
     [MOCK_TUBOS.length, MOCK_AISLAMIENTOS.length, MOCK_PRESENTACIONES.length],
-    [9, 3, 2]
+    [9, 3, 3]
   );
-  assert.equal(CELLS, 41);
+  assert.equal(CELLS, 48);
+  // Every tube keeps the 30 m roll and the 15 m cut — that is what lets the main
+  // axis stay clickable from anywhere.
+  for (const tubo of MOCK_TUBOS) {
+    for (const presentacion of [ROLL30, CUT]) {
+      assert.ok(
+        MOCK_AISLAMIENTOS.some((a) => !mockCellMissing(tubo, a, presentacion)),
+        `${tubo} has no ${presentacion}`
+      );
+    }
+  }
   assert.equal(variants.length, CELLS);
   // Three axes, in the order the backend declared them — that is the order the
   // picker renders its radiogroups in.
@@ -142,52 +155,149 @@ check("resolveVariant matches on all three axes, and is null for an empty cell",
   const hit = resolveVariant(variants, selection);
   assert.ok(hit);
   assert.deepEqual(variantOptions(hit), selection);
-  // A pair is never cut, and a thin tube never wears the thickest insulation.
+  // A wide tube wears no thin insulation and comes on no 45 m roll; a thin tube
+  // never wears the thickest insulation; the thickest is never cut.
   assert.equal(
-    resolveVariant(variants, { tubo: PAIR_T, aislamiento: THIN_A, presentacion: CUT }),
+    resolveVariant(variants, { tubo: PAIR_T, aislamiento: THIN_A, presentacion: ROLL30 }),
     null
   );
   assert.equal(
-    resolveVariant(variants, { tubo: THIN_T, aislamiento: THICK_A, presentacion: ROLL }),
+    resolveVariant(variants, { tubo: WIDE_T, aislamiento: MID_A, presentacion: ROLL45 }),
+    null
+  );
+  assert.equal(
+    resolveVariant(variants, { tubo: THIN_T, aislamiento: THICK_A, presentacion: ROLL45 }),
+    null
+  );
+  assert.equal(
+    resolveVariant(variants, { tubo: FULL_T, aislamiento: THICK_A, presentacion: CUT }),
     null
   );
   assert.equal(resolveVariant(variants, {}), null);
 });
 
-check("availableValues greys out per axis, given the pick on the other two", () => {
-  const onPair = availableValues(variants, axes, { tubo: PAIR_T });
-  assert.deepEqual(onPair.presentacion, [ROLL]);
-  assert.deepEqual(onPair.aislamiento, MOCK_AISLAMIENTOS);
+check("the size axis is never crossed out, whatever is picked on the others", () => {
+  // From every cell of the grid, all nine tubes stay clickable.
+  for (const v of variants) {
+    const from = selectionFromVariant(v, axes);
+    assert.deepEqual(
+      availableValues(variants, axes, from).tubo,
+      MOCK_TUBOS,
+      `tubes greyed out at ${JSON.stringify(from)}`
+    );
+  }
+  // …and from a partial pick too.
+  const partials: VariantSelection[] = [
+    {},
+    { presentacion: ROLL45 },
+    { aislamiento: THICK_A },
+    { aislamiento: THICK_A, presentacion: CUT },
+  ];
+  for (const from of partials) {
+    assert.deepEqual(availableValues(variants, axes, from).tubo, MOCK_TUBOS);
+  }
+  // The relaxation is real, not vacuous: the strict grid IS narrower — only five
+  // tubes carry a 45 m roll, and no tube carries the thickest insulation cut.
+  const tubesOn45 = new Set(
+    variants
+      .filter((v) => variantOptions(v).presentacion === ROLL45)
+      .map((v) => variantOptions(v).tubo)
+  );
+  assert.equal(tubesOn45.size, 5);
+  assert.equal(
+    variants.filter(
+      (v) => variantOptions(v).aislamiento === THICK_A && variantOptions(v).presentacion === CUT
+    ).length,
+    0
+  );
+});
+
+check("the other axes still grey out, on the tube and on each other", () => {
+  const onWide = availableValues(variants, axes, { tubo: WIDE_T });
+  assert.deepEqual(onWide.presentacion, [ROLL30, CUT]);
+  assert.deepEqual(onWide.aislamiento, [MID_A, THICK_A]);
   const onThin = availableValues(variants, axes, { tubo: THIN_T });
   assert.deepEqual(onThin.aislamiento, [THIN_A, MID_A]);
   assert.deepEqual(onThin.presentacion, MOCK_PRESENTACIONES);
-  // One constraint at a time: cuts drop the three pairs, thick insulation drops
-  // the two thin tubes.
-  assert.equal(availableValues(variants, axes, { presentacion: CUT }).tubo.length, 6);
-  assert.equal(availableValues(variants, axes, { aislamiento: THICK_A }).tubo.length, 7);
-  // Both at once — the third axis narrows on the other TWO, not just one.
-  const both = availableValues(variants, axes, { aislamiento: THICK_A, presentacion: CUT });
-  assert.deepEqual(both.tubo, MOCK_TUBOS.slice(2, 6));
-  assert.equal(availableValues(variants, axes, { presentacion: ROLL }).tubo.length, 9);
+  // Two constraints at once: a non-main axis narrows on the tube AND on the
+  // other non-main axis, not just on one of them.
+  assert.deepEqual(availableValues(variants, axes, { tubo: FULL_T }).aislamiento, MOCK_AISLAMIENTOS);
+  assert.deepEqual(availableValues(variants, axes, { tubo: FULL_T, presentacion: CUT }).aislamiento, [
+    THIN_A,
+    MID_A,
+  ]);
+  assert.deepEqual(
+    availableValues(variants, axes, { tubo: WIDE_T, aislamiento: THICK_A }).presentacion,
+    [ROLL30]
+  );
 });
 
-check("switching to a pair slides the presentation to the roll and keeps the rest", () => {
-  const from = { tubo: FULL_T, aislamiento: THICK_A, presentacion: CUT };
-  const next = reconcileSelection(variants, axes, from, "tubo", PAIR_T);
-  assert.deepEqual(next, { tubo: PAIR_T, aislamiento: THICK_A, presentacion: ROLL });
+check("clicking a tube keeps the insulation and the length whenever they fit", () => {
+  // The owner's case: 7/8" x 30 m, click 1/4" — both other axes survive.
+  const from = { tubo: WIDE_T, aislamiento: MID_A, presentacion: ROLL30 };
+  const next = reconcileSelection(variants, axes, from, "tubo", THIN_T);
+  assert.deepEqual(next, { tubo: THIN_T, aislamiento: MID_A, presentacion: ROLL30 });
   assert.ok(resolveVariant(variants, next));
 });
 
-check("switching to a thin tube slides the insulation, leaving the presentation alone", () => {
-  const from = { tubo: FULL_T, aislamiento: THICK_A, presentacion: CUT };
-  const next = reconcileSelection(variants, axes, from, "tubo", THIN_T);
-  assert.deepEqual(next, { tubo: THIN_T, aislamiento: THIN_A, presentacion: CUT });
+check("clicking a tube slides only the axes that no longer fit", () => {
+  const from = { tubo: FULL_T, aislamiento: THICK_A, presentacion: ROLL45 };
+  // 1/4" carries no 3/4" insulation → slides to 3/8"; the 45 m roll survives.
+  assert.deepEqual(reconcileSelection(variants, axes, from, "tubo", THIN_T), {
+    tubo: THIN_T,
+    aislamiento: THIN_A,
+    presentacion: ROLL45,
+  });
+  // 7/8" keeps the 3/4" insulation but has no 45 m roll → slides to 30 m.
+  assert.deepEqual(reconcileSelection(variants, axes, from, "tubo", WIDE_T), {
+    tubo: WIDE_T,
+    aislamiento: THICK_A,
+    presentacion: ROLL30,
+  });
+  // A pair behaves like 7/8" — same shelf, same holes.
+  assert.deepEqual(reconcileSelection(variants, axes, from, "tubo", PAIR_T), {
+    tubo: PAIR_T,
+    aislamiento: THICK_A,
+    presentacion: ROLL30,
+  });
 });
 
-check("switching keeps still-valid values on both other axes", () => {
-  const from = { tubo: FULL_T, aislamiento: MID_A, presentacion: CUT };
-  const next = reconcileSelection(variants, axes, from, "tubo", MOCK_TUBOS[3]);
-  assert.deepEqual(next, { tubo: MOCK_TUBOS[3], aislamiento: MID_A, presentacion: CUT });
+check("clicking a non-main axis leaves the tube alone", () => {
+  const from = { tubo: WIDE_T, aislamiento: THICK_A, presentacion: ROLL30 };
+  const next = reconcileSelection(variants, axes, from, "aislamiento", MID_A);
+  assert.deepEqual(next, { tubo: WIDE_T, aislamiento: MID_A, presentacion: ROLL30 });
+  // Only the pills the picker actually offers: a value greyed out on a non-main
+  // axis is not clickable, so the tube is never dragged along by one.
+  for (const v of variants) {
+    const start = selectionFromVariant(v, axes);
+    const enabled = availableValues(variants, axes, start);
+    for (const axis of axes) {
+      if (axis.key === "tubo") continue;
+      for (const value of enabled[axis.key]) {
+        assert.equal(
+          reconcileSelection(variants, axes, start, axis.key, value).tubo,
+          start.tubo,
+          `${axis.key}=${value} moved the tube away from ${start.tubo}`
+        );
+      }
+    }
+  }
+});
+
+check("every tube is clickable from every cell and lands on a real variant", () => {
+  const sizeAxis = sizeAxisOf(axes);
+  assert.ok(sizeAxis);
+  for (const v of variants) {
+    const from = selectionFromVariant(v, axes);
+    for (const value of sizeAxis.values) {
+      const next = reconcileSelection(variants, axes, from, sizeAxis.key, value);
+      assert.equal(next[sizeAxis.key], value);
+      assert.ok(
+        resolveVariant(variants, next),
+        `tubo=${value} from ${JSON.stringify(from)} resolved to nothing`
+      );
+    }
+  }
 });
 
 check("no click on any axis can land on an empty cell", () => {
@@ -241,7 +351,7 @@ check("g:size is the is_size axis; each of the other two rides in g:product_deta
   assert.deepEqual(tagValues(first, "g:attribute_name"), ["Aislamiento", "Presentación"]);
   assert.deepEqual(tagValues(first, "g:attribute_value"), [
     THIN_A.replace(/"/g, "&quot;"),
-    ROLL,
+    ROLL45,
   ]);
   assert.ok(!tagValues(first, "g:section_name").includes("Tubo"));
   for (const item of aiItems) assert.equal(tagValues(item, "g:attribute_value").length, 2);
@@ -256,7 +366,7 @@ check("g:size follows the is_size flag, not the axis order", () => {
     })),
   };
   const first = buildFeedItems(flipped)[0];
-  assert.equal(tagValue(first, "g:size"), ROLL);
+  assert.equal(tagValue(first, "g:size"), ROLL45);
   assert.deepEqual(tagValues(first, "g:section_name"), ["Tubo", "Aislamiento"]);
   assert.deepEqual(tagValues(first, "g:attribute_value"), [
     THIN_T.replace(/"/g, "&quot;"),

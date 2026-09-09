@@ -11,10 +11,12 @@ import type { ProductDetail } from "../../lib/api-client";
 import {
   availableValues,
   axisLabel,
+  firstVariantWith,
   pickDefaultVariant,
   reconcileSelection,
   resolveVariant,
   selectionFromVariant,
+  sizeAxisOf,
   sortVariants,
   usableAxes,
   variantSku,
@@ -121,7 +123,10 @@ export function ProductPageContent(props: Props) {
   // and every variant carries its options — then the flat list of pills is used.
   const axes = usableAxes(product.variant_axes, variants);
   const selection = selectionFromVariant(selectedVariant, axes);
+  // The size axis comes back fully enabled here whatever else is picked — it is
+  // the main filter, so it never shows a struck-through pill.
   const enabledValues = availableValues(variants, axes, selection);
+  const sizeKey = sizeAxisOf(axes)?.key ?? null;
 
   /** Switch presentation and mirror it into the URL — no navigation, shareable link. */
   function selectVariant(id: string) {
@@ -134,11 +139,17 @@ export function ProductPageContent(props: Props) {
   /**
    * Pick a value on one axis. The other axes keep their value when it is still
    * reachable and otherwise slide to their first available one, so a click always
-   * lands on a real variant.
+   * lands on a real variant. Should the payload have holes anyway, the click
+   * still moves — to the first variant of the picked size, else of the picked
+   * value — rather than doing nothing under the shopper's finger.
    */
   function selectAxisValue(axisKey: string, value: string) {
     const next = reconcileSelection(variants, axes, selection, axisKey, value);
-    const variant = resolveVariant(variants, next);
+    const pickedSize = sizeKey ? next[sizeKey] : null;
+    const variant =
+      resolveVariant(variants, next) ??
+      (pickedSize != null && sizeKey ? firstVariantWith(variants, sizeKey, pickedSize) : null) ??
+      firstVariantWith(variants, axisKey, value);
     if (variant) selectVariant(variant.id);
   }
 

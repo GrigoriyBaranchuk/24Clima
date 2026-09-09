@@ -2,14 +2,18 @@
  * Dev-only fixture: a product that varies along THREE axes — the shape the
  * copper-tubing family takes once the listing bot describes it properly:
  *
- *   tubo         9 values (6 single diameters + 3 pairs)   ← is_size
+ *   tubo         9 values (6 single diameters + 3 pairs)   ← is_size, MAIN filter
  *   aislamiento  3 values (3/8" · 1/2" · 3/4")
- *   presentacion 2 values (Rollo 45 m · Corte 15 m)
+ *   presentacion 3 values (Rollo 45 m · Rollo 30 m · Corte 15 m)
  *
- * The full grid would be 54 cells; the fixture deliberately leaves some empty
- * (pairs are sold as rolls only, and the thickest insulation is not stocked for
- * the two thinnest tubes) so the picker's greying-out is exercised on more than
- * one axis at a time.
+ * The full grid would be 81 cells; the fixture deliberately leaves some empty so
+ * the picker's greying-out is exercised on more than one axis at a time:
+ *   - the widest tubes (7/8" and the pairs) have no 45 m roll;
+ *   - insulation differs per tube — the two thinnest tubes are not stocked with
+ *     the thickest insulation, the widest ones not with the thinnest;
+ *   - the thickest insulation is never sold as a 15 m cut.
+ * Every tube keeps the 30 m roll and the 15 m cut, which is what makes the size
+ * axis freely clickable: whatever is picked elsewhere, some cell survives.
  *
  * The production catalog has no such product yet, so the multi-axis picker
  * cannot be exercised against the live API. Set `TIENDA_MOCK_PRODUCT=1` and open
@@ -40,21 +44,23 @@ export const MOCK_TUBOS = [
 
 export const MOCK_AISLAMIENTOS = ['3/8"', '1/2"', '3/4"'];
 
-export const MOCK_PRESENTACIONES = ["Rollo 45 m", "Corte 15 m"];
+export const MOCK_PRESENTACIONES = ["Rollo 45 m", "Rollo 30 m", "Corte 15 m"];
 
-/** A pre-made pair — sold on the 45 m roll only, never cut. */
-function isPair(tubo: string): boolean {
-  return tubo.includes("+");
-}
+const [ROLL_45, , CUT_15] = MOCK_PRESENTACIONES;
 
-/** The two thinnest tubes are not stocked with the thickest insulation. */
+/** The two thinnest tubes: not stocked with the thickest insulation. */
 const THIN_TUBOS = new Set(MOCK_TUBOS.slice(0, 2));
+/** 7/8" and the three pre-made pairs: no 45 m roll, and never the thinnest insulation. */
+const WIDE_TUBOS = new Set([MOCK_TUBOS[5], ...MOCK_TUBOS.slice(6)]);
+const THINNEST_AISLAMIENTO = MOCK_AISLAMIENTOS[0];
 const THICKEST_AISLAMIENTO = MOCK_AISLAMIENTOS[MOCK_AISLAMIENTOS.length - 1];
 
-/** True when this cell of the 9 x 3 x 2 grid is not stocked. */
+/** True when this cell of the 9 x 3 x 3 grid is not stocked. */
 export function mockCellMissing(tubo: string, aislamiento: string, presentacion: string): boolean {
-  if (isPair(tubo) && presentacion === "Corte 15 m") return true;
+  if (WIDE_TUBOS.has(tubo) && presentacion === ROLL_45) return true;
   if (THIN_TUBOS.has(tubo) && aislamiento === THICKEST_AISLAMIENTO) return true;
+  if (WIDE_TUBOS.has(tubo) && aislamiento === THINNEST_AISLAMIENTO) return true;
+  if (aislamiento === THICKEST_AISLAMIENTO && presentacion === CUT_15) return true;
   return false;
 }
 
@@ -63,21 +69,23 @@ function buildVariants(): ProductVariant[] {
   let sort = 0;
   MOCK_TUBOS.forEach((tubo, ti) => {
     MOCK_AISLAMIENTOS.forEach((aislamiento, ai) => {
-      for (const presentacion of MOCK_PRESENTACIONES) {
-        if (mockCellMissing(tubo, aislamiento, presentacion)) continue;
-        const rollo = presentacion === "Rollo 45 m";
+      MOCK_PRESENTACIONES.forEach((presentacion, pi) => {
+        if (mockCellMissing(tubo, aislamiento, presentacion)) return;
+        // Metres in the presentation drive the price: 45 / 30 / 15.
+        const metres = [45, 30, 15][pi];
+        const suffix = ["R45", "R30", "C15"][pi];
         const base = 120 + ti * 18 + ai * 7;
         variants.push({
           id: `mock-v${sort}`,
           label_es: `${tubo} · ${aislamiento} · ${presentacion}`,
-          sku_suffix: `${ti + 1}-${ai + 1}-${rollo ? "R45" : "C15"}`,
-          price: (rollo ? base : base / 2.6).toFixed(2),
+          sku_suffix: `${ti + 1}-${ai + 1}-${suffix}`,
+          price: ((base * metres) / 45).toFixed(2),
           is_default: sort === 0,
           sort_order: sort,
           options: { tubo, aislamiento, presentacion },
         });
         sort += 1;
-      }
+      });
     });
   });
   return variants;
