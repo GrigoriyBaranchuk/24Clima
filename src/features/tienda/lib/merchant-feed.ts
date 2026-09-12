@@ -17,7 +17,12 @@
  *    `g:description` must NOT be sent (sending both is a spec violation).
  *    A product whose copy has no provenance (older rows, no `copy_source`) is
  *    treated as human-written — that is what it was before this field existed.
- * 3. Images. Generated marketing cards and infographics are OUR artwork with
+ * 3. Categories. `g:google_product_category` must name a node of Google's own
+ *    taxonomy — the id and the English path are both accepted, and the id is
+ *    preferred here because a path breaks the moment Google renames a branch.
+ *    `g:product_type` is our own Spanish path and is free text; both are omitted
+ *    when the backend has nothing to say.
+ * 4. Images. Generated marketing cards and infographics are OUR artwork with
  *    burnt-in text and prices; Google rejects promotional overlays. Only clean
  *    product photography goes in, and a product left with no clean photo is
  *    dropped from the feed rather than submitted with a card.
@@ -81,6 +86,18 @@ export function feedImages(product: ProductDetail): string[] {
       .filter((u): u is string => Boolean(u));
   }
   return product.image_url ? [product.image_url] : [];
+}
+
+/**
+ * Value for `g:google_product_category`: the taxonomy id when the backend knows
+ * it, otherwise the English path. Null when the product has neither — a wrong
+ * category is worse than none (Google disapproves the offer for it).
+ */
+export function googleProductCategoryValue(product: ProductDetail): string | null {
+  const id = product.google_product_category_id;
+  if (typeof id === "number" && Number.isFinite(id) && id > 0) return String(id);
+  const path = product.google_product_category?.trim();
+  return path ? path : null;
 }
 
 /** Title/description tags, marked as machine-generated when the bot wrote them. */
@@ -163,6 +180,10 @@ export function buildFeedItems(product: ProductDetail): string[] {
     parts.push(tag("g:price", `${Number(price).toFixed(2)} USD`));
     parts.push(tag("g:availability", "in_stock"));
     parts.push(tag("g:condition", "new"));
+    const googleCategory = googleProductCategoryValue(product);
+    if (googleCategory) parts.push(tag("g:google_product_category", googleCategory));
+    const productType = product.product_type?.trim();
+    if (productType) parts.push(tag("g:product_type", productType));
     if (product.brand?.name) parts.push(tag("g:brand", product.brand.name));
     parts.push(tag("g:mpn", sku));
     parts.push(SHIPPING_TAG);

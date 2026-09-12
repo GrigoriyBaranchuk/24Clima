@@ -457,6 +457,37 @@ check("a product without variants is still a single row, with no item_group_id",
   assert.equal(tagValue(items[0], "g:title"), "Manómetro &quot;R410A&quot; &amp; vacío");
 });
 
+check("every row carries the Google category as its id and our own product_type", () => {
+  for (const item of aiItems) {
+    assert.equal(tagValue(item, "g:google_product_category"), "2216");
+    assert.equal(
+      tagValue(item, "g:product_type"),
+      "Materiales e insumos &gt; Tubería y aislamiento"
+    );
+  }
+});
+
+check("without an id the English taxonomy path is sent instead", () => {
+  const pathOnly: ProductDetail = { ...product, google_product_category_id: null };
+  const item = buildFeedItems(pathOnly)[0];
+  assert.equal(
+    tagValue(item, "g:google_product_category"),
+    "Hardware &gt; Plumbing &gt; Plumbing Pipes"
+  );
+});
+
+check("an old backend sends neither tag rather than an empty one", () => {
+  const legacyCategory: ProductDetail = {
+    ...product,
+    product_type: null,
+    google_product_category: null,
+    google_product_category_id: null,
+  };
+  const item = buildFeedItems(legacyCategory)[0];
+  assert.ok(!item.includes("g:google_product_category"));
+  assert.ok(!item.includes("g:product_type"));
+});
+
 check("a product with neither variants nor a price is skipped silently", () => {
   const priceless: ProductDetail = { ...product, variants: [], variant_axes: null, price: null };
   assert.deepEqual(buildFeedItems(priceless), []);

@@ -117,6 +117,11 @@ export function mockMultiAxisProduct(): ProductDetail {
       parent_id: null,
     },
     btu: null,
+    // What the shop sends for the Merchant feed: our own path (free text) and the
+    // Google taxonomy node — "Hardware > Plumbing > Plumbing Pipes" = 2216.
+    product_type: "Materiales e insumos > Tubería y aislamiento",
+    google_product_category: "Hardware > Plumbing > Plumbing Pipes",
+    google_product_category_id: 2216,
     variants: buildVariants(),
     variant_axes: [
       {
