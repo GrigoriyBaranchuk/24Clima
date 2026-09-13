@@ -173,6 +173,13 @@ export type ProductImage = {
    * or a generated card (kinds starting with "card"). Null on older rows.
    */
   kind?: string | null;
+  /**
+   * Пиксельные размеры файла (`product_images.width/height`, миграция 018).
+   * Отсутствуют на старом бэкенде и null у строк, которым размеры ещё не
+   * проставили, — тогда размер считается неизвестным (см. merchant-feed).
+   */
+  width?: number | null;
+  height?: number | null;
 };
 export type ProductList = {
   id: string;
