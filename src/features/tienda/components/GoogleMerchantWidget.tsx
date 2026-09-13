@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useInteractionTrigger } from "@/components/LazyAnalytics";
 
 const SCRIPT_ID = "merchantWidgetScript";
 const SCRIPT_SRC =
@@ -17,6 +18,8 @@ const BOTTOM_MARGIN = 96;
 const MOBILE_BOTTOM_MARGIN = 104;
 
 type MerchantWidgetWindow = Window & {
+  /** Виджет уже запущен на этой вкладке — второй start() не нужен. */
+  __merchantWidgetLoaded?: boolean;
   merchantwidget?: {
     start: (opts: {
       position?: "RIGHT_BOTTOM" | "LEFT_BOTTOM";
@@ -36,12 +39,24 @@ type MerchantWidgetWindow = Window & {
  *
  * Ставим слева внизу: справа внизу висит WhatsApp-кнопка (fixed bottom-6 right-6).
  * Слева виджет встаёт над бейджем Google Business Profile — см. отступы выше.
+ *
+ * Грузится не сразу, а по общему триггеру «пользователь начал взаимодействовать»
+ * (см. useInteractionTrigger в LazyAnalytics): виджет — украшение, ради него
+ * незачем занимать главный поток в первые секунды загрузки /tienda.
  */
 export function GoogleMerchantWidget() {
+  const shouldLoad = useInteractionTrigger();
+
   useEffect(() => {
+    if (!shouldLoad) return;
     const w = window as MerchantWidgetWindow;
+    let cancelled = false;
 
     const start = () => {
+      // Идемпотентность: переход между страницами магазина монтирует компонент
+      // заново, а виджет на вкладке должен стартовать ровно один раз.
+      if (cancelled || w.__merchantWidgetLoaded) return;
+      w.__merchantWidgetLoaded = true;
       w.merchantwidget?.start({
         position: "LEFT_BOTTOM",
         bottomMargin: BOTTOM_MARGIN,
@@ -49,10 +64,16 @@ export function GoogleMerchantWidget() {
       });
     };
 
-    // Переход между страницами магазина: скрипт уже загружен, load не повторится.
-    if (document.getElementById(SCRIPT_ID)) {
+    // Скрипт уже в документе (переход между страницами магазина): либо стартуем
+    // сразу, либо ждём его load — событие для уже загруженного не повторится.
+    const existing = document.getElementById(SCRIPT_ID);
+    if (existing) {
       if (w.merchantwidget) start();
-      return;
+      else existing.addEventListener("load", start);
+      return () => {
+        cancelled = true;
+        existing.removeEventListener("load", start);
+      };
     }
 
     const script = document.createElement("script");
@@ -61,7 +82,14 @@ export function GoogleMerchantWidget() {
     script.defer = true;
     script.addEventListener("load", start);
     document.head.appendChild(script);
-  }, []);
+
+    // Сам виджет остаётся на странице (Google не даёт его снять) — снимаем
+    // только свой обработчик, чтобы start() не выстрелил после размонтирования.
+    return () => {
+      cancelled = true;
+      script.removeEventListener("load", start);
+    };
+  }, [shouldLoad]);
 
   return null;
 }
