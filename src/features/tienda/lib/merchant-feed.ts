@@ -26,6 +26,11 @@
  *    burnt-in text and prices; Google rejects promotional overlays. Only clean
  *    product photography goes in, and a product left with no clean photo is
  *    dropped from the feed rather than submitted with a card.
+ *    Дополнительные фото (`g:additional_image_link`) вдобавок обязаны иметь
+ *    короткое ребро ≥ 1048 px — порог показателя «Фото > 1048 px» в «Качестве
+ *    магазина». Размеры неизвестны → фото проходит. Главное фото не
+ *    фильтруется: его выбирает API (`clean_primary_image_url`), а оффер без
+ *    картинки Google отклоняет целиком.
  */
 
 import type { ProductDetail, ProductImage, ProductVariant } from "./api-client";
@@ -70,22 +75,50 @@ function isGeneratedArtwork(image: ProductImage): boolean {
   return kind.startsWith("card") || kind === "infographic";
 }
 
+/** Одно фото для фида: URL плюс размеры, если бэкенд их знает. */
+export type FeedImage = { url: string; width?: number | null; height?: number | null };
+
+/**
+ * Официальный порог Google для показателя «Фото > 1048 px» в «Качестве магазина»:
+ * короткое ребро картинки должно быть не меньше 1048 пикселей.
+ */
+export const MIN_ADDITIONAL_IMAGE_PX = 1048;
+
+/**
+ * Годится ли фото в `g:additional_image_link`. Размеры неизвестны (старый
+ * бэкенд, null в строке) — пропускаем: лучше отдать фото, чем потерять его
+ * из-за отсутствия данных. Известны — короткое ребро должно быть ≥ 1048 px.
+ * Главное фото этому фильтру НЕ подчиняется: оффер без картинки Google
+ * отклонит целиком, маленькое главное фото — меньшее зло.
+ */
+export function qualifiesAsAdditionalImage(image: FeedImage): boolean {
+  const { width, height } = image;
+  if (typeof width !== "number" || typeof height !== "number") return true;
+  if (!Number.isFinite(width) || !Number.isFinite(height)) return true;
+  return Math.min(width, height) >= MIN_ADDITIONAL_IMAGE_PX;
+}
+
 /**
  * Clean product photos, in display order. `image_url` is used only when the
  * product carries no image rows at all (an older payload with no `kind` data) —
  * once rows exist, they are the authority on what is a photo and what is a card.
  */
-export function feedImages(product: ProductDetail): string[] {
+export function feedImageEntries(product: ProductDetail): FeedImage[] {
   const rows = product.images ?? [];
   if (rows.length > 0) {
     return rows
       .filter((im) => !isGeneratedArtwork(im))
       .slice()
       .sort((a, b) => a.sort_order - b.sort_order)
-      .map((im) => im.url)
-      .filter((u): u is string => Boolean(u));
+      .filter((im) => Boolean(im.url))
+      .map((im) => ({ url: im.url, width: im.width, height: im.height }));
   }
-  return product.image_url ? [product.image_url] : [];
+  return product.image_url ? [{ url: product.image_url }] : [];
+}
+
+/** Те же фото, только URL — форма, в которой их ждут вызывающие и проверки. */
+export function feedImages(product: ProductDetail): string[] {
+  return feedImageEntries(product).map((im) => im.url);
 }
 
 /**
@@ -157,15 +190,19 @@ export function buildFeedItems(product: ProductDetail): string[] {
   const variants = sortVariants(product.variants);
   // Nothing buyable: not a data problem worth a log line, just skip it.
   if (variants.length === 0 && product.price == null) return [];
-  const images = feedImages(product);
+  const images = feedImageEntries(product);
   if (images.length === 0) {
     console.warn(
       `[merchant-feed] ${product.sku}: no clean product image (cards/infographics only) — skipped`
     );
     return [];
   }
-  const [mainImage, ...restImages] = images;
-  const additionalImages = restImages.slice(0, MAX_ADDITIONAL_IMAGES);
+  const [main, ...restImages] = images;
+  const mainImage = main.url;
+  const additionalImages = restImages
+    .filter(qualifiesAsAdditionalImage)
+    .slice(0, MAX_ADDITIONAL_IMAGES)
+    .map((im) => im.url);
   const link = tiendaProductUrl(FEED_LOCALE, product.slug);
   const description = toPlainText(product.description ?? product.short_description ?? "");
   const axes = usableAxes(product.variant_axes, variants);

@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { api } from "../lib/api-client";
 import type { ProductsResponse, Category, Brand } from "../lib/api-client";
 import { HomeFilters } from "../components/home/HomeFilters";
 import { ActiveFiltersBar } from "../components/home/ActiveFiltersBar";
+import { CatalogSkeleton } from "../components/home/CatalogSkeleton";
 import { ProductCard } from "../components/product/ProductCard";
 import { LocalizedTiendaLink } from "../components/LocalizedTiendaLink";
 import { TiendaShell } from "../components/TiendaShell";
@@ -96,7 +98,12 @@ type SearchParams = {
   include_pro?: string;
 };
 
-export async function TiendaHomePage({
+/**
+ * Фильтры + сетка товаров. Отдельный async-компонент: всё, что ждёт shop-api,
+ * живёт здесь, поэтому оболочка страницы (шапка, H1, подзаголовок) уходит в
+ * браузер сразу, а каталог дострикивается в <Suspense> (см. TiendaHomePage).
+ */
+async function HomeCatalog({
   locale,
   searchParams,
 }: {
@@ -151,6 +158,90 @@ export async function TiendaHomePage({
   };
   const sortLabel = sortLabels[sort] ?? t("sortNewest");
   return (
+    <section className="flex flex-col gap-8 lg:flex-row lg:gap-10">
+      <div className="shrink-0 lg:w-64">
+        <HomeFilters
+          categories={localizedCategories}
+          brands={brands}
+          currentCategory={category ?? null}
+          currentBrand={brand ?? null}
+          currentSort={sort}
+          currentBtuMin={validBtuMin}
+          currentBtuMax={validBtuMax}
+          currentIncludePro={includePro}
+          labels={{
+            filterCategory: t("filterCategory"),
+            filterBrand: t("filterBrand"),
+            filterSort: t("filterSort"),
+            filterAll: t("filterAll"),
+            sortNewest: t("sortNewest"),
+            sortPriceAsc: t("sortPriceAsc"),
+            sortPriceDesc: t("sortPriceDesc"),
+            sortNameAsc: t("sortNameAsc"),
+            sortNameDesc: t("sortNameDesc"),
+            filterBtu: t("filterBtu"),
+            btuMin: t("btuMin"),
+            btuMax: t("btuMax"),
+            showPro: tFilters("showPro"),
+          }}
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <h2 className="mb-4 text-2xl font-semibold text-foreground">{t("featured")}</h2>
+        <ActiveFiltersBar
+          categorySlug={category ?? null}
+          categoryName={categoryName}
+          brandSlug={brand ?? null}
+          brandName={brandName}
+          sort={sort}
+          sortLabel={sortLabel}
+          btuMin={validBtuMin}
+          btuMax={validBtuMax}
+          labels={{
+            filterCategory: t("filterCategory"),
+            filterBrand: t("filterBrand"),
+            filterSort: t("filterSort"),
+            filterBtu: t("filterBtu"),
+            clearFilter: t("clearFilter"),
+          }}
+        />
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {data.items.map((p) => (
+            <ProductCard
+              key={p.id}
+              product={p}
+              btuLabel={t("btuLabel")}
+              professionalLabel={tBadge("professional")}
+              noImageLabel={t("noProducts")}
+              seePresentationsLabel={tProduct("seePresentations")}
+            />
+          ))}
+        </div>
+        {data.items.length === 0 && (
+          <p className="text-muted-foreground">{t("noProducts")}</p>
+        )}
+        <div className="mt-8 text-center">
+          <LocalizedTiendaLink
+            href="/category/aire-acondicionado"
+            className="inline-flex rounded-xl bg-primary px-6 py-3 font-medium text-primary-foreground shadow-sm transition hover:opacity-90"
+          >
+            {t("viewCatalog")}
+          </LocalizedTiendaLink>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export async function TiendaHomePage({
+  locale,
+  searchParams,
+}: {
+  locale: string;
+  searchParams: SearchParams;
+}) {
+  const t = await getTranslations({ locale, namespace: "tienda.home" });
+  return (
     <TiendaShell>
       <div className="container mx-auto px-4 lg:px-8 py-12">
         <section className="mb-16 text-center">
@@ -159,78 +250,9 @@ export async function TiendaHomePage({
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">{t("subtitle")}</p>
         </section>
-        <section className="flex flex-col gap-8 lg:flex-row lg:gap-10">
-          <div className="shrink-0 lg:w-64">
-            <HomeFilters
-              categories={localizedCategories}
-              brands={brands}
-              currentCategory={category ?? null}
-              currentBrand={brand ?? null}
-              currentSort={sort}
-              currentBtuMin={validBtuMin}
-              currentBtuMax={validBtuMax}
-              currentIncludePro={includePro}
-              labels={{
-                filterCategory: t("filterCategory"),
-                filterBrand: t("filterBrand"),
-                filterSort: t("filterSort"),
-                filterAll: t("filterAll"),
-                sortNewest: t("sortNewest"),
-                sortPriceAsc: t("sortPriceAsc"),
-                sortPriceDesc: t("sortPriceDesc"),
-                sortNameAsc: t("sortNameAsc"),
-                sortNameDesc: t("sortNameDesc"),
-                filterBtu: t("filterBtu"),
-                btuMin: t("btuMin"),
-                btuMax: t("btuMax"),
-                showPro: tFilters("showPro"),
-              }}
-            />
-          </div>
-          <div className="min-w-0 flex-1">
-            <h2 className="mb-4 text-2xl font-semibold text-foreground">{t("featured")}</h2>
-            <ActiveFiltersBar
-              categorySlug={category ?? null}
-              categoryName={categoryName}
-              brandSlug={brand ?? null}
-              brandName={brandName}
-              sort={sort}
-              sortLabel={sortLabel}
-              btuMin={validBtuMin}
-              btuMax={validBtuMax}
-              labels={{
-                filterCategory: t("filterCategory"),
-                filterBrand: t("filterBrand"),
-                filterSort: t("filterSort"),
-                filterBtu: t("filterBtu"),
-                clearFilter: t("clearFilter"),
-              }}
-            />
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {data.items.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  product={p}
-                  btuLabel={t("btuLabel")}
-                  professionalLabel={tBadge("professional")}
-                  noImageLabel={t("noProducts")}
-                  seePresentationsLabel={tProduct("seePresentations")}
-                />
-              ))}
-            </div>
-            {data.items.length === 0 && (
-              <p className="text-muted-foreground">{t("noProducts")}</p>
-            )}
-            <div className="mt-8 text-center">
-              <LocalizedTiendaLink
-                href="/category/aire-acondicionado"
-                className="inline-flex rounded-xl bg-primary px-6 py-3 font-medium text-primary-foreground shadow-sm transition hover:opacity-90"
-              >
-                {t("viewCatalog")}
-              </LocalizedTiendaLink>
-            </div>
-          </div>
-        </section>
+        <Suspense fallback={<CatalogSkeleton />}>
+          <HomeCatalog locale={locale} searchParams={searchParams} />
+        </Suspense>
       </div>
     </TiendaShell>
   );

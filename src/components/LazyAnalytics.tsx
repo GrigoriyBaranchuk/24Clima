@@ -5,60 +5,52 @@ import GoogleAnalytics from "./GoogleAnalytics";
 import YandexMetrika from "./YandexMetrika";
 
 /**
- * Defers GA + Yandex Metrika until the first user interaction
- * (click / touch / scroll / keydown) OR 3 seconds of browser idle time —
- * whichever comes first.
+ * Общий триггер «пользователь начал взаимодействовать»: scroll / pointerdown /
+ * keydown / touchstart (once) ИЛИ 10 с с момента монтирования — что раньше.
  *
- * Meta Pixel is intentionally NOT deferred here — it's our conversion
- * tracker and must be ready when the user clicks the WhatsApp CTA.
+ * Раньше здесь был requestIdleCallback с timeout 3 с: браузер считал страницу
+ * «свободной» ещё до конца загрузки и запускал третьи стороны прямо в окно
+ * измерения (Facebook блокировал главный поток 663 мс, gtag 266, Метрика 182).
+ * Теперь третьи стороны стартуют только после реального намерения, а 10 с —
+ * страховка для длинных чтений без скролла. Владелец принял потерю части
+ * PageView у визитов без единого действия: это отказы, они не конвертируют.
  *
- * Why: real user metrics (RUM) show ~80% of a page's TBT on mobile comes
- * from third-party JS execution. By holding analytics back until intent
- * to interact is observed, the initial paint stays snappy.
- *
- * Trade-off: visitors who land + bounce in <3 s without scrolling or
- * touching anything won't be tracked by GA/Yandex. They are bounces
- * regardless and don't convert, so the analytical loss is small.
+ * Тем же триггером пользуются MetaPixel и GoogleMerchantWidget — общий хук
+ * ниже, чтобы условие старта было ровно одно на весь сайт.
  */
-export default function LazyAnalytics() {
-  const [shouldLoad, setShouldLoad] = useState(false);
+const INTERACTION_EVENTS: (keyof WindowEventMap)[] = [
+  "scroll",
+  "pointerdown",
+  "keydown",
+  "touchstart",
+];
+
+const FALLBACK_MS = 10_000;
+
+/** true, как только пользователь что-то сделал (или прошло 10 с). */
+export function useInteractionTrigger(): boolean {
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
-    if (shouldLoad) return;
-    const trigger = () => setShouldLoad(true);
+    if (triggered) return;
+    const trigger = () => setTriggered(true);
 
-    const events: (keyof WindowEventMap)[] = [
-      "click",
-      "touchstart",
-      "scroll",
-      "keydown",
-      "pointerdown",
-    ];
-    events.forEach((e) =>
+    INTERACTION_EVENTS.forEach((e) =>
       window.addEventListener(e, trigger, { once: true, passive: true }),
     );
-
-    let idleId: number | null = null;
-    let timeoutId: number | null = null;
-    type IdleWin = Window & {
-      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-      cancelIdleCallback?: (id: number) => void;
-    };
-    const w = window as IdleWin;
-    if (typeof w.requestIdleCallback === "function") {
-      idleId = w.requestIdleCallback(trigger, { timeout: 3000 });
-    } else {
-      timeoutId = window.setTimeout(trigger, 3000);
-    }
+    const timeoutId = window.setTimeout(trigger, FALLBACK_MS);
 
     return () => {
-      events.forEach((e) => window.removeEventListener(e, trigger));
-      if (idleId !== null && typeof w.cancelIdleCallback === "function") {
-        w.cancelIdleCallback(idleId);
-      }
-      if (timeoutId !== null) window.clearTimeout(timeoutId);
+      INTERACTION_EVENTS.forEach((e) => window.removeEventListener(e, trigger));
+      window.clearTimeout(timeoutId);
     };
-  }, [shouldLoad]);
+  }, [triggered]);
+
+  return triggered;
+}
+
+export default function LazyAnalytics() {
+  const shouldLoad = useInteractionTrigger();
 
   if (!shouldLoad) return null;
   return (

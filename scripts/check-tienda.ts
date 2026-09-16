@@ -421,6 +421,24 @@ check("generated cards and infographics never reach the feed", () => {
   assert.deepEqual(feedImages(withInfographic), ["https://x/c.jpg"]);
 });
 
+check("additional_image_link отсеивает фото меньше 1048 px, главное — нет", () => {
+  const sized: ProductDetail = {
+    ...product,
+    images: [
+      // Главное фото маленькое и всё равно попадает в g:image_link.
+      { id: "a", url: "https://x/main.jpg", alt: null, sort_order: 0, kind: "main", width: 800, height: 800 },
+      { id: "b", url: "https://x/small.jpg", alt: null, sort_order: 1, kind: "official", width: 1200, height: 900 },
+      { id: "c", url: "https://x/big.jpg", alt: null, sort_order: 2, kind: "official", width: 1600, height: 1600 },
+      // Размеры неизвестны (старый бэкенд) — пропускаем.
+      { id: "d", url: "https://x/unknown.jpg", alt: null, sort_order: 3, kind: "official" },
+    ],
+  };
+  const item = buildFeedItems(sized)[0];
+  assert.equal(tagValue(item, "g:image_link"), "https://x/main.jpg");
+  const additional = [...item.matchAll(/<g:additional_image_link>([^<]+)</g)].map((m) => m[1]);
+  assert.deepEqual(additional, ["https://x/big.jpg", "https://x/unknown.jpg"]);
+});
+
 check("a product left with only cards is dropped, loudly", () => {
   const cardsOnly: ProductDetail = {
     ...product,
