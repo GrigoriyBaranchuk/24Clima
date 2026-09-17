@@ -8,7 +8,7 @@ import { CategoryActiveFiltersBar } from "../components/category/ActiveFiltersBa
 import { ProductCard } from "../components/product/ProductCard";
 import { LocalizedTiendaLink } from "../components/LocalizedTiendaLink";
 import { TiendaShell } from "../components/TiendaShell";
-import { BASE, tiendaCategoryUrl, tiendaLangAlternates } from "../lib/tienda-url";
+import { BASE, tiendaCategoryUrl, tiendaLangAlternates, tiendaRobots } from "../lib/tienda-url";
 import {
   categoryLabel,
   findCategoryBySlug,
@@ -41,7 +41,7 @@ export async function generateTiendaCategoryMetadata(locale: string, slug: strin
   return {
     metadataBase: new URL(BASE),
     title: `${label} | 24Clima Shop`,
-    robots: { index: true, follow: true },
+    robots: tiendaRobots(locale),
     alternates: {
       canonical: tiendaCategoryUrl(locale, slug),
       languages: tiendaLangAlternates(`/category/${slug}`),

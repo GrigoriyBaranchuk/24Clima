@@ -8,7 +8,8 @@
     "build": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next build",
     "start": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next start",
     "lint": "bunx tsc -p tsconfig.lint.json --noEmit && next lint",
-    "format": "bunx biome format --write"
+    "format": "bunx biome format --write",
+    "check:feed": "bun run scripts/check-tienda.ts"
   },
   "dependencies": {
     "@24clima/design": "git+ssh://git@github.com/GrigoriyBaranchuk/24clima-design.git#v0.2.2",

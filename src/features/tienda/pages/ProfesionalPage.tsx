@@ -4,7 +4,12 @@ import { api } from "../lib/api-client";
 import type { ProductsResponse } from "../lib/api-client";
 import { ProductCard } from "../components/product/ProductCard";
 import { TiendaShell } from "../components/TiendaShell";
-import { BASE, tiendaProfesionalUrl, tiendaLangAlternates } from "../lib/tienda-url";
+import {
+  BASE,
+  tiendaProfesionalUrl,
+  tiendaLangAlternates,
+  tiendaRobots,
+} from "../lib/tienda-url";
 
 export async function generateTiendaProfesionalMetadata(locale: string): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "tienda.profesional" });
@@ -12,7 +17,7 @@ export async function generateTiendaProfesionalMetadata(locale: string): Promise
     metadataBase: new URL(BASE),
     title: `${t("title")} | 24Clima Shop`,
     description: t("metaDescription"),
-    robots: { index: true, follow: true },
+    robots: tiendaRobots(locale),
     alternates: {
       canonical: tiendaProfesionalUrl(locale),
       languages: tiendaLangAlternates("/profesional"),

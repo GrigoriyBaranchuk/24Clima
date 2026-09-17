@@ -2,7 +2,12 @@ import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { WhatsAppCta } from "@24clima/design/components";
 import { TiendaShell } from "../components/TiendaShell";
-import { BASE, tiendaDevolucionesUrl, tiendaLangAlternates } from "../lib/tienda-url";
+import {
+  BASE,
+  tiendaDevolucionesUrl,
+  tiendaLangAlternates,
+  tiendaRobots,
+} from "../lib/tienda-url";
 
 export async function generateTiendaDevolucionesMetadata(locale: string): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "tienda.devoluciones" });
@@ -10,7 +15,7 @@ export async function generateTiendaDevolucionesMetadata(locale: string): Promis
     metadataBase: new URL(BASE),
     title: `${t("title")} | 24Clima Shop`,
     description: t("metaDescription"),
-    robots: { index: true, follow: true },
+    robots: tiendaRobots(locale),
     alternates: {
       canonical: tiendaDevolucionesUrl(locale),
       languages: tiendaLangAlternates("/devoluciones"),

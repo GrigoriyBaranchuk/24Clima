@@ -45,11 +45,26 @@ export function tiendaDevolucionesUrl(locale: string): string {
 }
 
 /**
+ * Locales whose /tienda pages Google may index. The Russian shop exists for the
+ * owner's own use, not for search: it is the same Panamanian catalog in a third
+ * language, which is thin-content duplication and dilutes the es/en pages. So ru
+ * is noindex (owner decision Q5) — and a noindex page must not be advertised as
+ * an hreflang alternate either, hence one list feeding both.
+ */
+export const TIENDA_INDEXED_LOCALES: readonly Locale[] = locales.filter((l) => l !== "ru");
+
+/** Robots directive for a /tienda page: ru is noindex, still followed. */
+export function tiendaRobots(locale: string): { index: boolean; follow: boolean } {
+  return { index: locale !== "ru", follow: true };
+}
+
+/**
  * hreflang alternates map for a tienda-relative `path`, in the site's as-needed
- * scheme: { "x-default": es, es, en, ru }. Mirrors sitemap.ts / servicios pages.
+ * scheme: { "x-default": es, es, en }. Mirrors sitemap.ts / servicios pages,
+ * minus the noindexed ru shop (see TIENDA_INDEXED_LOCALES).
  */
 export function tiendaLangAlternates(path = ""): Record<string, string> {
-  const entries = locales.map((l) => [l, tiendaUrl(l, path)] as const);
+  const entries = TIENDA_INDEXED_LOCALES.map((l) => [l, tiendaUrl(l, path)] as const);
   return {
     "x-default": tiendaUrl(defaultLocale, path),
     ...Object.fromEntries(entries),
