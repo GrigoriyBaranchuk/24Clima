@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Wrench, Wind, Thermometer, Droplets, Settings, Zap, Layers, AirVent, ArrowRight, Building2 } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/constants";
 import TrackedWhatsAppLink from "@/components/TrackedWhatsAppLink";
+import LazyPrefetchLink from "@/components/LazyPrefetchLink";
 import RevealOnDesktop from "@/components/RevealOnDesktop";
 import SectionDividerStroke from "@/components/SectionDividerStroke";
 import type { ServiceSlug } from "@/lib/services";
@@ -72,10 +73,13 @@ export default async function Services() {
           </p>
         </div>
 
-        {/* Mobile Grid — dark cards, 4 services, unique icon colors */}
+        {/* Mobile Grid — dark cards, 4 services, unique icon colors.
+            LazyPrefetchLink вместо Link: четыре карточки сразу в вьюпорте, и
+            их RSC-payload не должен конкурировать с первым экраном. Префетч не
+            отключён — он просто откладывается до load + idle. */}
         <div className="grid grid-cols-2 gap-2 lg:hidden">
           {mobileServices.map((service, index) => (
-            <Link
+            <LazyPrefetchLink
               key={index}
               href={`/servicios/${service.slug}`}
               className="flex flex-col items-center text-center py-2.5 px-3 rounded-2xl bg-[#162a3e] active:scale-95 transition-transform"
@@ -86,7 +90,7 @@ export default async function Services() {
               <span className="text-[13px] font-semibold text-white leading-tight">
                 {service.shortTitle}
               </span>
-            </Link>
+            </LazyPrefetchLink>
           ))}
         </div>
 

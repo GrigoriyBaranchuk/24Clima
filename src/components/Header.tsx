@@ -4,7 +4,6 @@ import { metaPixelEvent } from "@/components/MetaPixel";
 import TiendaCartLink from "@/features/tienda/components/TiendaCartLink";
 import { Link, usePathname } from "@/i18n/routing";
 import { WHATSAPP_DISPLAY, getWhatsAppLink } from "@/lib/constants";
-import { isHashNav } from "@/lib/nav";
 import { SERVICE_SLUGS, SLUG_TO_TRANSLATION_KEY } from "@/lib/services";
 import { HeaderShell, WhatsAppCta } from "@24clima/design/components";
 import {
@@ -17,87 +16,30 @@ import {
   Tent,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
+import NavItem from "./header/NavItem";
+import {
+  allServicesClass,
+  dropdownGroupTitleClass,
+  dropdownLinkActiveClass,
+  dropdownLinkClass,
+  navLinkActiveClass,
+  navLinkClass,
+  tiendaActiveClass,
+  tiendaClass,
+} from "./header/nav-classes";
 
-// Class PAIRS, not a base + an override. `text-gray-700` and
-// `text-brand-green-dark` are the same Tailwind utility, so appending the
-// active colour would leave the winner to stylesheet order, not to the order
-// inside the class attribute. Each surface therefore ships a full inactive
-// string and a full active string, and NavItem picks one.
-const navLinkClass =
-  "text-base font-medium text-gray-700 transition-colors hover:text-brand-green-dark";
-const navLinkActiveClass =
-  "text-base font-semibold text-brand-green-dark transition-colors";
-const dropdownLinkClass =
-  "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-brand-green-dark/10 hover:text-brand-green-dark";
-const dropdownLinkActiveClass =
-  "flex items-center gap-2.5 rounded-xl bg-brand-green-dark/10 px-3 py-2 text-sm font-semibold text-brand-green-dark transition-colors";
-const allServicesClass =
-  "flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-brand-green-dark transition-colors hover:bg-brand-green-dark/10";
-const dropdownGroupTitleClass =
-  "px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400";
-const sheetLinkClass =
-  "rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100";
-const sheetLinkActiveClass =
-  "rounded-xl bg-gray-100 px-3 py-3 text-base font-semibold text-brand-green-dark transition-colors";
-const sheetIconLinkClass =
-  "flex items-center gap-2.5 rounded-xl px-3 py-3 text-base font-medium text-gray-800 transition-colors hover:bg-gray-100";
-const sheetIconLinkActiveClass =
-  "flex items-center gap-2.5 rounded-xl bg-gray-100 px-3 py-3 text-base font-semibold text-brand-green-dark transition-colors";
-const tiendaClass =
-  "inline-flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:border-brand-green-dark hover:text-brand-green-dark";
-const tiendaActiveClass =
-  "inline-flex items-center gap-2 rounded-full border border-brand-green-dark px-4 py-2 text-sm font-semibold text-brand-green-dark transition-colors";
-
-// One active-aware link for EVERY nav surface: desktop nav, dropdown, mobile
-// sheet, Tienda button. Deliberately replaces the package's HeaderNavLink
-// here: its contract (href/className/children/onClick) cannot carry
-// aria-current, and it appends className instead of swapping it. The desktop
-// look is kept byte-identical to the package's NAV_CLASS above — if the
-// package ever grows an `active` prop, fold this back into it.
-// Defined at module scope, NOT inside Header: a component re-created on every
-// render would remount the whole nav on each scroll tick.
-function NavItem({
-  href,
-  active,
-  exact,
-  className,
-  activeClassName,
-  role,
-  onClick,
-  children,
-}: {
-  href: string;
-  /** Current page OR one of its ancestors — drives the highlight. */
-  active: boolean;
-  /** Exactly the current page — only this earns aria-current="page". */
-  exact: boolean;
-  className: string;
-  activeClassName: string;
-  role?: "menuitem";
-  onClick?: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      // Якорь (/#servicios) — гасим авто-скролл, чтобы браузер дошёл до
-      // хэша. Переход на страницу — дефолт next/link, т.е. скролл к верху.
-      scroll={isHashNav(href) ? false : undefined}
-      role={role}
-      onClick={onClick}
-      // "page" is reserved for the exact page; an ancestor section link gets
-      // the generic "true" (ARIA has no "section" token).
-      aria-current={exact ? "page" : active ? "true" : undefined}
-      className={active ? activeClassName : className}
-    >
-      {children}
-    </Link>
-  );
-}
+// Мобильное меню — отдельный чанк. `@radix-ui/react-dialog` (Sheet) весит
+// ощутимо, а открывают меню редко: держать его в первом бандле КАЖДОЙ
+// страницы — чистый налог на мобильный First Load. `ssr: false` — меню всё
+// равно не рендерится до клика, серверная разметка не меняется.
+// Прогрев чанка висит на pointerenter/touchstart/focus бургера (см. ниже).
+const MobileMenuSheet = dynamic(() => import("./header/MobileMenuSheet"), {
+  ssr: false,
+});
 
 // showCartLink: passed by TiendaShell so the cart entry point renders only on
 // /tienda pages; marketing pages keep the header unchanged.
@@ -112,7 +54,20 @@ export default function Header({
   // wordmark, the burger, and the language badge.
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  // Остаётся true после первого открытия: иначе размонтирование убило бы
+  // анимацию закрытия, а повторное открытие снова ждало бы монтирования.
+  const [menuMounted, setMenuMounted] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const menuChunkRequested = useRef(false);
+
+  // Прогрев чанка меню: наведение/касание/фокус на бургере запускают загрузку
+  // до того, как палец оторвётся от экрана. Тот же специфаер, что и в
+  // dynamic() выше, поэтому webpack отдаёт один и тот же промис.
+  const warmUpMenuChunk = () => {
+    if (menuChunkRequested.current) return;
+    menuChunkRequested.current = true;
+    void import("./header/MobileMenuSheet");
+  };
 
   // Desktop keeps only destination pages; everything service-shaped lives in
   // the grouped "Servicios" dropdown. "Inicio" is dropped (logo = home) and
@@ -396,57 +351,47 @@ export default function Header({
       {showCartLink && (
         <TiendaCartLink variant="mobile" isScrolled={isScrolled} />
       )}
-      <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-        <SheetTrigger asChild>
-          <button
-            type="button"
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-              isScrolled
-                ? "bg-gray-100 text-gray-600"
-                : "bg-white/10 text-white/70"
-            }`}
-            aria-label="Menú"
-          >
-            <Menu className="w-4 h-4" />
-          </button>
-        </SheetTrigger>
-        <SheetContent side="right" className="w-[85%] max-w-sm p-0">
-          <SheetTitle className="sr-only">Menú</SheetTitle>
-          <nav className="flex h-full flex-col gap-0.5 overflow-y-auto p-4 pt-14">
-            {mobileNav.map((item) => (
-              <NavItem
-                key={item.name}
-                href={item.href}
-                active={isSection(item.href)}
-                exact={isCurrentPage(item.href)}
-                onClick={() => setMenuOpen(false)}
-                className={sheetLinkClass}
-                activeClassName={sheetLinkActiveClass}
-              >
-                {item.name}
-              </NavItem>
-            ))}
-            <div className="my-2 h-px bg-gray-200" />
-            <span className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
-              {t("solutions")}
-            </span>
-            {solutions.map(({ name, href, Icon }) => (
-              <NavItem
-                key={href}
-                href={href}
-                active={isSection(href)}
-                exact={isCurrentPage(href)}
-                onClick={() => setMenuOpen(false)}
-                className={sheetIconLinkClass}
-                activeClassName={sheetIconLinkActiveClass}
-              >
-                <Icon className="w-5 h-5 text-brand-green-dark" />
-                {name}
-              </NavItem>
-            ))}
-          </nav>
-        </SheetContent>
-      </Sheet>
+      {/* Бургер — обычная кнопка вместо SheetTrigger: Sheet теперь в ленивом
+        чанке и в DOM до первого открытия его нет. Классы и aria-label те же;
+        aria-haspopup/aria-expanded воспроизводят то, что вешал SheetTrigger. */}
+      <button
+        type="button"
+        className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+          isScrolled ? "bg-gray-100 text-gray-600" : "bg-white/10 text-white/70"
+        }`}
+        aria-label="Menú"
+        aria-haspopup="dialog"
+        aria-expanded={menuOpen}
+        onPointerEnter={warmUpMenuChunk}
+        onTouchStart={warmUpMenuChunk}
+        onFocus={warmUpMenuChunk}
+        onClick={() => {
+          setMenuMounted(true);
+          setMenuOpen(true);
+        }}
+      >
+        <Menu className="w-4 h-4" />
+      </button>
+      {menuMounted && (
+        <MobileMenuSheet
+          open={menuOpen}
+          onOpenChange={setMenuOpen}
+          items={mobileNav.map((item) => ({
+            name: item.name,
+            href: item.href,
+            active: isSection(item.href),
+            exact: isCurrentPage(item.href),
+          }))}
+          solutions={solutions.map(({ name, href, Icon }) => ({
+            name,
+            href,
+            active: isSection(href),
+            exact: isCurrentPage(href),
+            Icon,
+          }))}
+          solutionsLabel={t("solutions")}
+        />
+      )}
       <LanguageSwitcher isScrolled={isScrolled} />
     </>
   );

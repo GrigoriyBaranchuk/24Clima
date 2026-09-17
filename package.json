@@ -7,10 +7,19 @@
     "dev": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next dev -H 0.0.0.0",
     "build": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next build",
     "start": "NODE_OPTIONS=\"--require ./scripts/strip-localstorage-stub.js\" next start",
-    "lint": "bunx tsc -p tsconfig.lint.json --noEmit && next lint",
+    "lint": "node scripts/check-client-i18n.mjs && bunx tsc -p tsconfig.lint.json --noEmit && next lint",
     "format": "bunx biome format --write",
     "check:feed": "bun run scripts/check-tienda.ts"
   },
+  "browserslist": [
+    "chrome >= 90",
+    "edge >= 90",
+    "firefox >= 90",
+    "safari >= 14.1",
+    "ios_saf >= 14.5",
+    "android >= 90",
+    "samsung >= 15"
+  ],
   "dependencies": {
     "@24clima/design": "git+ssh://git@github.com/GrigoriyBaranchuk/24clima-design.git#v0.2.2",
     "@anthropic-ai/sdk": "^0.106.0",

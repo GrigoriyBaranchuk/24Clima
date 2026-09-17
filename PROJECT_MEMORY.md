@@ -1376,3 +1376,43 @@ dfs_onpage / dfs_backlinks STALE/failed, почините синхронизац
   дашборде — строка Sync health должна быть «all sources fresh».
 - Тренд кликов/показов смотреть 3–4 недели; кластер «limpieza»
   (`/servicios/limpieza`, perf 70 mobile) — точка роста по-прежнему.
+
+## Сессия 2026-09-16 — скорость мобильной главной: 5 правок без изменения дизайна (ветка perf-mobile-speed)
+
+**Повод:** PSI владельца — 88, LCP 3,5 с, SI 4,0 с, CLS 0,33. Вопрос: реализуемо
+ли ускорение без потери дизайна и функциональности.
+
+**Диагностика** (прод-HTML под мобильным UA, 2 Lighthouse CLI с трассой, Chrome):
+LCP-элемент — текстовый h1, наблюдаемый LCP 0,7–1,5 с; симулированный высок из-за
+байт до LCP: HTML 233 KB raw (144 KB inline RSC, 56 KB — весь словарь es.json в
+`NextIntlClientProvider`), 4 preload-шрифта 127 KB, JS ~200 KB br. CLS 0,33 и пинг
+`m.youtube.com` из отчёта владельца не воспроизвелись (шум одного прогона). План
+прошёл Codex (поправил: глобальный `pick` словаря сломал бы другие роуты, browserslist
+не уберёт Next-полифиллы) и seo-reviewer (approve).
+
+**Сделано** (код — Opus-агент по ТЗ, упёрся в лимит сессии на этапе smoke; проверка — Fable):
+1. Inter latin-only в `(es)`; Lora — только в `consejos-y-guias/layout.tsx` (оба дерева).
+2. `src/i18n/client-messages.ts`: клиенту только `CLIENT_SHELL_NAMESPACES`; `services`,
+   `tienda`, `tipsAdmin` — вложенными провайдерами (замещают словарь → `[...SHELL, своё]`).
+   Страховки: `scripts/check-client-i18n.mjs` (в `lint`), `scripts/smoke-routes.mjs`.
+3. Мобильное меню (Radix Dialog) → `components/header/MobileMenuSheet.tsx` через
+   `next/dynamic` при первом открытии; `NavItem`/классы — в `components/header/`.
+4. `browserslist` (modern) в package.json — выигрыш ~1 KB, Next-полифиллы остаются.
+5. `LazyPrefetchLink` на карточках услуг: префетч после `load` + idle, не выключен.
+
+**Проверки:** tsc ок; `check-client-i18n` ок; build ок; smoke 316 URL × 2 UA = 632 ок,
+0 IntlError в логе; шрифты по роутам как задумано; в стартовых чанках `/` нет Dialog;
+разметка главной до/после идентична (кроме убранной переменной Lora и `aria-controls`
+у бургера, ссылавшегося на несуществующий до открытия id); JSON-LD/meta идентичны;
+меню открывается/закрывается/переоткрывается (9 ссылок как прежде); трассы: те же
+8 `_rsc`-префетчей, после load. Lighthouse local (медиана из 3): 88 → 91, LCP 3,80 → 3,33 с,
+байт 518 → 391 KB, HTML 233 → 186 KB.
+
+**Осталось:**
+- OK владельца на push ветки `worktree-perf-mobile-speed` → PR → мерж.
+- После деплоя: PSI mobile 2–3 прогона и Search Console → Core Web Vitals (полевые
+  данные не проверены — квота PSI API).
+- Кандидат следующего шага (Codex): главная динамическая из-за UA-детекта через
+  `headers()`; static/ISR + CSS-hiding может быть лучше для поля — отдельное решение.
+- LanguageSwitcher тянет Radix DropdownMenu в стартовый бандл — тот же паттерн
+  ленивой загрузки возможен, если триггер останется байт-в-байт.

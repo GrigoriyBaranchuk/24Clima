@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/routing";
+import LazyPrefetchLink from "@/components/LazyPrefetchLink";
 import type { ServiceSlug } from "@/lib/services";
 import {
   AirVent,
@@ -108,7 +108,9 @@ export default async function ServicesGrid() {
               className="motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-both"
               style={{ animationDelay: `${index * 60}ms` }}
             >
-              <Link
+              {/* LazyPrefetchLink: восемь карточек разом в вьюпорте — их
+                  RSC-payload откладывается до load + idle (не отключён). */}
+              <LazyPrefetchLink
                 href={`/servicios/${s.slug}`}
                 className="flex items-center gap-3 p-3.5 rounded-2xl bg-[#162a3e] active:scale-[0.98] transition-transform shadow-[0_2px_6px_rgba(0,0,0,0.2)]"
               >
@@ -129,7 +131,7 @@ export default async function ServicesGrid() {
                   className="w-5 h-5 text-white/40 shrink-0"
                   aria-hidden="true"
                 />
-              </Link>
+              </LazyPrefetchLink>
             </li>
           );
         })}

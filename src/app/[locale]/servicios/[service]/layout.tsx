@@ -1,21 +1,15 @@
-import type { Metadata } from "next";
+import { CLIENT_SHELL_NAMESPACES, pickMessages } from "@/i18n/client-messages";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { CLIENT_SHELL_NAMESPACES, pickMessages } from "@/i18n/client-messages";
-
-// Internal admin tools (articles editor + SEO panel). Never index or follow.
-export const metadata: Metadata = {
-  robots: { index: false, follow: false, nocache: true },
-};
 
 /**
- * Неймспейс `tipsAdmin` нужен только AdminClient и только здесь, поэтому в
- * корневой провайдер он не попадает.
+ * Зеркало `(es)/servicios/[service]/layout.tsx` для en/ru (грабля №2).
+ * Неймспейс `services` нужен только ServiceFAQ на этих страницах.
  *
  * Вложенный провайдер ЗАМЕЩАЕТ родительский словарь, поэтому список включает и
- * неймспейсы оболочки. DOM-узлов провайдер не добавляет.
+ * неймспейсы оболочки. Провайдер не добавляет DOM-узлов.
  */
-export default async function AdminLayout({
+export default async function ServiceLayout({
   children,
   params,
 }: {
@@ -30,7 +24,7 @@ export default async function AdminLayout({
     <NextIntlClientProvider
       messages={pickMessages(messages, [
         ...CLIENT_SHELL_NAMESPACES,
-        "tipsAdmin",
+        "services",
       ])}
     >
       {children}
