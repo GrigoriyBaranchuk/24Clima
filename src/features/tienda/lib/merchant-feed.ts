@@ -35,7 +35,7 @@
 
 import type { ProductDetail, ProductImage, ProductVariant } from "./api-client";
 import { sizeAxisOf, sortVariants, usableAxes, variantOptions, variantSku } from "./variants";
-import { tiendaProductUrl } from "./tienda-url";
+import { tiendaHomeUrl, tiendaProductUrl } from "./tienda-url";
 import { markdownToPlainText } from "@/lib/markdown-plain-text";
 
 /** The feed carries the Spanish catalog (the Panamanian storefront). */
@@ -268,7 +268,7 @@ export function buildFeedItems(product: ProductDetail): string[] {
 export function buildFeed(items: string[]): string {
   const channelMeta = [
     tag("title", "24Clima"),
-    tag("link", "https://24clima.com/tienda"),
+    tag("link", tiendaHomeUrl(FEED_LOCALE)),
     tag(
       "description",
       "Aire acondicionado, refrigeración y herramientas HVAC/R con entrega en Panamá."
