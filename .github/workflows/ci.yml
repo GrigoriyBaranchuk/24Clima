@@ -1,0 +1,66 @@
+name: CI
+
+# До сих пор единственным барьером перед мержем была сборка Vercel: `bun run
+# lint` (а вместе с ним гард словарей check-client-i18n и tsc) нигде
+# автоматически не запускался. Здесь он запускается на каждом PR.
+#
+# Про `@24clima/design`: зависимость объявлена как git+ssh, но репозиторий
+# публичный, и bun ходит в GitHub по своему пути — `bun install
+# --frozen-lockfile` уже годами отрабатывает в воркфлоу seo-*.yml на этом же
+# package.json. Отдельный deploy key не нужен; если репозиторий когда-нибудь
+# закроют, install упадёт именно здесь, и лечится это секретом с ключом, а не
+# правкой зависимости.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Новый пуш в ветку отменяет предыдущий прогон — на PR это обычное дело.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: lint + check:feed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      # check-client-i18n (словари клиента) + tsc + next lint.
+      - name: Lint
+        run: bun run lint
+
+      # Чистые ассерты про варианты, Merchant-фид и robots/hreflang магазина:
+      # ни сети, ни базы, ни локального API — только код из src.
+      - name: Tienda assertions
+        run: bun run check:feed
+
+  build:
+    name: next build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      # Сборка проверена без единого секрета: страницы, которым нужен Supabase
+      # или shop-api, на билде деградируют до пустого состояния и билд проходит.
+      # Поэтому env здесь нет намеренно — добавлять секреты в этот job не нужно.
+      # Vercel собирает preview на том же коммите, но со своими переменными;
+      # этот job ловит поломку сборки на форках и до деплоя.
+      - name: Build
+        run: bun run build
