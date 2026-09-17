@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase";
 import { resolveImageUrls, stripMarkdownForPreview } from "@/lib/articles";
 import { normalizeSlug } from "@/lib/slug";
 import { Link } from "@/i18n/routing";
-import TipsList from "../../[locale]/consejos-y-guias/TipsList";
+import TipsList from "../../../[locale]/(marketing)/consejos-y-guias/TipsList";
 import { buildBreadcrumbJsonLd } from "@/lib/breadcrumb-helper";
 import Breadcrumbs from "@/components/Breadcrumbs";
 

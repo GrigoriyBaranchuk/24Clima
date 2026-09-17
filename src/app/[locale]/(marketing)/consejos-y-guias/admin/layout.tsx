@@ -14,6 +14,9 @@ export const metadata: Metadata = {
  *
  * Вложенный провайдер ЗАМЕЩАЕТ родительский словарь, поэтому список включает и
  * неймспейсы оболочки. DOM-узлов провайдер не добавляет.
+ *
+ * Маркетинговый набор PUBLIC_SITE_CLIENT_NAMESPACES сюда НЕ едет: админка
+ * рендерит только AdminClient (`tipsAdmin`) внутри оболочки.
  */
 export default async function AdminLayout({
   children,

@@ -9,23 +9,54 @@ import type { AbstractIntlMessages } from "next-intl";
  * Серверные `getTranslations()` к этому отношения не имеют: они резолвятся на
  * сервере и в payload не попадают.
  *
- * ЧТО ЗДЕСЬ. Неймспейсы, которые нужны компонентам «оболочки» — тем, что могут
- * отрендериться на ЛЮБОЙ странице (шапка, нижняя навигация, футер-CTA,
- * калькулятор, формы). Всё, что живёт на одном роуте, добавляется вложенным
- * провайдером в layout этого роута — см. ROUTE_SCOPED в
- * `scripts/check-client-i18n.mjs`.
+ * ПРАВИЛО. Каждая страница везёт ровно те неймспейсы, которые нужны ЕЁ
+ * клиентским компонентам. Новая фича заводит СВОЙ неймспейс и СВОЙ вложенный
+ * провайдер в layout своего роута — оболочку она не расширяет. Оболочка растёт
+ * только если компонент реально рендерится на каждой странице сайта.
  *
  * ВАЖНО (проверено в use-intl/dist/esm/production/react.js): вложенный
  * `NextIntlClientProvider` с пропом `messages` ЗАМЕЩАЕТ родительский словарь,
  * а не сливается с ним (`messages: i === undefined ? parent.messages : i`).
  * Поэтому route-провайдер обязан получить `[...CLIENT_SHELL_NAMESPACES, <своё>]`.
  *
- * Список поддерживается в актуальном состоянии проверкой
+ * Списки поддерживаются в актуальном состоянии проверкой
  * `node scripts/check-client-i18n.mjs` (висит на `bun run lint`).
  */
+
+/**
+ * Оболочка: неймспейсы компонентов, которые рендерятся на ЛЮБОЙ странице —
+ * Header, BottomNav, DesktopWhatsAppFab. Ровно два; третьего быть не должно,
+ * пока в шапку/подвал не приедет новый клиентский компонент.
+ *
+ * `tienda.cart` здесь НЕТ намеренно: TiendaCartLink рендерится в шапке только
+ * под `showCartLink`, а его передаёт один лишь TiendaShell — то есть только
+ * внутри /tienda/**, где действует провайдер с полным неймспейсом `tienda`.
+ */
 export const CLIENT_SHELL_NAMESPACES = [
-  "common", // Header, BottomNav, ProblemsContent
-  "whatsappMessages", // Header, BottomNav, Contact, CleaningPackages, NosotrosCTA, ProblemsContent, DesktopWhatsAppFab
+  "common", // Header, BottomNav
+  "whatsappMessages", // Header, BottomNav, DesktopWhatsAppFab
+] as const;
+
+/**
+ * Клиентские неймспейсы ПУБЛИЧНОГО МАРКЕТИНГОВОГО САЙТА — того, что отдаёт
+ * провайдер группы `(marketing)` в обоих деревьях роутов: главная, /contacto,
+ * /problemas, /nosotros, /consejos-y-guias, /servicios и прочее.
+ *
+ * ЭТО НЕ СВАЛКА. Список закрыт набором компонентов ниже. Новый клиентский
+ * компонент маркетинга — это повод завести ему свой неймспейс и вложенный
+ * провайдер в layout его роута, а не дописать строку сюда: всё, что здесь,
+ * едет в HTML КАЖДОЙ маркетинговой страницы.
+ *
+ * Почему именно группа, а не корневой layout: пропсы КОРНЕВОГО провайдера
+ * сериализуются в RSC-payload на каждом роуте, включая /tienda/**, — вложенный
+ * провайдер замещает словарь только для своих потомков. Пока этот набор лежал
+ * в корне, ~6,8 КБ маркетинговых текстов ехали в HTML магазина, где ничего из
+ * этого не рендерится. /tienda лежит вне `(marketing)`, поэтому набора не
+ * получает; импорт любого из перечисленных компонентов внутрь
+ * `src/features/tienda/**` или `src/app/**\/tienda/**` — ошибка, её ловит
+ * `scripts/check-client-i18n.mjs`.
+ */
+export const PUBLIC_SITE_CLIENT_NAMESPACES = [
   "calculator", // CalculatorMobile / CalculatorDesktop
   "packages", // CalculatorMobile / CalculatorDesktop, CleaningPackages
   "contact", // Contact
@@ -35,7 +66,6 @@ export const CLIENT_SHELL_NAMESPACES = [
   "homeCta", // HomeCtaBlocks
   "nosotrosCta", // NosotrosCTA
   "tips", // TipsList
-  "tienda.cart", // TiendaCartLink — рендерится в шапке магазина
 ] as const;
 
 type Mutable = Record<string, unknown>;

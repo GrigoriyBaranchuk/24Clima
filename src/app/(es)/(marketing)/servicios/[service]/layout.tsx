@@ -1,4 +1,8 @@
-import { CLIENT_SHELL_NAMESPACES, pickMessages } from "@/i18n/client-messages";
+import {
+  CLIENT_SHELL_NAMESPACES,
+  PUBLIC_SITE_CLIENT_NAMESPACES,
+  pickMessages,
+} from "@/i18n/client-messages";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 
@@ -13,6 +17,11 @@ import { getMessages, setRequestLocale } from "next-intl/server";
  * MISSING_MESSAGE.
  *
  * Провайдер не добавляет DOM-узлов, разметка страницы не меняется.
+ *
+ * Кроме `services` здесь едет и маркетинговый набор
+ * PUBLIC_SITE_CLIENT_NAMESPACES: страницы услуг — часть публичного сайта, и
+ * страница чистки рендерит CleaningPackages (`packages`, `whatsappMessages`) и
+ * Calculator (`calculator`, `packages`). Без него они упадут в MISSING_MESSAGE.
  */
 export default async function ServiceLayout({
   children,
@@ -26,6 +35,7 @@ export default async function ServiceLayout({
     <NextIntlClientProvider
       messages={pickMessages(messages, [
         ...CLIENT_SHELL_NAMESPACES,
+        ...PUBLIC_SITE_CLIENT_NAMESPACES,
         "services",
       ])}
     >

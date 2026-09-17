@@ -80,10 +80,13 @@ export default async function EsRootLayout({ children }: { children: React.React
       <LazyAnalytics />
       <MetaPixel />
       <ServiceWorkerRegister />
-      {/* Только неймспейсы «оболочки»: весь словарь (59 КБ для es) в
-        RSC-payload не нужен. Роут-специфичные неймспейсы добавляет вложенный
-        провайдер в layout соответствующего роута — он ЗАМЕЩАЕТ этот словарь,
-        поэтому получает `[...CLIENT_SHELL_NAMESPACES, <своё>]`. */}
+      {/* ТОЛЬКО оболочка: Header, BottomNav, DesktopWhatsAppFab. Весь словарь
+        (59 КБ для es) в RSC-payload не нужен, и даже маркетинговый набор здесь
+        не место: пропсы КОРНЕВОГО провайдера уезжают в HTML каждого роута,
+        включая /tienda/**, — вложенный провайдер замещает словарь только для
+        потомков. Поэтому маркетинг живёт в `(marketing)/layout.tsx`, магазин —
+        в `tienda/layout.tsx`, и каждый получает
+        `[...CLIENT_SHELL_NAMESPACES, <своё>]`. */}
       <NextIntlClientProvider
         messages={pickMessages(messages, CLIENT_SHELL_NAMESPACES)}
       >
