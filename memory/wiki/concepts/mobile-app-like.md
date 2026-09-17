@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Мобильная версия как приложение (app-like)
-updated: 2026-08-10
+updated: 2026-09-16
 sources: [PROJECT_MEMORY.md, DESIGN.md, CLAUDE.md]
 related: [concepts/design-system-package, concepts/protected-seo-elements, synthesis/gotchas]
 status: current
@@ -52,6 +52,47 @@ status: current
   Meta Pixel оставлен на `lazyOnload` — он важен для конверсий.
 - Service Worker вручную, без зависимостей: stale-while-revalidate для
   HTML, cache-first для статики (`public/sw.js`).
+
+## Производительность, второй проход (2026-09-16, ветка perf-mobile-speed)
+
+Повод: PSI владельца — 88, LCP 3,5 с. Диагноз по трассам: реальный LCP-элемент —
+текстовый h1, без троттлинга он рисуется за 0,7–1,5 с; симулированный LCP высок
+из-за объёма байт, стартующих до него: HTML 41 KB br (233 KB raw, из них 144 KB —
+inline RSC, 56 KB — ПОЛНЫЙ словарь es.json в `NextIntlClientProvider`), 4 preload
+шрифтов 127 KB (Inter+Lora, latin+cyrillic), JS ~200 KB br. Пять правок, дизайн и
+десктоп не тронуты (разметка главной сверена побайтно, JSON-LD/meta идентичны),
+SEO-ревью — approve:
+
+1. **Шрифты.** `(es)/layout` — Inter только `latin`; Lora убрана из обоих корневых
+   layout и объявлена в `consejos-y-guias/layout.tsx` (обёртка `div.contents`,
+   переменная `--font-lora` та же — её читает preset пакета дизайна). Итог: `/` тянет
+   один woff2 вместо четырёх; блог — Inter + Lora; `/ru/` — Inter latin+cyr.
+2. **Словарь клиенту.** `src/i18n/client-messages.ts`: `CLIENT_SHELL_NAMESPACES` +
+   `pickMessages()` (поддерживает `tienda.cart`). Корневые провайдеры отдают только
+   оболочку; `services`, `tienda`, `tipsAdmin` — вложенными провайдерами в layout
+   роутов (оба дерева). Вложенный провайдер **замещает** словарь родителя, поэтому
+   получает `[...SHELL, своё]` (грабли №37). Страховки: `scripts/check-client-i18n.mjs`
+   (в `bun run lint`) и `scripts/smoke-routes.mjs` (обход sitemap, 2 UA, ловит маркеры
+   падения и сырые ключи).
+3. **Мобильное меню** (`Sheet` = Radix Dialog) вынесено в `components/header/MobileMenuSheet.tsx`
+   и грузится `next/dynamic({ ssr: false })` при первом открытии; бургер — обычная
+   кнопка с прогревом чанка на pointerenter/touchstart/focus. `NavItem` и строки
+   классов — в `components/header/`. Ссылки меню и раньше не были в SSR-HTML.
+4. **browserslist** в `package.json` (chrome/edge/firefox ≥ 90, safari ≥ 14.1,
+   ios ≥ 14.5). Полифиллы `Array.prototype.at`/`Object.hasOwn`, которые показывает
+   Lighthouse, — это `polyfill-module` самого Next, browserslist их не убирает;
+   выигрыш First Load JS — ~1 KB, оставлено как гигиена.
+5. **Префетч отложен, не выключен:** `LazyPrefetchLink` (`prefetch={false}` до
+   `load` + `requestIdleCallback`, потом дефолт) — только на карточках услуг
+   (`Services.tsx` мобильная сетка, `ServicesGrid.tsx`). BottomNav и hero-кнопка на
+   дефолте. Трассы: те же 8 `_rsc`-запросов, но после load.
+
+Замер (локальный `next start`, Lighthouse 13.4 mobile, медиана из 3): 88 → 91,
+LCP 3,80 → 3,33 с, всего байт 518 → 391 KB, HTML главной 233 → 186 KB raw.
+Честная планка на проде — «низкие 90-е», не 95+ (Codex, консультация 16.09). Полевые
+CWV (CrUX) не проверены — квота PSI API была исчерпана. CLS 0,33 на «Eventos»
+(display:none) и пинг `m.youtube.com` в отчёте владельца — шум одного прогона PSI, в
+трёх прогонах не воспроизвелись (грабли №39).
 
 ## Известные нюансы
 

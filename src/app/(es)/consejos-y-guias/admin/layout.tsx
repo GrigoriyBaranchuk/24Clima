@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
+import { CLIENT_SHELL_NAMESPACES, pickMessages } from "@/i18n/client-messages";
 
 // Internal admin tools (articles editor + SEO panel) in the default-locale (es)
 // route group. Mirrors [locale]/consejos-y-guias/admin/layout.tsx so the Spanish
@@ -8,6 +11,30 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
 };
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return children;
+/**
+ * Неймспейс `tipsAdmin` (~большой словарь редактора) нужен только AdminClient
+ * и только здесь, поэтому в корневой провайдер он не попадает.
+ *
+ * Вложенный провайдер ЗАМЕЩАЕТ родительский словарь (use-intl:
+ * `messages: i === undefined ? parent.messages : i`), поэтому список включает и
+ * неймспейсы оболочки. DOM-узлов провайдер не добавляет.
+ */
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  setRequestLocale("es");
+  const messages = await getMessages();
+
+  return (
+    <NextIntlClientProvider
+      messages={pickMessages(messages, [
+        ...CLIENT_SHELL_NAMESPACES,
+        "tipsAdmin",
+      ])}
+    >
+      {children}
+    </NextIntlClientProvider>
+  );
 }

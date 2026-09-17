@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Lora } from "next/font/google";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 import { locales, defaultLocale, type Locale, getLocalePrefix } from "@/i18n/config";
+import { CLIENT_SHELL_NAMESPACES, pickMessages } from "@/i18n/client-messages";
 import { getHomeKeywords } from "@/lib/seo-keywords";
 import LazyAnalytics from "@/components/LazyAnalytics";
 import MetaPixel from "@/components/MetaPixel";
@@ -18,11 +19,10 @@ const inter = Inter({
   display: "swap",
 });
 
-const lora = Lora({
-  variable: "--font-lora",
-  subsets: ["latin", "cyrillic"],
-  display: "swap",
-});
+// Lora объявлена НЕ здесь, а в consejos-y-guias/layout.tsx: сериф используется
+// только в блоге (TipsList `font-serif`, ArticleRenderer `.article-content`),
+// а объявление в корневом layout заставляло каждую страницу сайта
+// предзагружать два лишних woff2.
 
 export const viewport: Viewport = {
   viewportFit: "cover",
@@ -116,7 +116,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <div lang={locale} className={`${inter.variable} ${lora.variable} font-sans antialiased`}>
+    <div lang={locale} className={`${inter.variable} font-sans antialiased`}>
       {/* Краткое описание для AI/LLM и поисковых систем — не отображается визуально */}
       <p className="sr-only" aria-hidden="true" data-ai-summary="true">
         24clima — professional air conditioning service in Panama City and Panamá Oeste (Arraiján, La Chorrera): installation, maintenance, deep cleaning, repair, refrigerant recharge, gypsum ceilings and walls, concealed ducted air conditioning. Also temporary AC/cooling rental for events (tents, expos, conferences, weddings). 24/7. Online cost calculator for AC cleaning. Languages: Spanish, English, Russian. Contact: WhatsApp +507 6828 2120.
@@ -124,7 +124,13 @@ export default async function LocaleLayout({
       <LazyAnalytics />
       <MetaPixel />
       <ServiceWorkerRegister />
-      <NextIntlClientProvider messages={messages}>
+      {/* Только неймспейсы «оболочки»: весь словарь (85 КБ для ru) в
+        RSC-payload не нужен. Роут-специфичные неймспейсы добавляет вложенный
+        провайдер в layout соответствующего роута — он ЗАМЕЩАЕТ этот словарь,
+        поэтому получает `[...CLIENT_SHELL_NAMESPACES, <своё>]`. */}
+      <NextIntlClientProvider
+        messages={pickMessages(messages, CLIENT_SHELL_NAMESPACES)}
+      >
         <ScrollToHash />
         {children}
         <GoogleReviewsBadge />
