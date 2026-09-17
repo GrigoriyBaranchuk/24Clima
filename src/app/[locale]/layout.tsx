@@ -4,11 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 import { locales, defaultLocale, type Locale, getLocalePrefix } from "@/i18n/config";
-import {
-  CLIENT_SHELL_NAMESPACES,
-  PUBLIC_SITE_CLIENT_NAMESPACES,
-  pickMessages,
-} from "@/i18n/client-messages";
+import { CLIENT_SHELL_NAMESPACES, pickMessages } from "@/i18n/client-messages";
 import { getHomeKeywords } from "@/lib/seo-keywords";
 import LazyAnalytics from "@/components/LazyAnalytics";
 import MetaPixel from "@/components/MetaPixel";
@@ -128,17 +124,15 @@ export default async function LocaleLayout({
       <LazyAnalytics />
       <MetaPixel />
       <ServiceWorkerRegister />
-      {/* Оболочка + клиентские неймспейсы публичного сайта: весь словарь
-        (85 КБ для ru) в RSC-payload не нужен. Роут-специфичные неймспейсы
-        добавляет вложенный провайдер в layout соответствующего роута — он
-        ЗАМЕЩАЕТ этот словарь, поэтому получает `[...CLIENT_SHELL_NAMESPACES,
-        <своё>]`. Магазин (/tienda/**) на этом и экономит: маркетинговый набор
-        туда не доезжает. */}
+      {/* ТОЛЬКО оболочка: Header, BottomNav, DesktopWhatsAppFab. Весь словарь
+        (85 КБ для ru) в RSC-payload не нужен, и даже маркетинговый набор здесь
+        не место: пропсы КОРНЕВОГО провайдера уезжают в HTML каждого роута,
+        включая /tienda/**, — вложенный провайдер замещает словарь только для
+        потомков. Поэтому маркетинг живёт в `(marketing)/layout.tsx`, магазин —
+        в `tienda/layout.tsx`, и каждый получает
+        `[...CLIENT_SHELL_NAMESPACES, <своё>]`. */}
       <NextIntlClientProvider
-        messages={pickMessages(messages, [
-          ...CLIENT_SHELL_NAMESPACES,
-          ...PUBLIC_SITE_CLIENT_NAMESPACES,
-        ])}
+        messages={pickMessages(messages, CLIENT_SHELL_NAMESPACES)}
       >
         <ScrollToHash />
         {children}

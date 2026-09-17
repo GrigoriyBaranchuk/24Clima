@@ -13,9 +13,9 @@
  *
  *   1. CLIENT_SHELL_NAMESPACES — оболочка, едет на КАЖДУЮ страницу;
  *   2. PUBLIC_SITE_CLIENT_NAMESPACES — публичный маркетинговый сайт, едет из
- *      корневых layout-ов. Файлам магазина (`src/features/tienda/**` и
- *      `src/app/**\/tienda/**`) он НЕ достаётся: их провайдер ЗАМЕЩАЕТ словарь
- *      на `[...SHELL, "tienda"]`;
+ *      провайдера группы `(marketing)`. Файлам магазина
+ *      (`src/features/tienda/**` и `src/app/**\/tienda/**`) он НЕ достаётся:
+ *      /tienda лежит вне этой группы, и её провайдер туда не применяется;
  *   3. ROUTE_SCOPED ниже — вместе с файлом, который неймспейс использует.
  *
  * Добавили новый namespace → заведите вложенный провайдер в layout-е роута
@@ -44,7 +44,7 @@ const SRC = join(ROOT, "src");
  * Значение — файлы, которым этот неймспейс разрешён.
  */
 const ROUTE_SCOPED = {
-  // src/app/(es)/servicios/[service]/layout.tsx + [locale]-зеркало
+  // src/app/(es)/(marketing)/servicios/[service]/layout.tsx + [locale]-зеркало
   services: ["src/components/ServiceFAQ.tsx"],
   // src/app/(es)/tienda/layout.tsx + [locale]-зеркало
   tienda: [
@@ -56,8 +56,10 @@ const ROUTE_SCOPED = {
     "src/features/tienda/components/account/AccountView.tsx",
     "src/features/tienda/components/account/LoginForm.tsx",
   ],
-  // src/app/(es)/consejos-y-guias/admin/layout.tsx + [locale]-зеркало
-  tipsAdmin: ["src/app/[locale]/consejos-y-guias/admin/AdminClient.tsx"],
+  // src/app/(es)/(marketing)/consejos-y-guias/admin/layout.tsx + [locale]-зеркало
+  tipsAdmin: [
+    "src/app/[locale]/(marketing)/consejos-y-guias/admin/AdminClient.tsx",
+  ],
 };
 
 const CLIENT_MESSAGES = join(SRC, "i18n", "client-messages.ts");
@@ -154,7 +156,7 @@ const coveredByPublicSite = (ns, file) => {
   if (!isShopFile(file)) return true;
   errors.push(
     `${file}: namespace "${ns}" есть только в PUBLIC_SITE_CLIENT_NAMESPACES, а этот файл лежит в поддереве магазина.\n` +
-      "    → провайдер /tienda отдаёт только [...CLIENT_SHELL_NAMESPACES, \"tienda\"], маркетинговый словарь туда не едет — будет MISSING_MESSAGE.\n" +
+      "    → /tienda лежит вне группы (marketing): провайдер магазина отдаёт только [...CLIENT_SHELL_NAMESPACES, \"tienda\"] — будет MISSING_MESSAGE.\n" +
       "    → уберите компонент из магазина или заведите ему собственный неймспейс внутри `tienda`.",
   );
   return true;
