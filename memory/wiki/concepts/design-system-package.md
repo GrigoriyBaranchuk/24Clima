@@ -19,7 +19,12 @@ status: current
 
 - `tokens.css` — все `:root`-переменные (shadcn HSL, brand hex,
   типографика) + `.hero-gradient` + `.whatsapp-pulse` (2s×5).
-  Импортируется в `src/app/layout.tsx` **перед** `globals.css`.
+  С 2026-09-17 подключается не отдельным импортом в `layout.tsx`, а
+  `@import "@24clima/design/tokens.css"` **первой строкой** `globals.css`
+  (инлайнится на сборке плагином `postcss-import`) — требование «токены
+  строго перед локальными стилями» сохранено, но браузер грузит один
+  CSS-файл вместо двух (грабли №40). README пакета всё ещё описывает старый
+  способ — при следующем релизе пакета поправить.
 - `tailwind-preset.js` — общая тема (colors/fonts/container/radius/easing),
   подключается через `presets:`. В конфиге сайта остались только
   chart-цвета и плагины.
