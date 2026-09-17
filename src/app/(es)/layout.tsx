@@ -2,7 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { CLIENT_SHELL_NAMESPACES, pickMessages } from "@/i18n/client-messages";
+import {
+  CLIENT_SHELL_NAMESPACES,
+  PUBLIC_SITE_CLIENT_NAMESPACES,
+  pickMessages,
+} from "@/i18n/client-messages";
 import { getHomeKeywords } from "@/lib/seo-keywords";
 import LazyAnalytics from "@/components/LazyAnalytics";
 import MetaPixel from "@/components/MetaPixel";
@@ -80,12 +84,17 @@ export default async function EsRootLayout({ children }: { children: React.React
       <LazyAnalytics />
       <MetaPixel />
       <ServiceWorkerRegister />
-      {/* Только неймспейсы «оболочки»: весь словарь (59 КБ для es) в
-        RSC-payload не нужен. Роут-специфичные неймспейсы добавляет вложенный
-        провайдер в layout соответствующего роута — он ЗАМЕЩАЕТ этот словарь,
-        поэтому получает `[...CLIENT_SHELL_NAMESPACES, <своё>]`. */}
+      {/* Оболочка + клиентские неймспейсы публичного сайта: весь словарь
+        (59 КБ для es) в RSC-payload не нужен. Роут-специфичные неймспейсы
+        добавляет вложенный провайдер в layout соответствующего роута — он
+        ЗАМЕЩАЕТ этот словарь, поэтому получает `[...CLIENT_SHELL_NAMESPACES,
+        <своё>]`. Магазин (/tienda/**) на этом и экономит: маркетинговый набор
+        туда не доезжает. */}
       <NextIntlClientProvider
-        messages={pickMessages(messages, CLIENT_SHELL_NAMESPACES)}
+        messages={pickMessages(messages, [
+          ...CLIENT_SHELL_NAMESPACES,
+          ...PUBLIC_SITE_CLIENT_NAMESPACES,
+        ])}
       >
         <ScrollToHash />
         {children}
