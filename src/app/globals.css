@@ -1,9 +1,16 @@
+/* ВСЕГДА ПЕРВОЙ СТРОКОЙ (до @tailwind). README пакета требует подключать токены
+   строго перед локальными стилями; раньше это были два импорта в layout.tsx,
+   теперь порядок держит @import здесь — и браузер грузит один CSS-файл вместо
+   двух. Инлайнится на сборке плагином postcss-import (см. postcss.config.mjs),
+   рантайм-запроса за tokens.css не остаётся. */
+@import "@24clima/design/tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Дизайн-токены (:root переменные, .hero-gradient, .whatsapp-pulse) живут
-   в @24clima/design/tokens.css — импортируется в layout.tsx ПЕРЕД этим файлом.
+   в @24clima/design/tokens.css — см. @import выше.
    Правки токенов — только в репозитории 24clima-design. */
 
 @layer base {
